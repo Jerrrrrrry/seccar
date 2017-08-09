@@ -7,9 +7,10 @@ public class User implements Serializable {
 
     private String id;
     private String account;
+    private String accountType;
     private String name;
     private String password;
-    private int enable;
+    private int locked;
     private String comment;
     private Date createTime;
     private Date updateTime;
@@ -46,15 +47,25 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public int getEnable() {
-        return enable;
-    }
+   
 
-    public void setEnable(int enable) {
-        this.enable = enable;
-    }
+    public String getAccountType() {
+		return accountType;
+	}
 
-    public String getComment() {
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
+
+	public int getLocked() {
+		return locked;
+	}
+
+	public void setLocked(int locked) {
+		this.locked = locked;
+	}
+
+	public String getComment() {
         return comment;
     }
 

@@ -8,7 +8,8 @@ public class UserDto implements Serializable {
     private String account;
     private String name;
     private String password;
-    private int enable;
+    private int locked;
+    private String accessType;
     private String comment;
     private String createTime;
     private String updateTime;
@@ -45,15 +46,24 @@ public class UserDto implements Serializable {
         this.password = password;
     }
 
-    public int getEnable() {
-        return enable;
-    }
 
-    public void setEnable(int enable) {
-        this.enable = enable;
-    }
+    public int getLocked() {
+		return locked;
+	}
 
-    public String getComment() {
+	public void setLocked(int locked) {
+		this.locked = locked;
+	}
+
+	public String getAccessType() {
+		return accessType;
+	}
+
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
+
+	public String getComment() {
         return comment;
     }
 

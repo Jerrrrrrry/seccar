@@ -28,15 +28,14 @@ public class UserDao {
    
 
     /***********************************************/
-    // 鍒楄〃鐨勬�绘暟閲�
     /**
      * @throws Exception *********************************************/
     public int count(UserForm form) throws Exception {
         int result = 0;
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT count(1) as cnt ");
-        sql.append("   FROM t_pm_User a ");
-        sql.append("  WHERE a.FAccount != 'superman' ");
+        sql.append("   FROM Users a ");
+        sql.append("  WHERE a.userid != 'superman' ");
 
         List args = new ArrayList();
         sql.append(getWhere(form, args));
@@ -98,21 +97,31 @@ public class UserDao {
         StringBuilder sql = new StringBuilder();
         sql.append(" WITH temp AS ( ");
         sql.append(" SELECT top 100 percent" );
-        sql.append("     a.FID ");
-        sql.append("    ,a.FAccount ");
-        sql.append("    ,a.FName ");
-        sql.append("    ,a.FEnable ");
-        sql.append("    ,a.FComment ");
-        sql.append("    ,a.FCreateTime ");
-        sql.append("    ,a.FUpdateTime ");
+        sql.append("     a.userid ");
+        sql.append("    ,a.username ");
+        sql.append("    ,a.islocked ");
+        sql.append("    ,a.accesstype ");
+        sql.append("    ,a.comments ");
+        sql.append("    ,a.createdts ");
+        sql.append("    ,a.lastupdatedts ");
         sql.append("    ,ROW_NUMBER() OVER (ORDER BY " + sort + " " + order + ") AS 'RowAccount'");
-        sql.append("   FROM t_pm_User a ");
-        sql.append("  WHERE a.FAccount != 'superman' ");
+        sql.append("   FROM Users a ");
+        sql.append("  WHERE a.userid != 'superman' ");
         sql.append(where);
         sql.append(" ) ");
         sql.append(" SELECT * FROM temp ");
         sql.append(" WHERE RowAccount BETWEEN " + rowBegin + " AND " + rowEnd + " ");
 
+        sql.append("     a.userid ");
+        sql.append("    ,a.username ");
+        sql.append("    ,a.islocked ");
+        sql.append("    ,a.accesstype ");
+        sql.append("    ,a.comments ");
+        sql.append("    ,a.createdts ");
+        sql.append("    ,a.lastupdatedts ");
+        sql.append("   FROM Users a ");
+        sql.append("  WHERE a.userid = ? ");
+        
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return result;
@@ -130,13 +139,12 @@ public class UserDao {
             }
             while(rs.next()){
                 UserDto vo = new UserDto();
-                vo.setId(rs.getString("FID"));
-                vo.setAccount(HtmlRender.toHtml(rs.getString("FAccount")));
-                vo.setName(HtmlRender.toHtml(rs.getString("FName")));
-                vo.setEnable(rs.getInt("FEnable"));
-                vo.setComment(HtmlRender.toHtml(rs.getString("FComment")));
-                vo.setCreateTime(ConvertUtils.timestampToString(rs.getTimestamp("FCreateTime")));
-                vo.setUpdateTime(ConvertUtils.timestampToString(rs.getTimestamp("FUpdateTime")));
+                vo.setId(rs.getString("userid"));
+                vo.setAccount(HtmlRender.toHtml(rs.getString("username")));
+                vo.setLocked(rs.getInt("islocked"));
+                vo.setComment(HtmlRender.toHtml(rs.getString("comments")));
+                vo.setCreateTime(ConvertUtils.timestampToString(rs.getTimestamp("createdts")));
+                vo.setUpdateTime(ConvertUtils.timestampToString(rs.getTimestamp("lastupdatedts")));
 
                 result.add(vo);
             }
@@ -164,16 +172,18 @@ public class UserDao {
         UserDto result = new UserDto();
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT ");
-        sql.append("     a.FID ");
-        sql.append("    ,a.FAccount ");
-        sql.append("    ,a.FName ");
-        sql.append("    ,a.FEnable ");
-        sql.append("    ,a.FComment ");
-        sql.append("    ,a.FCreateTime ");
-        sql.append("    ,a.FUpdateTime ");
-        sql.append("   FROM t_pm_User a ");
-        sql.append("  WHERE a.FID = ? ");
+        sql.append("     a.userid ");
+        sql.append("    ,a.username ");
+        sql.append("    ,a.islocked ");
+        sql.append("    ,a.accesstype ");
+        sql.append("    ,a.comments ");
+        sql.append("    ,a.createdts ");
+        sql.append("    ,a.lastupdatedts ");
+        sql.append("   FROM Users a ");
+        sql.append("  WHERE a.userid = ? ");
 
+        
+        
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return result;
@@ -193,13 +203,12 @@ public class UserDao {
                 return result;
             }
             while(rs.next()){
-                result.setId(rs.getString("FID"));
-                result.setAccount(rs.getString("FAccount"));
-                result.setName(rs.getString("FName"));
-                result.setEnable(rs.getInt("FEnable"));
-                result.setComment(rs.getString("FComment"));
-                result.setCreateTime(ConvertUtils.timestampToString(rs.getTimestamp("FCreateTime")));
-                result.setUpdateTime(ConvertUtils.timestampToString(rs.getTimestamp("FUpdateTime")));
+                result.setId(rs.getString("userid"));
+                result.setName(rs.getString("username"));
+                result.setLocked(rs.getInt("islocked"));
+                result.setComment(rs.getString("comments"));
+                result.setCreateTime(ConvertUtils.timestampToString(rs.getTimestamp("createdts")));
+                result.setUpdateTime(ConvertUtils.timestampToString(rs.getTimestamp("lastupdatedts")));
             }
         } catch (Exception e) {
             throw e;
@@ -242,8 +251,21 @@ public class UserDao {
 		
 	}
     /***********************************************/
-    // 鍒涘缓涓�涓�
-    /**
+ 
+    
+    /**SELECT [userid]
+      ,[username]
+      ,[password]
+      ,[accesstype]
+      ,[islocked]
+      ,[creator]
+      ,[createdts]
+      ,[lastupdatedts]
+      ,[userdesc]
+      ,[comments]
+      ,[sbcol1]
+      ,[sbcol2]
+      ,[sbcol3]
      * @throws Exception *********************************************/
     @SuppressWarnings({ "static-access", "unchecked", "rawtypes" })
 	public void create(User vo) throws Exception {
@@ -253,28 +275,32 @@ public class UserDao {
         }
 
         StringBuilder sql = new StringBuilder();
-        sql.append(" INSERT INTO t_pm_User ( ");
-        sql.append("     FID ");
-        sql.append("    ,FAccount ");
-        sql.append("    ,FName ");
-        sql.append("    ,FEnable ");
-        sql.append("    ,FPassword ");
-        sql.append("    ,FComment ");
-        sql.append("    ,FCreateTime ");
-        sql.append("    ,FUpdateTime ");
+        sql.append(" INSERT INTO Users ( ");
+        sql.append("     userid ");
+        sql.append("    ,username ");
+        sql.append("    ,password ");
+        sql.append("    ,accesstype ");
+        sql.append("    ,islocked ");
+        sql.append("    ,creator ");
+        sql.append("    ,createdts ");
+        sql.append("    ,lastupdatedts ");
+        sql.append("    ,userdesc ");
+        sql.append("    ,comments ");
         sql.append(" )VALUES(");
-        sql.append(StringUtils.getSqlPlaceholder(8));
+        sql.append(StringUtils.getSqlPlaceholder(10));
         sql.append(" )");
 
         List args = new ArrayList();
         args.add(vo.getId());
-        args.add(vo.getAccount());
         args.add(vo.getName());
-        args.add(vo.getEnable());
-        args.add(EncryptUtils.getMd5String(vo.getPassword()));
+        args.add(vo.getPassword());
+        args.add(vo.getAccountType());
+        args.add(vo.getLocked());
+        args.add("test");
+        args.add(new Date());
+        args.add(new Date());
+        args.add("d");
         args.add(vo.getComment());
-        args.add(new Date());
-        args.add(new Date());
 
         try {
         	this.executeNonQuery(sql.toString(), args);
@@ -303,30 +329,29 @@ public class UserDao {
 		}
 	}
     /***********************************************/
-    // 鏇存柊涓�涓�
     /**
      * @throws Exception *********************************************/
     public void update(User vo) throws Exception {
 
         StringBuilder sql = new StringBuilder();
-        sql.append(" UPDATE t_pm_User SET ");
-        sql.append("   FAccount = ? ");
-        sql.append("  ,FName = ? ");
-        sql.append("  ,FEnable = ? ");
-        sql.append("  ,FPassword = ? ");
-        sql.append("  ,FComment = ? ");
-        sql.append("  ,FUpdateTime = ? ");
-        sql.append(" WHERE FID = ? ");
+        sql.append(" UPDATE Users SET ");
+        sql.append("    ");
+        sql.append("  username = ? ");
+        sql.append("  ,islocked = ? ");
+        sql.append("  ,password = ? ");
+        sql.append("  ,comments = ? ");
+        sql.append("  ,lastupdatedts = ? ");
+        sql.append(" WHERE userid = ? ");
 
         List args = new ArrayList();
         args.add(vo.getAccount());
         args.add(vo.getName());
-        args.add(vo.getEnable());
+        args.add(vo.getLocked());
         args.add(EncryptUtils.getMd5String(vo.getPassword()));
         args.add(vo.getComment());
         args.add(new Date());
         args.add(vo.getId());
-
+        
         try {
             executeNonQuery(sql.toString(), args);
 
@@ -346,8 +371,8 @@ public class UserDao {
         }
 
         StringBuilder sql = new StringBuilder();
-        sql.append(" DELETE FROM t_pm_User ");
-        sql.append(" WHERE FID = ? ");
+        sql.append(" DELETE FROM Users ");
+        sql.append(" WHERE userid = ? ");
 
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
@@ -384,7 +409,7 @@ public class UserDao {
             if (dto.getAccount() == null || dto.getAccount().length() == 0) {
                 throw e;
             } else {
-                throw new Exception(e.getMessage() + "缂栧彿锛�" + dto.getAccount() + "<br/>");
+                throw new Exception(e.getMessage() + "错误" + dto.getAccount() + "<br/>");
             }
 
         } catch (Exception e){
@@ -420,9 +445,9 @@ public class UserDao {
         }
 
         StringBuilder sql = new StringBuilder();
-        sql.append(" UPDATE t_pm_User SET ");
-        sql.append("      FEnable = ? ");
-        sql.append(" WHERE FID in (" + StringUtils.listToCommaString(list) + ") ");
+        sql.append(" UPDATE Users SET ");
+        sql.append("      islocked = ? ");
+        sql.append(" WHERE userid in (" + StringUtils.listToCommaString(list) + ") ");
 
         List args = new ArrayList();
         args.add(status);
@@ -451,7 +476,7 @@ public class UserDao {
         sql.append("    FAccount ");
         sql.append("   ,FName ");
         sql.append("   ,FID ");
-        sql.append("  FROM t_pm_User ");
+        sql.append("  FROM Users ");
         sql.append(" WHERE FAccount = ? ");
 
         Connection conn = DbConnectionFactory.createHonchenConnection();
@@ -506,12 +531,12 @@ public class UserDao {
         if (form.getFilterField() != null && form.getFilterField().length() > 0 && form.getFilterValue() != null && form.getFilterValue().length() > 0){
 
             if ("nm+cd".equals(form.getFilterField())){
-                result.append(" AND (a.FName like ? OR a.FAccount like ? ) ");
+                result.append(" AND (a.username like ? OR a.userid like ? ) ");
                 args.add("%" + form.getFilterValue().trim() + "%");
                 args.add("%" + form.getFilterValue().trim() + "%");
 
             }else{
-                result.append(" AND " + "a.F" + form.getFilterField().trim() + " like ? ");
+                result.append(" AND " + "a." + form.getFilterField().trim() + " like ? ");
                 args.add("%" + form.getFilterValue().trim() + "%");
             }
         }
@@ -524,15 +549,16 @@ public class UserDao {
         User result = new User();
         StringBuffer sql = new StringBuffer();
         sql.append(" select ");
-        sql.append("     FID ");
-        sql.append("    ,FAccount ");
-        sql.append("    ,FName ");
-        sql.append("  from t_pm_User ");
-        sql.append(" where FAccount = ? ");
-        sql.append("   and FEnable = 1 ");
-        sql.append("   and ISNULL(FPassword, '') = ? ");
+        sql.append("     userid ");
+        sql.append("    ,username ");
+        sql.append("    ,accesstype ");
+        sql.append("    ,islocked ");
+        sql.append("    ,accesstype ");
+        sql.append("  from Users ");
+        sql.append(" where userid = ? ");
+        sql.append("   and ISNULL(password, '') = ? ");
 
-        String pwd = password == null || password.length() == 0 ? "" : EncryptUtils.getMd5String(password);
+        String pwd = password == null || password.length() == 0 ? "" : password;//EncryptUtils.getMd5String(password);
         List args = new ArrayList();
         args.add(account);
         args.add(pwd);
@@ -553,9 +579,9 @@ public class UserDao {
                 return result;
             }
             while (rs.next()) {
-                result.setId(rs.getString("FID"));
-                result.setAccount(rs.getString("FAccount"));
-                result.setName(rs.getString("FName"));
+                result.setId(rs.getString("userid"));
+                result.setAccountType(rs.getString("accesstype"));
+                result.setName(rs.getString("username"));
             }
         } catch (SQLException e) {
             throw e;
@@ -579,9 +605,9 @@ public class UserDao {
         }
 
         StringBuffer sql = new StringBuffer();
-        sql.append(" update t_pm_User ");
-        sql.append("    set  FPassword = ? ");
-        sql.append("   where FId = ?  ");
+        sql.append(" update Users ");
+        sql.append("    set  password = ? ");
+        sql.append("   where userid = ?  ");
 
         List<Object> paras = new ArrayList<Object>();
         paras.add(vo.getPassword());
