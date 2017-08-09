@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts-config PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+        "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+    <form-beans>
+        <form-bean name="loginForm" type="com.lhcy.platform.web.form.LoginForm"/>
+        <form-bean name="userForm" type="com.lhcy.platform.web.form.UserForm"/>
+        <form-bean name="voucherForm" type="com.lhcy.sync.web.form.VoucherForm"/>
+        <form-bean name="icStockForm" type="com.lhcy.sync.web.form.ICStockForm"/>
+        <form-bean name="accountForm" type="com.lhcy.sync.web.form.AccountForm"/>
+        <form-bean name="uploadFileForm" type="com.lhcy.sync.web.form.UploadFileForm"/>
+    </form-beans>
+    <global-exceptions/>
+    <global-forwards>
+        <forward name="index" path="/IndexAction.do">
+        </forward>
+    </global-forwards>
+
+    <action-mappings>
+        <action path="/IndexAction" forward="/WEB-INF/page/platform/Login.jsp"/>
+        <action path="/NoLoginAction" forward="/WEB-INF/page/platform/Nologin.jsp"/>
+        <action path="/LoginAction" input="/LoginAction.do" scope="request" name="loginForm" parameter="m" type="com.lhcy.platform.web.action.LoginAction">
+            <forward name="failed" path="/WEB-INF/page/platform/Login.jsp"/>
+        </action>
+        <action path="/MainAction" input="/MainAction.do" scope="request" name="loginForm" parameter="m" type="com.lhcy.platform.web.action.MainAction">
+            <forward name="show" path="/WEB-INF/page/platform/Main.jsp"/>
+        </action>
+        <action path="/UserAction" scope="request" name="userForm" parameter="m" type="com.lhcy.platform.web.action.UserAction">
+            <forward name="show" path="/WEB-INF/page/platform/User.jsp"/>
+        </action>
+        <action path="/VoucherAction" scope="request" name="uploadFileForm" parameter="m" type="com.lhcy.sync.web.action.VoucherAction">
+            <forward name="show" path="/WEB-INF/page/sync/Voucher.jsp"/>
+        </action>
+        <action path="/ICStockAction" scope="request" name="icStockForm" parameter="m" type="com.lhcy.sync.web.action.ICStockAction">
+            <forward name="show" path="/WEB-INF/page/sync/ICStock.jsp"/>
+        </action>
+        <action path="/AccountAction" scope="request" name="accountForm" parameter="m" type="com.lhcy.sync.web.action.AccountAction">
+            <forward name="show" path="/WEB-INF/page/sync/Account.jsp"/>
+        </action>
+        <action path="/AccountTreeAction" scope="request" name="accountForm" parameter="m" type="com.lhcy.sync.web.action.AccountTreeAction">
+        </action>
+    </action-mappings>
+    <message-resources parameter="com.lhcy.ApplicationResources"/>
+</struts-config>
