@@ -22,7 +22,7 @@ public class StockDao {
         sql.append("       ,a.FName ");
         sql.append("   from t_Stock a ");
 
-        Connection conn = DbConnectionFactory.createKisConnection();
+        Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return result;
         }

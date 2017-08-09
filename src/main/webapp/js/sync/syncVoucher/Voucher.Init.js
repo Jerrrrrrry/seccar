@@ -11,6 +11,7 @@ var VoucherInit = {
             // 表格初始化
             /***********************************************/
             // 右表
+
             $("#list").datagrid({
                 striped: true,
                 rownumbers: true,
@@ -24,7 +25,7 @@ var VoucherInit = {
                 method: 'post',
                 url: '',
                 idField: 'id',
-                sortName: 'fileName',
+                sortName: 'bizDate',
                 sortOrder: 'asc',
                 toolbar: '#bar_list',
                 columns: [[
@@ -33,144 +34,104 @@ var VoucherInit = {
                         checkbox: true
                     },
                     {
-                        field: 'fileName',
-                        title: '文件名',
-                        width: 200,
-                        halign: 'center',
-                        sortable: true
-                    },
-                    {
-                        field: 'size',
-                        title: '大小',
-                        width: 70,
-                        halign: 'center',
-                        sortable: true
-                    },
-                    {
-                        field: 'uploadDate',
-                        title: '上传日期',
-                        width: 150,
-                        halign: 'center',
-                        sortable: true
-                    }/*,
-                    {
-                        field: 'fileId',
-                        title: '操作',
-                        width: 120,
-                        halign: 'center',
-                        sortable: true
-                    },
-                    {
-                        field: 'settleAmount',
-                        title: '结算金额',
-                        width: 120,
-                        halign: 'center',
-                        align: 'right',
-                        sortable: false
-                    },
-                    {
-                        field: 'discountAmount',
-                        title: '优惠金额',
-                        width: 120,
-                        halign: 'center',
-                        align: 'right',
-                        sortable: false
-                    },
-                    {
-                        field: 'wipeTheZeroAmount',
-                        title: '抹零金额',
-                        width: 120,
-                        halign: 'center',
-                        align: 'right',
-                        sortable: false
-                    },
-                    {
-                        field: 'quotaAmount',
-                        title: '定额优惠',
-                        width: 120,
-                        halign: 'center',
-                        align: 'right',
-                        sortable: false
-                    },
-                    {
-                        field: 'giftAmount',
-                        title: '增单金额',
-                        width: 120,
-                        halign: 'center',
-                        align: 'right',
-                        sortable: false
-                    },
-                    {
-                        field: 'serviceAmount',
-                        title: '服务费',
-                        width: 120,
-                        halign: 'center',
-                        align: 'right',
-                        sortable: false
-                    },
-                    {
-                        field: 'roomsAmount',
-                        title: '包房费',
-                        width: 120,
-                        halign: 'center',
-                        align: 'right',
-                        sortable: false
-                    },
-                    {
-                        field: 'debitAmount',
-                        title: '借方总金额',
-                        width: 120,
-                        halign: 'center',
-                        align: 'right',
-                        sortable: false
-                    },
-                    {
-                        field: 'creditAmount',
-                        title: '贷方总金额',
-                        width: 120,
-                        halign: 'center',
-                        align: 'right',
-                        sortable: false
-                    },
-                    {
-                        field: 'diffAmount',
-                        title: '借贷差额',
-                        width: 120,
-                        halign: 'center',
-                        align: 'right',
-                        sortable: false,
-                        formatter: list.diffFormat
-                    },
-                    {
-                        field: 'status',
-                        title: '同步状态',
-                        width: 120,
-                        halign: 'center',
+                        field: 'bizDate',
+                        title: '日期',
+                        width: 80,
                         align: 'center',
-                        sortable: false,
-                        formatter: list.stateFormat
-                    },
-                    {
-                        field: 'voucherNumber',
-                        title: '凭证号',
-                        width: 120,
-                        halign: 'center',
                         sortable: true
                     },
                     {
-                        field: 'syncUser',
-                        title: '同步人',
-                        width: 120,
-                        halign: 'center',
+                        field: 'fullName',
+                        title: '姓名',
+                        width: 80,
+                        align: 'center',
                         sortable: true
                     },
                     {
-                        field: 'syncTime',
-                        title: '同步时间',
-                        width: 120,
-                        halign: 'center',
+                        field: 'carName',
+                        title: '车名',
+                        width: 80,
+                        align: 'center',
                         sortable: true
-                    }*/
+                    },
+                    {
+                        field: 'loanPeriod',
+                        title: '借款期限',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'netLoanAmount',
+                        title: '借款本金',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'paymentPerMonth',
+                        title: '月还',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'interestRate',
+                        title: '利息',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'paybackRate',
+                        title: '返点',
+                        width: 80,
+                        align: 'center',
+                        align: 'right',
+                        sortable: false
+                    },
+                    {
+                        field: 'parkingFee',
+                        title: '停车费',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'others',
+                        title: '其他',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'arrcuredPayAmount',
+                        title: '打款金额',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'comments',
+                        title: '备注',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'allInterestAmount',
+                        title: '应还利息',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'temperaryMaterils',
+                        title: '放公司的材料',
+                        width: 80,
+                        align: 'center',
+                        sortable: true
+                    }
                 ]],
                 onLoadError: function () {
                     top.location = basePath;
@@ -181,7 +142,7 @@ var VoucherInit = {
             // 列表工具栏初始化
             /***********************************************/
             $('#btnUpload').linkbutton({
-                text : '上传数据',
+                text : '新增',
                 plain : true,
                 iconCls : 'tbtn_upload',
                 onClick: function(){
@@ -198,14 +159,14 @@ var VoucherInit = {
                 }
             });
 
-            /*$('#btnSync').linkbutton({
+            $('#btnSync').linkbutton({
                 text : '同步',
                 plain : true,
                 iconCls : 'tbtn_attemper',
                 onClick: function(){
                     list.sync();
                 }
-            });*/
+            });
 
             $('#btnSelectAll').linkbutton({
                 text : '全选',
@@ -238,7 +199,7 @@ var VoucherInit = {
             // 窗口初始化
             /***********************************************/
             $('#dlg_upload').dialog({
-                title: '上传数据',
+                title: '上传凭证',
                 width: 590,
                 height: 200,
                 modal: true,
@@ -246,7 +207,7 @@ var VoucherInit = {
                 minimizable: false,
                 maximizable: false,
                 resizable: false,
-                collapsible: false/*,
+                collapsible: false,
                 toolbar: [
                     {
                         text: '上传',
@@ -270,10 +231,9 @@ var VoucherInit = {
                             $('#dlg_filter').dialog('close');
                         }
                     }
-                ]*/
+                ]
             });
             list.doInit();
-            $('#dlg_upload').window('open');
         };
 
         return init;

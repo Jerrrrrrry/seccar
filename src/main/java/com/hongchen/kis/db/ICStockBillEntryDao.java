@@ -36,7 +36,7 @@ public class ICStockBillEntryDao {
             sql.append(DbSqlHelper.getSqlPlaceholder(12));
         sql.append(" )");
 
-        Connection conn = DbConnectionFactory.createKisConnection();
+        Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return;
         }

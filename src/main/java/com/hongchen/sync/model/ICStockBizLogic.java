@@ -9,7 +9,6 @@ import com.hongchen.kis.db.DbSqlHelper;
 import com.hongchen.kis.db.ICBillNoDao;
 import com.hongchen.kis.db.ICStockBillDao;
 import com.hongchen.kis.db.ICStockBillEntryDao;
-import com.hongchen.kis.db.InnerDao;
 import com.hongchen.kis.domain.pojo.ICStockBill;
 import com.hongchen.kis.domain.pojo.ICStockBillEntry;
 import com.hongchen.kis.domain.pojo.SettleDetailDto;
@@ -51,7 +50,7 @@ public class ICStockBizLogic {
         	String deptNum = bizNumber.split("\\+")[1];
             ICStockBill vo = new ICStockBill();
             vo.setBrNo("0");
-            vo.setInterID(new InnerDao().getNextInterID("ICStockBill"));
+//            vo.setInterID(new InnerDao().getNextInterID("ICStockBill"));
             vo.setTranType(21);
             vo.setDate(ConvertUtils.stringToDate(date));
             vo.setBillNo(new ICBillNoDao().getNextNumber(21));

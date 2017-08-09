@@ -22,7 +22,7 @@ public class SystemProfileDao {
         args.add(category);
         args.add(key);
 
-        Connection conn = DbConnectionFactory.createKisConnection();
+        Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return result;
         }

@@ -19,7 +19,7 @@ public class KisAccountDao {
         sql.append("   from  t_Account b ");
         sql.append("  where b.FNumber in (").append(DbSqlHelper.listToCommaString(ids)+")");
 
-        Connection conn = DbConnectionFactory.createKisConnection();
+        Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             throw new Exception("数据库连接失败！");
         }
@@ -56,7 +56,7 @@ public class KisAccountDao {
         sql.append("   from t_account a ");
         sql.append("  where a.FNumber = '" + cd + "' ");
 
-        Connection conn = DbConnectionFactory.createKisConnection();
+        Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return result;
         }

@@ -23,7 +23,7 @@ public class DepartmentDao{
         sql.append("   FROM t_Department a ");
         sql.append("  WHERE a.F_102 is not null ");
 
-        Connection conn = DbConnectionFactory.createKisConnection();
+        Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return result;
         }

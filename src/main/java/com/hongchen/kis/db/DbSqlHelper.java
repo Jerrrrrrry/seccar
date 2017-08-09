@@ -40,7 +40,7 @@ public class DbSqlHelper {
 	public static int executeQueryResultInt(String sql, List args) throws SQLException{
 
 		int result = 0;
-		Connection conn = DbConnectionFactory.createKisConnection();
+		Connection conn = DbConnectionFactory.createHonchenConnection();
 		if (conn == null){
 			return result;
 		}
@@ -81,7 +81,7 @@ public class DbSqlHelper {
 	public static String executeQueryResultString(String sql, List args) throws SQLException{
 
 		String result = "";
-		Connection conn = DbConnectionFactory.createKisConnection();
+		Connection conn = DbConnectionFactory.createHonchenConnection();
 		if (conn == null){
 			return result;
 		}
@@ -120,7 +120,7 @@ public class DbSqlHelper {
 	@SuppressWarnings("rawtypes")
 	public static void executeNonQuery(String sql, List args) throws SQLException{
 		
-		Connection conn = DbConnectionFactory.createKisConnection();
+		Connection conn = DbConnectionFactory.createHonchenConnection();
 		if (conn == null){
 			return;
 		}

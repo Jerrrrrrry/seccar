@@ -1,6 +1,5 @@
 package com.lhcy.platform.web.action;
 
-import com.lhcy.platform.dao.KisUserDao;
 import com.lhcy.platform.domain.pojo.User;
 import com.lhcy.platform.service.UserService;
 import com.lhcy.platform.web.form.LoginForm;
@@ -39,15 +38,15 @@ public class LoginAction extends DispatchAction {
                 return mapping.findForward("failed");
             }
 
-            int kisUserID = new KisUserDao().get(vo.getName());
+//            int kisUserID = new KisUserDao().get(vo.getName());
             System.out.println("CurrentLoginUserID: " + vo.getId());
             System.out.println("CurrentLoginUserAccount: " + vo.getAccount());
             System.out.println("CurrentLoginUserName: " + vo.getName());
-            System.out.println("CurrentLoginKisUserID: " + kisUserID);
+//            System.out.println("CurrentLoginKisUserID: " + kisUserID);
             request.getSession().setAttribute("CurrentLoginUserID", vo.getId());
             request.getSession().setAttribute("CurrentLoginUserAccount", vo.getAccount());
             request.getSession().setAttribute("CurrentLoginUserName", vo.getName());
-            request.getSession().setAttribute("CurrentLoginKisUserID", kisUserID);
+//            request.getSession().setAttribute("CurrentLoginKisUserID", kisUserID);
 
             ActionForward forward = new ActionForward("MainAction.do");
             forward.setRedirect(true);

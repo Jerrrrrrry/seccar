@@ -37,7 +37,7 @@ public class ItemDetailDao {
         sql.append("  WHERE a.FDetailCount = 1 ");
         sql.append("    AND a.F2 in (" + DbSqlHelper.intListToCommaString(dept) + ")");
 
-        Connection conn = DbConnectionFactory.createKisConnection();
+        Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return result;
         }

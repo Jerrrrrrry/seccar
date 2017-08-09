@@ -40,7 +40,7 @@ public class VoucherEntryDao {
         sql.append("   ,FResourceID ");
         sql.append(" )VALUES(" + DbSqlHelper.getSqlPlaceholder(19) + ")");
 
-        Connection conn = DbConnectionFactory.createKisConnection();
+        Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return;
         }

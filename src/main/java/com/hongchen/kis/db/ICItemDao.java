@@ -25,7 +25,7 @@ public class ICItemDao {
         sql.append("   inner join t_ICItemCustom b on b.FItemID = a.FItemID ");
         sql.append("   where b.F_111 is not null ");
 
-        Connection conn = DbConnectionFactory.createKisConnection();
+        Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return result;
         }

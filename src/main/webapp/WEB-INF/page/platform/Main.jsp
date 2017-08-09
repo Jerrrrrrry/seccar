@@ -11,7 +11,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>蓝海餐饮KIS接口</title>
+    <title>东方汽车金融管理系统</title>
     <link rel="stylesheet" type="text/css" href="<%=basePath %>css/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath %>css/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath %>css/default.css">
@@ -141,14 +141,14 @@
                 lines: true,
                 onClick: function (node) {
 
-                    if (node.id == '凭证同步') {
-                        addTab('数据上传同步', null, '<%=basePath %>VoucherAction.do');
+                    if (node.id == '车贷') {
+                        addTab('车贷', null, '<%=basePath %>VoucherAction.do');
 
-                    }else if (node.id == '销售出库单同步'){
-                        addTab('销售出库单同步', null, '<%=basePath %>ICStockAction.do');
+                    }else if (node.id == '大飞二手车'){
+                        addTab('大飞二手车', null, '<%=basePath %>ICStockAction.do');
 
-                    }else if (node.id == '科目关系维护'){
-                        addTab('科目关系维护', null, '<%=basePath %>AccountAction.do');
+                    }else if (node.id == '财务报表'){
+                        addTab('财务报表', null, '<%=basePath %>AccountAction.do');
                     }
                 }
             });
@@ -172,11 +172,12 @@
     </script>
 </head>
 <body class="easyui-layout">
-<form id="form1">
-    <div data-options="region:'north',split:false" title="" style="height:30px;padding:0px;overflow-x : hidden;overflow-y : hidden">
+<form id="form1">	
+    <div data-options="region:'north',split:false" title="" style="height:50px;padding:0px;overflow-x : hidden;overflow-y : hidden">
         <table border="0" cellpadding="0" width="100%">
             <tr>
-                <td><span style="font-size: 20px;">蓝海餐饮KIS接口</span></td>
+                <td width="100px;"><img src="images/car.png"/></td>
+                <td><span style="font-size: 30px;color:red">东方汽车金融管理系统</span></td>
                 <td style="text-align: right">登录者：<%= session.getAttribute("CurrentLoginUserName") %>&nbsp;&nbsp;&nbsp;<a href="<%=basePath %>">登出</a>&nbsp;&nbsp;&nbsp;</td>
             </tr>
         </table>
@@ -184,20 +185,20 @@
 
     <div data-options="region:'west',split:true,border:true" title="功能菜单" style="width:222px;padding1:1px;overflow:hidden;">
         <div class="easyui-accordion" data-options="fit:true,border:false">
-            <div title="单据同步"style="padding:10px;">
+            <div title="主营业务"style="padding:10px;">
                 <ul id="tr_ic" class="easyui-tree" data-options="lines:true">
-                    <li data-options="id:'凭证同步', 'iconCls':'icon-tree-app'">数据上传同步</li>
-                    <!-- <li data-options="id:'销售出库单同步', 'iconCls':'icon-tree-app'">销售出库单同步</li> -->
-                    <li data-options="id:'科目关系维护', 'iconCls':'icon-tree-app'">科目关系维护</li>
+                    <li data-options="id:'车贷', 'iconCls':'icon-tree-app'">车贷</li>
+                    <li data-options="id:'大飞二手车', 'iconCls':'icon-tree-app'">大飞二手车</li>
+                    <li data-options="id:'财务报表', 'iconCls':'icon-tree-app'">财务报表</li>
                 </ul>
             </div>
             <div title="系统设置" style="padding:10px;">
                 <ul id="tr_st" class="easyui-tree" data-options="lines:true">
 
                     <% String acount = (String)session.getAttribute("CurrentLoginUserAccount");
-                        if (acount != null && "superman".equals(acount)){
+                        if (acount != null /*&& "superman".equals(acount)*/){
                     %>
-                    <li data-options="id:'用户', 'iconCls':'icon-tree-app'">用户</li>
+                    <li data-options="id:'用户', 'iconCls':'icon-tree-app'">用户管理</li>
                     <% } %>
 
                     <li data-options="id:'pwd', 'iconCls':'icon-tree-app'">修改密码</li>

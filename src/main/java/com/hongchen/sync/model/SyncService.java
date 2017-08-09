@@ -15,7 +15,7 @@ import com.hongchen.kis.db.DbSqlHelper;
 import com.hongchen.kis.db.ICBillNoDao;
 import com.hongchen.kis.db.ICStockBillDao;
 import com.hongchen.kis.db.ICStockBillEntryDao;
-import com.hongchen.kis.db.InnerDao;
+//import com.hongchen.kis.db.InnerDao;
 import com.hongchen.kis.db.KisAccountDao;
 import com.hongchen.kis.db.SystemProfileDao;
 import com.hongchen.kis.db.VoucherDao;
@@ -104,7 +104,7 @@ public class SyncService {
         	String deptNum = bizNumber.split("\\+")[1];
             ICStockBill vo = new ICStockBill();
             vo.setBrNo("0");
-            vo.setInterID(new InnerDao().getNextInterID("ICStockBill"));
+//            vo.setInterID(new InnerDao().getNextInterID("ICStockBill"));
             vo.setTranType(21);
             vo.setDate(ConvertUtils.stringToDate(date));
             vo.setBillNo(new ICBillNoDao().getNextNumber(21));
@@ -247,7 +247,7 @@ public class SyncService {
         // 创建凭证头
         Voucher vo = new Voucher();
         vo.setBrNo("0");
-        vo.setVoucherID(new InnerDao().getNextInterID("t_Voucher"));
+//        vo.setVoucherID(new InnerDao().getNextInterID("t_Voucher"));
         vo.setDate(new Date());
         vo.setYear(currentYear);
         vo.setPeriod(currentPeriod);
