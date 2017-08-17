@@ -18,8 +18,8 @@
   <script type="text/javascript" src="<%=basePath %>js/jquery.ajaxfileupload.js"></script>
   <script type="text/javascript" src="<%=basePath %>js/xutil.js"></script>
   <script type="text/javascript" src="<%=basePath %>js/xcore.js"></script>
-  <script type="text/javascript" src="<%=basePath %>js/sync/syncVoucher/Voucher.Init.js"></script>
-  <script type="text/javascript" src="<%=basePath %>js/sync/syncVoucher/Voucher.List.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/carloan/CarLoan.Init.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/carloan/CarLoan.List.js"></script>
   <script type="text/javascript">
 
     $(function(){
@@ -29,7 +29,7 @@
 
 		function applyAjaxFileUpload(element) {
 			$(element).AjaxFileUpload({
-				action: '<%= basePath%>'+'VoucherAction.do?m=uploadFile',
+				action: '<%= basePath%>'+'CarLoanAction.do?m=uploadFile',
 				onChange: function(filename) {
 					// Create a span element to notify the user of an upload in progress
 					var $span = $("<span />")

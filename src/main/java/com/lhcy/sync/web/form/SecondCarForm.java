@@ -2,7 +2,7 @@ package com.lhcy.sync.web.form;
 
 import org.apache.struts.action.ActionForm;
 
-public class ICStockForm extends ActionForm {
+public class SecondCarForm extends ActionForm {
 
     // 过滤界面用
     private String bizDateFrom;

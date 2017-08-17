@@ -142,10 +142,10 @@
                 onClick: function (node) {
 
                     if (node.id == '车贷') {
-                        addTab('车贷', null, '<%=basePath %>VoucherAction.do');
+                        addTab('车贷', null, '<%=basePath %>CarLoanAction.do');
 
                     }else if (node.id == '大飞二手车'){
-                        addTab('大飞二手车', null, '<%=basePath %>ICStockAction.do');
+                        addTab('大飞二手车', null, '<%=basePath %>SecondCarAction.do');
 
                     }else if (node.id == '财务报表'){
                         addTab('财务报表', null, '<%=basePath %>AccountAction.do');

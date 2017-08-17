@@ -17,8 +17,8 @@
   <script type="text/javascript" src="<%=basePath %>js/easyui-ex.js"></script>
   <script type="text/javascript" src="<%=basePath %>js/xutil.js"></script>
   <script type="text/javascript" src="<%=basePath %>js/xcore.js"></script>
-  <script type="text/javascript" src="<%=basePath %>js/sync/syncICStock/ICStock.Init.js"></script>
-  <script type="text/javascript" src="<%=basePath %>js/sync/syncICStock/ICStock.List.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/secondcar/SecondCar.Init.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/secondcar/SecondCar.List.js"></script>
   <script type="text/javascript">
 
     $(function(){

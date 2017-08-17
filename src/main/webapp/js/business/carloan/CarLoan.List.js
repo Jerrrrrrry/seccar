@@ -90,7 +90,7 @@ var VoucherList = {
             //$('#dlg_upload').dialog('close');
            
             /*$.AjaxFileUpload({
-                url:basePath + 'VoucherAction.do?m=uploadFile',
+                url:basePath + 'CarLoanAction.do?m=uploadFile',
                 type: 'post',
                 secureuri:false,
                 fileElementId:'file1',
@@ -115,7 +115,7 @@ var VoucherList = {
             /*var formData = new FormData($("#fileuploadForm")[0]);
             $.ajax({
                 type: 'post',
-                url: basePath + 'VoucherAction.do?m=uploadFile',
+                url: basePath + 'CarLoanAction.do?m=uploadFile',
                 data: formData,
                 success: function (data) {
 
@@ -127,7 +127,7 @@ var VoucherList = {
             });*/
             /*$('#list').datagrid('clearSelections');
             $('#list').datagrid({
-                url: basePath + 'VoucherAction.do?m=uploadFile',
+                url: basePath + 'CarLoanAction.do?m=uploadFile',
                 queryParams: prm});*.*/
         };
         
@@ -140,7 +140,7 @@ var VoucherList = {
                 };
 	        $('#list').datagrid('clearSelections');
 	        $('#list').datagrid({
-	            url: basePath + 'VoucherAction.do?m=list',
+	            url: basePath + 'CarLoanAction.do?m=list',
 	            queryParams: prm});
         }
         /***********************************************/
@@ -157,7 +157,7 @@ var VoucherList = {
 
                     $.ajax({
                         type: 'post',
-                        url: basePath + 'VoucherAction.do?m=sync',
+                        url: basePath + 'CarLoanAction.do?m=sync',
                         data: {id: id},
                         success: function (data) {
 

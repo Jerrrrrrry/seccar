@@ -24,9 +24,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VoucherAction extends DispatchAction {
+public class CarLoanAction extends DispatchAction {
 
-    private Logger logger = Logger.getLogger(VoucherAction.class);
+    private Logger logger = Logger.getLogger(CarLoanAction.class);
 
 	public ActionForward uploadFile(ActionMapping mapping, ActionForm frm,
 			HttpServletRequest request, HttpServletResponse response)

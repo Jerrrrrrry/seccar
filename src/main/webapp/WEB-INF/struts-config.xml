@@ -9,7 +9,7 @@
         <form-bean name="loginForm" type="com.lhcy.platform.web.form.LoginForm"/>
         <form-bean name="userForm" type="com.lhcy.platform.web.form.UserForm"/>
         <form-bean name="voucherForm" type="com.lhcy.sync.web.form.VoucherForm"/>
-        <form-bean name="icStockForm" type="com.lhcy.sync.web.form.ICStockForm"/>
+        <form-bean name="secondCarForm" type="com.lhcy.sync.web.form.SecondCarForm"/>
         <form-bean name="accountForm" type="com.lhcy.sync.web.form.AccountForm"/>
         <form-bean name="uploadFileForm" type="com.lhcy.sync.web.form.UploadFileForm"/>
     </form-beans>
@@ -31,11 +31,11 @@
         <action path="/UserAction" scope="request" name="userForm" parameter="m" type="com.lhcy.platform.web.action.UserAction">
             <forward name="show" path="/WEB-INF/page/platform/User.jsp"/>
         </action>
-        <action path="/VoucherAction" scope="request" name="uploadFileForm" parameter="m" type="com.lhcy.sync.web.action.VoucherAction">
-            <forward name="show" path="/WEB-INF/page/sync/Voucher.jsp"/>
+        <action path="/CarLoanAction" scope="request" name="uploadFileForm" parameter="m" type="com.lhcy.sync.web.action.CarLoanAction">
+            <forward name="show" path="/WEB-INF/page/sync/CarLoan.jsp"/>
         </action>
-        <action path="/ICStockAction" scope="request" name="icStockForm" parameter="m" type="com.lhcy.sync.web.action.ICStockAction">
-            <forward name="show" path="/WEB-INF/page/sync/ICStock.jsp"/>
+        <action path="/SecondCarAction" scope="request" name="secondCarForm" parameter="m" type="com.lhcy.sync.web.action.SecondCarAction">
+            <forward name="show" path="/WEB-INF/page/sync//SecondCar.jsp"/>
         </action>
         <action path="/AccountAction" scope="request" name="accountForm" parameter="m" type="com.lhcy.sync.web.action.AccountAction">
             <forward name="show" path="/WEB-INF/page/sync/Account.jsp"/>
