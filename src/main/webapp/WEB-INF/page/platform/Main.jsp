@@ -149,6 +149,8 @@
 
                     }else if (node.id == '财务报表'){
                         addTab('财务报表', null, '<%=basePath %>AccountAction.do');
+                    }else if (node.id == '停车管理'){
+                        addTab('停车管理', null, '<%=basePath %>ParkingAction.do');
                     }
                 }
             });
@@ -190,6 +192,7 @@
                     <li data-options="id:'车贷', 'iconCls':'icon-tree-app'">车贷</li>
                     <li data-options="id:'大飞二手车', 'iconCls':'icon-tree-app'">大飞二手车</li>
                     <li data-options="id:'财务报表', 'iconCls':'icon-tree-app'">财务报表</li>
+                    <li data-options="id:'停车管理', 'iconCls':'icon-tree-app'">停车管理</li>
                 </ul>
             </div>
             <div title="系统设置" style="padding:10px;">

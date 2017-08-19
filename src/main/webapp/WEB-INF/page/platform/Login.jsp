@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>蓝海餐饮KIS接口</title>
+    <title>东方汽车金融管理系统</title>
     <link rel="stylesheet" type="text/css" href="<%=basePath %>css/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath %>css/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath %>css/default.css">

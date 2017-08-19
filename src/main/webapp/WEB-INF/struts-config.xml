@@ -12,6 +12,7 @@
         <form-bean name="secondCarForm" type="com.lhcy.sync.web.form.SecondCarForm"/>
         <form-bean name="accountForm" type="com.lhcy.sync.web.form.AccountForm"/>
         <form-bean name="uploadFileForm" type="com.lhcy.sync.web.form.UploadFileForm"/>
+        <form-bean name="parkingForm" type="com.lhcy.sync.web.form.ParkingForm"/>
     </form-beans>
     <global-exceptions/>
     <global-forwards>
@@ -41,6 +42,14 @@
             <forward name="show" path="/WEB-INF/page/sync/Account.jsp"/>
         </action>
         <action path="/AccountTreeAction" scope="request" name="accountForm" parameter="m" type="com.lhcy.sync.web.action.AccountTreeAction">
+        </action><!--
+        <action path="/ParkingAction"  scope="request" name="accountForm" parameter="m" type="com.lhcy.sync.web.action.AccountAction">
+            <forward name="show" path="/WEB-INF/page/sync/Account.jsp"/>
+        </action>
+        
+        -->
+        <action path="/ParkingAction"  scope="request" name="parkingForm" parameter="m" type="com.lhcy.sync.web.action.ParkingAction">
+            <forward name="show" path="/WEB-INF/page/sync/Parking.jsp"/>
         </action>
     </action-mappings>
     <message-resources parameter="com.lhcy.ApplicationResources"/>
