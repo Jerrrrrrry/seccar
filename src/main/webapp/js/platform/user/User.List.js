@@ -28,8 +28,20 @@ var UserList = {
             $('#dlg_edit').dialog('open');
             $('#enable').prop('checked', true);
             $('#btnEditDelete').linkbutton('disable');
-            xutil.focus('#account');
+            xutil.focus('#userid');
         };
+        /***********************************************/
+        // 新增测试
+        /***********************************************/
+//        list.addNewtest = function () {
+//
+//            var edit = UserEdit.getInstance(basePath);
+//            edit.clear();
+//            $('#dlg_add').dialog('open');
+//            $('#enable').prop('checked', true);
+//            $('#btnEditDelete').linkbutton('disable');
+//            xutil.focus('#account');
+//        };
 
         /***********************************************/
         // 刷新

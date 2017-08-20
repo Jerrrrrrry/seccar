@@ -23,26 +23,26 @@ public class UserService {
     public UserDto query(String id) throws Exception{
         return dao.query(id);
     }
-
-    public void create(User vo) throws Exception{
-        dao.create(vo);
-    }
-
-    public void update(User vo) throws Exception{
-        dao.update(vo);
-    }
-
-    public void delete(String[] list) throws Exception{
-        dao.delete(list);
-    }
-
-    public void enable(String[] list, int status, String user) throws Exception{
-        dao.enable(list, status, user);
-    }
-
-    public UserDto getEquals(String number) throws Exception{
-        return dao.getEquals(number);
-    }
+//
+//    public void create(User vo) throws Exception{
+//        dao.create(vo);
+//    }
+//
+//    public void update(User vo) throws Exception{
+//        dao.update(vo);
+//    }
+//
+//    public void delete(String[] list) throws Exception{
+//        dao.delete(list);
+//    }
+//
+//    public void enable(String[] list, int status, String user) throws Exception{
+//        dao.enable(list, status, user);
+//    }
+//
+//    public UserDto getEquals(String number) throws Exception{
+//        return dao.getEquals(number);
+//    }
 
     public User loginCheck(String account, String password) throws Exception{
         return dao.loginCheck(account, password);

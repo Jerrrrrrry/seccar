@@ -52,9 +52,9 @@
       </tr>
       <tr>
         <th>账号<span style="color:red">*</span></th>
-        <td><input id="account"/></td>
+        <td><input id="userid"/></td>
         <th>名称<span style="color:red">*</span></th>
-        <td><input id="name"/></td>
+        <td><input id="username"/></td>
       </tr>
       <tr>
         <th>密码</th>
@@ -63,21 +63,71 @@
         <td><input id="password2"/></td>
       </tr>
       <tr>
+      	<th>权限类型</th>
+        <td><input id="accesstype"/></td>
+        <th>用户描述</th>
+        <td ><input id="userdesc"/></td>
+      </tr>
+      <tr>
         <th>备注</th>
-        <td ><input id="comment"/></td>
+        <td ><input id="comments"/></td>
         <td></td>
         <td></td>
       </tr>
       <tr>
         <th>创建时间</th>
-        <td><input id="createTime"/></td>
+        <td><input id="createdts"/></td>
         <th>最后修改时间</th>
+        <td><input id="lastupdatedts"/></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- 
+<div id="dlg_add">
+  <div region="center" border="false" title="" style="padding-left: 20px">
+    <br/>
+    <table class="tb_edit" cellspacing="0">
+      <tbody>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          启用<input type="checkbox" id="enable"/>
+          <input type="hidden" id="id" />
+        </td>
+      </tr>
+      <tr>
+        <th>账号<span style="color:red">*</span></th>
+        <td><input id="account"/></td>
+        <th>名称<span style="color:red">*</span></th>
+        <td><input id="name"/></td>
+      </tr>
+      <tr>
+        <th>密码add</th>
+        <td><input id="password1"/></td>
+        <th>重复密码add</th>
+        <td><input id="password2"/></td>
+      </tr>
+      <tr>
+        <th>备注add</th>
+        <td ><input id="comment"/></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th>创建时间add</th>
+        <td><input id="createTime"/></td>
+        <th>最后修改时间add</th>
         <td><input id="updateTime"/></td>
       </tr>
       </tbody>
     </table>
   </div>
 </div>
+ -->
 <div id="bar_list">
   <table cellspacing="0" cellpadding="0">
     <tr>
@@ -92,6 +142,9 @@
       <td><a id="btnUnselectAll"></a></td>
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnClose"></a></td>
+      <!-- 
+      <td><a id="btnAddnewtest"></a></td>  
+       -->
     </tr>
   </table>
   <div>

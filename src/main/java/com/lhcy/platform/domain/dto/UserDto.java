@@ -1,89 +1,78 @@
 package com.lhcy.platform.domain.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class UserDto implements Serializable {
-
-    private String id;
-    private String account;
-    private String name;
+	private String userid;
+    private String username;
     private String password;
-    private int locked;
-    private String accessType;
-    private String comment;
-    private String createTime;
-    private String updateTime;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public int getLocked() {
-		return locked;
+    private String accesstype;
+    private String islocked;
+    private int creator;
+    private String createdts;
+    private String lastupdatedts;
+    private String userdesc;
+    private String comments;
+	public String getUserid() {
+		return userid;
 	}
-
-	public void setLocked(int locked) {
-		this.locked = locked;
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
-
-	public String getAccessType() {
-		return accessType;
+	public String getUsername() {
+		return username;
 	}
-
-	public void setAccessType(String accessType) {
-		this.accessType = accessType;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-
-	public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getAccesstype() {
+		return accesstype;
+	}
+	public void setAccesstype(String accesstype) {
+		this.accesstype = accesstype;
+	}
+	public String getIslocked() {
+		return islocked;
+	}
+	public void setIslocked(String islocked) {
+		this.islocked = islocked;
+	}
+	public int getCreator() {
+		return creator;
+	}
+	public void setCreator(int creator) {
+		this.creator = creator;
+	}
+	public String getCreatedts() {
+		return createdts;
+	}
+	public void setCreatedts(String createdts) {
+		this.createdts = createdts;
+	}
+	public String getLastupdatedts() {
+		return lastupdatedts;
+	}
+	public void setLastupdatedts(String lastupdatedts) {
+		this.lastupdatedts = lastupdatedts;
+	}
+	public String getUserdesc() {
+		return userdesc;
+	}
+	public void setUserdesc(String userdesc) {
+		this.userdesc = userdesc;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+    
 }

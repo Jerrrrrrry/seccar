@@ -24,55 +24,62 @@ var UserInit = {
                 border: false,
                 method: 'post',
                 url: basePath + 'UserAction.do?m=list',
-                idField: 'id',
-                sortName: 'account',
+                idField: 'userid',
+                sortName: 'username',
                 sortOrder: 'asc',
                 toolbar: '#bar_list',
                 loadMsg : '',
                 columns: [[
                     {
-                        field: 'id',
+                        field: 'userid',
                         checkbox: true
                     },
                     {
-                        field: 'account',
-                        title: '账号',
-                        width: 120,
-                        halign: 'center',
-                        sortable: true
-                    },
-                    {
-                        field: 'name',
+                        field: 'username',
                         title: '名称',
                         width: 120,
                         halign: 'center',
                         sortable: true
                     },
                     {
-                        field: 'enable',
-                        title: '启用',
-                        width: 50,
+                        field: 'accesstype',
+                        title: '权限类型',
+                        width: 120,
                         halign: 'center',
-                        align: 'center',
-                        formatter: xutil.formatEnable,
                         sortable: true
                     },
                     {
-                        field: 'comment',
+                        field: 'islocked',
+                        title: '锁定',
+                        width: 50,
+                        halign: 'center',
+                        align: 'center',
+                        //formatter: xutil.formatEnable,
+                        sortable: true
+                    },
+                    {
+                        field: 'userdesc',
+                        title: '用户描述',
+                        width: 120,
+                        halign: 'center',
+                        sortable: true
+                    },
+                    {
+                        field: 'comments',
                         title: '备注',
                         width: 120,
                         halign: 'center',
                         sortable: true
                     },
                     {
-                        field: 'createTime',
+                        field: 'createdts',
                         title: '创建时间',
                         width: 160,
                         halign: 'center',
                         sortable: true
                     },
                     {
-                        field: 'updateTime',
+                        field: 'lastupdatedts',
                         title: '最后修改时间',
                         width: 160,
                         halign: 'center',
@@ -101,14 +108,14 @@ var UserInit = {
             /***********************************************/
             // 字段初始化
             /***********************************************/
-            $('#account').textbox({
+            $('#userid').textbox({
                 width : 200,
                 required: true,
                 missingMessage: AppConstant.M_REQUIRED,
                 validType : ['length[1,100]']
             });
 
-            $('#name').textbox({
+            $('#username').textbox({
                 width : 200,
                 required: true,
                 missingMessage: AppConstant.M_REQUIRED,
@@ -127,18 +134,46 @@ var UserInit = {
                 validType : ['length[0,100]']
             });
 
-            $('#comment').textbox({
+//            $('#accesstype').textbox({
+//                width: 200,
+//                validType: ['length[0,100]'],
+//                multiline: true
+//            });
+            $('#accesstype').combobox({
+                width : 120,
+                editable : false,
+                valueField: 'value',
+                textField: 'label',
+                data : [
+                    {
+                        label: '管理员',
+                        value: '1',
+                        selected : true
+                    },
+                    {
+                        label: '业务员',
+                        value: '2'
+                    }
+                ]
+            });
+
+            $('#userdesc').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            
+            $('#comments').textbox({
                 width: 200,
                 validType: ['length[0,100]'],
                 multiline: true
             });
 
-            $('#createTime').textbox({
+            $('#createdts').textbox({
                 width: 200,
                 disabled: true
             });
 
-            $('#updateTime').textbox({
+            $('#lastupdatedts').textbox({
                 width: 200,
                 disabled: true
             });
@@ -154,6 +189,14 @@ var UserInit = {
                     list.addNew();
                 }
             });
+//            $('#btnAddnewtest').linkbutton({
+//                text : '新增测试',
+//                plain : true,
+//                iconCls : 'tbtn_addnew',
+//                onClick: function(){
+//                    list.addNewtest();
+//                }
+//            });
 
             $('#btnRefresh').linkbutton({
                 text : '刷新',
@@ -245,12 +288,12 @@ var UserInit = {
                 data : [
                     {
                         label: '账号',
-                        value: 'account',
+                        value: 'userid',
                         selected : true
                     },
                     {
                         label: '名称',
-                        value: 'name'
+                        value: 'username'
                     }
                 ]
             });
@@ -350,7 +393,101 @@ var UserInit = {
                     xutil.focus('#filterValue');
                 }
             });
-
+            /***********************************************/
+            // 窗口初始化
+            /***********************************************/
+            // 编辑窗口
+//            $('#dlg_add').dialog({
+//                title: '测试',
+//                width: 700,
+//                height: 300,
+//                modal: true,
+//                closed: true,
+//                minimizable: false,
+//                maximizable: false,
+//                resizable: false,
+//                collapsible: false,
+//                toolbar: [
+//                    {
+//                        text: '新增',
+//                        iconCls: 'tbtn_addnew',
+//                        handler: function(){
+//                            edit.addNew();
+//                        }
+//                    },
+//                    {
+//                        text: '复制',
+//                        iconCls: 'tbtn_copy',
+//                        handler: function(){
+//                            edit.copy();
+//                        }
+//                    },
+//                    {
+//                        text: '保存',
+//                        id:'btnEditSave',
+//                        iconCls: 'tbtn_save',
+//                        handler: function(){
+//                            edit.save(false);
+//                        }
+//                    },
+//                    {
+//                        text: '保存并新增',
+//                        iconCls: 'tbtn_savenew',
+//                        handler: function(){
+//                            edit.save(true);
+//                        }
+//                    },
+//                    '-',
+//                    {
+//                        id: 'btnFirst',
+//                        iconCls: 'tbtn_first',
+//                        handler: function () {
+//                            edit.showNext('first');
+//                        }
+//                    },
+//                    {
+//                        id: 'btnPrevious',
+//                        iconCls: 'tbtn_previous',
+//                        handler: function () {
+//                            edit.showNext('previous');
+//                        }
+//                    },
+//                    {
+//                        id: 'btnNext',
+//                        iconCls: 'tbtn_next',
+//                        handler: function () {
+//                            edit.showNext('next');
+//                        }
+//                    },
+//                    {
+//                        id: 'btnLast',
+//                        iconCls: 'tbtn_last',
+//                        handler: function () {
+//                            edit.showNext('last');
+//                        }
+//                    },
+//                    '-',
+//                    {
+//                        text: '删除',
+//                        id: 'btnEditDelete',
+//                        iconCls: 'tbtn_remove',
+//                        handler: function(){
+//                            edit.delete();
+//                        }
+//                    },
+//                    '-',
+//                    {
+//                        text: '关闭',
+//                        iconCls: 'tbtn_quit',
+//                        handler: function(){
+//                            edit.close();
+//                        }
+//                    }
+//                ],
+//                onClose : function(){
+//                    xutil.focus('#filterValue');
+//                }
+//            });
             xutil.focus('#filterValue');
         };
 

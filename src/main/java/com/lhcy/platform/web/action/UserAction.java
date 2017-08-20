@@ -29,7 +29,8 @@ public class UserAction extends DispatchAction {
 
         try {
             // 检查登录
-            if (ContextUtils.getCurrentUserID(request) == null || !"superman".equals(ContextUtils.getCurrentUserAccount(request))) {
+            //        if (ContextUtils.getCurrentUserID(request) == null || !"superman".equals(ContextUtils.getCurrentUserAccount(request))) {
+        	if (ContextUtils.getCurrentUserID(request) == null) {
                 throw new Exception(SysConstant.M_NO_LOGIN);
             }
 
@@ -62,15 +63,15 @@ public class UserAction extends DispatchAction {
 
         try {
             // 检查登录
-            if (ContextUtils.getCurrentUserID(request) == null || !"superman".equals(ContextUtils.getCurrentUserAccount(request))) {
+            if (ContextUtils.getCurrentUserID(request) == null){
                 throw new Exception( SysConstant.M_NO_LOGIN);
             }
 
             UserService sv = new UserService();
             UserForm form = (UserForm)frm;
-            UserDto vo = sv.query(form.getId());
+            UserDto vo = sv.query(form.getUserid());
 
-            if (vo == null || vo.getId() == null || vo.getId().length() == 0){
+            if (vo == null || vo.getUserid() == null || vo.getUserid().length() == 0){
                 throw new Exception(SysConstant.M_NO_DATA_FIND);
             }
 
@@ -86,113 +87,113 @@ public class UserAction extends DispatchAction {
 
     /***********************************************/
     // 保存一个
-    /***********************************************/
-    public ActionForward save(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        try {
-            // 检查登录
-            if (ContextUtils.getCurrentUserID(request) == null || !"superman".equals(ContextUtils.getCurrentUserAccount(request))) {
-                throw new Exception(SysConstant.M_NO_LOGIN);
-            }
-
-            UserForm form = (UserForm)frm;
-            User vo = new User();
-            UserService sv = new UserService();
-            BeanUtils.copyProperties(vo, form);
-
-            // 新增
-            if (vo.getId() == null || vo.getId().length() == 0){
-
-                UserDto dto = sv.getEquals(vo.getAccount());
-                // 已存在
-                if (dto != null && dto.getAccount() != null && dto.getAccount().length() > 0){
-                    throw new Exception( "账号:" + vo.getAccount() + SysConstant.M_EXIST_ERROR);
-                }else{
-                    vo.setId(UuidCreator.getNewId());
-                    sv.create(vo);
-                }
-
-                // 修改
-            }else{
-                UserDto dto = sv.getEquals(vo.getAccount());
-                // 已存在
-                if (dto != null && dto.getAccount() != null && dto.getAccount().length() > 0 && !dto.getId().equals(vo.getId())){
-                    throw new Exception( "账号:" + vo.getAccount() + SysConstant.M_EXIST_ERROR);
-                }else{
-                    sv.update(vo);
-                }
-            }
-
-            JsonUtils.printActionResultOK(response);
-        }catch(Exception e){
-            e.printStackTrace();
-            logger.error(e.getMessage());
-            JsonUtils.printActionResultFromException(response, e);
-        }
-
-        return null;
-
-    }
+//    /***********************************************/
+//    public ActionForward save(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//
+//        try {
+//            // 检查登录
+//            if (ContextUtils.getCurrentUserID(request) == null){
+//                throw new Exception(SysConstant.M_NO_LOGIN);
+//            }
+//
+//            UserForm form = (UserForm)frm;
+//            User vo = new User();
+//            UserService sv = new UserService();
+//            BeanUtils.copyProperties(vo, form);
+//
+//            // 新增
+//            if (vo.getId() == null || vo.getId().length() == 0){
+//
+//                UserDto dto = sv.getEquals(vo.getAccount());
+//                // 已存在
+//                if (dto != null && dto.getAccount() != null && dto.getAccount().length() > 0){
+//                    throw new Exception( "账号:" + vo.getAccount() + SysConstant.M_EXIST_ERROR);
+//                }else{
+//                    vo.setId(UuidCreator.getNewId());
+//                    sv.create(vo);
+//                }
+//
+//                // 修改
+//            }else{
+//                UserDto dto = sv.getEquals(vo.getAccount());
+//                // 已存在
+//                if (dto != null && dto.getAccount() != null && dto.getAccount().length() > 0 && !dto.getId().equals(vo.getId())){
+//                    throw new Exception( "账号:" + vo.getAccount() + SysConstant.M_EXIST_ERROR);
+//                }else{
+//                    sv.update(vo);
+//                }
+//            }
+//
+//            JsonUtils.printActionResultOK(response);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            logger.error(e.getMessage());
+//            JsonUtils.printActionResultFromException(response, e);
+//        }
+//
+//        return null;
+//
+//    }
 
     /***********************************************/
     // 删除多个
     /***********************************************/
-    public ActionForward delete(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        try {
-            // 检查登录
-            if (ContextUtils.getCurrentUserID(request) == null || !"superman".equals(ContextUtils.getCurrentUserAccount(request))) {
-                throw new Exception(SysConstant.M_NO_LOGIN);
-            }
-
-            UserForm form = (UserForm)frm;
-            if (form.getId().length() == 0){
-                JsonUtils.printActionResultOK(response);
-                return null;
-            }
-
-            UserService sv = new UserService();
-            String[] list = form.getId().split(",");
-            sv.delete(list);
-            JsonUtils.printActionResultOK(response);
-        }catch(Exception e){
-            e.printStackTrace();
-            logger.error(e.getMessage());
-            JsonUtils.printActionResultFromException(response, e);
-        }
-
-        return null;
-    }
+//    public ActionForward delete(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//
+//        try {
+//            // 检查登录
+//            if (ContextUtils.getCurrentUserID(request) == null){
+//                throw new Exception(SysConstant.M_NO_LOGIN);
+//            }
+//
+//            UserForm form = (UserForm)frm;
+//            if (form.getId().length() == 0){
+//                JsonUtils.printActionResultOK(response);
+//                return null;
+//            }
+//
+//            UserService sv = new UserService();
+//            String[] list = form.getId().split(",");
+//            sv.delete(list);
+//            JsonUtils.printActionResultOK(response);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            logger.error(e.getMessage());
+//            JsonUtils.printActionResultFromException(response, e);
+//        }
+//
+//        return null;
+//    }
 
     /***********************************************/
     // 启用或禁用多个
     /***********************************************/
-    public ActionForward enable(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        try {
-            // 检查登录
-            if (ContextUtils.getCurrentUserID(request) == null || !"superman".equals(ContextUtils.getCurrentUserAccount(request))) {
-                throw new Exception(SysConstant.M_NO_LOGIN);
-            }
-
-            UserForm form = (UserForm)frm;
-            if (form.getId().length() == 0){
-                JsonUtils.printActionResultOK(response);
-                return null;
-            }
-
-            UserService sv = new UserService();
-            String[] list = form.getId().split(",");
-            sv.enable(list, form.getEnable(), ContextUtils.getCurrentUserID(request));
-            JsonUtils.printActionResultOK(response);
-        }catch(Exception e){
-            e.printStackTrace();
-            logger.error(e.getMessage());
-            JsonUtils.printActionResultFromException(response, e);
-        }
-
-        return null;
-    }
+//    public ActionForward enable(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//
+//        try {
+//            // 检查登录
+//            if (ContextUtils.getCurrentUserID(request) == null){
+//                throw new Exception(SysConstant.M_NO_LOGIN);
+//            }
+//
+//            UserForm form = (UserForm)frm;
+//            if (form.getId().length() == 0){
+//                JsonUtils.printActionResultOK(response);
+//                return null;
+//            }
+//
+//            UserService sv = new UserService();
+//            String[] list = form.getId().split(",");
+//            sv.enable(list, form.getEnable(), ContextUtils.getCurrentUserID(request));
+//            JsonUtils.printActionResultOK(response);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            logger.error(e.getMessage());
+//            JsonUtils.printActionResultFromException(response, e);
+//        }
+//
+//        return null;
+//    }
 
     /***********************************************/
     // 跳转
@@ -200,7 +201,8 @@ public class UserAction extends DispatchAction {
     protected ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // 检查登录
-        if (ContextUtils.getCurrentUserID(request) == null || !"superman".equals(ContextUtils.getCurrentUserAccount(request))) {
+//        if (ContextUtils.getCurrentUserID(request) == null || !"superman".equals(ContextUtils.getCurrentUserAccount(request))) {
+        if (ContextUtils.getCurrentUserID(request) == null) {
             ActionForward forward = new ActionForward("/NoLoginAction.do");
             forward.setRedirect(true);
             return forward;

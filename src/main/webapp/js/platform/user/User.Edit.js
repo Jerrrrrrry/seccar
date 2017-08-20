@@ -10,15 +10,17 @@ var UserEdit = {
         /***********************************************/
         edit.clear = function () {
 
-            $('#id').val('');
-            $('#account').textbox('setValue', '');
-            $('#name').textbox('setValue', '');
+        	$('#id').val('');
+        	$('#userid').textbox('setValue', '');
+            $('#username').textbox('setValue', '');
             $('#password1').textbox('setValue', '');
             $('#password2').textbox('setValue', '');
-            $('#comment').textbox('setValue', '');
-            $('#createTime').textbox('setValue', '');
-            $('#updateTime').textbox('setValue', '');
-            $('#enable').prop('checked', true);
+            $('#accesstype').textbox('setValue', '');
+            $('#comments').textbox('setValue', '');
+            $('#userdesc').textbox('setValue', '');
+            $('#createdts').textbox('setValue', '');
+            $('#lastupdatedts').textbox('setValue', '');
+            $('#islocked').prop('checked', true);
         };
 
         /***********************************************/
@@ -35,16 +37,19 @@ var UserEdit = {
         // 复制
         /***********************************************/
         edit.copy = function () {
-
-            $('#id').val('');
-            $('#account').textbox('setValue', '');
-            $('#name').textbox('setValue', '');
+        	$('#id').val('');
+        	$('#userid').textbox('setValue', '');
+            $('#username').textbox('setValue', '');
             $('#password1').textbox('setValue', '');
             $('#password2').textbox('setValue', '');
-            $('#createTime').textbox('setValue', '');
-            $('#updateTime').textbox('setValue', '');
+            $('#accesstype').textbox('setValue', '');
+            $('#comments').textbox('setValue', '');
+            $('#userdesc').textbox('setValue', '');
+            $('#createdts').textbox('setValue', '');
+            $('#lastupdatedts').textbox('setValue', '');
+            
             $('#btnEditDelete').linkbutton('disable');
-            xutil.focus('#account');
+            xutil.focus('#username');
         };
 
         /***********************************************/
@@ -61,26 +66,29 @@ var UserEdit = {
             $.ajax({
                 type: 'post',
                 url: basePath + 'UserAction.do?m=view',
-                data: {id: row.id},
+                data: {userid: row.userid},
                 success: function (data) {
 
                     if (data == null || data.length == 0) return;
                     var vo = data[0];
 
                     if (vo.status == "ok") {
-                        $('#id').val(vo.dto.id);
-                        $('#account').textbox('setValue', vo.dto.account);
-                        $('#name').textbox('setValue', vo.dto.name);
+                    	alert(vo.dto.userid);
+                        $('#id').val(vo.dto.userid);
+                        $('#userid').textbox('setValue', vo.dto.userid);
+                        $('#username').textbox('setValue', vo.dto.username);
                         $('#password1').textbox('setValue', '');
                         $('#password2').textbox('setValue', '');
-                        $('#comment').textbox('setValue', vo.dto.comment);
-                        $('#createTime').textbox('setValue', vo.dto.createTime);
-                        $('#updateTime').textbox('setValue', vo.dto.updateTime);
-                        $('#enable').prop('checked', vo.dto.enable == 1);
+                        $('#accesstype').textbox('setValue', vo.dto.accesstype);
+                        $('#comments').textbox('setValue', vo.dto.comments);
+                        $('#userdesc').textbox('setValue', vo.dto.userdesc);
+                        $('#createdts').textbox('setValue', vo.dto.createdts);
+                        $('#lastupdatedts').textbox('setValue', vo.dto.lastupdatedts);
+                        $('#islocked').prop('checked', vo.dto.enable == 1);
                         $('#btnEditDelete').linkbutton('enable');
 
                         $('#dlg_edit').dialog('open');
-                        xutil.focus('#account');
+                        xutil.focus('#userid');
                     } else if (vo.status == 'nologin') {
                         top.location = basePath;
                     } else {
@@ -174,7 +182,7 @@ var UserEdit = {
         // 删除
         /***********************************************/
         edit.delete = function () {
-            var id = $('#id').val();
+            var id = $('#').val();
             if (id == null || id.length == 0) {
                 $.messager.alert(AppConstant.M_INFO, AppConstant.M_NO_SAVED, 'warning');
                 return;

@@ -53,7 +53,7 @@ public class MainAction extends DispatchAction {
 
                 UserService sv = new UserService();
                 User vo = sv.loginCheck(account, pwd1);
-                if (vo == null || vo.getId() == null || vo.getId().length() == 0) {
+                if (vo == null || vo.getUserid() == null || vo.getUserid().length() == 0) {
 
                     HttpActionResult ar = new HttpActionResult("ng", null, null);
                     JsonUtils.printFromObject(response, ar);

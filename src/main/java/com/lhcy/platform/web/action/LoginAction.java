@@ -31,7 +31,7 @@ public class LoginAction extends DispatchAction {
             User vo = sv.loginCheck(frm.getAccount(), frm.getPassword());
             //User vo = new User();
             //vo.setId("123");vo.setAccount("asd");vo.setName("haha");
-            if (vo == null || vo.getId() == null || vo.getId().length() == 0) {
+            if (vo == null || vo.getUserid() == null || vo.getUserid().length() == 0) {
                 ActionMessages error = new ActionMessages();
                 error.add("error", new ActionMessage("用户名或密码错误！",false));
                 saveErrors(request, error);
@@ -39,13 +39,13 @@ public class LoginAction extends DispatchAction {
             }
 
 //            int kisUserID = new KisUserDao().get(vo.getName());
-            System.out.println("CurrentLoginUserID: " + vo.getId());
-            System.out.println("CurrentLoginUserAccount: " + vo.getAccount());
-            System.out.println("CurrentLoginUserName: " + vo.getName());
+            System.out.println("CurrentLoginUserID: " + vo.getUserid());
+            System.out.println("CurrentLoginUserAccount: " + vo.getUserid());
+            System.out.println("CurrentLoginUserName: " + vo.getUsername());
 //            System.out.println("CurrentLoginKisUserID: " + kisUserID);
-            request.getSession().setAttribute("CurrentLoginUserID", vo.getId());
-            request.getSession().setAttribute("CurrentLoginUserAccount", vo.getAccount());
-            request.getSession().setAttribute("CurrentLoginUserName", vo.getName());
+            request.getSession().setAttribute("CurrentLoginUserID", vo.getUserid());
+            request.getSession().setAttribute("CurrentLoginUserAccount", vo.getUserid());
+            request.getSession().setAttribute("CurrentLoginUserName", vo.getUsername());
 //            request.getSession().setAttribute("CurrentLoginKisUserID", kisUserID);
 
             ActionForward forward = new ActionForward("MainAction.do");

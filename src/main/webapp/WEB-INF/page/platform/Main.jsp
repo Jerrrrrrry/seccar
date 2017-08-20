@@ -203,7 +203,6 @@
                     %>
                     <li data-options="id:'用户', 'iconCls':'icon-tree-app'">用户管理</li>
                     <% } %>
-
                     <li data-options="id:'pwd', 'iconCls':'icon-tree-app'">修改密码</li>
                 </ul>
             </div>
