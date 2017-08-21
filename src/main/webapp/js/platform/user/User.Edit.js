@@ -66,15 +66,14 @@ var UserEdit = {
             $.ajax({
                 type: 'post',
                 url: basePath + 'UserAction.do?m=view',
-                data: {userid: row.userid},
+                data: {id: row.id},
                 success: function (data) {
 
                     if (data == null || data.length == 0) return;
                     var vo = data[0];
 
                     if (vo.status == "ok") {
-                    	alert(vo.dto.userid);
-                        $('#id').val(vo.dto.userid);
+                        $('#id').val(vo.dto.id);
                         $('#userid').textbox('setValue', vo.dto.userid);
                         $('#username').textbox('setValue', vo.dto.username);
                         $('#password1').textbox('setValue', '');
@@ -84,7 +83,7 @@ var UserEdit = {
                         $('#userdesc').textbox('setValue', vo.dto.userdesc);
                         $('#createdts').textbox('setValue', vo.dto.createdts);
                         $('#lastupdatedts').textbox('setValue', vo.dto.lastupdatedts);
-                        $('#islocked').prop('checked', vo.dto.enable == 1);
+                        $('#islocked').prop('checked', vo.dto.islocked == 0);
                         $('#btnEditDelete').linkbutton('enable');
 
                         $('#dlg_edit').dialog('open');
@@ -116,23 +115,26 @@ var UserEdit = {
         /***********************************************/
         edit.save = function (addnew) {
 
-            if (!$('#account').textbox('isValid')) {
-                xutil.focus('#account');
+            if (!$('#userid').textbox('isValid')) {
+                xutil.focus('#userid');
                 return;
             }
 
-            if (!$('#name').textbox('isValid')) {
-                xutil.focus('#name');
+            if (!$('#username').textbox('isValid')) {
+                xutil.focus('#username');
                 return;
             }
 
             var id = $('#id').val();
-            var account = $('#account').textbox('getValue');
-            var name = $('#name').textbox('getValue');
+            //alert(id);
+            var userid = $('#userid').textbox('getValue');
+            var username = $('#username').textbox('getValue');
             var password1 = $('#password1').textbox('getValue');
             var password2 = $('#password2').textbox('getValue');
-            var comment = $('#comment').textbox('getValue');
-            var enable = $('#enable').prop('checked') ? 1 : 0;
+            var accesstype = $('#accesstype').textbox('getValue');
+            var comments = $('#comments').textbox('getValue');
+            var userdesc = $('#userdesc').textbox('getValue');
+            var islocked = $('#islocked').prop('checked') ? 0 : 1;
 
             if (password1 != password2){
                 $.messager.alert(AppConstant.M_INFO, '密码不一致！', 'warning');
@@ -144,11 +146,13 @@ var UserEdit = {
                 url: basePath + 'UserAction.do?m=save',
                 data: {
                     id: id,
-                    account: account,
-                    name: name,
+                    userid: userid,
+                    username: username,
                     password: password1,
-                    comment: comment,
-                    enable: enable
+                    accesstype: accesstype,
+                    comments: comments,
+                    userdesc: userdesc,
+                    islocked: islocked
                 },
                 success: function (data) {
                     if (data == null || data.length == 0) return;
@@ -160,7 +164,7 @@ var UserEdit = {
                         if (addnew) {
                             edit.clear();
                             $('#btnEditDelete').linkbutton('disable');
-                            xutil.focus('#account');
+                            xutil.focus('#userid');
                         } else {
                             $('#dlg_edit').dialog('close');
                         }

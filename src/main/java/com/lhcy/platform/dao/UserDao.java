@@ -87,7 +87,7 @@ public class UserDao {
             order = form.getOrder();
         }
 
-        String sort = "number";
+        String sort = "userid";
         if (form.getSort() != null && form.getSort().length() > 0){
             sort = form.getSort();
         }
@@ -97,7 +97,8 @@ public class UserDao {
         StringBuilder sql = new StringBuilder();
         sql.append(" WITH temp AS ( ");
         sql.append(" SELECT top 100 percent" );
-        sql.append("     a.userid ");
+        sql.append("     a.id ");
+        sql.append("    ,a.userid ");
         sql.append("    ,a.username ");
         sql.append("    ,a.islocked ");
         sql.append("    ,a.accesstype ");
@@ -105,13 +106,13 @@ public class UserDao {
         sql.append("    ,a.comments ");
         sql.append("    ,a.createdts ");
         sql.append("    ,a.lastupdatedts ");
-        sql.append("    ,ROW_NUMBER() OVER (ORDER BY " + sort + " " + order + ") AS 'RowAccount'");
+        sql.append("    ,ROW_NUMBER() OVER (ORDER BY " + sort + " " + order + ") AS 'RowCounts'");
         sql.append("   FROM Users a ");
-        sql.append("  WHERE a.userid != 'superman' ");
+        sql.append("  WHERE 1 = 1 ");
         sql.append(where);
         sql.append(" ) ");
         sql.append(" SELECT * FROM temp ");
-        sql.append(" WHERE RowAccount BETWEEN " + rowBegin + " AND " + rowEnd + " ");
+        sql.append(" WHERE RowCounts BETWEEN " + rowBegin + " AND " + rowEnd + " ");
 //
 //        sql.append("     a.userid ");
 //        sql.append("    ,a.username ");
@@ -140,6 +141,7 @@ public class UserDao {
             }
             while(rs.next()){
                 UserDto vo = new UserDto();
+                vo.setId(rs.getString("id"));
                 vo.setUserid(rs.getString("userid"));
                 vo.setUsername(HtmlRender.toHtml(rs.getString("username")));
                 vo.setAccesstype(rs.getString("accesstype"));
@@ -171,11 +173,12 @@ public class UserDao {
     /**
      * @throws Exception *********************************************/
     public UserDto query(String id) throws Exception {
-    	System.out.println(id);
+    	//System.out.println(id);
         UserDto result = new UserDto();
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT ");
-        sql.append("     a.userid ");
+        sql.append("     a.id ");
+        sql.append("    ,a.userid ");
         sql.append("    ,a.username ");
         sql.append("    ,a.islocked ");
         sql.append("    ,a.accesstype ");
@@ -184,7 +187,7 @@ public class UserDao {
         sql.append("    ,a.createdts ");
         sql.append("    ,a.lastupdatedts ");
         sql.append("   FROM Users a ");
-        sql.append("  WHERE a.userid = ? ");
+        sql.append("  WHERE a.id = ? ");
 
         
         
@@ -207,6 +210,7 @@ public class UserDao {
                 return result;
             }
             while(rs.next()){
+                result.setId(rs.getString("id"));
                 result.setUserid(rs.getString("userid"));
                 result.setUsername(HtmlRender.toHtml(rs.getString("username")));
                 result.setAccesstype(rs.getString("accesstype"));
@@ -274,47 +278,49 @@ public class UserDao {
 //      ,[sbcol3]
 //     * @throws Exception *********************************************/
 //    @SuppressWarnings({ "static-access", "unchecked", "rawtypes" })
-//	public void create(User vo) throws Exception {
-//
-//        if (vo == null){
-//            return;
-//        }
-//
-//        StringBuilder sql = new StringBuilder();
-//        sql.append(" INSERT INTO Users ( ");
-//        sql.append("     userid ");
-//        sql.append("    ,username ");
-//        sql.append("    ,password ");
-//        sql.append("    ,accesstype ");
-//        sql.append("    ,islocked ");
-//        sql.append("    ,creator ");
-//        sql.append("    ,createdts ");
-//        sql.append("    ,lastupdatedts ");
-//        sql.append("    ,userdesc ");
-//        sql.append("    ,comments ");
-//        sql.append(" )VALUES(");
-//        sql.append(StringUtils.getSqlPlaceholder(10));
-//        sql.append(" )");
-//
-//        List args = new ArrayList();
-//        args.add(vo.getId());
-//        args.add(vo.getName());
-//        args.add(vo.getPassword());
-//        args.add(vo.getAccountType());
-//        args.add(vo.getLocked());
-//        args.add("test");
-//        args.add(new Date());
-//        args.add(new Date());
-//        args.add("d");
-//        args.add(vo.getComment());
-//
-//        try {
-//        	this.executeNonQuery(sql.toString(), args);
-//    		
-//        } catch (Exception e) {
-//            throw e;
-//        }
-//    }
+	public void create(User vo) throws Exception {
+
+        if (vo == null){
+            return;
+        }
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" INSERT INTO Users ( ");
+        sql.append("     id ");
+        sql.append("    ,userid ");
+        sql.append("    ,username ");
+        sql.append("    ,password ");
+        sql.append("    ,accesstype ");
+        sql.append("    ,islocked ");
+        sql.append("    ,creator ");
+        sql.append("    ,createdts ");
+        sql.append("    ,lastupdatedts ");
+        sql.append("    ,userdesc ");
+        sql.append("    ,comments ");
+        sql.append(" )VALUES(");
+        sql.append(StringUtils.getSqlPlaceholder(11));
+        sql.append(" )");
+
+        List args = new ArrayList();
+        args.add(vo.getId());
+        args.add(vo.getUserid());
+        args.add(vo.getUsername());
+        args.add(vo.getPassword());
+        args.add(vo.getAccesstype());
+        args.add(vo.getIslocked());
+        args.add("System");
+        args.add(new Date());
+        args.add(new Date());
+        args.add(vo.getUserdesc());
+        args.add(vo.getComments());
+
+        try {
+        	this.executeNonQuery(sql.toString(), args);
+    		
+        } catch (Exception e) {
+            throw e;
+        }
+    }
     @SuppressWarnings("rawtypes")
 	private static void setParameter(PreparedStatement ps, List args) throws SQLException{
 		
@@ -334,38 +340,43 @@ public class UserDao {
             }
 		}
 	}
-//    /***********************************************/
-//    /**
-//     * @throws Exception *********************************************/
-//    public void update(User vo) throws Exception {
-//
-//        StringBuilder sql = new StringBuilder();
-//        sql.append(" UPDATE Users SET ");
-//        sql.append("    ");
-//        sql.append("  username = ? ");
-//        sql.append("  ,islocked = ? ");
-//        sql.append("  ,password = ? ");
-//        sql.append("  ,comments = ? ");
-//        sql.append("  ,lastupdatedts = ? ");
-//        sql.append(" WHERE userid = ? ");
-//
-//        List args = new ArrayList();
-//        args.add(vo.getAccount());
-//        args.add(vo.getName());
-//        args.add(vo.getLocked());
-//        args.add(EncryptUtils.getMd5String(vo.getPassword()));
-//        args.add(vo.getComment());
-//        args.add(new Date());
-//        args.add(vo.getId());
-//        
-//        try {
-//            executeNonQuery(sql.toString(), args);
-//
-//        } catch (Exception e) {
-//            throw e;
-//        }
-//    }
-//
+    /***********************************************/
+    /**
+     * @throws Exception *********************************************/
+    public void update(User vo) throws Exception {
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" UPDATE Users SET ");
+        sql.append("    ");
+        sql.append("   userid = ? ");
+        sql.append("  ,username = ? ");
+        sql.append("  ,password = ? ");
+        sql.append("  ,accesstype = ? ");
+        sql.append("  ,comments = ? ");
+        sql.append("  ,userdesc = ? ");
+        sql.append("  ,lastupdatedts = ? ");
+        sql.append("  ,islocked = ? ");
+        sql.append(" WHERE id = ? ");
+
+        List args = new ArrayList();
+        args.add(vo.getUserid());
+        args.add(vo.getUsername());
+        args.add(vo.getPassword());
+        args.add(vo.getAccesstype());
+        args.add(vo.getComments());
+        args.add(vo.getUserdesc());
+        args.add(new Date());
+        args.add(vo.getIslocked());
+        args.add(vo.getId());
+        
+        try {
+            executeNonQuery(sql.toString(), args);
+
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 //    /***********************************************/
 //    // 鍒犻櫎澶氫釜
 //    /**
@@ -466,64 +477,67 @@ public class UserDao {
 //        }
 //    }
 //
-//    /***********************************************/
-//    // 鑾峰緱鐩稿悓缂栧彿鐨勬暟鎹�
-//    /**
-//     * @throws Exception *********************************************/
-//    public UserDto getEquals(String number) throws Exception {
-//
-//        UserDto result = new UserDto();
-//        if (number == null || number.length() == 0){
-//            return result;
-//        }
-//
-//        StringBuilder sql = new StringBuilder();
-//        sql.append(" SELECT ");
-//        sql.append("    FAccount ");
-//        sql.append("   ,FName ");
-//        sql.append("   ,FID ");
-//        sql.append("  FROM Users ");
-//        sql.append(" WHERE FAccount = ? ");
-//
-//        Connection conn = DbConnectionFactory.createHonchenConnection();
-//        if (conn == null){
-//            return result;
-//        }
-//
-//        List args = new ArrayList();
-//        args.add(number);
-//
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            ps = conn.prepareStatement(sql.toString());
-//            rs = DbSqlHelper.executeQuery(ps, args);
-//
-//            if (rs == null){
-//                return result;
-//            }
-//            while(rs.next()){
-//                result.setId(rs.getString("FID"));
-//                result.setAccount(rs.getString("FAccount"));
-//                result.setName(rs.getString("FName"));
-//            }
-//        } catch (Exception e) {
-//            throw e;
-//        }finally{
-//            try {
-//                rs.close();
-//                ps.close();
-//                conn.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                logger.error(e.getMessage());
-//            }
-//        }
-//
-//        return result;
-//    }
-//
+    /***********************************************/
+    // 鑾峰緱鐩稿悓缂栧彿鐨勬暟鎹�
+    /**
+     * @throws Exception *********************************************/
+    public UserDto getEquals(String userid) throws Exception {
+
+        UserDto result = new UserDto();
+        if (userid == null || userid.length() == 0){
+            return result;
+        }
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" select ");
+        sql.append("     id ");
+        sql.append("    ,userid ");
+        sql.append("    ,username ");
+        sql.append("    ,accesstype ");
+        sql.append("    ,islocked ");
+        sql.append("    ,comments ");
+        sql.append("  from Users ");
+        sql.append(" where userid = ? ");
+
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            return result;
+        }
+
+        List args = new ArrayList();
+        args.add(userid);
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps, args);
+
+            if (rs == null){
+                return result;
+            }
+            while(rs.next()){
+                result.setId(rs.getString("id"));
+                result.setUserid(rs.getString("userid"));
+                result.setUsername(rs.getString("username"));
+            }
+        } catch (Exception e) {
+            throw e;
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+
     /***********************************************/
     // 鍒楄〃鐨勮繃婊ゆ潯浠�
     /***********************************************/
@@ -550,7 +564,7 @@ public class UserDao {
         return result.toString();
     }
 //
-    public User loginCheck(String account, String password) throws SQLException  {
+    public User loginCheck(String userid, String password) throws SQLException  {
 
         User result = new User();
         StringBuffer sql = new StringBuffer();
@@ -566,7 +580,7 @@ public class UserDao {
 
         String pwd = password == null || password.length() == 0 ? "" : password;//EncryptUtils.getMd5String(password);
         List args = new ArrayList();
-        args.add(account);
+        args.add(userid);
         args.add(pwd);
 
         Connection conn = DbConnectionFactory.createHonchenConnection();

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class UserDto implements Serializable {
+	
+	private String id;
 	private String userid;
     private String username;
     private String password;
@@ -14,6 +16,14 @@ public class UserDto implements Serializable {
     private String lastupdatedts;
     private String userdesc;
     private String comments;
+    
+    
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getUserid() {
 		return userid;
 	}

@@ -46,7 +46,7 @@
         <td></td>
         <td></td>
         <td>
-          启用<input type="checkbox" id="enable"/>
+          启用<input type="checkbox" id="islocked"/>
           <input type="hidden" id="id" />
         </td>
       </tr>
@@ -84,50 +84,7 @@
     </table>
   </div>
 </div>
-<!-- 
-<div id="dlg_add">
-  <div region="center" border="false" title="" style="padding-left: 20px">
-    <br/>
-    <table class="tb_edit" cellspacing="0">
-      <tbody>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-          启用<input type="checkbox" id="enable"/>
-          <input type="hidden" id="id" />
-        </td>
-      </tr>
-      <tr>
-        <th>账号<span style="color:red">*</span></th>
-        <td><input id="account"/></td>
-        <th>名称<span style="color:red">*</span></th>
-        <td><input id="name"/></td>
-      </tr>
-      <tr>
-        <th>密码add</th>
-        <td><input id="password1"/></td>
-        <th>重复密码add</th>
-        <td><input id="password2"/></td>
-      </tr>
-      <tr>
-        <th>备注add</th>
-        <td ><input id="comment"/></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <th>创建时间add</th>
-        <td><input id="createTime"/></td>
-        <th>最后修改时间add</th>
-        <td><input id="updateTime"/></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
- -->
+
 <div id="bar_list">
   <table cellspacing="0" cellpadding="0">
     <tr>

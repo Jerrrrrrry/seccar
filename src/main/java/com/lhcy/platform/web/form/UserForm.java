@@ -1,5 +1,7 @@
 package com.lhcy.platform.web.form;
 
+import java.util.Date;
+
 import org.apache.struts.action.ActionForm;
 
 public class UserForm extends ActionForm {
@@ -15,16 +17,19 @@ public class UserForm extends ActionForm {
     private String order;   // 排序方式
 
     // 编辑界面用
+    private String id;
     private String userid;
     private String username;
     private String password;
     private String accesstype;
     private String islocked;
     private int creator;
-    private String createdts;
-    private String lastupdatedts;
+//    private String createdts;
+//    private String lastupdatedts;
     private String userdesc;
     private String comments;
+    
+    
 	public String getFilterField() {
 		return filterField;
 	}
@@ -60,6 +65,13 @@ public class UserForm extends ActionForm {
 	}
 	public void setOrder(String order) {
 		this.order = order;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getUserid() {
 		return userid;
@@ -97,18 +109,19 @@ public class UserForm extends ActionForm {
 	public void setCreator(int creator) {
 		this.creator = creator;
 	}
-	public String getCreatedts() {
-		return createdts;
-	}
-	public void setCreatedts(String createdts) {
-		this.createdts = createdts;
-	}
-	public String getLastupdatedts() {
-		return lastupdatedts;
-	}
-	public void setLastupdatedts(String lastupdatedts) {
-		this.lastupdatedts = lastupdatedts;
-	}
+//	public String getCreatedts() {
+//		return createdts;
+//	}
+//	public void setCreatedts(String createdts) {
+//		this.createdts = createdts;
+//	}
+//	public String getLastupdatedts() {
+//		return lastupdatedts;
+//	}
+//	public void setLastupdatedts(String lastupdatedts) {
+//		this.lastupdatedts = lastupdatedts;
+//	}
+	
 	public String getUserdesc() {
 		return userdesc;
 	}

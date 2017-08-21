@@ -24,15 +24,22 @@ var UserInit = {
                 border: false,
                 method: 'post',
                 url: basePath + 'UserAction.do?m=list',
-                idField: 'userid',
-                sortName: 'username',
+                idField: 'id',
+                sortName: 'userid',
                 sortOrder: 'asc',
                 toolbar: '#bar_list',
                 loadMsg : '',
                 columns: [[
                     {
-                        field: 'userid',
+                        field: 'id',
                         checkbox: true
+                    },
+                    {
+                        field: 'userid',
+                        title: '帐号',
+                        width: 120,
+                        halign: 'center',
+                        sortable: true
                     },
                     {
                         field: 'username',
@@ -146,12 +153,12 @@ var UserInit = {
                 textField: 'label',
                 data : [
                     {
-                        label: '管理员',
+                        label: '1',
                         value: '1',
                         selected : true
                     },
                     {
-                        label: '业务员',
+                        label: '2',
                         value: '2'
                     }
                 ]
@@ -332,6 +339,7 @@ var UserInit = {
                         id:'btnEditSave',
                         iconCls: 'tbtn_save',
                         handler: function(){
+                        	//alert('btnEditSavefalse');
                             edit.save(false);
                         }
                     },
@@ -393,101 +401,7 @@ var UserInit = {
                     xutil.focus('#filterValue');
                 }
             });
-            /***********************************************/
-            // 窗口初始化
-            /***********************************************/
-            // 编辑窗口
-//            $('#dlg_add').dialog({
-//                title: '测试',
-//                width: 700,
-//                height: 300,
-//                modal: true,
-//                closed: true,
-//                minimizable: false,
-//                maximizable: false,
-//                resizable: false,
-//                collapsible: false,
-//                toolbar: [
-//                    {
-//                        text: '新增',
-//                        iconCls: 'tbtn_addnew',
-//                        handler: function(){
-//                            edit.addNew();
-//                        }
-//                    },
-//                    {
-//                        text: '复制',
-//                        iconCls: 'tbtn_copy',
-//                        handler: function(){
-//                            edit.copy();
-//                        }
-//                    },
-//                    {
-//                        text: '保存',
-//                        id:'btnEditSave',
-//                        iconCls: 'tbtn_save',
-//                        handler: function(){
-//                            edit.save(false);
-//                        }
-//                    },
-//                    {
-//                        text: '保存并新增',
-//                        iconCls: 'tbtn_savenew',
-//                        handler: function(){
-//                            edit.save(true);
-//                        }
-//                    },
-//                    '-',
-//                    {
-//                        id: 'btnFirst',
-//                        iconCls: 'tbtn_first',
-//                        handler: function () {
-//                            edit.showNext('first');
-//                        }
-//                    },
-//                    {
-//                        id: 'btnPrevious',
-//                        iconCls: 'tbtn_previous',
-//                        handler: function () {
-//                            edit.showNext('previous');
-//                        }
-//                    },
-//                    {
-//                        id: 'btnNext',
-//                        iconCls: 'tbtn_next',
-//                        handler: function () {
-//                            edit.showNext('next');
-//                        }
-//                    },
-//                    {
-//                        id: 'btnLast',
-//                        iconCls: 'tbtn_last',
-//                        handler: function () {
-//                            edit.showNext('last');
-//                        }
-//                    },
-//                    '-',
-//                    {
-//                        text: '删除',
-//                        id: 'btnEditDelete',
-//                        iconCls: 'tbtn_remove',
-//                        handler: function(){
-//                            edit.delete();
-//                        }
-//                    },
-//                    '-',
-//                    {
-//                        text: '关闭',
-//                        iconCls: 'tbtn_quit',
-//                        handler: function(){
-//                            edit.close();
-//                        }
-//                    }
-//                ],
-//                onClose : function(){
-//                    xutil.focus('#filterValue');
-//                }
-//            });
+            
             xutil.focus('#filterValue');
         };
 
