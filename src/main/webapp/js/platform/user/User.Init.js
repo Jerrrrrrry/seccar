@@ -228,7 +228,7 @@ var UserInit = {
                 plain : true,
                 iconCls : 'tbtn_ok',
                 onClick: function(){
-                    list.enable(1);
+                    list.enable(0);
                 }
             });
 
@@ -237,7 +237,7 @@ var UserInit = {
                 plain : true,
                 iconCls : 'tbtn_forbid',
                 onClick: function(){
-                    list.enable(0);
+                    list.enable(1);
                 }
             });
 
@@ -380,14 +380,14 @@ var UserInit = {
                         }
                     },
                     '-',
-                    {
-                        text: '删除',
-                        id: 'btnEditDelete',
-                        iconCls: 'tbtn_remove',
-                        handler: function(){
-                            edit.delete();
-                        }
-                    },
+//                    {
+//                        text: '删除',
+//                        id: 'btnEditDelete',
+//                        iconCls: 'tbtn_remove',
+//                        handler: function(){
+//                            edit.delete();
+//                        }
+//                    },
                     '-',
                     {
                         text: '关闭',

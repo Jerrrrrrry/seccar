@@ -36,10 +36,10 @@ public class UserService {
 //        dao.delete(list);
 //    }
 //
-//    public void enable(String[] list, int status, String user) throws Exception{
-//        dao.enable(list, status, user);
-//    }
-//
+    public void enable(String[] list, String status, String user) throws Exception{
+        dao.enable(list, status, user);
+    }
+
     public UserDto getEquals(String number) throws Exception{
         return dao.getEquals(number);
     }

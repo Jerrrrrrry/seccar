@@ -168,32 +168,32 @@ public class UserAction extends DispatchAction {
     /***********************************************/
     // 启用或禁用多个
     /***********************************************/
-//    public ActionForward enable(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//
-//        try {
-//            // 检查登录
-//            if (ContextUtils.getCurrentUserID(request) == null){
-//                throw new Exception(SysConstant.M_NO_LOGIN);
-//            }
-//
-//            UserForm form = (UserForm)frm;
-//            if (form.getId().length() == 0){
-//                JsonUtils.printActionResultOK(response);
-//                return null;
-//            }
-//
-//            UserService sv = new UserService();
-//            String[] list = form.getId().split(",");
-//            sv.enable(list, form.getEnable(), ContextUtils.getCurrentUserID(request));
-//            JsonUtils.printActionResultOK(response);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            logger.error(e.getMessage());
-//            JsonUtils.printActionResultFromException(response, e);
-//        }
-//
-//        return null;
-//    }
+    public ActionForward enable(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+            // 检查登录
+            if (ContextUtils.getCurrentUserID(request) == null){
+                throw new Exception(SysConstant.M_NO_LOGIN);
+            }
+
+            UserForm form = (UserForm)frm;
+            if (form.getId().length() == 0){
+                JsonUtils.printActionResultOK(response);
+                return null;
+            }
+
+            UserService sv = new UserService();
+            String[] list = form.getId().split(",");
+            sv.enable(list, form.getIslocked(), ContextUtils.getCurrentUserID(request));
+            JsonUtils.printActionResultOK(response);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            JsonUtils.printActionResultFromException(response, e);
+        }
+
+        return null;
+    }
 
     /***********************************************/
     // 跳转

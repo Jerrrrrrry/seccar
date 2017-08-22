@@ -26,8 +26,6 @@ public class ParkingForm extends ActionForm {
     private String inventoryoutts;
     private double parkingfee;
     private String comments;
-    private String createdts;
-    private String lastupdatedts;
     private String creator;
     
 	public String getFilterField() {
@@ -125,18 +123,6 @@ public class ParkingForm extends ActionForm {
 	}
 	public void setInventoryoutts(String inventoryoutts) {
 		this.inventoryoutts = inventoryoutts;
-	}
-	public String getCreatedts() {
-		return createdts;
-	}
-	public void setCreatedts(String createdts) {
-		this.createdts = createdts;
-	}
-	public String getLastupdatedts() {
-		return lastupdatedts;
-	}
-	public void setLastupdatedts(String lastupdatedts) {
-		this.lastupdatedts = lastupdatedts;
 	}
 
 }

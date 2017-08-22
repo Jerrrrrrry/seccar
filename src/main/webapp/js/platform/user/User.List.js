@@ -26,7 +26,7 @@ var UserList = {
             var edit = UserEdit.getInstance(basePath);
             edit.clear();
             $('#dlg_edit').dialog('open');
-            $('#enable').prop('checked', true);
+            $('#islocked').prop('checked', true);
             $('#btnEditDelete').linkbutton('disable');
             xutil.focus('#userid');
         };
@@ -115,11 +115,10 @@ var UserList = {
             if (!xutil.isGridSelected('#list')) return;
             var id = xutil.getGridSelectedID('#list');
             xutil.ajaxLoading('body');
-
             $.ajax({
                 type: 'post',
                 url: basePath + 'UserAction.do?m=enable',
-                data: {id: id, enable: status},
+                data: {id: id, islocked: status},
                 success: function (data) {
 
                     if (data == null || data.length == 0) return;

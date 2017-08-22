@@ -455,28 +455,27 @@ public class UserDao {
 //    // 鍚敤鎴栫鐢ㄥ涓�
 //    /**
 //     * @throws Exception *********************************************/
-//    public void enable(String[] list, int status, String user) throws Exception {
-//
-//        if (list == null || list.length == 0){
-//            return;
-//        }
-//
-//        StringBuilder sql = new StringBuilder();
-//        sql.append(" UPDATE Users SET ");
-//        sql.append("      islocked = ? ");
-//        sql.append(" WHERE userid in (" + StringUtils.listToCommaString(list) + ") ");
-//
-//        List args = new ArrayList();
-//        args.add(status);
-//
-//        try {
-//            executeNonQuery(sql.toString(), args);
-//
-//        } catch (Exception e) {
-//            throw e;
-//        }
-//    }
-//
+    public void enable(String[] list, String status, String user) throws Exception {
+
+        if (list == null || list.length == 0){
+            return;
+        }
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" UPDATE Users SET ");
+        sql.append("      islocked = ? ");
+        sql.append(" WHERE id in (" + StringUtils.listToCommaString(list) + ") ");
+
+        List args = new ArrayList();
+        args.add(status);
+        try {
+            executeNonQuery(sql.toString(), args);
+
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
     /***********************************************/
     // 鑾峰緱鐩稿悓缂栧彿鐨勬暟鎹�
     /**
@@ -569,14 +568,15 @@ public class UserDao {
         User result = new User();
         StringBuffer sql = new StringBuffer();
         sql.append(" select ");
-        sql.append("     userid ");
+        sql.append("     id ");
+        sql.append("    ,userid ");
         sql.append("    ,username ");
         sql.append("    ,accesstype ");
         sql.append("    ,islocked ");
         sql.append("    ,comments ");
         sql.append("  from Users ");
         sql.append(" where userid = ? ");
-        sql.append("   and ISNULL(password, '') = ? ");
+        sql.append("   and ISNULL(password, '') = ? and islocked=0");
 
         String pwd = password == null || password.length() == 0 ? "" : password;//EncryptUtils.getMd5String(password);
         List args = new ArrayList();
@@ -599,6 +599,7 @@ public class UserDao {
                 return result;
             }
             while (rs.next()) {
+            	result.setId(rs.getString("id"));
                 result.setUserid(rs.getString("userid"));
                 result.setAccesstype(rs.getString("accesstype"));
                 result.setUsername(rs.getString("username"));
@@ -627,12 +628,13 @@ public class UserDao {
         StringBuffer sql = new StringBuffer();
         sql.append(" update Users ");
         sql.append("    set  password = ? ");
-        sql.append("   where userid = ?  ");
+        sql.append("   where id = ?  ");
 
         List<Object> paras = new ArrayList<Object>();
         paras.add(vo.getPassword());
-        paras.add(vo.getUserid());
+        paras.add(vo.getId());
 
+        System.out.println(vo.getId()+" ----------  "+vo.getPassword());
         try {
             executeNonQuery(sql.toString(), paras);
 

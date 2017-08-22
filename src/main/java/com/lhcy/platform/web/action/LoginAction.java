@@ -33,17 +33,17 @@ public class LoginAction extends DispatchAction {
             //vo.setId("123");vo.setAccount("asd");vo.setName("haha");
             if (vo == null || vo.getUserid() == null || vo.getUserid().length() == 0) {
                 ActionMessages error = new ActionMessages();
-                error.add("error", new ActionMessage("用户名或密码错误！",false));
+                error.add("error", new ActionMessage("用户名/密码错误,或帐号未启用！",false));
                 saveErrors(request, error);
                 return mapping.findForward("failed");
             }
 
 //            int kisUserID = new KisUserDao().get(vo.getName());
-            System.out.println("CurrentLoginUserID: " + vo.getUserid());
+            System.out.println("CurrentLoginUserID: " + vo.getId());
             System.out.println("CurrentLoginUserAccount: " + vo.getUserid());
             System.out.println("CurrentLoginUserName: " + vo.getUsername());
 //            System.out.println("CurrentLoginKisUserID: " + kisUserID);
-            request.getSession().setAttribute("CurrentLoginUserID", vo.getUserid());
+            request.getSession().setAttribute("CurrentLoginUserID", vo.getId());
             request.getSession().setAttribute("CurrentLoginUserAccount", vo.getUserid());
             request.getSession().setAttribute("CurrentLoginUserName", vo.getUsername());
 //            request.getSession().setAttribute("CurrentLoginKisUserID", kisUserID);

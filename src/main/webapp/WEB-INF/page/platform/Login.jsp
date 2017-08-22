@@ -73,7 +73,7 @@
             </div>
         </div>
     </div>
-    <div id="footer">&nbsp;&nbsp;蓝海餐饮KIS接口</div>
+    <div id="footer">&nbsp;&nbsp;东方汽车金融管理系统</div>
 </form>
 </body>
 </html>

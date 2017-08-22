@@ -90,7 +90,9 @@
     <tr>
       <td><a id="btnAddnew"></a></td>
       <td><a id="btnRefresh"></a></td>
+      <!-- No deletion
       <td><a id="btnDelete"></a></td>
+       -->
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnEnable"></a></td>
       <td><a id="btnDisable"></a></td>

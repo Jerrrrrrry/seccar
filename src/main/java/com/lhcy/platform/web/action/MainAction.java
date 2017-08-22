@@ -49,17 +49,17 @@ public class MainAction extends DispatchAction {
                 String pwd2 = (String)request.getParameter("password2");
                 pwd1 = pwd1 == null ? "" : pwd1;
                 pwd2 = pwd2 == null ? "" : pwd2;
-                String account = (String)request.getSession().getAttribute("CurrentLoginUserAccount");
+                String userid = (String)request.getSession().getAttribute("CurrentLoginUserAccount");
 
                 UserService sv = new UserService();
-                User vo = sv.loginCheck(account, pwd1);
+                User vo = sv.loginCheck(userid, pwd1);
                 if (vo == null || vo.getUserid() == null || vo.getUserid().length() == 0) {
 
                     HttpActionResult ar = new HttpActionResult("ng", null, null);
                     JsonUtils.printFromObject(response, ar);
 
                 }else{
-                    vo.setPassword(EncryptUtils.getMd5String(pwd2));
+                    vo.setPassword(pwd2);
                     sv.chgPwd(vo);
                     HttpActionResult ar = new HttpActionResult("ok", null, null);
                     JsonUtils.printFromObject(response, ar);

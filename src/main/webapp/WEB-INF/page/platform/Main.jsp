@@ -89,11 +89,12 @@
         }
 
         function doSetPwd(){
-
+			var id ="<%= session.getAttribute("CurrentLoginUserID")%>";
+			var userid ="<%= session.getAttribute("CurrentLoginUserAccount")%>";
             var password1 = $("#password1").textbox("getText");
             var password2 = $("#password2").textbox("getText");
             var password3 = $("#password3").textbox("getText");
-
+            //alert("1:"+password1+"2:"+password2+"3:"+password3 + "   "+password);
             if (password2 != password3){
                 $.messager.alert("系统提示","新密码和确认密码不一致！","warning");
                 return;
@@ -102,7 +103,10 @@
             $.ajax({
                 type: "post",
                 url: "<%=basePath%>MainAction.do?m=chgPwd",
-                data: {password1:password1,password2:password2},
+                data: {
+                    password1: password1,
+                    password2: password2
+                	},
                 success: function (data) {
 
                     if (data == null || data.length == 0) return;
