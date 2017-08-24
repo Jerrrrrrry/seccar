@@ -1,10 +1,11 @@
-var VoucherInit = {
+var ParkingInit = {
 
     getInstance: function (basePath){
         var init = {};
         init.init = function (){
 
-            var list = VoucherList.getInstance(basePath);
+            var list = ParkingList.getInstance(basePath);
+            var edit = ParkingEdit.getInstance(basePath);
             var xutil = XUtil.getInstance(basePath);
 
             /***********************************************/
@@ -23,9 +24,9 @@ var VoucherInit = {
                 pagination: true,
                 border: false,
                 method: 'post',
-                url: '',
+                url: basePath + 'ParkingAction.do?m=list',
                 idField: 'vehicleid',
-                sortName: 'inventoryints',
+                sortName: 'inventoryoutts',
                 sortOrder: 'desc',
                 toolbar: '#bar_list',
                 columns: [[
@@ -90,23 +91,112 @@ var VoucherInit = {
                         sortable: false
                     }
                 ]],
+                onDblClickRow: function(index, data){
+                    $('#btnFirst').linkbutton('enable');
+                    $('#btnPrevious').linkbutton('enable');
+                    $('#btnNext').linkbutton('enable');
+                    $('#btnLast').linkbutton('enable');
+                    edit.view(index);
+                },
+                onBeforeLoad : function(param){
+                    xutil.ajaxLoading('body');
+                },
+                onLoadSuccess : function (data) {
+                  xutil.ajaxLoadEnd();
+                },
                 onLoadError: function () {
-                    top.location = basePath;
+                    xutil.ajaxLoadEnd();
+                    xutil.exception();
                 }
+//                onLoadError: function () {
+//                    top.location = basePath;
+//                }
+            });
+            
+            /***********************************************/
+            // 字段初始化
+            /***********************************************/
+            $('#customer').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+
+            $('#period').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+
+            $('#licenseno').textbox({
+                width : 200,
+                validType : ['length[0,100]']
+            });
+
+            $('#cardescription').textbox({
+                width : 200,
+                validType : ['length[0,100]']
+            });
+            
+            $('#inventoryints').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+
+            $('#inventoryoutts').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            $('#parkingfee').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            
+            $('#comments').textbox({
+                width: 200,
+                validType: ['length[0,100]'],
+                multiline: true
+            });
+
+            $('#filtercustomer').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#filterlicenseno').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#filtercardescription').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#filterinventoryints').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#filterinventoryoutts').datebox({
+                width : 200,
+                validType : ['length[1,100]']
             });
 
             /***********************************************/
             // 列表工具栏初始化
             /***********************************************/
-            $('#btnUpload').linkbutton({
+            $('#btnAddnew').linkbutton({
                 text : '新增',
                 plain : true,
-                iconCls : 'tbtn_upload',
+                iconCls : 'tbtn_addnew',
                 onClick: function(){
-                    list.filter();
+                    list.addNew();
                 }
             });
 
+            $('#btnFilter').linkbutton({
+                text : '过滤',
+                plain : true,
+                iconCls : 'tbtn_filter',
+                onClick: function(){
+                    list.openfilter();
+                }
+            });
             $('#btnRefresh').linkbutton({
                 text : '刷新',
                 plain : true,
@@ -143,6 +233,14 @@ var VoucherInit = {
                 }
             });
 
+            $('#btnDelete').linkbutton({
+                text : '删除',
+                plain : true,
+                iconCls : 'tbtn_remove',
+                onClick: function(){
+                    list.del();
+                }
+            });
             $('#btnClose').linkbutton({
                 text : '关闭',
                 plain : true,
@@ -155,10 +253,10 @@ var VoucherInit = {
             /***********************************************/
             // 窗口初始化
             /***********************************************/
-            $('#dlg_upload').dialog({
-                title: '上传凭证',
-                width: 590,
-                height: 200,
+            $('#dlg_edit').dialog({
+                title: '停车管理',
+                width: 700,
+                height: 300,
                 modal: true,
                 closed: true,
                 minimizable: false,
@@ -167,16 +265,116 @@ var VoucherInit = {
                 collapsible: false,
                 toolbar: [
                     {
-                        text: '上传',
-                        iconCls: 'tbtn_upload',
-                        handler: function () {
-                            list.doUpload();
+                        text: '新增',
+                        iconCls: 'tbtn_addnew',
+                        handler: function(){
+                            edit.addNew();
+                        }
+                    },
+//                    {
+//                        text: '复制',
+//                        iconCls: 'tbtn_copy',
+//                        handler: function(){
+//                            edit.copy();
+//                        }
+//                    },
+                    {
+                        text: '保存',
+                        id:'btnEditSave',
+                        iconCls: 'tbtn_save',
+                        handler: function(){
+                        	//alert('btnEditSavefalse');
+                            edit.save(false);
                         }
                     },
                     {
-                        text: '清除',
-                        iconCls: 'tbtn_clear',
+                        text: '保存并新增',
+                        iconCls: 'tbtn_savenew',
+                        handler: function(){
+                            edit.save(true);
+                        }
+                    },
+                    '-',
+                    {
+                        id: 'btnFirst',
+                        iconCls: 'tbtn_first',
                         handler: function () {
+                            edit.showNext('first');
+                        }
+                    },
+                    {
+                        id: 'btnPrevious',
+                        iconCls: 'tbtn_previous',
+                        handler: function () {
+                            edit.showNext('previous');
+                        }
+                    },
+                    {
+                        id: 'btnNext',
+                        iconCls: 'tbtn_next',
+                        handler: function () {
+                            edit.showNext('next');
+                        }
+                    },
+                    {
+                        id: 'btnLast',
+                        iconCls: 'tbtn_last',
+                        handler: function () {
+                            edit.showNext('last');
+                        }
+                    },
+                    '-',
+//                    {
+//                        text: '删除',
+//                        id: 'btnEditDelete',
+//                        iconCls: 'tbtn_remove',
+//                        handler: function(){
+//                            edit.delete();
+//                        }
+//                    },
+                    '-',
+                    {
+                        text: '关闭',
+                        iconCls: 'tbtn_quit',
+                        handler: function(){
+                            edit.close();
+                        }
+                    }
+                ],
+                onClose : function(){
+//                    xutil.focus('#filterValue');
+                }
+            }); 
+            
+            /***********************************************/
+            // 窗口初始化
+            /***********************************************/
+            $('#dlg_filter').dialog({
+                title: '停车管理',
+                width: 700,
+                height: 300,
+                modal: true,
+                closed: true,
+                minimizable: false,
+                maximizable: false,
+                resizable: false,
+                collapsible: false,
+                toolbar: [                
+                    {
+                        text: '过滤',
+                        id:'btnFilterDlg',
+                        iconCls: 'tbtn_filter',
+                        handler: function(){
+                        	//alert('btnEditSavefalse');
+                            list.filter();
+                        }
+                    },
+                    {
+                        text: '重置',
+                        id:'btnClear',
+                        iconCls: 'tbtn_deleteall',
+                        handler: function(){
+                        	//alert('btnEditSavefalse');
                             list.clearFilter();
                         }
                     },
@@ -184,13 +382,16 @@ var VoucherInit = {
                     {
                         text: '关闭',
                         iconCls: 'tbtn_quit',
-                        handler: function () {
-                            $('#dlg_filter').dialog('close');
+                        handler: function(){
+                        	$('#dlg_filter').dialog('close');
                         }
                     }
-                ]
-            });
-            list.doInit();
+                ],
+                onClose : function(){
+//                xutil.focus('#filterValue');
+                }
+            }); 
+//            list.doInit();
         };
 
         return init;

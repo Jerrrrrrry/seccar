@@ -1,14 +1,48 @@
-var VoucherList = {
+var ParkingList = {
 
     getInstance: function (basePath) {
         var list = {};
-        var xutil = XUtil.getInstance(basePath);
-
+        var xutil = XUtil.getInstance(basePath); 
+        /***********************************************/
+        // 新增
+        /***********************************************/
+        list.addNew = function () {
+//        	alert("addnew");
+            var edit = ParkingEdit.getInstance(basePath);
+            edit.clear();
+            $('#dlg_edit').dialog('open');
+            xutil.focus('#customer');
+        };
+        
+        /***********************************************/
+        // 打开过滤界面
+        /***********************************************/
+        list.openfilter = function () {
+        	list.clearFilter();
+            $('#dlg_filter').dialog('open');
+        };
         /***********************************************/
         // 过滤
         /***********************************************/
         list.filter = function () {
-            $('#dlg_upload').dialog('open');
+        	 $('#dlg_filter').dialog('close');
+            var filterField = "filter";
+            var filtercustomer = $('#filtercustomer').textbox('getValue');
+            var filterlicenseno = $('#filterlicenseno').textbox('getValue');
+            var filtercardescription = $('#filtercardescription').textbox('getValue');
+            var filterinventoryints = $('#filterinventoryints').datebox('getValue');
+            var filterinventoryoutts = $('#filterinventoryoutts').datebox('getValue');
+
+            var prm = {
+            		filterField: filterField,
+            		filtercustomer: filtercustomer, 
+            		filterlicenseno: filterlicenseno, 
+            		filtercardescription: filtercardescription, 
+            		filterinventoryints: filterinventoryints,
+            		filterinventoryoutts: filterinventoryoutts};
+            $('#list').datagrid('clearSelections');
+            $('#list').datagrid({queryParams: prm});
+//            xutil.focus('#filterValue');
         };
 
         /***********************************************/
@@ -36,11 +70,44 @@ var VoucherList = {
         // 清除过滤条件
         /***********************************************/
         list.clearFilter = function () {
-            $('#bizDateFrom').datebox('clear');
-            $('#bizDateTo').datebox('clear');
-            $('#departmentNumber').textbox('clear');
-            $('#departmentName').textbox('clear');
-            xutil.focus('#bizDateFrom');
+            $('#filterinventoryints').datebox('clear');
+            $('#filterinventoryoutts').datebox('clear');
+            $('#filtercustomer').textbox('clear');
+            $('#filterlicenseno').textbox('clear');
+            $('#filtercardescription').textbox('clear');
+            xutil.focus('#filtercustomer');
+        };
+        /***********************************************/
+        // 删除
+        /***********************************************/
+        list.del = function () {
+
+            if (!xutil.isGridSelected('#list')) return;
+            var vehicleid = xutil.getGridSelectedVehicleID('#list');
+//            alert(vehicleid);
+            xutil.ajaxLoading('body');
+            $.ajax({
+                type: 'post',
+                url: basePath + 'ParkingAction.do?m=delete',
+                data: {vehicleid: vehicleid},
+                success: function (data) {
+
+                    if (data == null || data.length == 0) return;
+                    var vo = data[0];
+
+                    if (vo.status == 'ok') {
+                        $('#list').datagrid('reload');
+                    } else if (vo.status == 'nologin') {
+                        top.location = basePath;
+                    } else {
+                        $.messager.alert(AppConstant.M_INFO, vo.message, vo.status);
+                    }
+
+                },
+                error: function () {
+                    top.location = basePath;
+                }
+            });
         };
 
         /***********************************************/
@@ -131,18 +198,18 @@ var VoucherList = {
                 queryParams: prm});*.*/
         };
         
-        list.doInit = function(){
-        	var prm = {
-                    bizDateFrom : "",
-                    bizDateTo : "",
-                    departmentNumber : "",
-                    departmentName : ""
-                };
-	        $('#list').datagrid('clearSelections');
-	        $('#list').datagrid({
-	            url: basePath + 'ParkingAction.do?m=list',
-	            queryParams: prm});
-        }
+//        list.doInit = function(){
+//        	var prm = {
+//                    bizDateFrom : "",
+//                    bizDateTo : "",
+//                    departmentNumber : "",
+//                    departmentName : ""
+//                };
+//	        $('#list').datagrid('clearSelections');
+//	        $('#list').datagrid({
+//	            url: basePath + 'ParkingAction.do?m=list',
+//	            queryParams: prm});
+//        }
         /***********************************************/
         // 同步
         /***********************************************/

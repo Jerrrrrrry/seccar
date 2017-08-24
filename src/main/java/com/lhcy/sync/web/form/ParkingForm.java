@@ -9,7 +9,14 @@ public class ParkingForm extends ActionForm {
     // 过滤界面用
     private String filterField;
     private String filterValue;
-
+    
+    // 过滤结果
+    private String filtercustomer;
+    private String filterlicenseno;
+    private String filtercardescription;
+    private String filterinventoryints;
+    private String filterinventoryoutts;
+    
     // 列表
     private int rows;
     private int page;
@@ -36,6 +43,37 @@ public class ParkingForm extends ActionForm {
 	}
 	public String getFilterValue() {
 		return filterValue;
+	}
+	
+	public String getFiltercustomer() {
+		return filtercustomer;
+	}
+	public void setFiltercustomer(String filtercustomer) {
+		this.filtercustomer = filtercustomer;
+	}
+	public String getFilterlicenseno() {
+		return filterlicenseno;
+	}
+	public void setFilterlicenseno(String filterlicenseno) {
+		this.filterlicenseno = filterlicenseno;
+	}
+	public String getFiltercardescription() {
+		return filtercardescription;
+	}
+	public void setFiltercardescription(String filtercardescription) {
+		this.filtercardescription = filtercardescription;
+	}
+	public String getFilterinventoryints() {
+		return filterinventoryints;
+	}
+	public void setFilterinventoryints(String filterinventoryints) {
+		this.filterinventoryints = filterinventoryints;
+	}
+	public String getFilterinventoryoutts() {
+		return filterinventoryoutts;
+	}
+	public void setFilterinventoryoutts(String filterinventoryoutts) {
+		this.filterinventoryoutts = filterinventoryoutts;
 	}
 	public void setFilterValue(String filterValue) {
 		this.filterValue = filterValue;

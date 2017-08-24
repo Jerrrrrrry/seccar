@@ -20,10 +20,11 @@
   <script type="text/javascript" src="<%=basePath %>js/xcore.js"></script>
   <script type="text/javascript" src="<%=basePath %>js/business/parking/Parking.Init.js"></script>
   <script type="text/javascript" src="<%=basePath %>js/business/parking/Parking.List.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/parking/Parking.Edit.js"></script>
   <script type="text/javascript">
 
     $(function(){
-        VoucherInit.getInstance('<%= basePath%>').init();
+    	ParkingInit.getInstance('<%= basePath%>').init();
         
         var interval;
 
@@ -118,14 +119,86 @@
   </div>
 </div>
 
+<div id="dlg_edit">
+  <div region="center" border="false" title="" style="padding-left: 20px">
+    <br/>
+    <table class="tb_edit" cellspacing="0">
+      <tbody>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <input type="hidden" id="vehicleid" />
+        </td>
+      </tr>
+      <tr>
+        <th>客户名称</th>
+        <td><input id="customer"/></td>
+        <th>停车时间</th>
+        <td><input id="period"/></td>
+      </tr>
+      <tr>
+        <th>车牌号</th>
+        <td><input id="licenseno"/></td>
+        <th>车辆描述</th>
+        <td><input id="cardescription"/></td>
+      </tr>
+      <tr>
+        <th>入库时间</th>
+        <td><input id="inventoryints"/></td>
+        <th>出库时间</th>
+        <td><input id="inventoryoutts"/></td>
+      </tr>
+      <tr>
+      	<th>停车费</th>
+        <td><input id="parkingfee"/></td>
+        <th>备注</th>
+        <td ><input id="comments"/></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="dlg_filter">
+  <div region="center" border="false" title="" style="padding-left: 20px">
+    <br/>
+    <table class="tb_filter" cellspacing="0">
+      <tbody>
+      <tr>
+        <th>客户名称</th>
+        <td><input id="filtercustomer"/></td>
+        <th>车牌号</th>
+        <td><input id="filterlicenseno"/></td>
+      </tr>
+      <tr>
+        <th>车辆描述</th>
+        <td><input id="filtercardescription"/></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th>入库时间</th>
+        <td><input id="filterinventoryints"/></td>
+        <th>出库时间</th>
+        <td><input id="filterinventoryoutts"/></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 <div id="bar_list">
   <table cellspacing="0" cellpadding="0">
     <tr>
-      <td><a id="btnUpload"></a></td>
+      <td><a id="btnAddnew"></a></td>
+      <td><a id="btnFilter"></a></td>
       <td><a id="btnRefresh"></a></td>
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnSelectAll"></a></td>
       <td><a id="btnUnselectAll"></a></td>
+      <td><div class="datagrid-btn-separator"></div></td>
+      <td><a id="btnDelete"></a></td>
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnClose"></a></td>
     </tr>

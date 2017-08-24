@@ -151,7 +151,25 @@ var XUtil = {
             var result = ids.join(',');
             return result;
         };
+        
+        /***********************************************/
+        // 获得所有行VehicleID
+        /***********************************************/
+        xutil.getGridSelectedVehicleID = function (grid) {
 
+            var ids = [];
+            var rows = $(grid).datagrid('getSelections');
+            for (var i = 0; i < rows.length; i++) {
+                ids.push(rows[i].vehicleid);
+            }
+
+            if (ids.length == 0) {
+                return '';
+            }
+
+            var result = ids.join(',');
+            return result;
+        };
         /***********************************************/
         // 获得Grid选中第一个索引
         /***********************************************/

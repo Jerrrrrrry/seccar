@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -17,9 +18,11 @@ import org.apache.struts.actions.DispatchAction;
 
 
 import com.lhcy.core.bo.SysConstant;
+import com.lhcy.core.bo.UuidCreator;
 import com.lhcy.core.util.ContextUtils;
 import com.lhcy.core.util.JsonUtils;
 import com.lhcy.sync.domain.dto.ParkingDto;
+import com.lhcy.sync.domain.pojo.Parking;
 import com.lhcy.sync.service.ParkingService;
 import com.lhcy.sync.web.form.ParkingForm;
 
@@ -43,6 +46,8 @@ public class ParkingAction extends DispatchAction {
 //          sdf.format(date);
         	
         	ParkingForm form = (ParkingForm)frm;
+        	System.out.println(form.getFilterField()+" " +form.getFilterValue() +" " + form.getFilterlicenseno() 
+        	+ " " + form.getFiltercustomer()+ " " + form.getFiltercardescription()+ " " + form.getFilterinventoryints()+ " " + form.getFilterinventoryoutts());
         	ParkingService ps = new ParkingService();
             int pageSize = form.getRows();
             int pageNow = form.getPage();
@@ -50,39 +55,6 @@ public class ParkingAction extends DispatchAction {
             int rowBegin = (pageNow - 1) * pageSize;
             int rowEnd = rowBegin + pageSize;
             if(rowBegin > 0) rowBegin++;
-//            System.out.println(sdf.format(date1));
-//            LoanDto dto = new LoanDto();
-//            dto.setId("1");
-//            dto.setBizDate("2017.5.12");
-//            dto.setFullName("张庆全");
-//            dto.setCarName("哈弗");
-//            dto.setLoanPeriod("2017.5.12-8.11");
-//            dto.setNetLoanAmount("33000");
-//            dto.setPaymentPerMonth("3个月");
-//            dto.setInterestRate("825");
-//            dto.setPaybackRate("1822");
-//            dto.setParkingFee("600");
-//            dto.setOthers("test");
-//            dto.setArrcuredPayAmount("29925");
-//            dto.setAllInterestAmount("2222");
-//            dto.setComments("2.5-1.98");
-//
-//            LoanDto dto1 = new LoanDto();
-//            dto1.setId("1");
-//            dto1.setBizDate("2017.5.12");
-//            dto1.setFullName("李亚楠");
-//            dto1.setCarName("肖克");
-//            dto1.setLoanPeriod("2017.5.12-2019.5.11");
-//            dto1.setNetLoanAmount("70000");
-//            dto1.setPaymentPerMonth("2917");
-//            dto1.setInterestRate("1400");
-//            dto1.setPaybackRate("130");
-//            dto1.setParkingFee("600");
-//            dto1.setOthers("test");
-//            dto1.setArrcuredPayAmount("3390");
-//            dto1.setAllInterestAmount("4500");
-//            dto1.setComments("贷24个月");
-//            dto1.setTemperaryMaterils("备用车钥匙");
             List<ParkingDto> list =  new ArrayList<ParkingDto>();
             list = ps.list(rowBegin, pageSize, form);
             JsonUtils.printFromList(response, list, count);
@@ -94,6 +66,115 @@ public class ParkingAction extends DispatchAction {
 
         return null;
     }
+    
+    /***********************************************/
+    // 保存一个
+    /***********************************************/
+    public ActionForward save(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+            // 检查登录
+            if (ContextUtils.getCurrentUserID(request) == null){
+                throw new Exception(SysConstant.M_NO_LOGIN);
+            }
+
+            ParkingForm form = (ParkingForm)frm;
+            Parking vo = new Parking();
+            ParkingService ps = new ParkingService();
+            BeanUtils.copyProperties(vo, form);
+
+            // 新增
+            if (vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
+
+                ParkingDto dto = ps.getEquals(vo.getLicenseno());
+                // 已存在
+                if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0){
+                    throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
+                }else{
+                    vo.setVehicleid(UuidCreator.getNewId());
+                    ps.create(vo);
+                }
+
+                // 修改
+            }else{
+                ParkingDto dto = ps.getEquals(vo.getLicenseno());
+                // 已存在
+                if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0 && !dto.getVehicleid().equals(vo.getVehicleid())){
+                    throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
+                }else{
+                    ps.update(vo);
+                }
+            }
+
+            JsonUtils.printActionResultOK(response);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            JsonUtils.printActionResultFromException(response, e);
+        }
+
+        return null;
+
+    }
+
+    /***********************************************/
+    // 显示一个
+    /***********************************************/
+    public ActionForward view(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+            // 检查登录
+            if (ContextUtils.getCurrentUserID(request) == null){
+                throw new Exception( SysConstant.M_NO_LOGIN);
+            }
+
+            ParkingService sv = new ParkingService();
+            ParkingForm form = (ParkingForm)frm;
+            ParkingDto vo = sv.query(form.getVehicleid());
+
+            if (vo == null || vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
+                throw new Exception(SysConstant.M_NO_DATA_FIND);
+            }
+
+            JsonUtils.printActionResultFromObject(response, vo);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            JsonUtils.printActionResultFromException(response, e);
+        }
+
+        return null;
+    }
+    /***********************************************/
+    // 删除多个
+    /***********************************************/
+    public ActionForward delete(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+            // 检查登录
+            if (ContextUtils.getCurrentUserID(request) == null){
+                throw new Exception(SysConstant.M_NO_LOGIN);
+            }
+
+            ParkingForm form = (ParkingForm)frm;
+            if (form.getVehicleid().length() == 0){
+                JsonUtils.printActionResultOK(response);
+                return null;
+            }
+
+            ParkingService sv = new ParkingService();
+            String[] list = form.getVehicleid().split(",");
+            sv.delete(list);
+            JsonUtils.printActionResultOK(response);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            JsonUtils.printActionResultFromException(response, e);
+        }
+
+        return null;
+    }
+
 //
 //    /***********************************************/
 //    // 同步
