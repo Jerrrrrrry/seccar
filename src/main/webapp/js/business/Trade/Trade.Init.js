@@ -158,46 +158,97 @@ var TradeInit = {
             /***********************************************/
             // 字段初始化
             /***********************************************/
-            $('#customer').textbox({
-                width : 200,
-                validType : ['length[1,100]']
-            });
-
-            $('#period').textbox({
-                width : 200,
-                validType : ['length[1,100]']
-            });
-
             $('#licenseno').textbox({
                 width : 200,
+                validType : ['length[1,100]']
+            });
+
+            $('#vehicledesc').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+
+            $('#tradername').textbox({
+                width : 200,
                 validType : ['length[0,100]']
             });
 
-            $('#cardescription').textbox({
+            $('#purchaseprice').textbox({
                 width : 200,
                 validType : ['length[0,100]']
             });
             
-            $('#inventoryints').textbox({
+            $('#ownername').textbox({
                 width: 200,
                 validType: ['length[0,100]']
             });
 
-            $('#inventoryoutts').textbox({
+            $('#ownerid').textbox({
                 width: 200,
                 validType: ['length[0,100]']
             });
-            $('#Tradefee').textbox({
+            $('#purchasedate').datebox({
                 width: 200,
                 validType: ['length[0,100]']
             });
             
+            $('#interestrate').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+//                multiline: true
+            });
+            $('#actualloan').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            
+            $('#spareloan').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+
+            $('#vehicletype').combobox({
+                width : 120,
+                editable : false,
+                valueField: 'value',
+                textField: 'label',
+                data : [
+                    {
+                        label: '自收车',
+                        value: '自收车',
+                        selected : true
+                    },
+                    {
+                        label: '第三方',
+                        value: '第三方'
+                    }
+                ]
+            });
             $('#comments').textbox({
                 width: 200,
                 validType: ['length[0,100]'],
                 multiline: true
             });
 
+            $('#earnest').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            $('#tradecost').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            $('#sellprice').textbox({
+                width: 200,
+                validType: ['length[0,100]'],
+                disabled: true
+            });
+            $('#selldate').datebox({
+                width: 200,
+                validType: ['length[0,100]'],
+                disabled: true
+            });
+            
             $('#filtercustomer').textbox({
                 width : 200,
                 validType : ['length[1,100]']
@@ -228,6 +279,14 @@ var TradeInit = {
                 iconCls : 'tbtn_addnew',
                 onClick: function(){
                     list.addNew();
+                }
+            });
+            $('#btnSold').linkbutton({
+                text : '销售出库',
+                plain : true,
+                iconCls : 'tbtn_addnew',
+                onClick: function(){
+                    list.view();
                 }
             });
 
@@ -291,7 +350,102 @@ var TradeInit = {
                     window.parent.closeCurrentTab();
                 }
             });
-
+            
+            /***********************************************/
+            // 窗口初始化
+            /***********************************************/
+            $('#dlg_add').dialog({
+                title: '收车入库',
+                width: 700,
+                height: 300,
+                modal: true,
+                closed: true,
+                minimizable: false,
+                maximizable: false,
+                resizable: false,
+                collapsible: false,
+                toolbar: [
+                    {
+                        text: '新增',
+                        iconCls: 'tbtn_addnew',
+                        handler: function(){
+                            edit.addNew();
+                        }
+                    },
+//                    {
+//                        text: '销售出库',
+//                        iconCls: 'tbtn_addnew',
+//                        handler: function(){
+//                            edit.addSold();
+//                        }
+//                    },
+                    {
+                        text: '保存',
+                        id:'btnEditSave',
+                        iconCls: 'tbtn_save',
+                        handler: function(){
+                        	//alert('btnEditSavefalse');
+                            edit.save(false);
+                        }
+                    },
+                    {
+                        text: '保存并新增',
+                        iconCls: 'tbtn_savenew',
+                        handler: function(){
+                            edit.save(true);
+                        }
+                    },
+                    '-',
+                    {
+                        id: 'btnFirst',
+                        iconCls: 'tbtn_first',
+                        handler: function () {
+                            edit.showNext('first');
+                        }
+                    },
+                    {
+                        id: 'btnPrevious',
+                        iconCls: 'tbtn_previous',
+                        handler: function () {
+                            edit.showNext('previous');
+                        }
+                    },
+                    {
+                        id: 'btnNext',
+                        iconCls: 'tbtn_next',
+                        handler: function () {
+                            edit.showNext('next');
+                        }
+                    },
+                    {
+                        id: 'btnLast',
+                        iconCls: 'tbtn_last',
+                        handler: function () {
+                            edit.showNext('last');
+                        }
+                    },
+                    '-',
+//                    {
+//                        text: '删除',
+//                        id: 'btnEditDelete',
+//                        iconCls: 'tbtn_remove',
+//                        handler: function(){
+//                            edit.delete();
+//                        }
+//                    },
+                    '-',
+                    {
+                        text: '关闭',
+                        iconCls: 'tbtn_quit',
+                        handler: function(){
+                            edit.close();
+                        }
+                    }
+                ],
+                onClose : function(){
+//                    xutil.focus('#filterValue');
+                }
+            }); 
             /***********************************************/
             // 窗口初始化
             /***********************************************/

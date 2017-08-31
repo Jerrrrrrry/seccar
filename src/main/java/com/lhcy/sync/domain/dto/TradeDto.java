@@ -28,15 +28,15 @@ public class TradeDto implements Serializable {
     private String vehicletype;
     private String settlement;
     private String settlementdate;
-    private String totalprofit;
-    private String traderprofit;
+    private double totalprofit;
+    private double traderprofit;
     private String picturepath;
     private String isdeleted;
     private String issold;
     private String comments;
     private String createdts;
     private String lastupdatedts;
-    private String interestcost;
+    private double interestcost;
 	public String getVehicleid() {
 		return vehicleid;
 	}
@@ -181,18 +181,6 @@ public class TradeDto implements Serializable {
 	public void setSettlementdate(String settlementdate) {
 		this.settlementdate = settlementdate;
 	}
-	public String getTotalprofit() {
-		return totalprofit;
-	}
-	public void setTotalprofit(String totalprofit) {
-		this.totalprofit = totalprofit;
-	}
-	public String getTraderprofit() {
-		return traderprofit;
-	}
-	public void setTraderprofit(String traderprofit) {
-		this.traderprofit = traderprofit;
-	}
 	public String getPicturepath() {
 		return picturepath;
 	}
@@ -229,12 +217,25 @@ public class TradeDto implements Serializable {
 	public void setLastupdatedts(String lastupdatedts) {
 		this.lastupdatedts = lastupdatedts;
 	}
-	public String getInterestcost() {
+	public double getTotalprofit() {
+		return totalprofit;
+	}
+	public void setTotalprofit(double totalprofit) {
+		this.totalprofit = totalprofit;
+	}
+	public double getTraderprofit() {
+		return traderprofit;
+	}
+	public void setTraderprofit(double traderprofit) {
+		this.traderprofit = traderprofit;
+	}
+	public double getInterestcost() {
 		return interestcost;
 	}
-	public void setInterestcost(String interestcost) {
+	public void setInterestcost(double interestcost) {
 		this.interestcost = interestcost;
 	}
+	
     
     
     

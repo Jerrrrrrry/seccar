@@ -21,17 +21,17 @@ public class TradeService {
 //
 
 
-//    public TradeDto query(String id) throws Exception{
-//        return dao.query(id);
-//    }
-//
-//    public void create(Trade vo) throws Exception{
-//        dao.create(vo);
-//    }
-//
-//    public void update(Trade vo) throws Exception{
-//        dao.update(vo);
-//    }
+    public TradeDto query(String id) throws Exception{
+        return dao.query(id);
+    }
+
+    public void create(Trade vo) throws Exception{
+        dao.create(vo);
+    }
+
+    public void update(Trade vo) throws Exception{
+        dao.update(vo);
+    }
 ////
 ////    public void move(String[] list, String tree, String user) throws Exception{
 ////        dao.move(list, tree, user);
@@ -45,8 +45,8 @@ public class TradeService {
 ////        dao.enable(list, status, user);
 ////    }
 ////
-//    public TradeDto getEquals(String licenseno) throws Exception{
-//        return dao.getEquals(licenseno);
-//    }
+    public TradeDto getEquals(String licenseno) throws Exception{
+        return dao.getEquals(licenseno);
+    }
 
 }

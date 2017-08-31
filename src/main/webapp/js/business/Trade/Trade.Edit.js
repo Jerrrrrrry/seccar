@@ -10,16 +10,27 @@ var TradeEdit = {
         // 清空
         /***********************************************/
         edit.clear = function () {
-
+//        	alert("edit.clear");
+        	$('#isdeleted').val('');
+        	$('#issold').val('');
+        	$('#traderid').val('');
         	$('#vehicleid').val('');
-        	$('#customer').textbox('setValue', '');
-            $('#period').textbox('setValue', '');
-            $('#licenseno').textbox('setValue', '');
-            $('#cardescription').textbox('setValue', '');
-            $('#inventoryints').textbox('setValue', '');
-            $('#inventoryoutts').textbox('setValue', '');
-            $('#Tradefee').textbox('setValue', '');
+        	$('#licenseno').textbox('setValue', '');
+            $('#vehicledesc').textbox('setValue', '');
+            $('#tradername').textbox('setValue', '');
+            $('#purchaseprice').textbox('setValue', '');
+            $('#ownername').textbox('setValue', '');
+            $('#ownerid').textbox('setValue', '');
+            $('#purchasedate').textbox('setValue', '');
+            $('#interestrate').textbox('setValue', '');
+            $('#actualloan').textbox('setValue', '');
+            $('#spareloan').textbox('setValue', '');
+            $('#vehicletype').textbox('setValue', '自收车');
             $('#comments').textbox('setValue', '');
+            $('#earnest').textbox('setValue', '');
+            $('#tradecost').textbox('setValue', '');
+            $('#sellprice').textbox('setValue', '');
+            $('#selldate').textbox('setValue', '');
         };
 
         /***********************************************/
@@ -29,7 +40,7 @@ var TradeEdit = {
 //        	alert("edit.addNew");
             this.clear();
 //            $('#btnEditDelete').linkbutton('disable');
-            xutil.focus('#customer');
+            xutil.focus('#licenseno');
         };
 
         /***********************************************/
@@ -72,19 +83,69 @@ var TradeEdit = {
                     var vo = data[0];
 
                     if (vo.status == "ok") {
-                        $('#vehicleid').val(vo.dto.vehicleid);
-                        $('#customer').textbox('setValue', vo.dto.customer);
-                        $('#period').textbox('setValue', vo.dto.period);
-                        $('#cardescription').textbox('setValue', vo.dto.cardescription);
-                        $('#licenseno').textbox('setValue', vo.dto.licenseno);
-                        $('#inventoryints').textbox('setValue', vo.dto.inventoryints);
-                        $('#inventoryoutts').textbox('setValue', vo.dto.inventoryoutts);
-                        $('#Tradefee').textbox('setValue', vo.dto.Tradefee);
+                        $('#licenseno').textbox({disabled:true});
+                        $('#vehicledesc').textbox({disabled:true});
+                        $('#tradername').textbox({disabled:true});
+                        $('#purchaseprice').textbox({disabled:true});
+                        $('#ownername').textbox({disabled:true});
+                        $('#ownerid').textbox({disabled:true});
+                        $('#purchasedate').textbox({disabled:true});
+                        $('#interestrate').textbox({disabled:true});
+                        $('#actualloan').textbox({disabled:true});
+                        $('#spareloan').textbox({disabled:true});
+                        $('#vehicletype').textbox({disabled:true});
+                        $('#comments').textbox({disabled:true});
+                        $('#earnest').textbox({disabled:true});
+                        $('#tradecost').textbox({disabled:true});
+                        $('#sellprice').textbox({disabled:false});
+                        $('#selldate').textbox({disabled:false});
+//                        $('#vehicleid').val('');
+//                        $('#vehicleid').val(vo.dto.vehicleid);
+//                        $('#licenseno').textbox('setValue', vo.dto.licenseno);
+                        $('#isdeleted').val(vo.dto.isdeleted);
+                    	$('#issold').val(vo.dto.issold);
+                    	$('#traderid').val(vo.dto.traderid);
+                    	$('#vehicleid').val(vo.dto.vehicleid);
+                    	$('#licenseno').textbox('setValue', vo.dto.licenseno);
+                        $('#vehicledesc').textbox('setValue', vo.dto.vehicledesc);
+                        $('#tradername').textbox('setValue', vo.dto.tradername);
+                        $('#purchaseprice').textbox('setValue', vo.dto.purchaseprice);
+                        $('#ownername').textbox('setValue', vo.dto.ownername);
+                        $('#ownerid').textbox('setValue', vo.dto.ownerid);
+                        $('#purchasedate').textbox('setValue', vo.dto.purchasedate);
+                        $('#interestrate').textbox('setValue', vo.dto.interestrate);
+                        $('#actualloan').textbox('setValue', vo.dto.actualloan);
+                        $('#spareloan').textbox('setValue', vo.dto.spareloan);
+                        $('#vehicletype').textbox('setValue', vo.dto.vehicletype);
                         $('#comments').textbox('setValue', vo.dto.comments);
+                        $('#earnest').textbox('setValue', vo.dto.earnest);
+                        $('#tradecost').textbox('setValue', vo.dto.tradecost);
+                        $('#sellprice').textbox('setValue', vo.dto.sellprice);
+                        $('#selldate').textbox('setValue', vo.dto.selldate);
+//                        $('#vehicleid').val('');
+//                    	$('#licenseno').textbox('setValue', '');
+//                        $('#vehicledesc').textbox('setValue', '');
+//                        $('#tradername').textbox('setValue', '');
+//                        $('#purchaseprice').textbox('setValue', '');
+//                        $('#ownername').textbox('setValue', '');
+//                        $('#ownerid').textbox('setValue', '');
+//                        $('#purchasedate').textbox('setValue', '');
+//                        $('#interestrate').textbox('setValue', '');
+//                        $('#actualloan').textbox('setValue', '');
+//                        $('#spareloan').textbox('setValue', '');
+//                        $('#earnest').textbox('setValue', '');
+//                        $('#comments').textbox('setValue', '');
+//                        $('#vehicledesc').textbox('setValue', vo.dto.period);
+//                        $('#cardescription').textbox('setValue', vo.dto.cardescription);
+//                        $('#licenseno').textbox('setValue', vo.dto.licenseno);
+//                        $('#inventoryints').textbox('setValue', vo.dto.inventoryints);
+//                        $('#inventoryoutts').textbox('setValue', vo.dto.inventoryoutts);
+//                        $('#Tradefee').textbox('setValue', vo.dto.Tradefee);
+//                        $('#comments').textbox('setValue', vo.dto.comments);
 //                        $('#btnEditDelete').linkbutton('enable');
 
-                        $('#dlg_edit').dialog('open');
-                        xutil.focus('#customer');
+                        $('#dlg_add').dialog('open');
+                        xutil.focus('#sellprice');
                     } else if (vo.status == 'nologin') {
                         top.location = basePath;
                     } else {
@@ -112,41 +173,39 @@ var TradeEdit = {
         /***********************************************/
         edit.save = function (addnew) {
 //        	alert("edit.save");
-//            if (!$('#userid').textbox('isValid')) {
-//                xutil.focus('#userid');
-//                return;
-//            }
-//
-//            if (!$('#username').textbox('isValid')) {
-//                xutil.focus('#username');
-//                return;
-//            }
-
             var vehicleid = $('#vehicleid').val();
 //            alert(vehicleid);
-            var customer = $('#customer').textbox('getValue');
-            var period = $('#period').textbox('getValue');
             var licenseno = $('#licenseno').textbox('getValue');
-            var cardescription = $('#cardescription').textbox('getValue');
-            var inventoryints = $('#inventoryints').textbox('getValue');
-            var inventoryoutts = $('#inventoryoutts').textbox('getValue');
-            var Tradefee = $('#Tradefee').textbox('getValue');
-            var comments = $('#comments').prop('checked') ? 0 : 1;
-
+            var vehicledesc = $('#vehicledesc').textbox('getValue');
+            var tradername = $('#tradername').textbox('getValue');
+            var purchaseprice = $('#purchaseprice').textbox('getValue');
+            var ownername = $('#ownername').textbox('getValue');
+            var ownerid = $('#ownerid').textbox('getValue');
+            var purchasedate = $('#purchasedate').textbox('getValue');
+            var interestrate = $('#interestrate').textbox('getValue');
+            var actualloan = $('#actualloan').textbox('getValue');
+            var spareloan = $('#spareloan').textbox('getValue');
+            var earnest = $('#earnest').textbox('getValue');
+            var vehicletype = $('#vehicletype').combobox('getValue');
+            var comments = $('#comments').textbox('getValue');
+            
 
             $.ajax({
                 type: 'post',
                 url: basePath + 'TradeAction.do?m=save',
                 data: {
                 	vehicleid: vehicleid,
-                    customer: customer,
-                    period: period,
-                    licenseno: licenseno,
-                    cardescription: cardescription,
-                    inventoryints: inventoryints,
-                    inventoryoutts: inventoryoutts,
-                    Tradefee: Tradefee,
-                    comments: comments
+                	licenseno: licenseno,
+                	vehicledesc: vehicledesc,
+                	tradername: tradername,
+                	purchaseprice: purchaseprice,
+                	ownername: ownername,
+                	ownerid: ownerid,
+                	purchasedate: purchasedate,
+                	interestrate: interestrate,
+                	earnest: earnest,
+                	actualloan: actualloan,
+                	spareloan: spareloan
                 },
                 success: function (data) {
                     if (data == null || data.length == 0) return;
@@ -159,7 +218,7 @@ var TradeEdit = {
                             edit.clear();
                             xutil.focus('#customer');
                         } else {
-                            $('#dlg_edit').dialog('close');
+                            $('#dlg_add').dialog('close');
                         }
 
                     } else if (vo.status == 'nologin') {
@@ -192,6 +251,49 @@ var TradeEdit = {
                     $.ajax({
                         type: 'post',
                         url: basePath + 'TradeAction.do?m=delete',
+                        data: {vehicleid: vehicleid},
+                        success: function (data) {
+
+                            if (data == null || data.length == 0) return;
+                            var vo = data[0];
+                            $('#btnDelete').linkbutton('enable');
+
+                            if (vo.status == 'ok') {
+                                $('#list').datagrid('reload');
+                                edit.clear();
+                                xutil.focus('#account');
+                            } else if (vo.status == 'nologin') {
+                                top.location = basePath;
+                            } else {
+                                $.messager.alert(AppConstant.M_INFO, vo.message, vo.status);
+                            }
+                        },
+                        error: function () {
+                            top.location = basePath;
+                        }
+                    });
+                } else {
+                    xutil.focus('#account');
+                }
+            });
+        };
+        /***********************************************/
+        // 销售出库
+        /***********************************************/
+        edit.del = function () {
+
+            var vehicleid = $('#vehicleid').val();
+            if (vehicleid == null || vehicleid.length == 0) {
+                $.messager.alert(AppConstant.M_INFO, AppConstant.M_NO_SAVED, 'warning');
+                return;
+            }
+
+            $.messager.confirm(AppConstant.M_INFO, AppConstant.M_CONFIRM_DELETE, function (r) {
+                if (r) {
+                    $('#btnDelete').linkbutton('disable');
+                    $.ajax({
+                        type: 'post',
+                        url: basePath + 'TradeAction.do?m=sold',
                         data: {vehicleid: vehicleid},
                         success: function (data) {
 

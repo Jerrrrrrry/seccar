@@ -460,6 +460,7 @@ public class ParkingDao {
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT ");
         sql.append("    licenseno ");
+        sql.append("   ,licenseno ");
         sql.append("   ,customer ");
         sql.append("   ,vehicleid ");
         sql.append(" FROM Parking ");

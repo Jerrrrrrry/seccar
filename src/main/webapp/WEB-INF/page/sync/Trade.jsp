@@ -119,42 +119,68 @@
   </div>
 </div>
 
-<div id="dlg_edit">
+<div id="dlg_add">
   <div region="center" border="false" title="" style="padding-left: 20px">
     <br/>
-    <table class="tb_edit" cellspacing="0">
+    <table class="tb_add" cellspacing="0">
       <tbody>
       <tr>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><input type="hidden" id="isdeleted" /></td>
+        <td><input type="hidden" id="issold" /></td>
+        <td>
+          <input type="hidden" id="traderid" />
+        </td>
         <td>
           <input type="hidden" id="vehicleid" />
         </td>
       </tr>
       <tr>
-        <th>客户名称</th>
-        <td><input id="customer"/></td>
-        <th>停车时间</th>
-        <td><input id="period"/></td>
-      </tr>
-      <tr>
         <th>车牌号</th>
         <td><input id="licenseno"/></td>
         <th>车辆描述</th>
-        <td><input id="cardescription"/></td>
+        <td><input id="vehicledesc"/></td>
       </tr>
       <tr>
-        <th>入库时间</th>
-        <td><input id="inventoryints"/></td>
-        <th>出库时间</th>
-        <td><input id="inventoryoutts"/></td>
+        <th>经办人</th>
+        <td><input id="tradername"/></td>
+        <th>收车价</th>
+        <td><input id="purchaseprice"/></td>   
       </tr>
       <tr>
-      	<th>停车费</th>
-        <td><input id="Tradefee"/></td>
-        <th>备注</th>
-        <td ><input id="comments"/></td>
+      	<th>卖车人姓名</th>
+        <td><input id="ownername"/></td>
+        <th>卖车人身份证</th>
+        <td><input id="ownerid"/></td>
+      </tr>
+      <tr>
+        <th>收车日期</th>
+        <td><input id="purchasedate"/></td>
+        <th>借款利率</th>
+        <td ><input id="interestrate"/></td>
+      </tr>
+      <tr>
+      	<th>实际借款金额</th>
+        <td><input id="actualloan"/></td>
+        <th>借款余量</th>
+        <td><input id="spareloan"/></td>
+      </tr>
+      <tr>
+        <th>车辆类型</th>
+        <td><input id="vehicletype"/></td>
+      	<th>备注</th>
+        <td><input id="comments"/></td>
+      </tr>
+      <tr>
+        <th>定金</th>
+        <td><input id="earnest"/></td>
+      	<th>交易费用</th>
+        <td><input id="tradecost"/></td>
+      </tr>
+      <tr>
+        <th>销售价格</th>
+        <td><input id="sellprice"/></td>
+      	<th>销售日期</th>
+        <td><input id="selldate"/></td>
       </tr>
       </tbody>
     </table>

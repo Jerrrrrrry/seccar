@@ -11,7 +11,7 @@ public class Trade implements Serializable {
     private String traderid;
     private String tradername;
     private double purchaseprice;
-    private Date purchasedate;
+    private String purchasedate;
     private String ownerid;
     private String ownername;
     private String ownerdesc;
@@ -21,7 +21,7 @@ public class Trade implements Serializable {
     private double spareloan;
     private double earnest;
     private double sellprice;
-    private Date selldate;
+    private String selldate;
     private double pricediff;
     private double tradecost;
     private double profit;
@@ -79,10 +79,10 @@ public class Trade implements Serializable {
 	public void setPurchaseprice(double purchaseprice) {
 		this.purchaseprice = purchaseprice;
 	}
-	public Date getPurchasedate() {
+	public String getPurchasedate() {
 		return purchasedate;
 	}
-	public void setPurchasedate(Date purchasedate) {
+	public void setPurchasedate(String purchasedate) {
 		this.purchasedate = purchasedate;
 	}
 	public String getOwnerid() {
@@ -139,10 +139,11 @@ public class Trade implements Serializable {
 	public void setSellprice(double sellprice) {
 		this.sellprice = sellprice;
 	}
-	public Date getSelldate() {
+	
+	public String getSelldate() {
 		return selldate;
 	}
-	public void setSelldate(Date selldate) {
+	public void setSelldate(String selldate) {
 		this.selldate = selldate;
 	}
 	public double getPricediff() {

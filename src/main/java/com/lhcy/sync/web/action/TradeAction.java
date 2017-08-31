@@ -70,81 +70,82 @@ public class TradeAction extends DispatchAction {
     /***********************************************/
     // 保存一个
     /***********************************************/
-//    public ActionForward save(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//
-//        try {
-//            // 检查登录
-//            if (ContextUtils.getCurrentUserID(request) == null){
-//                throw new Exception(SysConstant.M_NO_LOGIN);
-//            }
-//
-//            TradeForm form = (TradeForm)frm;
-//            Trade vo = new Trade();
-//            TradeService ps = new TradeService();
-//            BeanUtils.copyProperties(vo, form);
-//
-//            // 新增
-//            if (vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
-//
-//                TradeDto dto = ps.getEquals(vo.getLicenseno());
-//                // 已存在
-//                if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0){
-//                    throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
-//                }else{
-//                    vo.setVehicleid(UuidCreator.getNewId());
-//                    ps.create(vo);
-//                }
-//
-//                // 修改
-//            }else{
-//                TradeDto dto = ps.getEquals(vo.getLicenseno());
-//                // 已存在
-//                if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0 && !dto.getVehicleid().equals(vo.getVehicleid())){
-//                    throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
-//                }else{
-//                    ps.update(vo);
-//                }
-//            }
-//
-//            JsonUtils.printActionResultOK(response);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            logger.error(e.getMessage());
-//            JsonUtils.printActionResultFromException(response, e);
-//        }
-//
-//        return null;
-//
-//    }
-//
-//    /***********************************************/
-//    // 显示一个
-//    /***********************************************/
-//    public ActionForward view(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//
-//        try {
-//            // 检查登录
-//            if (ContextUtils.getCurrentUserID(request) == null){
-//                throw new Exception( SysConstant.M_NO_LOGIN);
-//            }
-//
-//            TradeService sv = new TradeService();
-//            TradeForm form = (TradeForm)frm;
-//            TradeDto vo = sv.query(form.getVehicleid());
-//
-//            if (vo == null || vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
-//                throw new Exception(SysConstant.M_NO_DATA_FIND);
-//            }
-//
-//            JsonUtils.printActionResultFromObject(response, vo);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            logger.error(e.getMessage());
-//            JsonUtils.printActionResultFromException(response, e);
-//        }
-//
-//        return null;
-//    }
+    public ActionForward save(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+            // 检查登录
+            if (ContextUtils.getCurrentUserID(request) == null){
+                throw new Exception(SysConstant.M_NO_LOGIN);
+            }
+
+            TradeForm form = (TradeForm)frm;
+            Trade vo = new Trade();
+            TradeService ts = new TradeService();
+            BeanUtils.copyProperties(vo, form);
+
+            // 新增
+            if (vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
+
+                TradeDto dto = ts.getEquals(vo.getLicenseno());
+                // 已存在
+                if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0){
+                    throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
+                }else{
+                    vo.setVehicleid(UuidCreator.getNewId());
+                    ts.create(vo);
+                }
+
+                // 修改
+            }else{
+                TradeDto dto = ts.getEquals(vo.getLicenseno());
+                System.out.println(dto.getVehicleid()+" ------------- "+dto.getLicenseno());
+                // 已存在
+                if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0 && !dto.getVehicleid().equals(vo.getVehicleid())){
+                    throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
+                }else{
+                    ts.update(vo);
+                }
+            }
+
+            JsonUtils.printActionResultOK(response);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            JsonUtils.printActionResultFromException(response, e);
+        }
+
+        return null;
+
+    }
+
+    /***********************************************/
+    // 显示一个
+    /***********************************************/
+    public ActionForward view(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+            // 检查登录
+            if (ContextUtils.getCurrentUserID(request) == null){
+                throw new Exception( SysConstant.M_NO_LOGIN);
+            }
+
+            TradeService sv = new TradeService();
+            TradeForm form = (TradeForm)frm;
+            TradeDto vo = sv.query(form.getVehicleid());
+
+            if (vo == null || vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
+                throw new Exception(SysConstant.M_NO_DATA_FIND);
+            }
+
+            JsonUtils.printActionResultFromObject(response, vo);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            JsonUtils.printActionResultFromException(response, e);
+        }
+
+        return null;
+    }
 //    /***********************************************/
 //    // 删除多个
 //    /***********************************************/

@@ -134,7 +134,7 @@ public class TradeDao {
         sql.append(" ) ");
         sql.append(" SELECT * FROM temp ");
         sql.append(" WHERE RowTrade BETWEEN " + rowBegin + " AND " + rowEnd + " ");
-        System.out.println("SQL: "+sql);
+        System.out.println("list SQL: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             return result;
@@ -190,103 +190,197 @@ public class TradeDao {
     /***********************************************/
     // 查询一个
     /***********************************************/
-//    public TradeDto query(String id) throws Exception{
-//
-//        TradeDto result = new TradeDto();
-//        StringBuilder sql = new StringBuilder();
-//        sql.append(" SELECT ");
+    public TradeDto query(String id) throws Exception{
+
+        TradeDto result = new TradeDto();
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT * ");
 //        sql.append("     a.vehicleid ");
-//        sql.append("    ,a.period ");
-//        sql.append("    ,a.customer ");
-//        sql.append("    ,a.cardescription ");
 //        sql.append("    ,a.licenseno ");
-//        sql.append("    ,a.inventoryints ");
-//        sql.append("    ,a.inventoryoutts ");
-//        sql.append("    ,a.Tradefee ");
+//        sql.append("    ,a.vehicledesc ");
+//        sql.append("    ,a.traderid ");
+//        sql.append("    ,a.tradername ");
+//        sql.append("    ,a.purchaseprice ");
+//        sql.append("    ,a.purchasedate ");
+//        sql.append("    ,a.ownerid ");
+//        sql.append("    ,a.ownername ");
+//        sql.append("    ,a.ownerdesc ");
+//        sql.append("    ,a.interestrate ");
+//        sql.append("    ,a.interest ");
+//        sql.append("    ,a.actualloan ");
+//        sql.append("    ,a.spareloan ");
+//        sql.append("    ,a.earnest ");
+//        sql.append("    ,a.sellprice ");
+//        sql.append("    ,a.selldate ");
+//        sql.append("    ,a.pricediff ");
+//        sql.append("    ,a.tradecost ");
+//        sql.append("    ,a.profit ");
+//        sql.append("    ,a.vehicletype ");
+//        sql.append("    ,a.settlement ");
+//        sql.append("    ,a.settlementdate ");
+//        sql.append("    ,a.totalprofit ");
+//        sql.append("    ,a.traderprofit ");
+//        sql.append("    ,a.picturepath ");
+//        sql.append("    ,a.isdeleted ");
+//        sql.append("    ,a.issold ");
 //        sql.append("    ,a.comments ");
 //        sql.append("    ,a.createdts ");
 //        sql.append("    ,a.lastupdatedts ");
-//        sql.append("    ,a.creator ");
-//        sql.append("   FROM Trade a ");
-//        sql.append("  WHERE a.vehicleid = ? ");
-//
-//        Connection conn = DbConnectionFactory.createHonchenConnection();
-//        if (conn == null){
-//            return result;
-//        }
-//
+//        sql.append("    ,a.interestcost ");
+        sql.append("   FROM SecCarTrade a ");
+        sql.append("  WHERE a.vehicleid = ? ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            return result;
+        }
+
+        List args = new ArrayList();
+        args.add(id);
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps, args);
+
+            if (rs == null){
+                return result;
+            }
+            while(rs.next()){
+            	result.setVehicleid(rs.getString("vehicleid"));
+                result.setVIN(rs.getString("VIN"));
+                result.setLicenseno(rs.getString("licenseno"));
+                result.setVehicledesc(rs.getString("vehicledesc"));
+                result.setTraderid(rs.getString("traderid"));
+                result.setTradername(rs.getString("tradername"));
+                result.setPurchaseprice(rs.getDouble("purchaseprice"));
+                result.setPurchasedate(rs.getString("purchasedate"));
+                result.setOwnerid(rs.getString("ownerid"));
+                result.setOwnername(rs.getString("ownername"));
+                result.setOwnerdesc(rs.getString("ownerdesc"));
+                result.setInterestrate(rs.getDouble("interestrate"));
+                result.setInterest(rs.getDouble("interest"));
+                result.setActualloan(rs.getDouble("actualloan"));
+                result.setSpareloan(rs.getDouble("spareloan"));
+                result.setEarnest(rs.getDouble("earnest"));
+                result.setSellprice(rs.getDouble("sellprice"));
+                result.setSelldate(rs.getString("selldate"));
+                result.setPricediff(rs.getDouble("pricediff"));
+                result.setTradecost(rs.getDouble("tradecost"));
+                result.setProfit(rs.getDouble("profit"));
+                result.setVehicletype(rs.getString("vehicletype"));
+                result.setSettlement(rs.getString("settlement"));
+                result.setSelldate(rs.getString("selldate"));
+                result.setTotalprofit(rs.getDouble("totalprofit"));
+                result.setTraderprofit(rs.getDouble("traderprofit"));
+                result.setPicturepath(rs.getString("picturepath"));
+                result.setIsdeleted(rs.getString("isdeleted"));
+                result.setIssold(rs.getString("issold"));
+                result.setComments(rs.getString("comments"));
+                result.setCreatedts(rs.getString("createdts"));
+                result.setLastupdatedts(rs.getString("lastupdatedts"));
+                result.setInterestcost(rs.getDouble("interestcost"));
+
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+
+    /***********************************************/
+    // 创建一个
+    /***********************************************/
+    public void create(Trade vo) throws Exception{
+
+        if (vo == null){
+            return;
+        }
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" INSERT INTO SecCarTrade ( ");
+        sql.append("     vehicleid ");
+        sql.append("    ,licenseno ");
+        sql.append("    ,vehicledesc ");
+        sql.append("    ,traderid ");
+        sql.append("    ,tradername ");
+        sql.append("    ,purchaseprice ");
+        sql.append("    ,purchasedate ");
+        sql.append("    ,ownerid ");
+        sql.append("    ,ownername ");
+        sql.append("    ,ownerdesc ");
+        sql.append("    ,interestrate ");
+        sql.append("    ,interest ");
+        sql.append("    ,actualloan ");
+        sql.append("    ,spareloan ");
+        sql.append("    ,earnest ");
+        sql.append("    ,vehicletype ");
+        sql.append("    ,comments ");
+        sql.append("    ,createdts ");
+        sql.append("    ,lastupdatedts ");
+        sql.append(" )VALUES(");
+        sql.append(StringUtils.getSqlPlaceholder(19));
+        sql.append(" )");
+
+        List args = new ArrayList();
+        args.add(vo.getVehicleid());
+        args.add(vo.getLicenseno());
+        args.add(vo.getVehicledesc());
+        args.add(vo.getTraderid());
+        args.add(vo.getTradername());
+        args.add(vo.getPurchaseprice());
+        args.add(vo.getPurchasedate());
+        args.add(vo.getOwnerid());
+        args.add(vo.getOwnername());
+        args.add(vo.getOwnerdesc());
+        args.add(vo.getInterestrate());
+        args.add(vo.getInterest());
+        args.add(vo.getActualloan());
+        args.add(vo.getSpareloan());
+        args.add(vo.getEarnest());
+        args.add(vo.getVehicletype());
+        args.add(vo.getComments());
+        args.add(new Date());
+        args.add(new Date());
+
+        try {
+            executeNonQuery(sql.toString(), args);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+    /***********************************************/
+    // 更新一个
+    /***********************************************/
+    public void update(Trade vo) throws Exception{
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" UPDATE SecCarTrade SET ");
+        sql.append("   period = ? ");
+        sql.append("  ,customer = ? ");
+        sql.append("  ,cardescription = ? ");
+        sql.append("  ,licenseno = ? ");
+        sql.append("  ,inventoryints = ? ");
+        sql.append("  ,inventoryoutts = ? ");
+        sql.append("  ,Tradefee = ? ");
+        sql.append("  ,comments = ? ");
+        sql.append("  ,lastupdatedts = ? ");
+        sql.append(" WHERE vehicleid = ? ");
+
 //        List args = new ArrayList();
-//        args.add(id);
-//
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            ps = conn.prepareStatement(sql.toString());
-//            rs = DbSqlHelper.executeQuery(ps, args);
-//
-//            if (rs == null){
-//                return result;
-//            }
-//            while(rs.next()){
-//                result.setVehicleid(rs.getString("vehicleid"));
-//                result.setPeriod(rs.getString("period"));
-//                result.setCustomer(rs.getString("customer"));
-//                result.setCardescription(rs.getString("cardescription"));
-//                result.setLicenseno(rs.getString("licenseno"));
-//                result.setInventoryints(rs.getString("inventoryints"));
-//                result.setInventoryoutts(rs.getString("inventoryoutts"));
-//                result.setTradefee(rs.getDouble("Tradefee"));
-//                result.setComments(rs.getString("comments"));
-//                result.setCreatedts(ConvertUtils.timestampToString(rs.getTimestamp("createdts")));
-//                result.setLastupdatedts(ConvertUtils.timestampToString(rs.getTimestamp("lastupdatedts")));
-//                result.setCreator(rs.getString("creator"));
-//            }
-//        } catch (Exception e) {
-//            throw new Exception(e);
-//        }finally{
-//            try {
-//                rs.close();
-//                ps.close();
-//                conn.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                logger.error(e.getMessage());
-//            }
-//        }
-//
-//        return result;
-//    }
-//
-//    /***********************************************/
-//    // 创建一个
-//    /***********************************************/
-//    public void create(Trade vo) throws Exception{
-//
-//        if (vo == null){
-//            return;
-//        }
-//
-//        StringBuilder sql = new StringBuilder();
-//        sql.append(" INSERT INTO SecCarTrade ( ");
-//        sql.append("     vehicleid ");
-//        sql.append("    ,period ");
-//        sql.append("    ,customer ");
-//        sql.append("    ,cardescription ");
-//        sql.append("    ,licenseno ");
-//        sql.append("    ,inventoryints ");
-//        sql.append("    ,inventoryoutts ");
-//        sql.append("    ,Tradefee ");
-//        sql.append("    ,comments ");
-//        sql.append("    ,createdts ");
-//        sql.append("    ,lastupdatedts ");
-//        sql.append("    ,creator ");
-//        sql.append(" )VALUES(");
-//        sql.append(StringUtils.getSqlPlaceholder(12));
-//        sql.append(" )");
-//
-//        List args = new ArrayList();
-//        args.add(vo.getVehicleid());
 //        args.add(vo.getPeriod());
 //        args.add(vo.getCustomer());
 //        args.add(vo.getCardescription());
@@ -296,53 +390,15 @@ public class TradeDao {
 //        args.add(vo.getTradefee());
 //        args.add(vo.getComments());
 //        args.add(new Date());
-//        args.add(new Date());
-//        args.add("SYSTEM");
-//
-//        try {
-//            executeNonQuery(sql.toString(), args);
-//        } catch (Exception e) {
-//            throw new Exception(e);
-//        }
-//    }
-//
-//    /***********************************************/
-//    // 更新一个
-//    /***********************************************/
-//    public void update(Trade vo) throws Exception{
-//
-//        StringBuilder sql = new StringBuilder();
-//        sql.append(" UPDATE SecCarTrade SET ");
-//        sql.append("   period = ? ");
-//        sql.append("  ,customer = ? ");
-//        sql.append("  ,cardescription = ? ");
-//        sql.append("  ,licenseno = ? ");
-//        sql.append("  ,inventoryints = ? ");
-//        sql.append("  ,inventoryoutts = ? ");
-//        sql.append("  ,Tradefee = ? ");
-//        sql.append("  ,comments = ? ");
-//        sql.append("  ,lastupdatedts = ? ");
-//        sql.append(" WHERE vehicleid = ? ");
-//
-//        List args = new ArrayList();
-//        args.add(vo.getPeriod());
-//        args.add(vo.getCustomer());
-//        args.add(vo.getCardescription());
-//        args.add(vo.getLicenseno());
-//        args.add(vo.getInventoryints());
-//        args.add(vo.getInventoryoutts());
-//        args.add(vo.getTradefee());
-//        args.add(vo.getComments());
-//        args.add(new Date());
 //        args.add(vo.getVehicleid());
-//
-//        try {
+
+        try {
 //            executeNonQuery(sql.toString(), args);
-//
-//        } catch (Exception e) {
-//            throw new Exception(e);
-//        }
-//    }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
 ////
 ////    /***********************************************/
 ////    // 移动至分类多个
@@ -490,9 +546,10 @@ public class TradeDao {
 
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT ");
-        sql.append("    licenseno ");
-        sql.append("   ,customer ");
-        sql.append("   ,vehicleid ");
+        sql.append("   	vehicleid ");
+        sql.append("   ,licenseno ");
+        sql.append("   ,ownerid ");
+        sql.append("   ,traderid ");
         sql.append(" FROM SecCarTrade ");
         sql.append("WHERE licenseno = ? ");
 
@@ -516,7 +573,8 @@ public class TradeDao {
             while(rs.next()){
                 result.setVehicleid(rs.getString("vehicleid"));
                 result.setLicenseno(rs.getString("licenseno"));
-//                result.setCustomer(rs.getString("customer"));
+                result.setOwnerid(rs.getString("ownerid"));
+                result.setTraderid(rs.getString("traderid"));
             }
         } catch (Exception e) {
             throw new Exception(e);
