@@ -91,6 +91,9 @@
 .tbtn_deleteline{
     background:url('icons/tbtn_deleteline.gif') no-repeat center center;
 }
+.tbtn_auditing{
+    background:url('icons/tbtn_auditing.gif') no-repeat center center;
+}
 .tbtn_tempsave{
     background:url('icons/tbtn_tempsave.gif') no-repeat center center;
 }

@@ -58,6 +58,7 @@ public class TradeForm extends ActionForm {
     private String issold;
     private String comments;
     private String interestcost;
+    private String operation;
 	public String getFilterField() {
 		return filterField;
 	}
@@ -327,6 +328,12 @@ public class TradeForm extends ActionForm {
 	}
 	public void setInterestcost(String interestcost) {
 		this.interestcost = interestcost;
+	}
+	public String getOperation() {
+		return operation;
+	}
+	public void setOperation(String operation) {
+		this.operation = operation;
 	}
     
 	

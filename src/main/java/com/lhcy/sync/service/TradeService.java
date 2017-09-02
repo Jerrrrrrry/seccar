@@ -14,12 +14,10 @@ public class TradeService {
     public List<TradeDto> list(int rowBegin, int pageSize, TradeForm form) throws Exception{
     return dao.list(rowBegin, pageSize, form);
     }
-//
-//    public int count(TradeForm form) throws Exception {
-//        return dao.count(form);
-//    }
-//
 
+    public int count(TradeForm form) throws Exception {
+        return dao.count(form);
+    }
 
     public TradeDto query(String id) throws Exception{
         return dao.query(id);
@@ -28,18 +26,27 @@ public class TradeService {
     public void create(Trade vo) throws Exception{
         dao.create(vo);
     }
-
+    
+    public double getspare() throws Exception{
+        return dao.getspare();
+    }
+    
     public void update(Trade vo) throws Exception{
         dao.update(vo);
     }
+    
+    public void updateSpare(double sloan) throws Exception{
+        dao.updateSpare(sloan);
+    }
+    
 ////
 ////    public void move(String[] list, String tree, String user) throws Exception{
 ////        dao.move(list, tree, user);
 ////    }
 ////    
-//    public void delete(String[] list) throws Exception{
-//        dao.delete(list);
-//    }
+    public void delete(String[] list) throws Exception{
+        dao.delete(list);
+    }
 ////
 ////    public void enable(String[] list, int status, String user) throws Exception{
 ////        dao.enable(list, status, user);

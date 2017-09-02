@@ -128,7 +128,9 @@
         <td><input type="hidden" id="isdeleted" /></td>
         <td><input type="hidden" id="issold" /></td>
         <td>
-          <input type="hidden" id="traderid" />
+          <input type="hidden" id="traderid"/>
+          <input type="hidden" id="userid" value="<%= session.getAttribute("CurrentLoginUserAccount")%>" />
+          <input type="hidden" id="username" value="<%= session.getAttribute("CurrentLoginUserName")%>" />
         </td>
         <td>
           <input type="hidden" id="vehicleid" />
@@ -142,7 +144,7 @@
       </tr>
       <tr>
         <th>经办人</th>
-        <td><input id="tradername"/></td>
+        <td><input id="tradername"></td>
         <th>收车价</th>
         <td><input id="purchaseprice"/></td>   
       </tr>
@@ -228,9 +230,11 @@
   <table cellspacing="0" cellpadding="0">
     <tr>
       <td><a id="btnAddnew"></a></td>
-      <td><a id="btnSold"></a></td>
+      <td><a id="btnView"></a></td>
       <td><a id="btnFilter"></a></td>
       <td><a id="btnRefresh"></a></td>
+      <td><div class="datagrid-btn-separator"></div></td>
+      <td><a id="btnSettle"></a></td>
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnSelectAll"></a></td>
       <td><a id="btnUnselectAll"></a></td>

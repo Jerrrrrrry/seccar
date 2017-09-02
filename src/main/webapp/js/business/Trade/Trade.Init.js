@@ -17,7 +17,7 @@ var TradeInit = {
                 striped: true,
                 rownumbers: true,
                 pageSize: 50,
-                pageList: [50,100],
+                pageList: [20,50,100],
                 fit: true,
                 singleSelect: false,
                 selectOnCheck: true,
@@ -46,21 +46,28 @@ var TradeInit = {
                         title: '车辆描述',
                         width: 80,
                         align: 'center',
-                        sortable: true
+                        sortable: false
                     },
                     {
                         field: 'tradername',
                         title: '经办人',
                         width: 80,
                         align: 'center',
-                        sortable: false
+                        sortable: true
+                    },
+                    {
+                        field: 'vehicletype',
+                        title: '车辆类型',
+                        width: 80,
+                        align: 'center',
+                        sortable: true
                     },
                     {
                         field: 'purchaseprice',
                         title: '收车价',
                         width: 80,
                         align: 'center',
-                        sortable: true
+                        sortable: false
                     },
                     {
                         field: 'purchasedate',
@@ -74,7 +81,7 @@ var TradeInit = {
                         title: '卖车人身份证',
                         width: 180,
                         align: 'left',
-                        sortable: true
+                        sortable: false
                     },
                     {
                         field: 'ownername',
@@ -116,7 +123,7 @@ var TradeInit = {
                         title: '销售日期',
                         width: 100,
                         align: 'left',
-                        sortable: false
+                        sortable: true
                     },
                     {
                         field: 'tradecost',
@@ -281,10 +288,10 @@ var TradeInit = {
                     list.addNew();
                 }
             });
-            $('#btnSold').linkbutton({
-                text : '销售出库',
+            $('#btnView').linkbutton({
+                text : '查看',
                 plain : true,
-                iconCls : 'tbtn_addnew',
+                iconCls : 'tbtn_auditing',
                 onClick: function(){
                     list.view();
                 }
@@ -333,7 +340,15 @@ var TradeInit = {
                     list.unselectAll();
                 }
             });
-
+            
+            $('#btnSettle').linkbutton({
+                text : '结算',
+                plain : true,
+                iconCls : 'tbtn_submit',
+                onClick: function(){
+                    list.del();
+                }
+            });
             $('#btnDelete').linkbutton({
                 text : '删除',
                 plain : true,
@@ -372,27 +387,36 @@ var TradeInit = {
                             edit.addNew();
                         }
                     },
-//                    {
-//                        text: '销售出库',
-//                        iconCls: 'tbtn_addnew',
-//                        handler: function(){
-//                            edit.addSold();
-//                        }
-//                    },
                     {
-                        text: '保存',
+                        text: '入库',
                         id:'btnEditSave',
-                        iconCls: 'tbtn_save',
+                        iconCls: 'tbtn_tempsave',
                         handler: function(){
                         	//alert('btnEditSavefalse');
-                            edit.save(false);
+                            edit.save('save');
                         }
                     },
                     {
-                        text: '保存并新增',
+                        text: '入库并新增',
                         iconCls: 'tbtn_savenew',
                         handler: function(){
-                            edit.save(true);
+                            edit.save('savenew');
+                        }
+                    },
+                    '-',
+                    {
+                        text: '出库',
+                        iconCls: 'tbtn_save',
+                        handler: function(){
+                        	edit.save('sold');
+                        }
+                    },
+                    '-',
+                    {
+                        text : '结算',
+                        iconCls : 'tbtn_submit',
+                        onClick: function(){
+                            edit.save('settle');
                         }
                     },
                     '-',
@@ -449,98 +473,98 @@ var TradeInit = {
             /***********************************************/
             // 窗口初始化
             /***********************************************/
-            $('#dlg_edit').dialog({
-                title: '停车管理',
-                width: 700,
-                height: 300,
-                modal: true,
-                closed: true,
-                minimizable: false,
-                maximizable: false,
-                resizable: false,
-                collapsible: false,
-                toolbar: [
-                    {
-                        text: '新增',
-                        iconCls: 'tbtn_addnew',
-                        handler: function(){
-                            edit.addNew();
-                        }
-                    },
+//            $('#dlg_edit').dialog({
+//                title: '停车管理',
+//                width: 700,
+//                height: 300,
+//                modal: true,
+//                closed: true,
+//                minimizable: false,
+//                maximizable: false,
+//                resizable: false,
+//                collapsible: false,
+//                toolbar: [
 //                    {
-//                        text: '复制',
-//                        iconCls: 'tbtn_copy',
+//                        text: '新增',
+//                        iconCls: 'tbtn_addnew',
 //                        handler: function(){
-//                            edit.copy();
+//                            edit.addNew();
 //                        }
 //                    },
-                    {
-                        text: '保存',
-                        id:'btnEditSave',
-                        iconCls: 'tbtn_save',
-                        handler: function(){
-                        	//alert('btnEditSavefalse');
-                            edit.save(false);
-                        }
-                    },
-                    {
-                        text: '保存并新增',
-                        iconCls: 'tbtn_savenew',
-                        handler: function(){
-                            edit.save(true);
-                        }
-                    },
-                    '-',
-                    {
-                        id: 'btnFirst',
-                        iconCls: 'tbtn_first',
-                        handler: function () {
-                            edit.showNext('first');
-                        }
-                    },
-                    {
-                        id: 'btnPrevious',
-                        iconCls: 'tbtn_previous',
-                        handler: function () {
-                            edit.showNext('previous');
-                        }
-                    },
-                    {
-                        id: 'btnNext',
-                        iconCls: 'tbtn_next',
-                        handler: function () {
-                            edit.showNext('next');
-                        }
-                    },
-                    {
-                        id: 'btnLast',
-                        iconCls: 'tbtn_last',
-                        handler: function () {
-                            edit.showNext('last');
-                        }
-                    },
-                    '-',
+////                    {
+////                        text: '复制',
+////                        iconCls: 'tbtn_copy',
+////                        handler: function(){
+////                            edit.copy();
+////                        }
+////                    },
 //                    {
-//                        text: '删除',
-//                        id: 'btnEditDelete',
-//                        iconCls: 'tbtn_remove',
+//                        text: '保存',
+//                        id:'btnEditSave',
+//                        iconCls: 'tbtn_tempsave',
 //                        handler: function(){
-//                            edit.delete();
+//                        	//alert('btnEditSavefalse');
+//                            edit.save(false);
 //                        }
 //                    },
-                    '-',
-                    {
-                        text: '关闭',
-                        iconCls: 'tbtn_quit',
-                        handler: function(){
-                            edit.close();
-                        }
-                    }
-                ],
-                onClose : function(){
-//                    xutil.focus('#filterValue');
-                }
-            }); 
+//                    {
+//                        text: '保存并新增',
+//                        iconCls: 'tbtn_savenew',
+//                        handler: function(){
+//                            edit.save(true);
+//                        }
+//                    },
+//                    '-',
+//                    {
+//                        id: 'btnFirst',
+//                        iconCls: 'tbtn_first',
+//                        handler: function () {
+//                            edit.showNext('first');
+//                        }
+//                    },
+//                    {
+//                        id: 'btnPrevious',
+//                        iconCls: 'tbtn_previous',
+//                        handler: function () {
+//                            edit.showNext('previous');
+//                        }
+//                    },
+//                    {
+//                        id: 'btnNext',
+//                        iconCls: 'tbtn_next',
+//                        handler: function () {
+//                            edit.showNext('next');
+//                        }
+//                    },
+//                    {
+//                        id: 'btnLast',
+//                        iconCls: 'tbtn_last',
+//                        handler: function () {
+//                            edit.showNext('last');
+//                        }
+//                    },
+//                    '-',
+////                    {
+////                        text: '删除',
+////                        id: 'btnEditDelete',
+////                        iconCls: 'tbtn_remove',
+////                        handler: function(){
+////                            edit.delete();
+////                        }
+////                    },
+//                    '-',
+//                    {
+//                        text: '关闭',
+//                        iconCls: 'tbtn_quit',
+//                        handler: function(){
+//                            edit.close();
+//                        }
+//                    }
+//                ],
+//                onClose : function(){
+////                    xutil.focus('#filterValue');
+//                }
+//            }); 
             
             /***********************************************/
             // 窗口初始化

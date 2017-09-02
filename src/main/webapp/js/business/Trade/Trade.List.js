@@ -116,7 +116,7 @@ var TradeList = {
         
             if (!xutil.isGridSelected('#list')) return;
             var vehicleid = xutil.getGridSelectedVehicleID('#list');
-            alert(vehicleid);
+//            alert(vehicleid);
                 $.ajax({
                     type: 'post',
                     url: basePath + 'TradeAction.do?m=view',
@@ -127,20 +127,20 @@ var TradeList = {
                         var vo = data[0];
 
                         if (vo.status == "ok") {
-                            $('#licenseno').textbox({disabled:true});
-                            $('#vehicledesc').textbox({disabled:true});
+                        	$('#licenseno').textbox({disabled:true});
+                            $('#vehicledesc').textbox({disabled:false});
                             $('#tradername').textbox({disabled:true});
                             $('#purchaseprice').textbox({disabled:true});
-                            $('#ownername').textbox({disabled:true});
-                            $('#ownerid').textbox({disabled:true});
+                            $('#ownername').textbox({disabled:false});
+                            $('#ownerid').textbox({disabled:false});
                             $('#purchasedate').textbox({disabled:true});
-                            $('#interestrate').textbox({disabled:true});
+                            $('#interestrate').textbox({disabled:false});
                             $('#actualloan').textbox({disabled:true});
                             $('#spareloan').textbox({disabled:true});
-                            $('#vehicletype').textbox({disabled:true});
-                            $('#comments').textbox({disabled:true});
-                            $('#earnest').textbox({disabled:true});
-                            $('#tradecost').textbox({disabled:true});
+                            $('#vehicletype').combobox({disabled:true});
+                            $('#comments').textbox({disabled:false});
+                            $('#earnest').textbox({disabled:false});
+                            $('#tradecost').textbox({disabled:false});
                             $('#sellprice').textbox({disabled:false});
                             $('#selldate').textbox({disabled:false});
 //                            $('#vehicleid').val('');
@@ -159,8 +159,13 @@ var TradeList = {
                             $('#purchasedate').textbox('setValue', vo.dto.purchasedate);
                             $('#interestrate').textbox('setValue', vo.dto.interestrate);
                             $('#actualloan').textbox('setValue', vo.dto.actualloan);
-                            $('#spareloan').textbox('setValue', vo.dto.spareloan);
-                            $('#vehicletype').textbox('setValue', vo.dto.vehicletype);
+                            if(vo.dto.vehicletype=="第三方"){
+                            	$('#spareloan').textbox('setValue', vo.dto.spareloan);
+                            }else{
+                            	$('#spareloan').textbox('setValue', '0');	
+                            }
+//                            $('#spareloan').textbox('setValue', vo.dto.spareloan);
+                            $('#vehicletype').combobox('setValue', vo.dto.vehicletype);
                             $('#comments').textbox('setValue', vo.dto.comments);
                             $('#earnest').textbox('setValue', vo.dto.earnest);
                             $('#tradecost').textbox('setValue', vo.dto.tradecost);
