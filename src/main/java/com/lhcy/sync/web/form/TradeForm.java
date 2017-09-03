@@ -59,6 +59,10 @@ public class TradeForm extends ActionForm {
     private String comments;
     private String interestcost;
     private String operation;
+    private String buyerid;
+    private String buyername;
+    
+    
 	public String getFilterField() {
 		return filterField;
 	}
@@ -334,6 +338,18 @@ public class TradeForm extends ActionForm {
 	}
 	public void setOperation(String operation) {
 		this.operation = operation;
+	}
+	public String getBuyerid() {
+		return buyerid;
+	}
+	public void setBuyerid(String buyerid) {
+		this.buyerid = buyerid;
+	}
+	public String getBuyername() {
+		return buyername;
+	}
+	public void setBuyername(String buyername) {
+		this.buyername = buyername;
 	}
     
 	

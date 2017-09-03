@@ -1,5 +1,7 @@
 var AppConstant = {
     M_SERVER_ERROR: '服务器连接已断开，请重新打开页面后重试。',
+    M_NODELETE_ERROR: '车辆已删除/已结算，无法执行删除操作！',
+//    M_SERVER_ERROR: '服务器连接已断开，请重新打开页面后重试。',
     M_NO_SELECT_ROW: '请选择要操作的数据！',
     M_NO_SELECT_TREE: '请选择一个分类！',
     M_CAN_NOT_SELECT_ROOT_TREE: '不能操作根分类！',

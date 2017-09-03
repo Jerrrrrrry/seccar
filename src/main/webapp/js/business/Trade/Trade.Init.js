@@ -58,7 +58,7 @@ var TradeInit = {
                     {
                         field: 'vehicletype',
                         title: '车辆类型',
-                        width: 80,
+                        width: 60,
                         align: 'center',
                         sortable: true
                     },
@@ -72,14 +72,14 @@ var TradeInit = {
                     {
                         field: 'purchasedate',
                         title: '收车日期',
-                        width: 100,
+                        width: 80,
                         align: 'left',
                         sortable: true
                     },
                     {
                         field: 'ownerid',
                         title: '卖车人身份证',
-                        width: 180,
+                        width: 160,
                         align: 'left',
                         sortable: false
                     },
@@ -93,52 +93,123 @@ var TradeInit = {
                     {
                         field: 'interestrate',
                         title: '利率',
-                        width: 50,
+                        width: 35,
                         align: 'left',
                         sortable: false
                     },
                     {
                         field: 'actualloan',
                         title: '实际借款金额',
-                        width: 100,
+                        width: 80,
                         align: 'left',
                         sortable: false
                     },
                     {
                         field: 'earnest',
                         title: '定金',
-                        width: 100,
+                        width: 40,
                         align: 'left',
                         sortable: false
                     },
                     {
                         field: 'sellprice',
                         title: '销售价格',
-                        width: 100,
+                        width: 60,
                         align: 'left',
                         sortable: false
                     },
                     {
                         field: 'selldate',
                         title: '销售日期',
-                        width: 100,
+                        width: 80,
                         align: 'left',
                         sortable: true
                     },
                     {
-                        field: 'tradecost',
-                        title: '交易费用',
-                        width: 100,
+                        field: 'buyerid',
+                        title: '购车人身份证',
+                        width: 160,
                         align: 'left',
                         sortable: false
                     },
+                    {
+                        field: 'buyername',
+                        title: '购车人姓名',
+                        width: 80,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'tradecost',
+                        title: '交易费用',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+//                    {
+//                        field: 'pricediff',
+//                        title: '价差',
+//                        width: 60,
+//                        align: 'left',
+//                        sortable: false
+//                    },
+//                    {
+//                        field: 'totalprofit',
+//                        title: '总利润',
+//                        width: 60,
+//                        align: 'left',
+//                        sortable: false
+//                    },
+//                    {
+//                        field: 'profit',
+//                        title: '利润',
+//                        width: 60,
+//                        align: 'left',
+//                        sortable: false
+//                    },
+//                    {
+//                        field: 'traderprofit',
+//                        title: '第三方利润',
+//                        width: 60,
+//                        align: 'left',
+//                        sortable: false
+//                    },
+//                    {
+//                        field: 'comments',
+//                        title: '备注',
+//                        width: 60,
+//                        align: 'left',
+//                        sortable: false
+//                    },
                     {
                         field: 'picturepath',
                         title: '图片路径',
                         width: 100,
                         align: 'left',
                         sortable: false
-                    }
+                    },
+                    {
+                        field: 'isdeleted',
+                        title: '已删除',
+                        width: 50,
+                        align: 'center',
+                        sortable: true
+                    },
+                    {
+                        field: 'issold',
+                        title: '已售',
+                        width: 50,
+                        align: 'center',
+                        sortable: true
+                    },
+                    {
+                        field: 'settlement',
+                        title: '已结算',
+                        width: 80,
+                        align: 'center',
+                        sortable: true
+                    },
+                    
                 ]],
                 onDblClickRow: function(index, data){
                     $('#btnFirst').linkbutton('enable');
@@ -255,6 +326,16 @@ var TradeInit = {
                 validType: ['length[0,100]'],
                 disabled: true
             });
+            $('#buyername').textbox({
+                width: 200,
+                validType: ['length[0,100]'],
+                disabled: true
+            });
+            $('#buyerid').textbox({
+                width: 200,
+                validType: ['length[0,100]'],
+                disabled: true
+            });
             
             $('#filtercustomer').textbox({
                 width : 200,
@@ -288,14 +369,14 @@ var TradeInit = {
                     list.addNew();
                 }
             });
-            $('#btnView').linkbutton({
-                text : '查看',
-                plain : true,
-                iconCls : 'tbtn_auditing',
-                onClick: function(){
-                    list.view();
-                }
-            });
+//            $('#btnView').linkbutton({
+//                text : '查看',
+//                plain : true,
+//                iconCls : 'tbtn_auditing',
+//                onClick: function(){
+//                    list.view();
+//                }
+//            });
 
             $('#btnFilter').linkbutton({
                 text : '过滤',
@@ -314,49 +395,49 @@ var TradeInit = {
                 }
             });
 
-            $('#btnSync').linkbutton({
-                text : '同步',
-                plain : true,
-                iconCls : 'tbtn_attemper',
-                onClick: function(){
-                    list.sync();
-                }
-            });
+//            $('#btnSync').linkbutton({
+//                text : '同步',
+//                plain : true,
+//                iconCls : 'tbtn_attemper',
+//                onClick: function(){
+//                    list.sync();
+//                }
+//            });
 
-            $('#btnSelectAll').linkbutton({
-                text : '全选',
-                plain : true,
-                iconCls : 'tbtn_selectall',
-                onClick: function(){
-                    list.selectAll();
-                }
-            });
-
-            $('#btnUnselectAll').linkbutton({
-                text : '全清',
-                plain : true,
-                iconCls : 'tbtn_deleteall',
-                onClick: function(){
-                    list.unselectAll();
-                }
-            });
+//            $('#btnSelectAll').linkbutton({
+//                text : '全选',
+//                plain : true,
+//                iconCls : 'tbtn_selectall',
+//                onClick: function(){
+//                    list.selectAll();
+//                }
+//            });
+//
+//            $('#btnUnselectAll').linkbutton({
+//                text : '全清',
+//                plain : true,
+//                iconCls : 'tbtn_deleteall',
+//                onClick: function(){
+//                    list.unselectAll();
+//                }
+//            });
             
-            $('#btnSettle').linkbutton({
-                text : '结算',
-                plain : true,
-                iconCls : 'tbtn_submit',
-                onClick: function(){
-                    list.del();
-                }
-            });
-            $('#btnDelete').linkbutton({
-                text : '删除',
-                plain : true,
-                iconCls : 'tbtn_remove',
-                onClick: function(){
-                    list.del();
-                }
-            });
+//            $('#btnSettle').linkbutton({
+//                text : '结算',
+//                plain : true,
+//                iconCls : 'tbtn_submit',
+//                onClick: function(){
+//                    edit.save("settle");
+//                }
+//            });
+//            $('#btnDelete').linkbutton({
+//                text : '删除',
+//                plain : true,
+//                iconCls : 'tbtn_remove',
+//                onClick: function(){
+//                    list.del();
+//                }
+//            });
             $('#btnClose').linkbutton({
                 text : '关闭',
                 plain : true,
@@ -381,6 +462,7 @@ var TradeInit = {
                 collapsible: false,
                 toolbar: [
                     {
+                    	id: 'btnEditadd',
                         text: '新增',
                         iconCls: 'tbtn_addnew',
                         handler: function(){
@@ -397,6 +479,7 @@ var TradeInit = {
                         }
                     },
                     {
+                    	id: 'btnEditSaveadd',
                         text: '入库并新增',
                         iconCls: 'tbtn_savenew',
                         handler: function(){
@@ -405,6 +488,7 @@ var TradeInit = {
                     },
                     '-',
                     {
+                    	id: 'btnEditSold',
                         text: '出库',
                         iconCls: 'tbtn_save',
                         handler: function(){
@@ -413,6 +497,7 @@ var TradeInit = {
                     },
                     '-',
                     {
+                    	id: 'btnEditSettle',
                         text : '结算',
                         iconCls : 'tbtn_submit',
                         onClick: function(){
@@ -449,14 +534,14 @@ var TradeInit = {
                         }
                     },
                     '-',
-//                    {
-//                        text: '删除',
-//                        id: 'btnEditDelete',
-//                        iconCls: 'tbtn_remove',
-//                        handler: function(){
-//                            edit.delete();
-//                        }
-//                    },
+                    {
+                        text: '删除',
+                        id: 'btnEditDelete',
+                        iconCls: 'tbtn_remove',
+                        handler: function(){
+                            edit.del();
+                        }
+                    },
                     '-',
                     {
                         text: '关闭',

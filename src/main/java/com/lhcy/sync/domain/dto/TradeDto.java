@@ -37,6 +37,9 @@ public class TradeDto implements Serializable {
     private String createdts;
     private String lastupdatedts;
     private double interestcost;
+    private String buyerid;
+    private String buyername;
+    
 	public String getVehicleid() {
 		return vehicleid;
 	}
@@ -234,6 +237,18 @@ public class TradeDto implements Serializable {
 	}
 	public void setInterestcost(double interestcost) {
 		this.interestcost = interestcost;
+	}
+	public String getBuyerid() {
+		return buyerid;
+	}
+	public void setBuyerid(String buyerid) {
+		this.buyerid = buyerid;
+	}
+	public String getBuyername() {
+		return buyername;
+	}
+	public void setBuyername(String buyername) {
+		this.buyername = buyername;
 	}
 	
     

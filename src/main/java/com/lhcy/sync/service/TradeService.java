@@ -35,10 +35,17 @@ public class TradeService {
         dao.update(vo);
     }
     
+    public void settle(Trade vo) throws Exception{
+        dao.settle(vo);
+    }
+    
     public void updateSpare(double sloan) throws Exception{
         dao.updateSpare(sloan);
     }
-    
+       
+    public void deletesingle(String vehicleid) throws Exception{
+        dao.deletesingle(vehicleid);
+    }
 ////
 ////    public void move(String[] list, String tree, String user) throws Exception{
 ////        dao.move(list, tree, user);

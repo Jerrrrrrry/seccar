@@ -126,7 +126,9 @@
       <tbody>
       <tr>
         <td><input type="hidden" id="isdeleted" /></td>
-        <td><input type="hidden" id="issold" /></td>
+        <td><input type="hidden" id="issold" />
+        <input type="hidden" id="settlement" />
+        </td>
         <td>
           <input type="hidden" id="traderid"/>
           <input type="hidden" id="userid" value="<%= session.getAttribute("CurrentLoginUserAccount")%>" />
@@ -184,6 +186,12 @@
       	<th>销售日期</th>
         <td><input id="selldate"/></td>
       </tr>
+      <tr>
+        <th>购车人姓名</th>
+        <td><input id="buyername"/></td>
+      	<th>购车人身份证</th>
+        <td><input id="buyerid"/></td>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -230,9 +238,10 @@
   <table cellspacing="0" cellpadding="0">
     <tr>
       <td><a id="btnAddnew"></a></td>
-      <td><a id="btnView"></a></td>
       <td><a id="btnFilter"></a></td>
       <td><a id="btnRefresh"></a></td>
+      <!-- 
+      <td><a id="btnView"></a></td>
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnSettle"></a></td>
       <td><div class="datagrid-btn-separator"></div></td>
@@ -240,6 +249,7 @@
       <td><a id="btnUnselectAll"></a></td>
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnDelete"></a></td>
+      -->
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnClose"></a></td>
     </tr>

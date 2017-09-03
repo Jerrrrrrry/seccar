@@ -122,7 +122,12 @@ public class TradeAction extends DispatchAction {
 	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
 	        		profit = totalprofit/2;
 	        		traderprofit = totalprofit/2;
+	        		sloan = ts.getspare() + vo.getPurchaseprice();
+	        		if(vo.getIssold() == null || vo.getIssold().equals("0")){
+	        		ts.updateSpare(sloan);	
+	        		}
         		}
+        		
         		vo.setInterest(interest);
         		vo.setInterestcost(interestcost);
         		vo.setPricediff(pricediff);
@@ -132,10 +137,16 @@ public class TradeAction extends DispatchAction {
         		vo.setSettlement("0");
         		vo.setSettlementdate(null);
         		vo.setIssold("1");
-        	}else if(form.getOperation()=="settle")
+        	}else if(form.getOperation().equals("settle"))
         	{
+        		if(vo.getIssold() !=null && vo.getIssold().equals("1")){
         		vo.setSettlement("1");
-        		vo.setSettlementdate((new Date()).toString());
+        		String settlementdate =sdf.format(new Date());
+        		vo.setSettlementdate(settlementdate);
+        		}else
+        		{
+        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTSOLD_ERROR);
+        		}
         	}else{
         		if(vehicletype.equals("自收车")){
 //		        	vo.setActualloan(vo.getPurchaseprice());
@@ -185,7 +196,11 @@ public class TradeAction extends DispatchAction {
                 if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0 && !dto.getVehicleid().equals(vo.getVehicleid())){
                     throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
                 }else{
-                    ts.update(vo);
+                	if(form.getOperation().equals("settle")){
+                		ts.settle(vo);
+                	}else{
+                		ts.update(vo);
+                	}
                 }
             }
 
@@ -228,6 +243,48 @@ public class TradeAction extends DispatchAction {
 
         return null;
     }
+    /***********************************************/
+    // 删除一个
+    /***********************************************/
+    public ActionForward deletesingle(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+            // 检查登录
+            if (ContextUtils.getCurrentUserID(request) == null){
+                throw new Exception(SysConstant.M_NO_LOGIN);
+            }
+
+            TradeForm form = (TradeForm)frm;
+            if (form.getVehicleid().length() == 0){
+                JsonUtils.printActionResultOK(response);
+                return null;
+            }
+
+            TradeService sv = new TradeService();
+            String vehichleid = form.getVehicleid();
+            String vehicletype = form.getVehicletype();
+            String issold = form.getIssold();
+            double purchaseprice = form.getPurchaseprice();
+
+            sv.deletesingle(vehichleid);
+            if(vehicletype.equals("自收车") || issold.equals("1")){
+            	System.out.println("ID: "+vehichleid+"车辆类型： "+vehicletype+"已售："+issold);
+    		}else{
+    			double spareloantmp = 0.00;//vo.getspareloan()
+    			spareloantmp = sv.getspare();
+    			double	sloan = spareloantmp + purchaseprice;
+                sv.updateSpare(sloan);
+    		}
+            JsonUtils.printActionResultOK(response);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            JsonUtils.printActionResultFromException(response, e);
+        }
+
+        return null;
+    }
+    
     /***********************************************/
     // 删除多个
     /***********************************************/
