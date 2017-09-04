@@ -5,7 +5,7 @@ import com.hongchen.sync.util.Constants;
 import com.lhcy.core.bo.SysConstant;
 import com.lhcy.core.util.ContextUtils;
 import com.lhcy.core.util.JsonUtils;
-import com.lhcy.sync.domain.dto.LoanDto;
+import com.lhcy.sync.domain.dto.CarLoanDto;
 import com.lhcy.sync.web.form.UploadFileForm;
 
 import org.apache.log4j.Logger;
@@ -104,7 +104,7 @@ public class CarLoanAction extends DispatchAction {
             int rowBegin = (pageNow - 1) * pageSize;
             int rowEnd = rowBegin + pageSize;
             if(rowBegin > 0) rowBegin++;
-            LoanDto dto = new LoanDto();
+            CarLoanDto dto = new CarLoanDto();
             dto.setId("1");
             dto.setBizDate("2017.5.12");
             dto.setFullName("张庆全");
@@ -120,7 +120,7 @@ public class CarLoanAction extends DispatchAction {
             dto.setAllInterestAmount("2222");
             dto.setComments("2.5-1.98");
 
-            LoanDto dto1 = new LoanDto();
+            CarLoanDto dto1 = new CarLoanDto();
             dto1.setId("1");
             dto1.setBizDate("2017.5.12");
             dto1.setFullName("李亚楠");
@@ -136,7 +136,7 @@ public class CarLoanAction extends DispatchAction {
             dto1.setAllInterestAmount("4500");
             dto1.setComments("贷24个月");
             dto1.setTemperaryMaterils("备用车钥匙");
-            List<LoanDto> list =  new ArrayList<LoanDto>();
+            List<CarLoanDto> list =  new ArrayList<CarLoanDto>();
             list.add(dto);
             list.add(dto1);
             //list = tsv.list(rowBegin, rowEnd, form);

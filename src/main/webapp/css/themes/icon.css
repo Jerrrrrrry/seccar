@@ -19,6 +19,9 @@
 .tbtn_ok{
 	background:url('icons/tbtn_ok.png') no-repeat center center;
 }
+.tbtn_undo{
+	background:url('icons/undo.png') no-repeat center center;
+}
 .tbtn_forbid{
 	background:url('icons/tbtn_forbid.gif') no-repeat center center;
 }

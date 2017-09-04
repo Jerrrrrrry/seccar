@@ -1,10 +1,8 @@
 package com.lhcy.sync.web.form;
 
-import java.util.Date;
-
 import org.apache.struts.action.ActionForm;
 
-public class TradeForm extends ActionForm {
+public class LoanForm extends ActionForm {
 
     // 过滤界面用
     private String filterField;
@@ -31,37 +29,43 @@ public class TradeForm extends ActionForm {
     private String VIN;
     private String licenseno;
     private String vehicledesc;
-    private String traderid;
-    private String tradername;
-    private double purchaseprice;
-    private String purchasedate;
     private String ownerid;
     private String ownername;
     private String ownerdesc;
+    private String borrowdate;
+    private String returndate;
+    private double periodmonths;
+    private String traderid;
+    private String tradername;
+    private double borrowamount;
     private double interestrate;
     private double interest;
+    private double interestpaid;
+    private double totalinterest;
+    private double midinterestrate;
+    private double midinterest;
+    private double parkingfee;
+    private double otherfee;
+    private String comments; 
     private double actualloan;
-    private double spareloan;
-    private double earnest;
-    private double sellprice;
-    private String selldate;
-    private double pricediff;
-    private double tradecost;
+    private double actualreturn;
+    private String actualreturndate;
+    private double othercost;
     private double profit;
     private String vehicletype;
     private String settlement;
     private String settlementdate;
-    private String totalprofit;
-    private String traderprofit;
+    private double totalprofit;
+    private double traderprofit;
     private String picturepath;
     private String isdeleted;
-    private String issold;
-    private String comments;
-    private String interestcost;
-    private String buyerid;
-    private String buyername;
+    private String isreturned;
+    private String isabandon;
+    private String comments2;
+    private String interestpaidto;
+    private String nextpaymentdate;
+    private double interestcost;
     private String operation;
-    
     
 	public String getFilterField() {
 		return filterField;
@@ -171,30 +175,6 @@ public class TradeForm extends ActionForm {
 	public void setVehicledesc(String vehicledesc) {
 		this.vehicledesc = vehicledesc;
 	}
-	public String getTraderid() {
-		return traderid;
-	}
-	public void setTraderid(String traderid) {
-		this.traderid = traderid;
-	}
-	public String getTradername() {
-		return tradername;
-	}
-	public void setTradername(String tradername) {
-		this.tradername = tradername;
-	}
-	public double getPurchaseprice() {
-		return purchaseprice;
-	}
-	public void setPurchaseprice(double purchaseprice) {
-		this.purchaseprice = purchaseprice;
-	}
-	public String getPurchasedate() {
-		return purchasedate;
-	}
-	public void setPurchasedate(String purchasedate) {
-		this.purchasedate = purchasedate;
-	}
 	public String getOwnerid() {
 		return ownerid;
 	}
@@ -213,6 +193,42 @@ public class TradeForm extends ActionForm {
 	public void setOwnerdesc(String ownerdesc) {
 		this.ownerdesc = ownerdesc;
 	}
+	public String getBorrowdate() {
+		return borrowdate;
+	}
+	public void setBorrowdate(String borrowdate) {
+		this.borrowdate = borrowdate;
+	}
+	public String getReturndate() {
+		return returndate;
+	}
+	public void setReturndate(String returndate) {
+		this.returndate = returndate;
+	}
+	public double getPeriodmonths() {
+		return periodmonths;
+	}
+	public void setPeriodmonths(double periodmonths) {
+		this.periodmonths = periodmonths;
+	}
+	public String getTraderid() {
+		return traderid;
+	}
+	public void setTraderid(String traderid) {
+		this.traderid = traderid;
+	}
+	public String getTradername() {
+		return tradername;
+	}
+	public void setTradername(String tradername) {
+		this.tradername = tradername;
+	}
+	public double getBorrowamount() {
+		return borrowamount;
+	}
+	public void setBorrowamount(double borrowamount) {
+		this.borrowamount = borrowamount;
+	}
 	public double getInterestrate() {
 		return interestrate;
 	}
@@ -225,47 +241,71 @@ public class TradeForm extends ActionForm {
 	public void setInterest(double interest) {
 		this.interest = interest;
 	}
+	public double getInterestpaid() {
+		return interestpaid;
+	}
+	public void setInterestpaid(double interestpaid) {
+		this.interestpaid = interestpaid;
+	}
+	public double getTotalinterest() {
+		return totalinterest;
+	}
+	public void setTotalinterest(double totalinterest) {
+		this.totalinterest = totalinterest;
+	}
+	public double getMidinterestrate() {
+		return midinterestrate;
+	}
+	public void setMidinterestrate(double midinterestrate) {
+		this.midinterestrate = midinterestrate;
+	}
+	public double getMidinterest() {
+		return midinterest;
+	}
+	public void setMidinterest(double midinterest) {
+		this.midinterest = midinterest;
+	}
+	public double getParkingfee() {
+		return parkingfee;
+	}
+	public void setParkingfee(double parkingfee) {
+		this.parkingfee = parkingfee;
+	}
+	public double getOtherfee() {
+		return otherfee;
+	}
+	public void setOtherfee(double otherfee) {
+		this.otherfee = otherfee;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
 	public double getActualloan() {
 		return actualloan;
 	}
 	public void setActualloan(double actualloan) {
 		this.actualloan = actualloan;
 	}
-	public double getSpareloan() {
-		return spareloan;
+	public double getActualreturn() {
+		return actualreturn;
 	}
-	public void setSpareloan(double spareloan) {
-		this.spareloan = spareloan;
+	public void setActualreturn(double actualreturn) {
+		this.actualreturn = actualreturn;
 	}
-	public double getEarnest() {
-		return earnest;
+	public String getActualreturndate() {
+		return actualreturndate;
 	}
-	public void setEarnest(double earnest) {
-		this.earnest = earnest;
+	public void setActualreturndate(String actualreturndate) {
+		this.actualreturndate = actualreturndate;
 	}
-	public double getSellprice() {
-		return sellprice;
+	public double getOthercost() {
+		return othercost;
 	}
-	public void setSellprice(double sellprice) {
-		this.sellprice = sellprice;
-	}
-	public String getSelldate() {
-		return selldate;
-	}
-	public void setSelldate(String selldate) {
-		this.selldate = selldate;
-	}
-	public double getPricediff() {
-		return pricediff;
-	}
-	public void setPricediff(double pricediff) {
-		this.pricediff = pricediff;
-	}
-	public double getTradecost() {
-		return tradecost;
-	}
-	public void setTradecost(double tradecost) {
-		this.tradecost = tradecost;
+	public void setOthercost(double othercost) {
+		this.othercost = othercost;
 	}
 	public double getProfit() {
 		return profit;
@@ -291,16 +331,16 @@ public class TradeForm extends ActionForm {
 	public void setSettlementdate(String settlementdate) {
 		this.settlementdate = settlementdate;
 	}
-	public String getTotalprofit() {
+	public double getTotalprofit() {
 		return totalprofit;
 	}
-	public void setTotalprofit(String totalprofit) {
+	public void setTotalprofit(double totalprofit) {
 		this.totalprofit = totalprofit;
 	}
-	public String getTraderprofit() {
+	public double getTraderprofit() {
 		return traderprofit;
 	}
-	public void setTraderprofit(String traderprofit) {
+	public void setTraderprofit(double traderprofit) {
 		this.traderprofit = traderprofit;
 	}
 	public String getPicturepath() {
@@ -315,22 +355,40 @@ public class TradeForm extends ActionForm {
 	public void setIsdeleted(String isdeleted) {
 		this.isdeleted = isdeleted;
 	}
-	public String getIssold() {
-		return issold;
+	public String getIsreturned() {
+		return isreturned;
 	}
-	public void setIssold(String issold) {
-		this.issold = issold;
+	public void setIsreturned(String isreturned) {
+		this.isreturned = isreturned;
 	}
-	public String getComments() {
-		return comments;
+	public String getIsabandon() {
+		return isabandon;
 	}
-	public void setComments(String comments) {
-		this.comments = comments;
+	public void setIsabandon(String isabandon) {
+		this.isabandon = isabandon;
 	}
-	public String getInterestcost() {
+	public String getComments2() {
+		return comments2;
+	}
+	public void setComments2(String comments2) {
+		this.comments2 = comments2;
+	}
+	public String getInterestpaidto() {
+		return interestpaidto;
+	}
+	public void setInterestpaidto(String interestpaidto) {
+		this.interestpaidto = interestpaidto;
+	}
+	public String getNextpaymentdate() {
+		return nextpaymentdate;
+	}
+	public void setNextpaymentdate(String nextpaymentdate) {
+		this.nextpaymentdate = nextpaymentdate;
+	}
+	public double getInterestcost() {
 		return interestcost;
 	}
-	public void setInterestcost(String interestcost) {
+	public void setInterestcost(double interestcost) {
 		this.interestcost = interestcost;
 	}
 	public String getOperation() {
@@ -339,18 +397,7 @@ public class TradeForm extends ActionForm {
 	public void setOperation(String operation) {
 		this.operation = operation;
 	}
-	public String getBuyerid() {
-		return buyerid;
-	}
-	public void setBuyerid(String buyerid) {
-		this.buyerid = buyerid;
-	}
-	public String getBuyername() {
-		return buyername;
-	}
-	public void setBuyername(String buyername) {
-		this.buyername = buyername;
-	}
+    
     
 	
 }

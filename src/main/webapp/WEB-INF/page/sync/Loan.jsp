@@ -18,95 +18,13 @@
   <script type="text/javascript" src="<%=basePath %>js/jquery.ajaxfileupload.js"></script>
   <script type="text/javascript" src="<%=basePath %>js/xutil.js"></script>
   <script type="text/javascript" src="<%=basePath %>js/xcore.js"></script>
-  <script type="text/javascript" src="<%=basePath %>js/business/Trade/Trade.Init.js"></script>
-  <script type="text/javascript" src="<%=basePath %>js/business/Trade/Trade.List.js"></script>
-  <script type="text/javascript" src="<%=basePath %>js/business/Trade/Trade.Edit.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/Loan/Loan.Init.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/Loan/Loan.List.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/Loan/Loan.Edit.js"></script>
   <script type="text/javascript">
 
     $(function(){
-    	TradeInit.getInstance('<%= basePath%>').init();
-        
-        var interval;
-
-		function applyAjaxFileUpload(element) {
-			$(element).AjaxFileUpload({
-				action: '<%= basePath%>'+'TradeAction.do?m=uploadFile',
-				onChange: function(filename) {
-					// Create a span element to notify the user of an upload in progress
-					var $span = $("<span />")
-						.attr("class", $(this).attr("id"))
-						.text("上传中")
-						.insertAfter($(this));
-
-					$(this).remove();
-
-					interval = window.setInterval(function() {
-						var text = $span.text();
-						if (text.length < 13) {
-							$span.text(text + ".");
-						} else {
-							$span.text("上传中");
-						}
-					}, 200);
-				},
-				onSubmit: function(filename) {
-					// Return false here to cancel the upload
-					/*var $fileInput = $("<input />")
-						.attr({
-							type: "file",
-							name: $(this).attr("name"),
-							id: $(this).attr("id")
-						});
-
-					$("span." + $(this).attr("id")).replaceWith($fileInput);
-
-					applyAjaxFileUpload($fileInput);
-
-					return false;*/
-
-					// Return key-value pair to be sent along with the file
-					return true;
-				},
-				onComplete: function(filename, response) {
-					window.clearInterval(interval);
-					try{if (response != null && 'DO_NOT_LOGIN'==response.size)
-						{
-						top.location = '<%= basePath%>';
-						return;
-						}
-					}catch(e){}
-					var $span = $("span." + $(this).attr("id")).text(filename + ", 文件大小 " + response.size + "  状态: "+ response.uploadMsg + ". "),
-						$fileInput = $("<input />")
-							.attr({
-								type: "file",
-								name: $(this).attr("name"),
-								id: $(this).attr("id")
-							});
-
-					if (typeof(response.error) === "string") {
-						$span.replaceWith($fileInput);
-
-						applyAjaxFileUpload($fileInput);
-
-						alert(response.error);
-
-						return;
-					}
-
-					$("<a />")
-						.attr("href", "#")
-						.text("上传新数据")
-						.bind("click", function(e) {
-							$span.replaceWith($fileInput);
-
-							applyAjaxFileUpload($fileInput);
-						})
-						.appendTo($span);
-				}
-			});
-		}
-
-		applyAjaxFileUpload("#file1");
+    	LoanInit.getInstance('<%=basePath%>').init();
     });
 
   </script>
@@ -126,7 +44,8 @@
       <tbody>
       <tr>
         <td><input type="hidden" id="isdeleted" /></td>
-        <td><input type="hidden" id="issold" />
+        <td><input type="hidden" id="isreturned" />
+        <input type="hidden" id="isabandon" />
         <input type="hidden" id="settlement" />
         </td>
         <td>
@@ -145,58 +64,64 @@
         <td><input id="vehicledesc"/></td>
       </tr>
       <tr>
-        <th>经办人</th>
-        <td><input id="tradername"></td>
-        <th>收车价</th>
-        <td><input id="purchaseprice"/></td>   
-      </tr>
-      <tr>
-      	<th>卖车人姓名</th>
+      	<th>抵押人姓名</th>
         <td><input id="ownername"/></td>
-        <th>卖车人身份证</th>
+        <th>抵押人身份证</th>
         <td><input id="ownerid"/></td>
       </tr>
       <tr>
-        <th>收车日期</th>
-        <td><input id="purchasedate"/></td>
-        <th>借款利率</th>
-        <td ><input id="interestrate"/></td>
+        <th>借款日期</th>
+        <td><input id="borrowdate"></td>
+        <th>约定还款日期</th>
+        <td><input id="returndate"/></td>   
       </tr>
       <tr>
-      	<th>实际借款金额</th>
+        <th>约定还款周期（月数）</th>
+        <td><input id="periodmonths"/></td>
+        <th>借款金额</th>
+        <td ><input id="borrowamount"/></td>
+      </tr>
+      <tr>
+        <th>利率</th>
+        <td><input id="interestrate"/></td>
+      	<th>已付利息</th>
+        <td><input id="interestpaid"/></td>
+      </tr>
+      <tr>
+        <th>利息付至日期</th>
+        <td><input id="interestpaidto"/></td>
+      	<th>下次付利日期</th>
+        <td><input id="nextpaymentdate"/></td>
+      </tr>
+      <tr>
+        <th>中介利率</th>
+        <td><input id="midinterestrate"/></td>
+      	<th>中介利息</th>
+        <td><input id="midinterest"/></td>
+      </tr>
+      <tr>
+        <th>停车费</th>
+        <td><input id="parkingfee"/></td>
+      	<th>其他费用</th>
+        <td><input id="otherfee"/></td>
+      </tr>
+      <tr>
+        <th>实付金额</th>
         <td><input id="actualloan"/></td>
-        <th>借款余量</th>
-        <td><input id="spareloan"/></td>
-      </tr>
-      <tr>
-        <th>车辆类型</th>
-        <td><input id="vehicletype"/></td>
       	<th>备注</th>
         <td><input id="comments"/></td>
       </tr>
       <tr>
-        <th>定金</th>
-        <td><input id="earnest"/></td>
-      	<th>交易费用</th>
-        <td><input id="tradecost"/></td>
-      </tr>
-      <tr>
-        <th>销售价格</th>
-        <td><input id="sellprice"/></td>
-      	<th>销售日期</th>
-        <td><input id="selldate"/></td>
-      </tr>
-      <tr>
-        <th>购车人姓名</th>
-        <td><input id="buyername"/></td>
-      	<th>购车人身份证</th>
-        <td><input id="buyerid"/></td>
+        <th>已还本金额</th>
+        <td><input id="actualreturn"/></td>
+      	<th>上次归还本金时间</th>
+        <td><input id="actualreturndate"/></td>
       </tr>
       </tbody>
     </table> 
   </div>
 </div>
-
+<!-- 
 <div id="dlg_filter">
   <div region="center" border="false" title="" style="padding-left: 20px">
     <br/>
@@ -228,11 +153,13 @@
 <div id="dlg_upload">
   <div region="center" border="false" title="" style="padding-left: 20px">
     <br/>
+     -->
    	<!-- <input class="easyui-filebox" name="fileUpload" id="fileUploadId" data-options="prompt:'浏览选择文件...', buttonText:'选择',required:true" style="width:80%">
-   	 -->
+   	 	<!--
  <input type="file" name="file1" id="file1" /> 
   </div>
 </div>
+--> 
 
 <div id="bar_list">
   <table cellspacing="0" cellpadding="0">
@@ -240,16 +167,6 @@
       <td><a id="btnAddnew"></a></td>
       <td><a id="btnFilter"></a></td>
       <td><a id="btnRefresh"></a></td>
-      <!-- 
-      <td><a id="btnView"></a></td>
-      <td><div class="datagrid-btn-separator"></div></td>
-      <td><a id="btnSettle"></a></td>
-      <td><div class="datagrid-btn-separator"></div></td>
-      <td><a id="btnSelectAll"></a></td>
-      <td><a id="btnUnselectAll"></a></td>
-      <td><div class="datagrid-btn-separator"></div></td>
-      <td><a id="btnDelete"></a></td>
-      -->
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnClose"></a></td>
     </tr>

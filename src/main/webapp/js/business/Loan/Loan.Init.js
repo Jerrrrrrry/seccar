@@ -1,18 +1,16 @@
-var TradeInit = {
+var LoanInit = {
 
     getInstance: function (basePath){
         var init = {};
         init.init = function (){
-
-            var list = TradeList.getInstance(basePath);
-            var edit = TradeEdit.getInstance(basePath);
             var xutil = XUtil.getInstance(basePath);
+            var list = LoanList.getInstance(basePath);
+            var edit = LoanEdit.getInstance(basePath);
 
             /***********************************************/
             // 表格初始化
             /***********************************************/
             // 右表
-
             $("#list").datagrid({
                 striped: true,
                 rownumbers: true,
@@ -24,9 +22,9 @@ var TradeInit = {
                 pagination: true,
                 border: false,
                 method: 'post',
-                url: basePath + 'TradeAction.do?m=list',
+                url: basePath + 'LoanAction.do?m=list',
                 idField: 'vehicleid',
-                sortName: 'purchasedate',
+                sortName: 'borrowdate',
                 sortOrder: 'desc',
                 toolbar: '#bar_list',
                 columns: [[
@@ -49,138 +47,152 @@ var TradeInit = {
                         sortable: false
                     },
                     {
-                        field: 'tradername',
-                        title: '经办人',
+                        field: 'ownername',
+                        title: '抵押人姓名',
                         width: 80,
                         align: 'center',
                         sortable: true
                     },
                     {
-                        field: 'vehicletype',
-                        title: '车辆类型',
+                        field: 'ownerid',
+                        title: '抵押人身份证',
                         width: 60,
                         align: 'center',
                         sortable: true
                     },
                     {
-                        field: 'purchaseprice',
-                        title: '收车价',
+                        field: 'borrowdate',
+                        title: '借款日期',
                         width: 80,
                         align: 'center',
                         sortable: false
                     },
                     {
-                        field: 'purchasedate',
-                        title: '收车日期',
+                        field: 'returndate',
+                        title: '约定还款日期',
                         width: 80,
                         align: 'left',
                         sortable: true
                     },
                     {
-                        field: 'ownerid',
-                        title: '卖车人身份证',
+                        field: 'periodmonths',
+                        title: '约定还款周期（月数）',
                         width: 160,
                         align: 'left',
                         sortable: false
                     },
                     {
-                        field: 'ownername',
-                        title: '卖车人姓名',
+                        field: 'tradername',
+                        title: '经办人',
                         width: 80,
                         align: 'center',
                         sortable: false
                     },
                     {
-                        field: 'interestrate',
-                        title: '利率',
+                        field: 'borrowamount',
+                        title: '借款金额',
                         width: 35,
                         align: 'left',
                         sortable: false
                     },
                     {
-                        field: 'actualloan',
-                        title: '实际借款金额',
+                        field: 'interestrate',
+                        title: '利率',
                         width: 80,
                         align: 'left',
                         sortable: false
                     },
                     {
-                        field: 'earnest',
-                        title: '定金',
+                        field: 'interest',
+                        title: '利息(每月)',
                         width: 40,
                         align: 'left',
                         sortable: false
                     },
                     {
-                        field: 'sellprice',
-                        title: '销售价格',
+                    	field: 'actualloan',
+                    	title: '实付金额',
+                    	width: 60,
+                    	align: 'left',
+                    	sortable: false
+                    },
+                    {
+                        field: 'interestpaid',
+                        title: '已付利息',
                         width: 60,
                         align: 'left',
                         sortable: false
                     },
                     {
-                        field: 'selldate',
-                        title: '销售日期',
+                        field: 'interestpaidto',
+                        title: '利息付至日期',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'nextpaymentdate',
+                        title: '下次付息日期',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'totalinterest',
+                        title: '利息总额',
                         width: 80,
                         align: 'left',
                         sortable: true
                     },
                     {
-                        field: 'buyerid',
-                        title: '购车人身份证',
+                        field: 'midinterestrate',
+                        title: '中介利率',
                         width: 160,
                         align: 'left',
                         sortable: false
                     },
                     {
-                        field: 'buyername',
-                        title: '购车人姓名',
+                        field: 'midinterest',
+                        title: '中介利息',
                         width: 80,
                         align: 'left',
                         sortable: false
                     },
                     {
-                        field: 'tradecost',
-                        title: '交易费用',
+                        field: 'parkingfee',
+                        title: '停车费',
                         width: 60,
                         align: 'left',
                         sortable: false
                     },
-//                    {
-//                        field: 'pricediff',
-//                        title: '价差',
-//                        width: 60,
-//                        align: 'left',
-//                        sortable: false
-//                    },
-//                    {
-//                        field: 'totalprofit',
-//                        title: '总利润',
-//                        width: 60,
-//                        align: 'left',
-//                        sortable: false
-//                    },
-//                    {
-//                        field: 'profit',
-//                        title: '利润',
-//                        width: 60,
-//                        align: 'left',
-//                        sortable: false
-//                    },
-//                    {
-//                        field: 'traderprofit',
-//                        title: '第三方利润',
-//                        width: 60,
-//                        align: 'left',
-//                        sortable: false
-//                    },
-//                    {
-//                        field: 'comments',
-//                        title: '备注',
-//                        width: 60,
-//                        align: 'left',
-//                        sortable: false
-//                    },
+                    {
+                        field: 'otherfee',
+                        title: '其他费用',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'comments',
+                        title: '备注',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'actualreturn',
+                        title: '已还本金额',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'actualreturndate',
+                        title: '上次归还本金日期',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
                     {
                         field: 'picturepath',
                         title: '图片路径',
@@ -211,23 +223,23 @@ var TradeInit = {
                     },
                     
                 ]],
-                onDblClickRow: function(index, data){
-                    $('#btnFirst').linkbutton('enable');
-                    $('#btnPrevious').linkbutton('enable');
-                    $('#btnNext').linkbutton('enable');
-                    $('#btnLast').linkbutton('enable');
-                    edit.view(index);
-                },
-                onBeforeLoad : function(param){
-                    xutil.ajaxLoading('body');
-                },
-                onLoadSuccess : function (data) {
-                  xutil.ajaxLoadEnd();
-                },
-                onLoadError: function () {
-                    xutil.ajaxLoadEnd();
-                    xutil.exception();
-                }
+//                onDblClickRow: function(index, data){
+//                    $('#btnFirst').linkbutton('enable');
+//                    $('#btnPrevious').linkbutton('enable');
+//                    $('#btnNext').linkbutton('enable');
+//                    $('#btnLast').linkbutton('enable');
+//                    edit.view(index);
+//                },
+//                onBeforeLoad : function(param){
+//                    xutil.ajaxLoading('body');
+//                },
+//                onLoadSuccess : function (data) {
+//                  xutil.ajaxLoadEnd();
+//                },
+//                onLoadError: function () {
+//                    xutil.ajaxLoadEnd();
+//                    xutil.exception();
+//                }
 //                onLoadError: function () {
 //                    top.location = basePath;
 //                }
@@ -246,117 +258,115 @@ var TradeInit = {
                 validType : ['length[1,100]']
             });
 
-            $('#tradername').textbox({
-                width : 200,
-                validType : ['length[0,100]']
-            });
-
-            $('#purchaseprice').textbox({
-                width : 200,
-                validType : ['length[0,100]']
-            });
-            
             $('#ownername').textbox({
-                width: 200,
-                validType: ['length[0,100]']
+                width : 200,
+                validType : ['length[0,100]']
             });
 
             $('#ownerid').textbox({
+                width : 200,
+                validType : ['length[0,100]']
+            });
+            
+            $('#borrowdate').datebox({
                 width: 200,
                 validType: ['length[0,100]']
             });
-            $('#purchasedate').datebox({
+
+            $('#returndate').datebox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            $('#periodmonths').textbox({
                 width: 200,
                 validType: ['length[0,100]']
             });
             
-            $('#interestrate').textbox({
+            $('#borrowamount').textbox({
                 width: 200,
                 validType: ['length[0,100]']
 //                multiline: true
             });
-            $('#actualloan').textbox({
+            $('#interestrate').textbox({
                 width: 200,
                 validType: ['length[0,100]']
             });
             
-            $('#spareloan').textbox({
+            $('#interestpaid').textbox({
                 width: 200,
                 validType: ['length[0,100]']
             });
 
-            $('#vehicletype').combobox({
-                width : 120,
-                editable : false,
-                valueField: 'value',
-                textField: 'label',
-                data : [
-                    {
-                        label: '自收车',
-                        value: '自收车',
-                        selected : true
-                    },
-                    {
-                        label: '第三方',
-                        value: '第三方'
-                    }
-                ]
-            });
-            $('#comments').textbox({
+            $('#interestpaidto').datebox({
                 width: 200,
                 validType: ['length[0,100]'],
                 multiline: true
             });
 
-            $('#earnest').textbox({
+            $('#nextpaymentdate').datebox({
                 width: 200,
                 validType: ['length[0,100]']
             });
-            $('#tradecost').textbox({
+            $('#midinterestrate').textbox({
                 width: 200,
                 validType: ['length[0,100]']
             });
-            $('#sellprice').textbox({
+            $('#midinterest').textbox({
                 width: 200,
                 validType: ['length[0,100]'],
                 disabled: true
             });
-            $('#selldate').datebox({
+            $('#parkingfee').textbox({
                 width: 200,
                 validType: ['length[0,100]'],
                 disabled: true
             });
-            $('#buyername').textbox({
+            $('#otherfee').textbox({
                 width: 200,
                 validType: ['length[0,100]'],
                 disabled: true
             });
-            $('#buyerid').textbox({
+            $('#actualloan').textbox({
+                width: 200,
+                validType: ['length[0,100]'],
+                disabled: true
+            });
+            $('#comments').textbox({
+                width: 200,
+                validType: ['length[0,100]'],
+                disabled: true
+            });
+            $('#actualreturn').textbox({
+                width: 200,
+                validType: ['length[0,100]'],
+                disabled: true
+            });
+            $('#actualreturndate').datebox({
                 width: 200,
                 validType: ['length[0,100]'],
                 disabled: true
             });
             
-            $('#filtercustomer').textbox({
-                width : 200,
-                validType : ['length[1,100]']
-            });
-            $('#filterlicenseno').textbox({
-                width : 200,
-                validType : ['length[1,100]']
-            });
-            $('#filtercardescription').textbox({
-                width : 200,
-                validType : ['length[1,100]']
-            });
-            $('#filterinventoryints').datebox({
-                width : 200,
-                validType : ['length[1,100]']
-            });
-            $('#filterinventoryoutts').datebox({
-                width : 200,
-                validType : ['length[1,100]']
-            });
+//            $('#filtercustomer').textbox({
+//                width : 200,
+//                validType : ['length[1,100]']
+//            });
+//            $('#filterlicenseno').textbox({
+//                width : 200,
+//                validType : ['length[1,100]']
+//            });
+//            $('#filtercardescription').textbox({
+//                width : 200,
+//                validType : ['length[1,100]']
+//            });
+//            $('#filterinventoryints').datebox({
+//                width : 200,
+//                validType : ['length[1,100]']
+//            });
+//            $('#filterinventoryoutts').datebox({
+//                width : 200,
+//                validType : ['length[1,100]']
+//            });
 
             /***********************************************/
             // 列表工具栏初始化
@@ -469,15 +479,14 @@ var TradeInit = {
                             edit.addNew();
                         }
                     },
-
-                    {
-                    	id: 'btnEditupload',
-                        text: '上传图片',
-                        iconCls: 'tbtn_addnew',
-                        handler: function(){
-                        	$('#dlg_upload').dialog('open');
-                        }
-                    },
+//                    {
+//                    	id: 'btnEditupload',
+//                        text: '上传图片',
+//                        iconCls: 'tbtn_addnew',
+//                        handler: function(){
+//                        	$('#dlg_upload').dialog('open');
+//                        }
+//                    },
                     {
                         text: '入库',
                         id:'btnEditSave',
@@ -497,11 +506,20 @@ var TradeInit = {
                     },
                     '-',
                     {
-                    	id: 'btnEditSold',
-                        text: '出库',
-                        iconCls: 'tbtn_save',
+                    	id: 'btnEditReturned',
+                        text: '已归还',
+                        iconCls: 'tbtn_ok',
                         handler: function(){
-                        	edit.save('sold');
+                        	edit.save('returned');
+                        }
+                    },
+                    '-',
+                    {
+                    	id: 'btnEditAbandon',
+                        text: '已弃车',
+                        iconCls: 'tbtn_undo',
+                        handler: function(){
+                        	edit.save('abandon');
                         }
                     },
                     '-',
@@ -663,66 +681,66 @@ var TradeInit = {
             /***********************************************/
             // 窗口初始化
             /***********************************************/
-            $('#dlg_filter').dialog({
-                title: '停车管理',
-                width: 700,
-                height: 300,
-                modal: true,
-                closed: true,
-                minimizable: false,
-                maximizable: false,
-                resizable: false,
-                collapsible: false,
-                toolbar: [                
-                    {
-                        text: '过滤',
-                        id:'btnFilterDlg',
-                        iconCls: 'tbtn_filter',
-                        handler: function(){
-                        	//alert('btnEditSavefalse');
-                            list.filter();
-                        }
-                    },
-                    {
-                        text: '重置',
-                        id:'btnClear',
-                        iconCls: 'tbtn_deleteall',
-                        handler: function(){
-                        	//alert('btnEditSavefalse');
-                            list.clearFilter();
-                        }
-                    },
-                    '-',
-                    {
-                        text: '关闭',
-                        iconCls: 'tbtn_quit',
-                        handler: function(){
-                        	$('#dlg_filter').dialog('close');
-                        }
-                    }
-                ],
-                onClose : function(){
-//                xutil.focus('#filterValue');
-                }
-            }); 
-            /***********************************************/
-            // 窗口初始化
-            /***********************************************/
-            $('#dlg_upload').dialog({
-                title: '上传图片',
-                width: 700,
-                height: 300,
-                modal: true,
-                closed: true,
-                minimizable: false,
-                maximizable: false,
-                resizable: false,
-                collapsible: false,
-               
-                onClose : function(){
-//                xutil.focus('#filterValue');
-                }
-            }); 
+//            $('#dlg_filter').dialog({
+//                title: '停车管理',
+//                width: 700,
+//                height: 300,
+//                modal: true,
+//                closed: true,
+//                minimizable: false,
+//                maximizable: false,
+//                resizable: false,
+//                collapsible: false,
+//                toolbar: [                
+//                    {
+//                        text: '过滤',
+//                        id:'btnFilterDlg',
+//                        iconCls: 'tbtn_filter',
+//                        handler: function(){
+//                        	//alert('btnEditSavefalse');
+//                            list.filter();
+//                        }
+//                    },
+//                    {
+//                        text: '重置',
+//                        id:'btnClear',
+//                        iconCls: 'tbtn_deleteall',
+//                        handler: function(){
+//                        	//alert('btnEditSavefalse');
+//                            list.clearFilter();
+//                        }
+//                    },
+//                    '-',
+//                    {
+//                        text: '关闭',
+//                        iconCls: 'tbtn_quit',
+//                        handler: function(){
+//                        	$('#dlg_filter').dialog('close');
+//                        }
+//                    }
+//                ],
+//                onClose : function(){
+////                xutil.focus('#filterValue');
+//                }
+//            }); 
+//            /***********************************************/
+//            // 窗口初始化
+//            /***********************************************/
+//            $('#dlg_upload').dialog({
+//                title: '上传图片',
+//                width: 700,
+//                height: 300,
+//                modal: true,
+//                closed: true,
+//                minimizable: false,
+//                maximizable: false,
+//                resizable: false,
+//                collapsible: false,
+//               
+//                onClose : function(){
+////                xutil.focus('#filterValue');
+//                }
+//            }); 
 //            list.doInit();
         };
 

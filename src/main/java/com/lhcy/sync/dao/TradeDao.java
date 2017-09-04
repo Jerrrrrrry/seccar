@@ -34,7 +34,7 @@ public class TradeDao {
         StringBuilder sql = new StringBuilder();
         sql.append(" select count(1) as cnt ");
         sql.append("   from SecCarTrade a ");
-        sql.append("  where 1=1 ");
+        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
 
         List args = new ArrayList();
         sql.append(getWhere(form, args));
@@ -130,7 +130,7 @@ public class TradeDao {
 //        sql.append("    ,a.interestcost ");
         sql.append("    ,ROW_NUMBER() OVER (ORDER BY " + sort + " " + order + ") AS 'RowTrade'");
         sql.append("   FROM SecCarTrade a ");
-        sql.append("  WHERE 1=1 ");
+        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
         sql.append(where);
         sql.append(" ) ");
         sql.append(" SELECT * FROM temp ");
@@ -902,10 +902,10 @@ public class TradeDao {
         sql.append(" SELECT ");
         sql.append("   	vehicleid ");
         sql.append("   ,licenseno ");
-        sql.append("   ,ownerid ");
-        sql.append("   ,traderid ");
+//        sql.append("   ,ownerid ");
+//        sql.append("   ,traderid ");
         sql.append(" FROM SecCarTrade ");
-        sql.append("WHERE licenseno = ? ");
+        sql.append("WHERE licenseno = ? and isdeleted != '1' and settlement !='1' ");
 
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
@@ -927,8 +927,8 @@ public class TradeDao {
             while(rs.next()){
                 result.setVehicleid(rs.getString("vehicleid"));
                 result.setLicenseno(rs.getString("licenseno"));
-                result.setOwnerid(rs.getString("ownerid"));
-                result.setTraderid(rs.getString("traderid"));
+//                result.setOwnerid(rs.getString("ownerid"));
+//                result.setTraderid(rs.getString("traderid"));
             }
         } catch (Exception e) {
             throw new Exception(e);

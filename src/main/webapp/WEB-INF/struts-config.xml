@@ -14,6 +14,7 @@
         <form-bean name="uploadFileForm" type="com.lhcy.sync.web.form.UploadFileForm"/>
         <form-bean name="parkingForm" type="com.lhcy.sync.web.form.ParkingForm"/>
         <form-bean name="TradeForm" type="com.lhcy.sync.web.form.TradeForm"/>
+        <form-bean name="LoanForm" type="com.lhcy.sync.web.form.LoanForm"/>
     </form-beans>
     <global-exceptions/>
     <global-forwards>
@@ -54,6 +55,9 @@
         </action>
         <action path="/TradeAction"  scope="request" name="TradeForm" parameter="m" type="com.lhcy.sync.web.action.TradeAction">
             <forward name="show" path="/WEB-INF/page/sync/Trade.jsp"/>
+        </action>
+        <action path="/LoanAction"  scope="request" name="LoanForm" parameter="m" type="com.lhcy.sync.web.action.LoanAction">
+            <forward name="show" path="/WEB-INF/page/sync/Loan.jsp"/>
         </action>
     </action-mappings>
     <message-resources parameter="com.lhcy.ApplicationResources"/>

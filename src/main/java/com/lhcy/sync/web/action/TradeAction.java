@@ -1,6 +1,9 @@
 package com.lhcy.sync.web.action;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,8 +18,10 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
+import org.apache.struts.upload.FormFile;
 
-
+import com.hongchen.sync.reader.FileProcessor;
+import com.hongchen.sync.util.Constants;
 import com.lhcy.core.bo.SysConstant;
 import com.lhcy.core.bo.UuidCreator;
 import com.lhcy.core.util.ContextUtils;
@@ -99,16 +104,16 @@ public class TradeAction extends DispatchAction {
             
             //根据不同操作类型给vo赋值
         	if(form.getOperation().equals("sold")){
-//        		Double purchaseprice = vo.getPurchaseprice();
-        		Double sellprice = vo.getSellprice();
-        		Double actualloan = vo.getActualloan();
-        		Double interestrate = vo.getInterestrate();
-        		Double interest = 0.00;
-        		Double interestcost = 0.00;
-        		Double pricediff = sellprice - purchaseprice;
-        		Double totalprofit = 0.00;
-        		Double profit = 0.00;
-        		Double traderprofit = 0.00;
+//        		double purchaseprice = vo.getPurchaseprice();
+        		double sellprice = vo.getSellprice();
+        		double actualloan = vo.getActualloan();
+        		double interestrate = vo.getInterestrate();
+        		double interest = 0.00;
+        		double interestcost = 0.00;
+        		double pricediff = sellprice - purchaseprice;
+        		double totalprofit = 0.00;
+        		double profit = 0.00;
+        		double traderprofit = 0.00;
         		if(vehicletype.equals("自收车")){
 	        		int daydiff = getIntervalDays(purchasedate, selldate);
 	        		interest = interestrate/100/30*actualloan;
@@ -139,13 +144,13 @@ public class TradeAction extends DispatchAction {
         		vo.setIssold("1");
         	}else if(form.getOperation().equals("settle"))
         	{
-        		if(vo.getIssold() !=null && vo.getIssold().equals("1")){
-        		vo.setSettlement("1");
-        		String settlementdate =sdf.format(new Date());
-        		vo.setSettlementdate(settlementdate);
+        		if(vo.getIssold() !=null && vo.getIssold().equals("1") && vo.getIsdeleted() !="1" ){
+	        		vo.setSettlement("1");
+	        		String settlementdate =sdf.format(new Date());
+	        		vo.setSettlementdate(settlementdate);
         		}else
         		{
-        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTSOLD_ERROR);
+        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTSOLD_DELETED_ERROR);
         		}
         	}else{
         		if(vehicletype.equals("自收车")){
@@ -373,6 +378,64 @@ public class TradeAction extends DispatchAction {
 
         return mapping.findForward("show");
     }
+    
+    public ActionForward uploadFile(ActionMapping mapping, ActionForm frm,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		FileOutputStream outer = null;
+		FormFile uploadFile = null;
+		try {
+			// 检查登录
+			if (ContextUtils.getCurrentUserID(request) == null) {
+				throw new Exception( SysConstant.M_NO_LOGIN);
+			}
+
+			uploadFile = (FormFile) frm.getMultipartRequestHandler().getFileElements().get("file"); 
+			int fileSize = uploadFile.getFileSize();
+			FileProcessor processor = new FileProcessor();
+			File newFile = new File(Constants.PROCESSING_FOLDER_PATH + processor.toProcessingFileName(uploadFile.getFileName()));
+			outer = new FileOutputStream(newFile);
+			byte[] buffer = uploadFile.getFileData();
+			outer.write(buffer);
+			outer.flush();
+			uploadFile.destroy();
+			String uploadMsg = processor.process(newFile, ContextUtils.getCurrentUserID(request), ContextUtils.getCurrentKisUserID(request));
+			outer.close();
+			response.setContentType("text/html;charset=UTF-8");
+			response.getWriter().print("{\"size\":\""+GetFileSize(fileSize)+ "\", \"uploadMsg\":\"" +uploadMsg+"\"}");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			request.getSession().setAttribute("ex", e);
+		} finally {
+			if (outer != null)
+			{
+				try{outer.close();}catch(Exception e){}
+			}
+			if (uploadFile != null)
+			{
+				try{uploadFile.destroy();}catch(Exception e){}
+			}
+		}
+
+		return null;
+	}
+
+	public String GetFileSize(int fileSize) {
+		String size = "";
+		long fileS = fileSize + 0L;
+		DecimalFormat df = new DecimalFormat("#.00");
+		if (fileS < 1024) {
+			size = df.format((double) fileS) + "BT";
+		} else if (fileS < 1048576) {
+			size = df.format((double) fileS / 1024) + "KB";
+		} else if (fileS < 1073741824) {
+			size = df.format((double) fileS / 1048576) + "MB";
+		} else {
+			size = df.format((double) fileS / 1073741824) + "GB";
+		}
+		return size;
+	}
     
 //    public static void main(String args[])
 //    {

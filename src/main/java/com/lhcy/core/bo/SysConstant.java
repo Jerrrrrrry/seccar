@@ -4,8 +4,12 @@ public class SysConstant {
     public static final int DB_FK_ERROR = 1451;
     public static final String M_PK_ERROR = "此数据关联其他内容，不能删除！";
     public static final String M_EXIST_ERROR = "已经存在，不能重复！";
-    public static final String M_NOTSOLD_ERROR = "未销售，不能结算！";
+    public static final String M_NOTSOLD_DELETED_ERROR = "未销售或已删除，不能结算！";
+    public static final String M_DELETED_ERROR = "已删除，不能结算！";
+    public static final String M_NOTRETURNABANDON_ERROR = "非已归还/已弃车，不能结算！";
+    public static final String M_NOTALLPAID_ERROR = "利息/本金未付清，不能设置已归还！";
     public static final String M_SETTLEMENT_ERROR = "已结算/已删除，不能删除！";
+    public static final String M_SETTLEDELETED_ERROR = "已结算/已删除，不能弃车！";
     public static final String M_NO_DATA_FIND = "此数据已经不存在！";
     public static final String M_NO_SELECT_TREE = "没有选择分类！";
     public static final String M_NO_USER_DEFINED = "不是用户自定义，不能删除！";

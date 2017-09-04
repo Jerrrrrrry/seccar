@@ -151,8 +151,8 @@
                     }else if (node.id == '二手车交易'){
                         addTab('二手车交易', null, '<%=basePath %>TradeAction.do');
 
-                    }else if (node.id == '大飞二手车'){
-                        addTab('大飞二手车', null, '<%=basePath %>SecondCarAction.do');
+                    }else if (node.id == '车贷业务'){
+                        addTab('车贷业务', null, '<%=basePath %>LoanAction.do');
 
                     }else if (node.id == '财务报表'){
                         addTab('财务报表', null, '<%=basePath %>AccountAction.do');
@@ -198,7 +198,7 @@
                 <ul id="tr_ic" class="easyui-tree" data-options="lines:true">
                     <li data-options="id:'车贷', 'iconCls':'icon-tree-app'">车贷</li>
                     <li data-options="id:'二手车交易', 'iconCls':'icon-tree-app'">二手车交易</li>
-                    <li data-options="id:'大飞二手车', 'iconCls':'icon-tree-app'">大飞二手车</li>
+                    <li data-options="id:'车贷业务', 'iconCls':'icon-tree-app'">车贷业务</li>
                     <li data-options="id:'财务报表', 'iconCls':'icon-tree-app'">财务报表</li>
                     <li data-options="id:'停车管理', 'iconCls':'icon-tree-app'">停车管理</li>
                 </ul>

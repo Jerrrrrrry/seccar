@@ -1,8 +1,9 @@
-package com.lhcy.sync.domain.dto;
+package com.lhcy.sync.domain.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class LoanDto implements Serializable {
+public class Loan implements Serializable {
 	private String vehicleid;
     private String VIN;
     private String licenseno;
@@ -42,8 +43,9 @@ public class LoanDto implements Serializable {
     private String comments2;
     private String interestpaidto;
     private String nextpaymentdate;
+    private Date createdts;
+    private Date lastupdatedts;
     private double interestcost;
-    
 	public String getVehicleid() {
 		return vehicleid;
 	}
@@ -277,6 +279,18 @@ public class LoanDto implements Serializable {
 	}
 	public void setNextpaymentdate(String nextpaymentdate) {
 		this.nextpaymentdate = nextpaymentdate;
+	}
+	public Date getCreatedts() {
+		return createdts;
+	}
+	public void setCreatedts(Date createdts) {
+		this.createdts = createdts;
+	}
+	public Date getLastupdatedts() {
+		return lastupdatedts;
+	}
+	public void setLastupdatedts(Date lastupdatedts) {
+		this.lastupdatedts = lastupdatedts;
 	}
 	public double getInterestcost() {
 		return interestcost;
