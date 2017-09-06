@@ -28,19 +28,32 @@ var LoanList = {
         list.filter = function () {
         	$('#dlg_filter').dialog('close');
             var filterField = "filter";
-            var filtercustomer = $('#filtercustomer').textbox('getValue');
+            var filterisdeleted = $('#filterisdeleted').prop('checked') ? 1 : 0;
+            var filterisabandon = $('#filterisabandon').prop('checked') ? 1 : 0;
+            var filterisreturned = $('#filterisreturned').combobox('getValue');
+            var filtersettlement = $('#filtersettlement').combobox('getValue');
             var filterlicenseno = $('#filterlicenseno').textbox('getValue');
             var filtercardescription = $('#filtercardescription').textbox('getValue');
-            var filterinventoryints = $('#filterinventoryints').datebox('getValue');
-            var filterinventoryoutts = $('#filterinventoryoutts').datebox('getValue');
+            var filtercustomer = $('#filtercustomer').textbox('getValue');
+            var loanstart = $('#loanstart').datebox('getValue');
+            var loanend = $('#loanend').datebox('getValue');
+            var returnstart = $('#returnstart').datebox('getValue');
+            var returnend = $('#returnend').datebox('getValue');
 
             var prm = {
             		filterField: filterField,
-            		filtercustomer: filtercustomer, 
             		filterlicenseno: filterlicenseno, 
             		filtercardescription: filtercardescription, 
-            		filterinventoryints: filterinventoryints,
-            		filterinventoryoutts: filterinventoryoutts};
+            		filtercustomer: filtercustomer, 
+            		loanstart: loanstart,
+            		loanend: loanend,
+            		returnstart: returnstart,
+            		returnend: returnend,
+            		filterisdeleted: filterisdeleted,
+            		filterisabandon: filterisabandon,
+            		filterisreturned: filterisreturned,
+            		filtersettlement: filtersettlement
+            		};
             $('#list').datagrid('clearSelections');
             $('#list').datagrid({queryParams: prm});
 //            xutil.focus('#filterValue');
@@ -71,12 +84,18 @@ var LoanList = {
         // 清除过滤条件
         /***********************************************/
         list.clearFilter = function () {
-            $('#filterinventoryints').datebox('clear');
-            $('#filterinventoryoutts').datebox('clear');
-            $('#filtercustomer').textbox('clear');
+        	$('#filterisdeleted').prop('checked', false);
+        	$('#filterisabandon').prop('checked', false);
+        	$('#filterisreturned').combobox('setValue','');
+        	$('#filtersettlement').combobox('setValue','');
             $('#filterlicenseno').textbox('clear');
             $('#filtercardescription').textbox('clear');
-            xutil.focus('#filtercustomer');
+            $('#filtercustomer').textbox('clear');
+            $('#loanstart').datebox('clear');
+            $('#loanend').datebox('clear');
+            $('#returnstart').datebox('clear');
+            $('#returnend').datebox('clear');
+            xutil.focus('#filterlicenseno');
         };
         /***********************************************/
         // 删除

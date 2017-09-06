@@ -92,12 +92,15 @@ public class LoanAction extends DispatchAction {
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
             //根据不同操作类型给vo赋值
+    		double borrowamount = vo.getBorrowamount();
+    		double interestrate = vo.getInterestrate();
+    		double interestpaid = vo.getInterestpaid();
+    		double actualreturn = vo.getActualreturn();
+    		double periodmonths = vo.getPeriodmonths();
+    		double actualloan = vo.getActualloan();
+    		double midinterest =  vo.getMidinterest();
+    		double otherfee = vo.getOtherfee();
         	if(form.getOperation().equals("returned")){
-        		double borrowamount = vo.getBorrowamount();
-        		double interestrate = vo.getInterestrate();
-        		double interestpaid = vo.getInterestpaid();
-        		double actualreturn = vo.getActualreturn();
-        		double periodmonths = vo.getPeriodmonths();
         		double remaininterest = (interestrate/100*borrowamount*periodmonths)-interestpaid;
 
         		if(remaininterest >= 0 || borrowamount > actualreturn){
@@ -105,10 +108,13 @@ public class LoanAction extends DispatchAction {
         		}else{
         			vo.setIsreturned("1");
         		}
+        		
         	}else if(form.getOperation().equals("settle"))
         	{
         		if(vo.getIsdeleted() != "1"){
 	        		if(vo.getIsabandon().equals("1") || vo.getIsreturned().equals("1")){
+	        			double totalprofit = actualreturn + interestpaid - actualloan - midinterest - otherfee;
+	        			vo.setTotalprofit(totalprofit);
 		        		vo.setSettlement("1");
 		        		String settlementdate =sdf.format(new Date());
 		        		vo.setSettlementdate(settlementdate);
@@ -154,11 +160,13 @@ public class LoanAction extends DispatchAction {
                 if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0 && !dto.getVehicleid().equals(vo.getVehicleid())){
                     throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
                 }else{
-                	if(form.getOperation().equals("settle")){
+//                	if(form.getOperation().equals("settle")){
 //                		ts.settle(vo);
-                	}else{
-//                		ts.update(vo);
-                	}
+//                	}else if(form.getOperation().equals("return")){
+//                		ts.settle(vo);
+//                	}else{
+                		ts.update(vo);
+//                	}
                 }
             }
 
@@ -172,59 +180,56 @@ public class LoanAction extends DispatchAction {
         return null;
 
     }
-//
-//    /***********************************************/
-//    // 显示一个
-//    /***********************************************/
-//    public ActionForward view(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//
-//        try {
-//            // 检查登录
-//            if (ContextUtils.getCurrentUserID(request) == null){
-//                throw new Exception( SysConstant.M_NO_LOGIN);
-//            }
-//
-//            LoanService sv = new LoanService();
-//            LoanForm form = (LoanForm)frm;
-//            LoanDto vo = sv.query(form.getVehicleid());
-//
-//            if (vo == null || vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
-//                throw new Exception(SysConstant.M_NO_DATA_FIND);
-//            }
-//
-//            JsonUtils.printActionResultFromObject(response, vo);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            logger.error(e.getMessage());
-//            JsonUtils.printActionResultFromException(response, e);
-//        }
-//
-//        return null;
-//    }
-//    /***********************************************/
-//    // 删除一个
-//    /***********************************************/
-//    public ActionForward deletesingle(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//
-//        try {
-//            // 检查登录
-//            if (ContextUtils.getCurrentUserID(request) == null){
-//                throw new Exception(SysConstant.M_NO_LOGIN);
-//            }
-//
-//            LoanForm form = (LoanForm)frm;
-//            if (form.getVehicleid().length() == 0){
-//                JsonUtils.printActionResultOK(response);
-//                return null;
-//            }
-//
-//            LoanService sv = new LoanService();
-//            String vehichleid = form.getVehicleid();
-//            String vehicletype = form.getVehicletype();
-//            String issold = form.getIssold();
-//            double purchaseprice = form.getPurchaseprice();
-//
-//            sv.deletesingle(vehichleid);
+
+    /***********************************************/
+    // 显示一个
+    /***********************************************/
+    public ActionForward view(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+            // 检查登录
+            if (ContextUtils.getCurrentUserID(request) == null){
+                throw new Exception( SysConstant.M_NO_LOGIN);
+            }
+
+            LoanService sv = new LoanService();
+            LoanForm form = (LoanForm)frm;
+            LoanDto vo = sv.query(form.getVehicleid());
+
+            if (vo == null || vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
+                throw new Exception(SysConstant.M_NO_DATA_FIND);
+            }
+
+            JsonUtils.printActionResultFromObject(response, vo);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            JsonUtils.printActionResultFromException(response, e);
+        }
+
+        return null;
+    }
+    /***********************************************/
+    // 删除一个
+    /***********************************************/
+    public ActionForward deletesingle(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+            // 检查登录
+            if (ContextUtils.getCurrentUserID(request) == null){
+                throw new Exception(SysConstant.M_NO_LOGIN);
+            }
+
+            LoanForm form = (LoanForm)frm;
+            if (form.getVehicleid().length() == 0){
+                JsonUtils.printActionResultOK(response);
+                return null;
+            }
+
+            LoanService sv = new LoanService();
+            String vehichleid = form.getVehicleid();
+
+            sv.deletesingle(vehichleid);
 //            if(vehicletype.equals("自收车") || issold.equals("1")){
 //            	System.out.println("ID: "+vehichleid+"车辆类型： "+vehicletype+"已售："+issold);
 //    		}else{
@@ -233,15 +238,15 @@ public class LoanAction extends DispatchAction {
 //    			double	sloan = spareloantmp + purchaseprice;
 //                sv.updateSpare(sloan);
 //    		}
-//            JsonUtils.printActionResultOK(response);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            logger.error(e.getMessage());
-//            JsonUtils.printActionResultFromException(response, e);
-//        }
-//
-//        return null;
-//    }
+            JsonUtils.printActionResultOK(response);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            JsonUtils.printActionResultFromException(response, e);
+        }
+
+        return null;
+    }
 //    
 //    /***********************************************/
 //    // 删除多个

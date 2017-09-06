@@ -9,13 +9,16 @@ public class LoanForm extends ActionForm {
     private String filterValue;
     
     // 过滤结果
-    private String purchasestart;
-    private String purchaseend;
-    private String soldstart;
-    private String soldend;
+    private String loanstart;
+    private String loanend;
+    private String returnstart;
+    private String returnend;
     private String filterlicenseno;
-    private String filtertradername;
-    private String filtervehicletype;
+    private String filtercardescription;
+    private String filtercustomer;
+    private String filterisdeleted;
+    private String filterisreturned;
+    private String filterisabandon;
     private String filtersettlement;
     
     // 列表
@@ -67,6 +70,13 @@ public class LoanForm extends ActionForm {
     private double interestcost;
     private String operation;
     
+    
+	public String getFiltercustomer() {
+		return filtercustomer;
+	}
+	public void setFiltercustomer(String filtercustomer) {
+		this.filtercustomer = filtercustomer;
+	}
 	public String getFilterField() {
 		return filterField;
 	}
@@ -78,30 +88,31 @@ public class LoanForm extends ActionForm {
 	}
 	public void setFilterValue(String filterValue) {
 		this.filterValue = filterValue;
+	}	
+	
+	public String getLoanstart() {
+		return loanstart;
 	}
-	public String getPurchasestart() {
-		return purchasestart;
+	public void setLoanstart(String loanstart) {
+		this.loanstart = loanstart;
 	}
-	public void setPurchasestart(String purchasestart) {
-		this.purchasestart = purchasestart;
+	public String getLoanend() {
+		return loanend;
 	}
-	public String getPurchaseend() {
-		return purchaseend;
+	public void setLoanend(String loanend) {
+		this.loanend = loanend;
 	}
-	public void setPurchaseend(String purchaseend) {
-		this.purchaseend = purchaseend;
+	public String getReturnstart() {
+		return returnstart;
 	}
-	public String getSoldstart() {
-		return soldstart;
+	public void setReturnstart(String returnstart) {
+		this.returnstart = returnstart;
 	}
-	public void setSoldstart(String soldstart) {
-		this.soldstart = soldstart;
+	public String getReturnend() {
+		return returnend;
 	}
-	public String getSoldend() {
-		return soldend;
-	}
-	public void setSoldend(String soldend) {
-		this.soldend = soldend;
+	public void setReturnend(String returnend) {
+		this.returnend = returnend;
 	}
 	public String getFilterlicenseno() {
 		return filterlicenseno;
@@ -109,17 +120,29 @@ public class LoanForm extends ActionForm {
 	public void setFilterlicenseno(String filterlicenseno) {
 		this.filterlicenseno = filterlicenseno;
 	}
-	public String getFiltertradername() {
-		return filtertradername;
+	public String getFiltercardescription() {
+		return filtercardescription;
 	}
-	public void setFiltertradername(String filtertradername) {
-		this.filtertradername = filtertradername;
+	public void setFiltercardescription(String filtercardescription) {
+		this.filtercardescription = filtercardescription;
 	}
-	public String getFiltervehicletype() {
-		return filtervehicletype;
+	public String getFilterisdeleted() {
+		return filterisdeleted;
 	}
-	public void setFiltervehicletype(String filtervehicletype) {
-		this.filtervehicletype = filtervehicletype;
+	public void setFilterisdeleted(String filterisdeleted) {
+		this.filterisdeleted = filterisdeleted;
+	}
+	public String getFilterisreturned() {
+		return filterisreturned;
+	}
+	public void setFilterisreturned(String filterisreturned) {
+		this.filterisreturned = filterisreturned;
+	}
+	public String getFilterisabandon() {
+		return filterisabandon;
+	}
+	public void setFilterisabandon(String filterisabandon) {
+		this.filterisabandon = filterisabandon;
 	}
 	public String getFiltersettlement() {
 		return filtersettlement;
@@ -127,6 +150,7 @@ public class LoanForm extends ActionForm {
 	public void setFiltersettlement(String filtersettlement) {
 		this.filtersettlement = filtersettlement;
 	}
+	
 	public int getRows() {
 		return rows;
 	}

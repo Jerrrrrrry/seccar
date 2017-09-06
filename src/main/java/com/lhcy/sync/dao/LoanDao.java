@@ -32,7 +32,8 @@ public class LoanDao {
         StringBuilder sql = new StringBuilder();
         sql.append(" select count(1) as cnt ");
         sql.append("   from SecCarLoan a ");
-        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
+        sql.append("  WHERE 1=1  ");
+//        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
 
         List args = new ArrayList();
         sql.append(getWhere(form, args));
@@ -96,7 +97,8 @@ public class LoanDao {
         sql.append("     a.* ");
         sql.append("    ,ROW_NUMBER() OVER (ORDER BY " + sort + " " + order + ") AS 'RowLoan'");
         sql.append("   FROM SecCarLoan a ");
-        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
+        sql.append("  WHERE 1=1  ");
+//        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
         sql.append(where);
         sql.append(" ) ");
         sql.append(" SELECT * FROM temp ");
@@ -150,6 +152,7 @@ public class LoanDao {
                 vo.setSettlementdate(rs.getString("settlementdate"));
                 vo.setTotalprofit(rs.getDouble("totalprofit"));
                 vo.setPicturepath(rs.getString("picturepath"));
+                vo.setIsdeleted(rs.getString("isdeleted"));
                 vo.setIsreturned(rs.getString("isreturned"));
                 vo.setIsabandon(rs.getString("isabandon"));
                 vo.setComments2(rs.getString("comments2"));
@@ -177,11 +180,11 @@ public class LoanDao {
     /***********************************************/
     // 查询一个
     /***********************************************/
-//    public LoanDto query(String id) throws Exception{
-//
-//        LoanDto result = new LoanDto();
-//        StringBuilder sql = new StringBuilder();
-////        sql.append(" SELECT * ");
+    public LoanDto query(String id) throws Exception{
+
+        LoanDto result = new LoanDto();
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT a.* "); 
 //        sql.append(" SELECT (select top 1 spareloan from SpareLoan) as spareloan ");
 //        sql.append("    ,a.vehicleid ");
 //        sql.append("    ,a.licenseno ");
@@ -196,7 +199,6 @@ public class LoanDao {
 //        sql.append("    ,a.interestrate ");
 //        sql.append("    ,a.interest ");
 //        sql.append("    ,a.actualloan ");
-////        sql.append("    ,a.spareloan ");
 //        sql.append("    ,a.earnest ");
 //        sql.append("    ,a.sellprice ");
 //        sql.append("    ,a.selldate ");
@@ -217,80 +219,83 @@ public class LoanDao {
 //        sql.append("    ,a.interestcost ");
 //        sql.append("    ,a.buyerid ");
 //        sql.append("    ,a.buyername ");
-//        sql.append("   FROM SecCarLoan a ");
-//        sql.append("  WHERE a.vehicleid = ? ");
-//        System.out.println("query sql: "+sql);
-//        Connection conn = DbConnectionFactory.createHonchenConnection();
-//        if (conn == null){
-//            return result;
-//        }
-//
-//        List args = new ArrayList();
-//        args.add(id);
-//
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            ps = conn.prepareStatement(sql.toString());
-//            rs = DbSqlHelper.executeQuery(ps, args);
-//
-//            if (rs == null){
-//                return result;
-//            }
-//            while(rs.next()){
-//            	result.setVehicleid(rs.getString("vehicleid"));
-////                result.setVIN(rs.getString("VIN"));
-//                result.setLicenseno(rs.getString("licenseno"));
-//                result.setVehicledesc(rs.getString("vehicledesc"));
-//                result.setLoanrid(rs.getString("Loanrid"));
-//                result.setLoanrname(rs.getString("Loanrname"));
-//                result.setPurchaseprice(rs.getDouble("purchaseprice"));
-//                result.setPurchasedate(rs.getString("purchasedate"));
-//                result.setOwnerid(rs.getString("ownerid"));
-//                result.setOwnername(rs.getString("ownername"));
-//                result.setOwnerdesc(rs.getString("ownerdesc"));
-//                result.setInterestrate(rs.getDouble("interestrate"));
-//                result.setInterest(rs.getDouble("interest"));
-//                result.setActualloan(rs.getDouble("actualloan"));
-//                result.setSpareloan(rs.getDouble("spareloan"));
-//                result.setEarnest(rs.getDouble("earnest"));
-//                result.setSellprice(rs.getDouble("sellprice"));
-//                result.setSelldate(rs.getString("selldate"));
-//                result.setPricediff(rs.getDouble("pricediff"));
-//                result.setLoancost(rs.getDouble("Loancost"));
-//                result.setProfit(rs.getDouble("profit"));
-//                result.setVehicletype(rs.getString("vehicletype"));
-//                result.setSettlement(rs.getString("settlement"));
-//                result.setSettlementdate(rs.getString("settlementdate"));
-//                result.setTotalprofit(rs.getDouble("totalprofit"));
-//                result.setLoanrprofit(rs.getDouble("Loanrprofit"));
-//                result.setPicturepath(rs.getString("picturepath"));
-//                result.setIsdeleted(rs.getString("isdeleted"));
-//                result.setIssold(rs.getString("issold"));
-//                result.setComments(rs.getString("comments"));
-//                result.setCreatedts(rs.getString("createdts"));
-//                result.setLastupdatedts(rs.getString("lastupdatedts"));
-//                result.setInterestcost(rs.getDouble("interestcost"));
-//                result.setBuyername(rs.getString("buyername"));
-//                result.setBuyerid(rs.getString("buyerid"));
-//            }
-//        } catch (Exception e) {
-//            throw new Exception(e);
-//        }finally{
-//            try {
-//                rs.close();
-//                ps.close();
-//                conn.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                logger.error(e.getMessage());
-//            }
-//        }
-//
-//        return result;
-//    }
-//    
+        sql.append("   FROM SecCarLoan a ");
+        sql.append("  WHERE a.vehicleid = ? ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            return result;
+        }
+
+        List args = new ArrayList();
+        args.add(id);
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps, args);
+
+            if (rs == null){
+                return result;
+            }
+            while(rs.next()){
+            	result.setVehicleid(rs.getString("vehicleid"));
+                result.setVIN(rs.getString("VIN"));
+                result.setLicenseno(rs.getString("licenseno"));
+                result.setVehicledesc(rs.getString("vehicledesc"));
+                result.setOwnerid(rs.getString("ownerid"));
+                result.setOwnername(rs.getString("ownername"));
+                result.setOwnerdesc(rs.getString("ownerdesc"));
+                result.setBorrowdate(rs.getString("borrowdate"));
+                result.setReturndate(rs.getString("returndate"));
+                result.setPeriodmonths(rs.getDouble("periodmonths"));
+                result.setTraderid(rs.getString("traderid"));
+                result.setTradername(rs.getString("tradername"));
+                result.setBorrowamount(rs.getDouble("borrowamount"));
+                result.setInterestrate(rs.getDouble("interestrate"));
+                result.setInterest(rs.getDouble("interest"));
+                result.setInterestpaid(rs.getDouble("interestpaid"));
+                result.setTotalinterest(rs.getDouble("totalinterest"));
+                result.setMidinterestrate(rs.getDouble("midinterestrate"));
+                result.setMidinterest(rs.getDouble("midinterest"));
+                result.setParkingfee(rs.getDouble("parkingfee"));
+                result.setOtherfee(rs.getDouble("otherfee"));
+                result.setComments(rs.getString("comments"));
+                result.setActualloan(rs.getDouble("actualloan"));
+                result.setActualreturn(rs.getDouble("actualreturn"));
+                result.setActualreturndate(rs.getString("actualreturndate"));
+                result.setOthercost(rs.getDouble("othercost"));
+                result.setVehicletype(rs.getString("vehicletype"));
+                result.setSettlement(rs.getString("settlement"));
+                result.setSettlementdate(rs.getString("settlementdate"));
+                result.setTotalprofit(rs.getDouble("totalprofit"));
+                result.setPicturepath(rs.getString("picturepath"));
+                result.setIsdeleted(rs.getString("isdeleted"));
+                result.setIsreturned(rs.getString("isreturned"));
+                result.setIsabandon(rs.getString("isabandon"));
+                result.setComments2(rs.getString("comments2"));
+                result.setInterestpaidto(rs.getString("interestpaidto"));
+                result.setNextpaymentdate(rs.getString("nextpaymentdate"));
+                result.setInterestcost(rs.getDouble("interestcost"));
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+    
 //    /***********************************************/
 //    // 查询余量
 //    /***********************************************/
@@ -372,7 +377,7 @@ public class LoanDao {
         sql.append("    ,comments ");
         sql.append("    ,actualloan ");
         sql.append("    ,actualreturn ");
-        sql.append("    ,actualreturndate ");
+//        sql.append("    ,actualreturndate ");
         sql.append("    ,vehicletype "); 
         sql.append("    ,settlement ");
         sql.append("    ,isdeleted ");
@@ -381,9 +386,10 @@ public class LoanDao {
         sql.append("    ,createdts ");
         sql.append("    ,lastupdatedts ");
         sql.append(" )VALUES(");
-        sql.append(StringUtils.getSqlPlaceholder(30));
+        sql.append(StringUtils.getSqlPlaceholder(29));
         sql.append(" )");
 
+        
         List args = new ArrayList();
         args.add(vo.getVehicleid());
         args.add(vo.getLicenseno());
@@ -407,8 +413,8 @@ public class LoanDao {
         args.add(vo.getComments());
         args.add(vo.getActualloan());
         args.add(vo.getActualreturn());
-        args.add(vo.getActualreturndate());
-        args.add(vo.getVehicletype());
+//        args.add(vo.getActualreturndate());
+        args.add("贷车");
         args.add("0");
         args.add("0");
         args.add("0");
@@ -426,83 +432,79 @@ public class LoanDao {
     /***********************************************/
     // 更新一个
     /***********************************************/
-//    public void update(Loan vo) throws Exception{
-//
-//        StringBuilder sql = new StringBuilder();
-//        sql.append(" UPDATE SecCarLoan SET ");
-//        sql.append("   isdeleted = ? ");
-//        sql.append("   ,issold = ? ");
-//        sql.append("   ,Loanrid = ? ");
-//        sql.append("   ,licenseno = ? ");
-//        sql.append("   ,vehicledesc = ? ");
-//        sql.append("   ,Loanrname = ? ");
-//        sql.append("   ,purchaseprice = ? ");
-//        sql.append("   ,ownername = ? ");
-//        sql.append("   ,ownerid = ? ");
-//        sql.append("   ,purchasedate = ? ");
-//        sql.append("   ,interestrate = ? ");
-//        sql.append("   ,actualloan = ? ");
-//        sql.append("   ,spareloan = ? ");
-//        sql.append("   ,vehicletype = ? ");
-//        sql.append("   ,comments = ? ");
-//        sql.append("   ,earnest = ? ");
-//        sql.append("   ,Loancost = ? ");
-//        sql.append("   ,sellprice = ? ");
-//        sql.append("   ,selldate = ? ");
-//        sql.append("   ,settlement = ? ");
-//        sql.append("   ,settlementdate = ? ");
-//        sql.append("   ,lastupdatedts = ? ");
-//        sql.append("   ,interest = ? ");
-//        sql.append("   ,interestcost = ? ");
-//        sql.append("   ,pricediff = ? ");
-//        sql.append("   ,totalprofit = ? ");
-//        sql.append("   ,profit = ? ");
-//        sql.append("   ,Loanrprofit = ? ");
-//        sql.append("   ,buyerid = ? ");
-//        sql.append("   ,buyername = ? ");
-//        sql.append(" WHERE vehicleid = ? ");
-//
-//        List args = new ArrayList();
-//        args.add(vo.getIsdeleted());
-//        args.add(vo.getIssold());
-//        args.add(vo.getLoanrid());
-//        args.add(vo.getLicenseno());
-//        args.add(vo.getVehicledesc());
-//        args.add(vo.getLoanrname());
-//        args.add(vo.getPurchaseprice());
-//        args.add(vo.getOwnername());
-//        args.add(vo.getOwnerid());
-//        args.add(vo.getPurchasedate());
-//        args.add(vo.getInterestrate());
-//        args.add(vo.getActualloan());
-//        args.add(vo.getSpareloan());
-//        args.add(vo.getVehicletype());
-//        args.add(vo.getComments());
-//        args.add(vo.getEarnest());
-//        args.add(vo.getLoancost());
-//        args.add(vo.getSellprice());
-//        args.add(vo.getSelldate());
-//        args.add(vo.getSettlement());
-//        args.add(vo.getSettlementdate());
-//        args.add(new Date());
-//        args.add(vo.getInterest());
-//        args.add(vo.getInterestcost());
-//        args.add(vo.getPricediff());
-//        args.add(vo.getTotalprofit());
-//        args.add(vo.getProfit());
-//        args.add(vo.getLoanrprofit());
-//        args.add(vo.getBuyerid());
-//        args.add(vo.getBuyername());
-//        args.add(vo.getVehicleid());
-//
-//        try {
-//            executeNonQuery(sql.toString(), args);
-//
-//        } catch (Exception e) {
-//            throw new Exception(e);
-//        }
-//    }
-//    
+    public void update(Loan vo) throws Exception{
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" UPDATE SecCarLoan SET ");
+        sql.append("   licenseno = ? ");
+        sql.append("   ,vehicledesc = ? ");
+        sql.append("   ,ownerid = ? ");
+        sql.append("   ,ownername = ? ");
+        sql.append("   ,borrowdate = ? ");
+        sql.append("   ,returndate = ? ");
+        sql.append("   ,periodmonths = ? ");
+        sql.append("   ,traderid = ? ");
+        sql.append("   ,tradername = ? ");
+        sql.append("   ,borrowamount = ? ");
+        sql.append("   ,interestrate = ? ");
+        sql.append("   ,interestpaid = ? ");
+        sql.append("   ,interestpaidto = ? ");
+        sql.append("   ,nextpaymentdate = ? ");
+        sql.append("   ,midinterestrate = ? ");
+        sql.append("   ,midinterest = ? ");
+        sql.append("   ,parkingfee = ? ");
+        sql.append("   ,otherfee = ? ");
+        sql.append("   ,comments = ? ");
+        sql.append("   ,actualloan = ? ");
+        sql.append("   ,actualreturn = ? ");
+        sql.append("   ,actualreturndate = ? ");
+        sql.append("   ,vehicletype = ? ");
+        sql.append("   ,totalprofit = ? ");
+        sql.append("   ,settlement = ? ");
+        sql.append("   ,isreturned = ? ");
+        sql.append("   ,isabandon = ? ");
+        sql.append("   ,lastupdatedts = ? ");
+        sql.append(" WHERE vehicleid = ? ");
+
+        List args = new ArrayList();
+        args.add(vo.getLicenseno());
+        args.add(vo.getVehicledesc());
+        args.add(vo.getOwnerid());
+        args.add(vo.getOwnername());
+        args.add(vo.getBorrowdate());
+        args.add(vo.getReturndate());
+        args.add(vo.getPeriodmonths());
+        args.add(vo.getTraderid());
+        args.add(vo.getTradername());
+        args.add(vo.getBorrowamount());
+        args.add(vo.getInterestrate());
+        args.add(vo.getInterestpaid());
+        args.add(vo.getInterestpaidto());
+        args.add(vo.getNextpaymentdate());
+        args.add(vo.getMidinterestrate());
+        args.add(vo.getMidinterest());
+        args.add(vo.getParkingfee());
+        args.add(vo.getOtherfee());
+        args.add(vo.getComments());
+        args.add(vo.getActualloan());
+        args.add(vo.getActualreturn());
+        args.add(vo.getActualreturndate());
+        args.add(vo.getVehicletype());
+        args.add(vo.getTotalprofit());
+        args.add(vo.getSettlement());
+        args.add(vo.getIsreturned());
+        args.add(vo.getIsabandon());
+        args.add(new Date());
+        args.add(vo.getVehicleid());
+
+        try {
+            executeNonQuery(sql.toString(), args);
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+    
 //    /***********************************************/
 //    // 结算一个
 //    /***********************************************/
@@ -677,75 +679,75 @@ public class LoanDao {
 //////        }
 //////    }
 ////
-//    /***********************************************/
-//    // 删除一个
-//    /***********************************************/
-//    public void deletesingle(String vehicleid) throws Exception{
-//
-//
-//        StringBuilder sql = new StringBuilder();
-////        sql.append(" DELETE FROM SecCarLoan ");
-//        sql.append("UPDATE SecCarLoan SET ISDELETED=1 ");
-//        sql.append(" WHERE vehicleid = ? ");
-//
-//        Connection conn = DbConnectionFactory.createHonchenConnection();
-//        if (conn == null){
-//            return;
-//        }
-//
-//        PreparedStatement ps = null;
-//        String pk = null;
-//        try {
-//            conn.setAutoCommit(false);
-//            ps = conn.prepareStatement(sql.toString());
-////            LoanDto td = new LoanDto();
-////            td = this.query(vehicleid);
-////            if(td.getSettlement().equals("1") || td.getIsdeleted().equals("1")){
-////            	throw new Exception("车辆：" + td.getLicenseno() + SysConstant.M_SETTLEMENT_ERROR);
-////            }
-//            List args = new ArrayList();
-//            args.add(vehicleid);
-//            pk = vehicleid;
-//            DbSqlHelper.executeNonQueryWithBatch(conn, ps, args);
-//            ps.executeBatch();
-//            conn.commit();
-//        } catch (SQLException e) {
-//
-//            LoanDto dto = new LoanDto();
-//            try {
-//                dto = this.query(pk);
-//                conn.rollback();
-//            } catch (Exception e1) {
-//                e1.printStackTrace();
-//                logger.error(e1.getMessage());
+    /***********************************************/
+    // 删除一个
+    /***********************************************/
+    public void deletesingle(String vehicleid) throws Exception{
+
+
+        StringBuilder sql = new StringBuilder();
+//        sql.append(" DELETE FROM SecCarLoan ");
+        sql.append("UPDATE SecCarLoan SET ISDELETED=1 ");
+        sql.append(" WHERE vehicleid = ? ");
+
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            return;
+        }
+
+        PreparedStatement ps = null;
+        String pk = null;
+        try {
+            conn.setAutoCommit(false);
+            ps = conn.prepareStatement(sql.toString());
+//            LoanDto td = new LoanDto();
+//            td = this.query(vehicleid);
+//            if(td.getSettlement().equals("1") || td.getIsdeleted().equals("1")){
+//            	throw new Exception("车辆：" + td.getLicenseno() + SysConstant.M_SETTLEMENT_ERROR);
 //            }
-//
-//            if (dto.getLicenseno() == null || dto.getLicenseno().length() == 0) {
-//                throw new Exception(e);
-//            } else {
-//                throw new Exception(e.getMessage() + "车辆：" + dto.getLicenseno() + "<br/>");
-//            }
-//        }catch (Exception e){
-//
-//            try{
-//                conn.rollback();
-//            }catch (Exception e1){
-//                e1.printStackTrace();
-//                logger.error(e1.getMessage());
-//            }
-//
-//            throw new Exception(e);
-//
-//        }finally{
-//            try {
-//                ps.close();
-//                conn.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                logger.error(e.getMessage());
-//            }
-//        }
-//    }
+            List args = new ArrayList();
+            args.add(vehicleid);
+            pk = vehicleid;
+            DbSqlHelper.executeNonQueryWithBatch(conn, ps, args);
+            ps.executeBatch();
+            conn.commit();
+        } catch (SQLException e) {
+
+            LoanDto dto = new LoanDto();
+            try {
+                dto = this.query(pk);
+                conn.rollback();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                logger.error(e1.getMessage());
+            }
+
+            if (dto.getLicenseno() == null || dto.getLicenseno().length() == 0) {
+                throw new Exception(e);
+            } else {
+                throw new Exception(e.getMessage() + "车辆：" + dto.getLicenseno() + "<br/>");
+            }
+        }catch (Exception e){
+
+            try{
+                conn.rollback();
+            }catch (Exception e1){
+                e1.printStackTrace();
+                logger.error(e1.getMessage());
+            }
+
+            throw new Exception(e);
+
+        }finally{
+            try {
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+    }
 //    /***********************************************/
 //    // 删除多个
 //    /***********************************************/
@@ -973,26 +975,50 @@ public class LoanDao {
                 args.add("%" + form.getFilterValue().trim() + "%");
 
             }else{
-//            	if(form.getFiltercustomer() != null && form.getFiltercustomer().length() > 0){
-//	                result.append(" AND (a.customer like ? ) ");
-//	                args.add("%" + form.getFiltercustomer().trim() + "%");
-//	            	}
-//            	if(form.getFilterlicenseno() != null && form.getFilterlicenseno().length() > 0){
-//                    result.append(" AND (a.licenseno like ? ) ");
-//                    args.add("%" + form.getFilterlicenseno().trim() + "%");
-//                	}
-//            	if(form.getFiltercardescription() != null && form.getFiltercardescription().length() > 0){
-//                    result.append(" AND (a.cardescription like ? ) ");
-//                    args.add("%" + form.getFiltercardescription().trim() + "%");
-//                	}
-//            	if(form.getFilterinventoryints() != null && form.getFilterinventoryints().length() > 0){
-//                    result.append(" AND (a.inventoryints >= ? ) ");
-//                    args.add(form.getFilterinventoryints().trim());
-//                	}
-//            	if(form.getFilterinventoryoutts() != null && form.getFilterinventoryoutts().length() > 0){
-//                    result.append(" AND (a.inventoryoutts <= ? ) ");
-//                    args.add(form.getFilterinventoryoutts().trim());
-//                	}
+            	if(form.getFilterisdeleted() != null && form.getFilterisdeleted().length() > 0){
+	                result.append(" AND (a.isdeleted like ? ) ");
+	                args.add("%" + form.getFilterisdeleted().trim() + "%");
+	            	}
+            	if(form.getFilterisabandon() != null && form.getFilterisabandon().length() > 0){
+                    result.append(" AND (a.isabandon like ? ) ");
+                    args.add("%" + form.getFilterisabandon().trim() + "%");
+                	}
+            	if(form.getFilterisreturned() != null && form.getFilterisreturned().length() > 0){
+                    result.append(" AND (a.isreturned like ? ) ");
+                    args.add("%" + form.getFilterisreturned().trim() + "%");
+                	}
+            	if(form.getFiltersettlement() != null && form.getFiltersettlement().length() > 0){
+                    result.append(" AND (a.settlement like ? ) ");
+                    args.add("%" + form.getFiltersettlement().trim() + "%");
+                	}
+            	if(form.getFilterlicenseno() != null && form.getFilterlicenseno().length() > 0){
+                    result.append(" AND (a.licenseno like ? ) ");
+                    args.add("%" + form.getFilterlicenseno().trim() + "%");
+                	}
+            	if(form.getFiltercardescription() != null && form.getFiltercardescription().length() > 0){
+                    result.append(" AND (a.vehicledesc like ? ) ");
+                    args.add("%" + form.getFiltercardescription().trim() + "%");
+                	}
+            	if(form.getFiltercustomer() != null && form.getFiltercustomer().length() > 0){
+                    result.append(" AND (a.ownername like ? ) ");
+                    args.add("%" + form.getFiltercustomer().trim() + "%");
+                	}
+            	if(form.getLoanstart() != null && form.getLoanstart().length() > 0){
+                    result.append(" AND (a.borrowdate >= ? ) ");
+                    args.add(form.getLoanstart().trim());
+                	}
+            	if(form.getLoanend() != null && form.getLoanend().length() > 0){
+                    result.append(" AND (a.borrowdate <= ? ) ");
+                    args.add(form.getLoanend().trim());
+                	}
+            	if(form.getReturnstart() != null && form.getReturnstart().length() > 0){
+                    result.append(" AND (a.returndate >= ? ) ");
+                    args.add(form.getReturnstart().trim());
+                	}
+            	if(form.getReturnend() != null && form.getReturnend().length() > 0){
+                    result.append(" AND (a.returndate <= ? ) ");
+                    args.add(form.getReturnend().trim());
+                	}
                 			 	
             }
         }

@@ -25,6 +25,10 @@
 
     $(function(){
     	LoanInit.getInstance('<%=basePath%>').init();
+    	   // $("input",$("#comments").next("td")).click(function(){
+    	   //     alert("ok");
+    	   // });
+
     });
 
   </script>
@@ -121,35 +125,53 @@
     </table> 
   </div>
 </div>
-<!-- 
+
 <div id="dlg_filter">
   <div region="center" border="false" title="" style="padding-left: 20px">
     <br/>
     <table class="tb_filter" cellspacing="0">
       <tbody>
       <tr>
-        <th>客户名称</th>
-        <td><input id="filtercustomer"/></td>
+        <th>已删除</th>
+        <td><input type="checkbox" id="filterisdeleted"/></td>
+        <th>已弃车</th>
+        <td><input type="checkbox" id="filterisabandon"/></td>
+      </tr>
+      <tr>
+        <th>已归还</th>
+        <td><input id="filterisreturned"/></td>
+        <th>已结算</th>
+        <td><input id="filtersettlement"/></td>
+      </tr>
+      <tr>
         <th>车牌号</th>
         <td><input id="filterlicenseno"/></td>
-      </tr>
-      <tr>
         <th>车辆描述</th>
         <td><input id="filtercardescription"/></td>
-        <td></td>
+      </tr>
+      <tr>
+        <th>客户名称</th>
+        <td><input id="filtercustomer"/></td>
+        <th></th>
         <td></td>
       </tr>
       <tr>
-        <th>入库时间</th>
-        <td><input id="filterinventoryints"/></td>
-        <th>出库时间</th>
-        <td><input id="filterinventoryoutts"/></td>
+        <th>借款日期起</th>
+        <td><input id="loanstart"/></td>
+        <th>借款日期止</th>
+        <td><input id="loanend"/></td>
+      </tr>
+      <tr>
+        <th>约定还款日期起</th>
+        <td><input id="returnstart"/></td>
+        <th>约定还款日期止</th>
+        <td><input id="returnend"/></td>
       </tr>
       </tbody>
     </table>
   </div>
 </div>
-
+<!-- 
 <div id="dlg_upload">
   <div region="center" border="false" title="" style="padding-left: 20px">
     <br/>

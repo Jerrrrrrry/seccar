@@ -19,10 +19,10 @@ public class LoanService {
         return dao.count(form);
     }
 
-//    public LoanDto query(String id) throws Exception{
-//        return dao.query(id);
-//    }
-//
+    public LoanDto query(String id) throws Exception{
+        return dao.query(id);
+    }
+
     public void create(Loan vo) throws Exception{
         dao.create(vo);
     }
@@ -31,9 +31,9 @@ public class LoanService {
 //        return dao.getspare();
 //    }
 //    
-//    public void update(Loan vo) throws Exception{
-//        dao.update(vo);
-//    }
+    public void update(Loan vo) throws Exception{
+        dao.update(vo);
+    }
 //    
 //    public void settle(Loan vo) throws Exception{
 //        dao.settle(vo);
@@ -43,9 +43,9 @@ public class LoanService {
 //        dao.updateSpare(sloan);
 //    }
 //       
-//    public void deletesingle(String vehicleid) throws Exception{
-//        dao.deletesingle(vehicleid);
-//    }
+    public void deletesingle(String vehicleid) throws Exception{
+        dao.deletesingle(vehicleid);
+    }
 //
 //    public void delete(String[] list) throws Exception{
 //        dao.delete(list);

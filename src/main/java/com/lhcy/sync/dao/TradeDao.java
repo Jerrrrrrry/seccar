@@ -34,7 +34,8 @@ public class TradeDao {
         StringBuilder sql = new StringBuilder();
         sql.append(" select count(1) as cnt ");
         sql.append("   from SecCarTrade a ");
-        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
+        sql.append("  WHERE 1=1  ");
+//        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
 
         List args = new ArrayList();
         sql.append(getWhere(form, args));
@@ -130,7 +131,8 @@ public class TradeDao {
 //        sql.append("    ,a.interestcost ");
         sql.append("    ,ROW_NUMBER() OVER (ORDER BY " + sort + " " + order + ") AS 'RowTrade'");
         sql.append("   FROM SecCarTrade a ");
-        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
+        sql.append("  WHERE 1=1  ");
+//        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
         sql.append(where);
         sql.append(" ) ");
         sql.append(" SELECT * FROM temp ");

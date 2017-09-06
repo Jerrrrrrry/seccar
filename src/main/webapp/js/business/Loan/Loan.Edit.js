@@ -51,19 +51,19 @@ var LoanEdit = {
             $('#ownerid').textbox('setValue', '');
             $('#borrowdate').textbox('setValue', '');
             $('#returndate').textbox('setValue', '');
-            $('#periodmonths').textbox('setValue', '');
-            $('#borrowamount').textbox('setValue', '');
+            $('#periodmonths').textbox('setValue', '0');
+            $('#borrowamount').textbox('setValue', '0');
             $('#interestrate').textbox('setValue', '1.5');
-            $('#interestpaid').textbox('setValue', '');
+            $('#interestpaid').textbox('setValue', '0');
             $('#interestpaidto').textbox('setValue', '');
             $('#nextpaymentdate').textbox('setValue', '');
-            $('#midinterestrate').textbox('setValue', '');
-            $('#midinterest').textbox('setValue', '');
-            $('#parkingfee').textbox('setValue', '');
-            $('#otherfee').textbox('setValue', '');
-            $('#actualloan').textbox('setValue', '');
+            $('#midinterestrate').textbox('setValue', '0');
+            $('#midinterest').textbox('setValue', '0');
+            $('#parkingfee').textbox('setValue', '0');
+            $('#otherfee').textbox('setValue', '0');
+            $('#actualloan').textbox('setValue', '0');
             $('#comments').textbox('setValue', '');
-            $('#actualreturn').textbox('setValue', '');
+            $('#actualreturn').textbox('setValue', '0');
             $('#actualreturndate').textbox('setValue', '');
         };
         
@@ -72,64 +72,65 @@ var LoanEdit = {
         /***********************************************/
         edit.disabledview = function () {
 //        	alert("edit.clear");
-        	var userid = $('#userid').val();
-        	var username = $('#username').val();
         	$('#licenseno').textbox({disabled:true});
             $('#vehicledesc').textbox({disabled:true});
-            $('#Loanrname').textbox({disabled:true});
-            $('#purchaseprice').textbox({disabled:true});
             $('#ownername').textbox({disabled:true});
             $('#ownerid').textbox({disabled:true});
-            $('#purchasedate').textbox({disabled:true});
+            $('#borrowdate').textbox({disabled:true});
+            $('#returndate').textbox({disabled:true});
+            $('#periodmonths').textbox({disabled:true});
+            $('#borrowamount').textbox({disabled:true});
             $('#interestrate').textbox({disabled:true});
+            $('#interestpaid').textbox({disabled:true});
+            $('#interestpaidto').textbox({disabled:true});
+            $('#nextpaymentdate').textbox({disabled:true});
+            $('#midinterestrate').textbox({disabled:true});
+            $('#midinterest').textbox({disabled:true});
+            $('#parkingfee').textbox({disabled:true});
+            $('#otherfee').textbox({disabled:true});
             $('#actualloan').textbox({disabled:true});
-            $('#spareloan').textbox({disabled:true});
-            $('#vehicletype').combobox({disabled:true});
             $('#comments').textbox({disabled:true});
-            $('#earnest').textbox({disabled:true});
-            $('#Loancost').textbox({disabled:true});
-            $('#sellprice').textbox({disabled:true});
-            $('#selldate').textbox({disabled:true});
-            $('#buyerid').textbox({disabled:true});
-            $('#buyername').textbox({disabled:true});
-            $('#btnEditSave').linkbutton('disable');
-            $('#btnEditSaveadd').linkbutton('disable');
+            $('#actualreturn').textbox({disabled:true});
+            $('#actualreturndate').textbox({disabled:true});
+            $('#btnEditSave').linkbutton('enable');
+            $('#btnEditSaveadd').linkbutton('enable');
             $('#btnEditReturned').linkbutton('disable');
+            $('#btnEditAbandon').linkbutton('disable');
             $('#btnEditSettle').linkbutton('disable');
             $('#btnEditDelete').linkbutton('disable');
             
         };
         
         /***********************************************/
-        // 已售视图
+        // 已还视图
         /***********************************************/
-        edit.soldview = function () {
-//        	alert("edit.clear");
-        	var userid = $('#userid').val();
-        	var username = $('#username').val();
-        	$('#licenseno').textbox({disabled:true});
-            $('#vehicledesc').textbox({disabled:true});
-            $('#Loanrname').textbox({disabled:true});
-            $('#purchaseprice').textbox({disabled:true});
-            $('#ownername').textbox({disabled:true});
-            $('#ownerid').textbox({disabled:true});
-            $('#purchasedate').textbox({disabled:true});
+        edit.returnedview = function () {
+        	$('#licenseno').textbox({disabled:false});
+            $('#vehicledesc').textbox({disabled:false});
+            $('#ownername').textbox({disabled:false});
+            $('#ownerid').textbox({disabled:false});
+            $('#borrowdate').textbox({disabled:false});
+            $('#returndate').textbox({disabled:false});
+            $('#periodmonths').textbox({disabled:true});
+            $('#borrowamount').textbox({disabled:true});
             $('#interestrate').textbox({disabled:true});
-            $('#actualloan').textbox({disabled:true});
-            $('#spareloan').textbox({disabled:true});
-            $('#vehicletype').combobox({disabled:true});
+            $('#interestpaid').textbox({disabled:true});
+            $('#interestpaidto').textbox({disabled:false});
+            $('#nextpaymentdate').textbox({disabled:false});
+            $('#midinterestrate').textbox({disabled:false});
+            $('#midinterest').textbox({disabled:false});
+            $('#parkingfee').textbox({disabled:false});
+            $('#otherfee').textbox({disabled:false});
+            $('#actualloan').textbox({disabled:false});
             $('#comments').textbox({disabled:false});
-            $('#earnest').textbox({disabled:false});
-            $('#Loancost').textbox({disabled:false});
-            $('#sellprice').textbox({disabled:false});
-            $('#selldate').textbox({disabled:false});
-            $('#buyerid').textbox({disabled:false});
-            $('#buyername').textbox({disabled:false});
+            $('#actualreturn').textbox({disabled:true});
+            $('#actualreturndate').textbox({disabled:false});
             $('#btnEditSave').linkbutton('disable');
             $('#btnEditSaveadd').linkbutton('disable');
             $('#btnEditReturned').linkbutton('enable');
+            $('#btnEditAbandon').linkbutton('disable');
             $('#btnEditSettle').linkbutton('enable');
-            $('#btnEditDelete').linkbutton('enable');
+            $('#btnEditDelete').linkbutton('disable');
             
         };
         
@@ -138,31 +139,33 @@ var LoanEdit = {
         /***********************************************/
         edit.editview = function () {
 //        	alert("edit.clear");
-        	var userid = $('#userid').val();
-        	var username = $('#username').val();
-        	$('#licenseno').textbox({disabled:true});
-            $('#vehicledesc').textbox({disabled:true});
-            $('#Loanrname').textbox({disabled:true});
-            $('#purchaseprice').textbox({disabled:true});
-            $('#ownername').textbox({disabled:true});
-            $('#ownerid').textbox({disabled:true});
-            $('#purchasedate').textbox({disabled:true});
-            $('#interestrate').textbox({disabled:true});
-            $('#actualloan').textbox({disabled:true});
-            $('#spareloan').textbox({disabled:true});
-            $('#vehicletype').combobox({disabled:true});
+        	$('#licenseno').textbox({disabled:false});
+            $('#vehicledesc').textbox({disabled:false});
+            $('#ownername').textbox({disabled:false});
+            $('#ownerid').textbox({disabled:false});
+            $('#borrowdate').textbox({disabled:false});
+            $('#returndate').textbox({disabled:false});
+            $('#periodmonths').textbox({disabled:false});
+            $('#borrowamount').textbox({disabled:false});
+            $('#interestrate').textbox({disabled:false});
+            $('#interestpaid').textbox({disabled:false});
+            $('#interestpaidto').textbox({disabled:false});
+            $('#nextpaymentdate').textbox({disabled:false});
+            $('#midinterestrate').textbox({disabled:false});
+            $('#midinterest').textbox({disabled:false});
+            $('#parkingfee').textbox({disabled:false});
+            $('#otherfee').textbox({disabled:false});
+            $('#actualloan').textbox({disabled:false});
             $('#comments').textbox({disabled:false});
-            $('#earnest').textbox({disabled:false});
-            $('#Loancost').textbox({disabled:false});
-            $('#sellprice').textbox({disabled:false});
-            $('#selldate').textbox({disabled:false});
-            $('#buyerid').textbox({disabled:false});
-            $('#buyername').textbox({disabled:false});
+            $('#actualreturn').textbox({disabled:false});
+            $('#actualreturndate').textbox({disabled:false});
             $('#btnEditSave').linkbutton('enable');
             $('#btnEditSaveadd').linkbutton('enable');
             $('#btnEditReturned').linkbutton('enable');
-            $('#btnEditSettle').linkbutton('disable');
+            $('#btnEditAbandon').linkbutton('enable');
+            $('#btnEditSettle').linkbutton('enable');
             $('#btnEditDelete').linkbutton('enable');
+            
             
         };
         
@@ -220,81 +223,43 @@ var LoanEdit = {
                     		edit.disabledview();
                     	}else if(vo.dto.settlement=="1"){
                     		edit.disabledview();
-                    	}else if(vo.dto.issold=="1"){
-                    		edit.soldview();
+                    	}else if(vo.dto.abandon=="1"){
+                    		edit.disabledview();
+                    	}else if(vo.dto.isreturned=="1"){
+                    		edit.returnedview();
                     	}else{
                     		edit.editview();
                     	}
-//                    	$('#licenseno').textbox({disabled:true});
-//                        $('#vehicledesc').textbox({disabled:false});
-//                        $('#Loanrname').textbox({disabled:true});
-//                        $('#purchaseprice').textbox({disabled:true});
-//                        $('#ownername').textbox({disabled:false});
-//                        $('#ownerid').textbox({disabled:false});
-//                        $('#purchasedate').textbox({disabled:true});
-//                        $('#interestrate').textbox({disabled:false});
-//                        $('#actualloan').textbox({disabled:true});
-//                        $('#spareloan').textbox({disabled:true});
-//                        $('#vehicletype').combobox({disabled:true});
-//                        $('#comments').textbox({disabled:false});
-//                        $('#earnest').textbox({disabled:false});
-//                        $('#Loancost').textbox({disabled:false});
-//                        $('#sellprice').textbox({disabled:false});
-//                        $('#selldate').textbox({disabled:false});
-//                        $('#vehicleid').val('');
-//                        $('#vehicleid').val(vo.dto.vehicleid);
-//                        $('#licenseno').textbox('setValue', vo.dto.licenseno);
-                        $('#isdeleted').val(vo.dto.isdeleted);
-                    	$('#issold').val(vo.dto.issold);
+                    	
+                    	$('#isdeleted').val(vo.dto.isdeleted);
+                    	$('#isreturned').val(vo.dto.isreturned);
+                    	$('#isabandon').val(vo.dto.isabandon);
                     	$('#settlement').val(vo.dto.settlement);
-                    	$('#Loanrid').val(vo.dto.Loanrid);
                     	$('#vehicleid').val(vo.dto.vehicleid);
                     	$('#licenseno').textbox('setValue', vo.dto.licenseno);
                         $('#vehicledesc').textbox('setValue', vo.dto.vehicledesc);
-                        $('#Loanrname').textbox('setValue', vo.dto.Loanrname);
-                        $('#purchaseprice').textbox('setValue', vo.dto.purchaseprice);
                         $('#ownername').textbox('setValue', vo.dto.ownername);
                         $('#ownerid').textbox('setValue', vo.dto.ownerid);
-                        $('#purchasedate').textbox('setValue', vo.dto.purchasedate);
+                        $('#borrowdate').textbox('setValue', vo.dto.borrowdate);
+                        $('#returndate').textbox('setValue', vo.dto.returndate);
+                        $('#periodmonths').textbox('setValue', vo.dto.periodmonths);
+                        $('#borrowamount').textbox('setValue', vo.dto.borrowamount);
                         $('#interestrate').textbox('setValue', vo.dto.interestrate);
+                        $('#interestpaid').textbox('setValue', vo.dto.interestpaid);
+                        $('#interestpaidto').textbox('setValue', vo.dto.interestpaidto);
+                        $('#nextpaymentdate').textbox('setValue', vo.dto.nextpaymentdate);
+                        $('#midinterestrate').textbox('setValue', vo.dto.midinterestrate);
+                        $('#midinterest').textbox('setValue', vo.dto.midinterest);
+                        $('#parkingfee').textbox('setValue', vo.dto.parkingfee);
+                        $('#otherfee').textbox('setValue', vo.dto.otherfee);
                         $('#actualloan').textbox('setValue', vo.dto.actualloan);
-                        if(vo.dto.vehicletype=="第三方"){
-                        	$('#spareloan').textbox('setValue', vo.dto.spareloan);
-                        }else{
-                        	$('#spareloan').textbox('setValue', '0');	
-                        }
-                        $('#vehicletype').combobox('setValue', vo.dto.vehicletype);
                         $('#comments').textbox('setValue', vo.dto.comments);
-                        $('#earnest').textbox('setValue', vo.dto.earnest);
-                        $('#Loancost').textbox('setValue', vo.dto.Loancost);
-                        $('#sellprice').textbox('setValue', vo.dto.sellprice);
-                        $('#selldate').textbox('setValue', vo.dto.selldate);
-                        $('#buyerid').textbox('setValue', vo.dto.buyerid);
-                        $('#buyername').textbox('setValue', vo.dto.buyername);
-//                        $('#vehicleid').val('');
-//                    	$('#licenseno').textbox('setValue', '');
-//                        $('#vehicledesc').textbox('setValue', '');
-//                        $('#Loanrname').textbox('setValue', '');
-//                        $('#purchaseprice').textbox('setValue', '');
-//                        $('#ownername').textbox('setValue', '');
-//                        $('#ownerid').textbox('setValue', '');
-//                        $('#purchasedate').textbox('setValue', '');
-//                        $('#interestrate').textbox('setValue', '');
-//                        $('#actualloan').textbox('setValue', '');
-//                        $('#spareloan').textbox('setValue', '');
-//                        $('#earnest').textbox('setValue', '');
-//                        $('#comments').textbox('setValue', '');
-//                        $('#vehicledesc').textbox('setValue', vo.dto.period);
-//                        $('#cardescription').textbox('setValue', vo.dto.cardescription);
-//                        $('#licenseno').textbox('setValue', vo.dto.licenseno);
-//                        $('#inventoryints').textbox('setValue', vo.dto.inventoryints);
-//                        $('#inventoryoutts').textbox('setValue', vo.dto.inventoryoutts);
-//                        $('#Loanfee').textbox('setValue', vo.dto.Loanfee);
-//                        $('#comments').textbox('setValue', vo.dto.comments);
-//                        $('#btnEditDelete').linkbutton('enable');
+                        $('#actualreturn').textbox('setValue', vo.dto.actualreturn);
+                        $('#actualreturndate').textbox('setValue', vo.dto.actualreturndate);
+                        
 
                         $('#dlg_add').dialog('open');
-                        xutil.focus('#sellprice');
+                        xutil.focus('#interestpaid');
                     } else if (vo.status == 'nologin') {
                         top.location = basePath;
                     } else {
@@ -496,17 +461,18 @@ var LoanEdit = {
 
             var vehicleid = $('#vehicleid').val();
             var isdeleted = $('#isdeleted').val();
-            var issold = $('#issold').val();
+            var isabandon = $('#isabandon').val();
+            var isreturned = $('#isreturned').val();
             var settlement = $('#settlement').val();
-            var vehicletype = $('#vehicletype').combobox('getValue');
+//            var vehicletype = $('#vehicletype').combobox('getValue');
 //            var vehicletype = $('#vehicletype').val();
-            var purchaseprice = $('#purchaseprice').textbox('getValue');
+//            var purchaseprice = $('#purchaseprice').textbox('getValue');
             
             if (vehicleid == null || vehicleid.length == 0) {
                 $.messager.alert(AppConstant.M_INFO, AppConstant.M_NO_SAVED, 'warning');
                 return;
             }
-            if (isdeleted == "1" || settlement == "1") {
+            if (isdeleted == "1" || settlement == "1" ) {
                 $.messager.alert(AppConstant.M_NODELETE_ERROR, 'warning');
                 return;
             }
@@ -519,9 +485,9 @@ var LoanEdit = {
                         url: basePath + 'LoanAction.do?m=deletesingle',
                         data: {
                         	vehicleid: vehicleid,
-                        	issold: issold,
-                        	vehicletype: vehicletype,
-                        	purchaseprice: purchaseprice
+                        	isabandon: isabandon,
+                        	isreturned: isreturned,
+                        	settlement: settlement
                         },
                         success: function (data) {
 

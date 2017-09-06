@@ -174,6 +174,7 @@ var LoanInit = {
                     },
                     {
                         field: 'comments',
+//                        data-options=''events:{blur:onSelectBtypeComboBox},width:'300px',required:true,validType:['length[1,64]']',
                         title: '备注',
                         width: 60,
                         align: 'left',
@@ -194,6 +195,13 @@ var LoanInit = {
                         sortable: false
                     },
                     {
+                        field: 'totalprofit',
+                        title: '总利润',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
                         field: 'picturepath',
                         title: '图片路径',
                         width: 100,
@@ -208,8 +216,8 @@ var LoanInit = {
                         sortable: true
                     },
                     {
-                        field: 'issold',
-                        title: '已售',
+                        field: 'isreturned',
+                        title: '已归还',
                         width: 50,
                         align: 'center',
                         sortable: true
@@ -221,28 +229,35 @@ var LoanInit = {
                         align: 'center',
                         sortable: true
                     },
+                    {
+                        field: 'isabandon',
+                        title: '已弃车',
+                        width: 50,
+                        align: 'center',
+                        sortable: true
+                    },
                     
                 ]],
-//                onDblClickRow: function(index, data){
-//                    $('#btnFirst').linkbutton('enable');
-//                    $('#btnPrevious').linkbutton('enable');
-//                    $('#btnNext').linkbutton('enable');
-//                    $('#btnLast').linkbutton('enable');
-//                    edit.view(index);
-//                },
-//                onBeforeLoad : function(param){
-//                    xutil.ajaxLoading('body');
-//                },
-//                onLoadSuccess : function (data) {
-//                  xutil.ajaxLoadEnd();
-//                },
-//                onLoadError: function () {
-//                    xutil.ajaxLoadEnd();
-//                    xutil.exception();
-//                }
-//                onLoadError: function () {
-//                    top.location = basePath;
-//                }
+                onDblClickRow: function(index, data){
+                    $('#btnFirst').linkbutton('enable');
+                    $('#btnPrevious').linkbutton('enable');
+                    $('#btnNext').linkbutton('enable');
+                    $('#btnLast').linkbutton('enable');
+                    edit.view(index);
+                },
+                onBeforeLoad : function(param){
+                    xutil.ajaxLoading('body');
+                },
+                onLoadSuccess : function (data) {
+                  xutil.ajaxLoadEnd();
+                },
+                onLoadError: function () {
+                    xutil.ajaxLoadEnd();
+                    xutil.exception();
+                },
+                onLoadError: function () {
+                    top.location = basePath;
+                }
             });
             
             /***********************************************/
@@ -299,8 +314,7 @@ var LoanInit = {
 
             $('#interestpaidto').datebox({
                 width: 200,
-                validType: ['length[0,100]'],
-                multiline: true
+                validType: ['length[0,100]']
             });
 
             $('#nextpaymentdate').datebox({
@@ -313,28 +327,24 @@ var LoanInit = {
             });
             $('#midinterest').textbox({
                 width: 200,
-                validType: ['length[0,100]'],
-                disabled: true
+                validType: ['length[0,100]']
             });
             $('#parkingfee').textbox({
                 width: 200,
-                validType: ['length[0,100]'],
-                disabled: true
+                validType: ['length[0,100]']
             });
             $('#otherfee').textbox({
                 width: 200,
-                validType: ['length[0,100]'],
-                disabled: true
+                validType: ['length[0,100]']
             });
             $('#actualloan').textbox({
                 width: 200,
-                validType: ['length[0,100]'],
-                disabled: true
+                validType: ['length[0,100]']
             });
             $('#comments').textbox({
                 width: 200,
                 validType: ['length[0,100]'],
-                disabled: true
+                multiline: true
             });
             $('#actualreturn').textbox({
                 width: 200,
@@ -347,26 +357,79 @@ var LoanInit = {
                 disabled: true
             });
             
-//            $('#filtercustomer').textbox({
-//                width : 200,
-//                validType : ['length[1,100]']
-//            });
-//            $('#filterlicenseno').textbox({
-//                width : 200,
-//                validType : ['length[1,100]']
-//            });
-//            $('#filtercardescription').textbox({
-//                width : 200,
-//                validType : ['length[1,100]']
-//            });
-//            $('#filterinventoryints').datebox({
-//                width : 200,
-//                validType : ['length[1,100]']
-//            });
-//            $('#filterinventoryoutts').datebox({
-//                width : 200,
-//                validType : ['length[1,100]']
-//            });
+
+            $('#filterisreturned').combobox({
+                width : 120,
+                editable : false,
+                valueField: 'value',
+                textField: 'label',
+                data : [
+                    {
+                    label: '未选择',
+                    value: '',
+                    selected : true
+                    },
+                    {
+                        label: '已归还',
+                        value: '1',
+                        selected : true
+                    },
+                    {
+                        label: '未归还',
+                        value: '0'
+                    }
+                ]
+            });
+            $('#filtersettlement').combobox({
+                width : 120,
+                editable : false,
+                valueField: 'value',
+                textField: 'label',
+                data : [
+                    {
+                    label: '未选择',
+                    value: '',
+                    selected : true
+                    },
+                    {
+                        label: '已结算',
+                        value: '1',
+                        selected : true
+                    },
+                    {
+                        label: '未结算',
+                        value: '0'
+                    }
+                ]
+            });
+            $('#filterlicenseno').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#filtercardescription').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#filtercustomer').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#loanstart').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#loanend').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#returnstart').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#returnend').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
 
             /***********************************************/
             // 列表工具栏初始化
@@ -681,48 +744,48 @@ var LoanInit = {
             /***********************************************/
             // 窗口初始化
             /***********************************************/
-//            $('#dlg_filter').dialog({
-//                title: '停车管理',
-//                width: 700,
-//                height: 300,
-//                modal: true,
-//                closed: true,
-//                minimizable: false,
-//                maximizable: false,
-//                resizable: false,
-//                collapsible: false,
-//                toolbar: [                
-//                    {
-//                        text: '过滤',
-//                        id:'btnFilterDlg',
-//                        iconCls: 'tbtn_filter',
-//                        handler: function(){
-//                        	//alert('btnEditSavefalse');
-//                            list.filter();
-//                        }
-//                    },
-//                    {
-//                        text: '重置',
-//                        id:'btnClear',
-//                        iconCls: 'tbtn_deleteall',
-//                        handler: function(){
-//                        	//alert('btnEditSavefalse');
-//                            list.clearFilter();
-//                        }
-//                    },
-//                    '-',
-//                    {
-//                        text: '关闭',
-//                        iconCls: 'tbtn_quit',
-//                        handler: function(){
-//                        	$('#dlg_filter').dialog('close');
-//                        }
-//                    }
-//                ],
-//                onClose : function(){
-////                xutil.focus('#filterValue');
-//                }
-//            }); 
+            $('#dlg_filter').dialog({
+                title: '车贷业务',
+                width: 700,
+                height: 300,
+                modal: true,
+                closed: true,
+                minimizable: false,
+                maximizable: false,
+                resizable: false,
+                collapsible: false,
+                toolbar: [                
+                    {
+                        text: '过滤',
+                        id:'btnFilterDlg',
+                        iconCls: 'tbtn_filter',
+                        handler: function(){
+                        	//alert('btnEditSavefalse');
+                            list.filter();
+                        }
+                    },
+                    {
+                        text: '重置',
+                        id:'btnClear',
+                        iconCls: 'tbtn_deleteall',
+                        handler: function(){
+                        	//alert('btnEditSavefalse');
+                            list.clearFilter();
+                        }
+                    },
+                    '-',
+                    {
+                        text: '关闭',
+                        iconCls: 'tbtn_quit',
+                        handler: function(){
+                        	$('#dlg_filter').dialog('close');
+                        }
+                    }
+                ],
+                onClose : function(){
+//                xutil.focus('#filterValue');
+                }
+            }); 
 //            /***********************************************/
 //            // 窗口初始化
 //            /***********************************************/
