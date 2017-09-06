@@ -1010,27 +1010,55 @@ public class TradeDao {
                 args.add("%" + form.getFilterValue().trim() + "%");
 
             }else{
-//            	if(form.getFiltercustomer() != null && form.getFiltercustomer().length() > 0){
-//	                result.append(" AND (a.customer like ? ) ");
-//	                args.add("%" + form.getFiltercustomer().trim() + "%");
-//	            	}
-//            	if(form.getFilterlicenseno() != null && form.getFilterlicenseno().length() > 0){
-//                    result.append(" AND (a.licenseno like ? ) ");
-//                    args.add("%" + form.getFilterlicenseno().trim() + "%");
-//                	}
-//            	if(form.getFiltercardescription() != null && form.getFiltercardescription().length() > 0){
-//                    result.append(" AND (a.cardescription like ? ) ");
-//                    args.add("%" + form.getFiltercardescription().trim() + "%");
-//                	}
-//            	if(form.getFilterinventoryints() != null && form.getFilterinventoryints().length() > 0){
-//                    result.append(" AND (a.inventoryints >= ? ) ");
-//                    args.add(form.getFilterinventoryints().trim());
-//                	}
-//            	if(form.getFilterinventoryoutts() != null && form.getFilterinventoryoutts().length() > 0){
-//                    result.append(" AND (a.inventoryoutts <= ? ) ");
-//                    args.add(form.getFilterinventoryoutts().trim());
-//                	}
-                			 	
+            	if(form.getFilterisdeleted() != null && form.getFilterisdeleted().length() > 0){
+	                result.append(" AND (a.isdeleted like ? ) ");
+	                args.add("%" + form.getFilterisdeleted().trim() + "%");
+	            	}
+            	if(form.getFilterissold() != null && form.getFilterissold().length() > 0){
+                    result.append(" AND (a.issold like ? ) ");
+                    args.add("%" + form.getFilterissold().trim() + "%");
+                	}
+            	if(form.getFiltersettlement() != null && form.getFiltersettlement().length() > 0){
+                    result.append(" AND (a.settlement like ? ) ");
+                    args.add("%" + form.getFiltersettlement().trim() + "%");
+                	}
+            	if(form.getFilterlicenseno() != null && form.getFilterlicenseno().length() > 0){
+                    result.append(" AND (a.licenseno like ? ) ");
+                    args.add("%" + form.getFilterlicenseno().trim() + "%");
+                	}
+            	if(form.getFiltercardescription() != null && form.getFiltercardescription().length() > 0){
+                    result.append(" AND (a.vehicledesc like ? ) ");
+                    args.add("%" + form.getFiltercardescription().trim() + "%");
+                	}
+            	if(form.getFiltertradername() != null && form.getFiltertradername().length() > 0){
+                    result.append(" AND (a.tradername like ? ) ");
+                    args.add("%" + form.getFiltertradername().trim() + "%");
+                	}
+            	if(form.getFiltercustomer() != null && form.getFiltercustomer().length() > 0){
+                    result.append(" AND (a.ownername like ? ) ");
+                    args.add("%" + form.getFiltercustomer().trim() + "%");
+                	}
+            	if(form.getFiltervehicletype() != null && form.getFiltervehicletype().length() > 0){
+                    result.append(" AND (a.vehicletype like ? ) ");
+                    args.add("%" + form.getFiltervehicletype().trim() + "%");
+                	}
+            	if(form.getPurchasestart() != null && form.getPurchasestart().length() > 0){
+                    result.append(" AND (a.purchasedate >= ? ) ");
+                    args.add(form.getPurchasestart().trim());
+                	}
+            	if(form.getPurchaseend() != null && form.getPurchaseend().length() > 0){
+                    result.append(" AND (a.purchasedate <= ? ) ");
+                    args.add(form.getPurchaseend().trim());
+                	}
+            	if(form.getSoldstart() != null && form.getSoldstart().length() > 0){
+                    result.append(" AND (a.selldate >= ? ) ");
+                    args.add(form.getSoldstart().trim());
+                	}
+            	if(form.getSoldend() != null && form.getSoldend().length() > 0){
+                    result.append(" AND (a.selldate <= ? ) ");
+                    args.add(form.getSoldend().trim());
+                	}
+                		 	
             }
         }
 

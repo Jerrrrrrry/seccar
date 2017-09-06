@@ -118,13 +118,15 @@ public class TradeAction extends DispatchAction {
 	        		int daydiff = getIntervalDays(purchasedate, selldate);
 	        		interest = interestrate/100/30*actualloan;
 	        		interestcost = interest*daydiff;
-	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
+	        		totalprofit = pricediff - interestcost - vo.getTradecost();
+//	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
 	        		profit = totalprofit;
         		}else{
             		int monthdiff = getIntervalMonths(purchasedate, selldate);
             		interest = interestrate/100*actualloan;
 	        		interestcost = interest*monthdiff;
-	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
+	        		totalprofit = pricediff - interestcost - vo.getTradecost();
+//	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
 	        		profit = totalprofit/2;
 	        		traderprofit = totalprofit/2;
 	        		sloan = ts.getspare() + vo.getPurchaseprice();

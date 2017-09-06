@@ -13,7 +13,19 @@ var TradeList = {
             $('#dlg_add').dialog('open');
             xutil.focus('#licenseno');
         };
-        
+
+        //指定列求和
+         list.compute = function (colName) {
+             var rows = $('#list').datagrid('getRows');
+//         	alert(rows);
+             var total = 0;
+             for (var i = 0; i < rows.length; i++) {
+                 total += parseFloat(rows[i][colName]);
+             }
+
+//         	alert(total);
+             return total;
+         }
         /***********************************************/
         // 打开过滤界面
         /***********************************************/
@@ -25,21 +37,36 @@ var TradeList = {
         // 过滤
         /***********************************************/
         list.filter = function () {
-        	 $('#dlg_filter').dialog('close');
+        	$('#dlg_filter').dialog('close');
             var filterField = "filter";
-            var filtercustomer = $('#filtercustomer').textbox('getValue');
+            var filterisdeleted = $('#filterisdeleted').prop('checked') ? 1 : 0;
+            var filterissold = $('#filterissold').combobox('getValue');
+            var filtersettlement = $('#filtersettlement').combobox('getValue');
             var filterlicenseno = $('#filterlicenseno').textbox('getValue');
             var filtercardescription = $('#filtercardescription').textbox('getValue');
-            var filterinventoryints = $('#filterinventoryints').datebox('getValue');
-            var filterinventoryoutts = $('#filterinventoryoutts').datebox('getValue');
+            var filtertradername = $('#filtertradername').textbox('getValue');
+            var filtercustomer = $('#filtercustomer').textbox('getValue');
+            var filtervehicletype = $('#filtervehicletype').combobox('getValue');
+            var purchasestart = $('#purchasestart').datebox('getValue');
+            var purchaseend = $('#purchaseend').datebox('getValue');
+            var soldstart = $('#soldstart').datebox('getValue');
+            var soldend = $('#soldend').datebox('getValue');
 
             var prm = {
             		filterField: filterField,
-            		filtercustomer: filtercustomer, 
             		filterlicenseno: filterlicenseno, 
             		filtercardescription: filtercardescription, 
-            		filterinventoryints: filterinventoryints,
-            		filterinventoryoutts: filterinventoryoutts};
+            		filtertradername: filtertradername, 
+            		filtercustomer: filtercustomer, 
+            		filtervehicletype: filtervehicletype, 
+            		purchasestart: purchasestart,
+            		purchaseend: purchaseend,
+            		soldstart: soldstart,
+            		soldend: soldend,
+            		filterisdeleted: filterisdeleted,
+            		filterissold: filterissold,
+            		filtersettlement: filtersettlement
+            		};
             $('#list').datagrid('clearSelections');
             $('#list').datagrid({queryParams: prm});
 //            xutil.focus('#filterValue');
@@ -70,12 +97,19 @@ var TradeList = {
         // 清除过滤条件
         /***********************************************/
         list.clearFilter = function () {
-            $('#filterinventoryints').datebox('clear');
-            $('#filterinventoryoutts').datebox('clear');
-            $('#filtercustomer').textbox('clear');
+        	$('#filterisdeleted').prop('checked', false);
+        	$('#filterissold').combobox('setValue','');
+        	$('#filtersettlement').combobox('setValue','');
             $('#filterlicenseno').textbox('clear');
             $('#filtercardescription').textbox('clear');
-            xutil.focus('#filtercustomer');
+            $('#filtertradername').textbox('clear');
+            $('#filtercustomer').textbox('clear');
+        	$('#filtervehicletype').combobox('setValue','');
+            $('#purchasestart').datebox('clear');
+            $('#purchaseend').datebox('clear');
+            $('#soldstart').datebox('clear');
+            $('#soldend').datebox('clear');
+            xutil.focus('#filterlicenseno');
         };
         /***********************************************/
         // 删除

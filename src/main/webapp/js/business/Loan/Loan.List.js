@@ -14,7 +14,19 @@ var LoanList = {
             $('#dlg_add').dialog('open');
             xutil.focus('#licenseno');
         };
-        
+
+       //指定列求和
+        list.compute = function (colName) {
+            var rows = $('#list').datagrid('getRows');
+//        	alert(rows);
+            var total = 0;
+            for (var i = 0; i < rows.length; i++) {
+                total += parseFloat(rows[i][colName]);
+            }
+
+//        	alert(total);
+            return total;
+        }
         /***********************************************/
         // 打开过滤界面
         /***********************************************/

@@ -27,6 +27,8 @@ var LoanInit = {
                 sortName: 'borrowdate',
                 sortOrder: 'desc',
                 toolbar: '#bar_list',
+                showFooter: true,
+
                 columns: [[
 					{
 					    field: 'vehicleid',
@@ -70,14 +72,14 @@ var LoanInit = {
                     {
                         field: 'returndate',
                         title: '约定还款日期',
-                        width: 80,
+                        width: 100,
                         align: 'left',
                         sortable: true
                     },
                     {
                         field: 'periodmonths',
-                        title: '约定还款周期（月数）',
-                        width: 160,
+                        title: '还款周期（月）',
+                        width: 60,
                         align: 'left',
                         sortable: false
                     },
@@ -91,7 +93,7 @@ var LoanInit = {
                     {
                         field: 'borrowamount',
                         title: '借款金额',
-                        width: 35,
+                        width: 80,
                         align: 'left',
                         sortable: false
                     },
@@ -250,6 +252,17 @@ var LoanInit = {
                 },
                 onLoadSuccess : function (data) {
                   xutil.ajaxLoadEnd();
+                  //添加“合计”列
+                  $('#list').datagrid('appendRow', {
+                	  licenseno: '<span class="subtotal">合计</span>',
+                      borrowamount: '<span class="subtotal">' + list.compute("borrowamount") + '</span>',
+                      interestpaid: '<span class="subtotal">' + list.compute("interestpaid") + '</span>',
+                      parkingfee: '<span class="subtotal">' + list.compute("parkingfee") + '</span>',
+                      otherfee: '<span class="subtotal">' + list.compute("otherfee") + '</span>',
+                      actualloan: '<span class="subtotal">' + list.compute("actualloan") + '</span>',
+                      actualreturn: '<span class="subtotal">' + list.compute("actualreturn") + '</span>',
+                      totalprofit: '<span class="subtotal">' + list.compute("totalprofit") + '</span>'
+                  });
                 },
                 onLoadError: function () {
                     xutil.ajaxLoadEnd();
@@ -371,8 +384,7 @@ var LoanInit = {
                     },
                     {
                         label: '已归还',
-                        value: '1',
-                        selected : true
+                        value: '1'
                     },
                     {
                         label: '未归还',
@@ -393,8 +405,7 @@ var LoanInit = {
                     },
                     {
                         label: '已结算',
-                        value: '1',
-                        selected : true
+                        value: '1'
                     },
                     {
                         label: '未结算',

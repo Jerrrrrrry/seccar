@@ -11,14 +11,20 @@ public class TradeForm extends ActionForm {
     private String filterValue;
     
     // 过滤结果
+    private String filterisdeleted;
+    private String filterissold;
+    private String filtersettlement;
+    
+    private String filterlicenseno;
+    private String filtercardescription;
+    private String filtertradername;
+    private String filtercustomer;
+    private String filtervehicletype;
+    
     private String purchasestart;
     private String purchaseend;
     private String soldstart;
     private String soldend;
-    private String filterlicenseno;
-    private String filtertradername;
-    private String filtervehicletype;
-    private String filtersettlement;
     
     // 列表
     private int rows;
@@ -350,6 +356,30 @@ public class TradeForm extends ActionForm {
 	}
 	public void setBuyername(String buyername) {
 		this.buyername = buyername;
+	}
+	public String getFiltercardescription() {
+		return filtercardescription;
+	}
+	public void setFiltercardescription(String filtercardescription) {
+		this.filtercardescription = filtercardescription;
+	}
+	public String getFiltercustomer() {
+		return filtercustomer;
+	}
+	public void setFiltercustomer(String filtercustomer) {
+		this.filtercustomer = filtercustomer;
+	}
+	public String getFilterisdeleted() {
+		return filterisdeleted;
+	}
+	public void setFilterisdeleted(String filterisdeleted) {
+		this.filterisdeleted = filterisdeleted;
+	}
+	public String getFilterissold() {
+		return filterissold;
+	}
+	public void setFilterissold(String filterissold) {
+		this.filterissold = filterissold;
 	}
     
 	

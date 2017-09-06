@@ -223,6 +223,15 @@ var TradeInit = {
                 },
                 onLoadSuccess : function (data) {
                   xutil.ajaxLoadEnd();
+                  //添加“合计”列
+                  $('#list').datagrid('appendRow', {
+                	  licenseno: '<span class="subtotal">合计</span>',
+                	  purchaseprice: '<span class="subtotal">' + list.compute("purchaseprice") + '</span>',
+                	  actualloan: '<span class="subtotal">' + list.compute("actualloan") + '</span>',
+                	  earnest: '<span class="subtotal">' + list.compute("earnest") + '</span>',
+                	  sellprice: '<span class="subtotal">' + list.compute("sellprice") + '</span>',
+                	  tradecost: '<span class="subtotal">' + list.compute("tradecost") + '</span>'
+                  });
                 },
                 onLoadError: function () {
                     xutil.ajaxLoadEnd();
@@ -337,9 +346,48 @@ var TradeInit = {
                 disabled: true
             });
             
-            $('#filtercustomer').textbox({
-                width : 200,
-                validType : ['length[1,100]']
+
+            $('#filterissold').combobox({
+                width : 120,
+                editable : false,
+                valueField: 'value',
+                textField: 'label',
+                data : [
+                    {
+                    label: '未选择',
+                    value: '',
+                    selected : true
+                    },
+                    {
+                        label: '已售',
+                        value: '1'
+                    },
+                    {
+                        label: '未售',
+                        value: '0'
+                    }
+                ]
+            });
+            $('#filtersettlement').combobox({
+                width : 120,
+                editable : false,
+                valueField: 'value',
+                textField: 'label',
+                data : [
+                    {
+                    label: '未选择',
+                    value: '',
+                    selected : true
+                    },
+                    {
+                        label: '已结算',
+                        value: '1'
+                    },
+                    {
+                        label: '未结算',
+                        value: '0'
+                    }
+                ]
             });
             $('#filterlicenseno').textbox({
                 width : 200,
@@ -349,14 +397,53 @@ var TradeInit = {
                 width : 200,
                 validType : ['length[1,100]']
             });
-            $('#filterinventoryints').datebox({
+            $('#filtertradername').textbox({
                 width : 200,
                 validType : ['length[1,100]']
             });
-            $('#filterinventoryoutts').datebox({
+            $('#filtercustomer').textbox({
                 width : 200,
                 validType : ['length[1,100]']
             });
+            $('#filtervehicletype').combobox({
+                width : 120,
+                editable : false,
+                valueField: 'value',
+                textField: 'label',
+                data : [
+                    {
+                    label: '未选择',
+                    value: '',
+                    selected : true
+                    },
+                    {
+                        label: '第三方',
+                        value: '第三方'
+                    },
+                    {
+                        label: '自收车',
+                        value: '自收车',
+                        selected : true
+                    }
+                ]
+            });
+            $('#purchasestart').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#purchaseend').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#soldstart').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#soldend').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+
 
             /***********************************************/
             // 列表工具栏初始化

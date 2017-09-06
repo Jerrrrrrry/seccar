@@ -203,22 +203,46 @@
     <table class="tb_filter" cellspacing="0">
       <tbody>
       <tr>
-        <th>客户名称</th>
-        <td><input id="filtercustomer"/></td>
+        <td></td>
+        <td></td>
+        <th>已删除</th>
+        <td><input type="checkbox" id="filterisdeleted"/></td>
+      </tr>
+      <tr>
+        <th>已出售</th>
+        <td><input id="filterissold"/></td>
+        <th>已结算</th>
+        <td><input id="filtersettlement"/></td>
+      </tr>
+      <tr>
         <th>车牌号</th>
         <td><input id="filterlicenseno"/></td>
-      </tr>
-      <tr>
         <th>车辆描述</th>
         <td><input id="filtercardescription"/></td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
-        <th>入库时间</th>
-        <td><input id="filterinventoryints"/></td>
-        <th>出库时间</th>
-        <td><input id="filterinventoryoutts"/></td>
+        <th>经办人</th>
+        <td><input id="filtertradername"/></td>
+        <th>客户名称</th>
+        <td><input id="filtercustomer"/></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <th>车辆类型</th>
+        <td><input id="filtervehicletype"/></td>
+      </tr>
+      <tr>
+        <th>购车日期起</th>
+        <td><input id="purchasestart"/></td>
+        <th>购车日期止</th>
+        <td><input id="purchaseend"/></td>
+      </tr>
+      <tr>
+        <th>售车日期起</th>
+        <td><input id="soldstart"/></td>
+        <th>售车日期止</th>
+        <td><input id="soldend"/></td>
       </tr>
       </tbody>
     </table>
