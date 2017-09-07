@@ -42,11 +42,12 @@ public class LoginAction extends DispatchAction {
             System.out.println("CurrentLoginUserID: " + vo.getId());
             System.out.println("CurrentLoginUserAccount: " + vo.getUserid());
             System.out.println("CurrentLoginUserName: " + vo.getUsername());
-//            System.out.println("CurrentLoginKisUserID: " + kisUserID);
+            System.out.println("CurrentLoginUserAccesstype: " + vo.getAccesstype());
+            
             request.getSession().setAttribute("CurrentLoginUserID", vo.getId());
             request.getSession().setAttribute("CurrentLoginUserAccount", vo.getUserid());
             request.getSession().setAttribute("CurrentLoginUserName", vo.getUsername());
-//            request.getSession().setAttribute("CurrentLoginKisUserID", kisUserID);
+            request.getSession().setAttribute("CurrentLoginUserAccesstype", vo.getAccesstype());
 
             ActionForward forward = new ActionForward("MainAction.do");
             forward.setRedirect(true);

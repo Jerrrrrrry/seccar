@@ -18,19 +18,19 @@
   <script type="text/javascript" src="<%=basePath %>js/jquery.ajaxfileupload.js"></script>
   <script type="text/javascript" src="<%=basePath %>js/xutil.js"></script>
   <script type="text/javascript" src="<%=basePath %>js/xcore.js"></script>
-  <script type="text/javascript" src="<%=basePath %>js/business/Trade/Trade.Init.js"></script>
-  <script type="text/javascript" src="<%=basePath %>js/business/Trade/Trade.List.js"></script>
-  <script type="text/javascript" src="<%=basePath %>js/business/Trade/Trade.Edit.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/TradeReport/TradeReport.Init.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/TradeReport/TradeReport.List.js"></script>
+  <script type="text/javascript" src="<%=basePath %>js/business/TradeReport/TradeReport.Edit.js"></script>
   <script type="text/javascript">
 
     $(function(){
-    	TradeInit.getInstance('<%= basePath%>').init();
+    	TradeReportInit.getInstance('<%= basePath%>').init();
         
         var interval;
 
 		function applyAjaxFileUpload(element) {
 			$(element).AjaxFileUpload({
-				action: '<%= basePath%>'+'TradeAction.do?m=uploadFile',
+				action: '<%= basePath%>'+'TradeReportAction.do?m=uploadFile',
 				onChange: function(filename) {
 					// Create a span element to notify the user of an upload in progress
 					var $span = $("<span />")

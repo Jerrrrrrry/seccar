@@ -1,16 +1,18 @@
-var LoanInit = {
+var TradeReportInit = {
 
     getInstance: function (basePath){
         var init = {};
         init.init = function (){
+
+            var list = TradeReportList.getInstance(basePath);
+            var edit = TradeReportEdit.getInstance(basePath);
             var xutil = XUtil.getInstance(basePath);
-            var list = LoanList.getInstance(basePath);
-            var edit = LoanEdit.getInstance(basePath);
 
             /***********************************************/
             // 表格初始化
             /***********************************************/
             // 右表
+
             $("#list").datagrid({
                 striped: true,
                 rownumbers: true,
@@ -22,9 +24,9 @@ var LoanInit = {
                 pagination: true,
                 border: false,
                 method: 'post',
-                url: basePath + 'LoanAction.do?m=list',
+                url: basePath + 'TradeReportAction.do?m=list',
                 idField: 'vehicleid',
-                sortName: 'borrowdate',
+                sortName: 'purchasedate',
                 sortOrder: 'desc',
                 toolbar: '#bar_list',
                 columns: [[
@@ -47,166 +49,144 @@ var LoanInit = {
                         sortable: false
                     },
                     {
-                        field: 'ownername',
-                        title: '抵押人姓名',
-                        width: 80,
-                        align: 'center',
-                        sortable: true
-                    },
-                    {
-                        field: 'ownerid',
-                        title: '抵押人身份证',
-                        width: 120,
-                        align: 'center',
-                        sortable: true
-                    },
-                    {
-                        field: 'borrowdate',
-                        title: '借款日期',
-                        width: 80,
-                        align: 'center',
-                        sortable: true
-                    },
-                    {
-                        field: 'returndate',
-                        title: '约定还款日期',
-                        width: 80,
-                        align: 'left',
-                        sortable: true
-                    },
-                    {
-                        field: 'periodmonths',
-                        title: '还款周期（月）',
-                        width: 60,
-                        align: 'left',
-                        sortable: false
-                    },
-                    {
                         field: 'tradername',
                         title: '经办人',
                         width: 80,
                         align: 'center',
-                        sortable: false
-                    },
-                    {
-                        field: 'borrowamount',
-                        title: '借款金额',
-                        width: 100,
-                        align: 'left',
                         sortable: true
                     },
                     {
-                        field: 'interestrate',
-                        title: '利率',
+                        field: 'vehicletype',
+                        title: '车辆类型',
+                        width: 60,
+                        align: 'center',
+                        sortable: true
+                    },
+                    {
+                        field: 'purchaseprice',
+                        title: '收车价',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'purchasedate',
+                        title: '收车日期',
                         width: 80,
                         align: 'left',
                         sortable: true
                     },
                     {
-                        field: 'interest',
-                        title: '利息(每月)',
+                        field: 'ownerid',
+                        title: '卖车人身份证',
+                        width: 160,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'ownername',
+                        title: '卖车人姓名',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
+                        field: 'interestrate',
+                        title: '利率',
+                        width: 35,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'actualloan',
+                        title: '实际借款金额',
+                        width: 80,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'earnest',
+                        title: '定金',
                         width: 40,
                         align: 'left',
                         sortable: false
                     },
                     {
-                    	field: 'actualloan',
-                    	title: '实付金额',
-                    	width: 100,
-                    	align: 'left',
-                    	sortable: true
-                    },
-                    {
-                        field: 'interestpaid',
-                        title: '已付利息',
+                        field: 'sellprice',
+                        title: '销售价格',
                         width: 60,
                         align: 'left',
-                        sortable: true
+                        sortable: false
                     },
                     {
-                        field: 'interestpaidto',
-                        title: '利息付至',
+                        field: 'selldate',
+                        title: '销售日期',
                         width: 80,
                         align: 'left',
                         sortable: true
                     },
                     {
-                        field: 'nextpaymentdate',
-                        title: '下次付息',
-                        width: 80,
-                        align: 'left',
-                        sortable: true
-                    },
-                    {
-                        field: 'totalinterest',
-                        title: '利息总额',
-                        width: 80,
-                        align: 'left',
-                        sortable: true
-                    },
-                    {
-                        field: 'midinterestrate',
-                        title: '中介利率',
+                        field: 'buyerid',
+                        title: '购车人身份证',
                         width: 160,
                         align: 'left',
-                        sortable: true
+                        sortable: false
                     },
                     {
-                        field: 'midinterest',
-                        title: '中介利息',
+                        field: 'buyername',
+                        title: '购车人姓名',
                         width: 80,
                         align: 'left',
-                        sortable: true
+                        sortable: false
                     },
                     {
-                        field: 'parkingfee',
-                        title: '停车费',
+                        field: 'tradecost',
+                        title: '交易费用',
                         width: 60,
                         align: 'left',
-                        sortable: true
+                        sortable: false
                     },
                     {
-                        field: 'otherfee',
-                        title: '其他费用',
+                        field: 'pricediff',
+                        title: '价差',
                         width: 60,
                         align: 'left',
-                        sortable: true
+                        sortable: false
+                    },
+                    {
+                        field: 'totalprofit',
+                        title: '总利润',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'profit',
+                        title: '利润',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'traderprofit',
+                        title: '第三方利润',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
                     },
                     {
                         field: 'comments',
-//                        data-options=''events:{blur:onSelectBtypeComboBox},width:'300px',required:true,validType:['length[1,64]']',
                         title: '备注',
                         width: 60,
                         align: 'left',
                         sortable: false
                     },
                     {
-                        field: 'actualreturn',
-                        title: '已还本金额',
-                        width: 100,
-                        align: 'left',
-                        sortable: true
-                    },
-                    {
-                        field: 'actualreturndate',
-                        title: '上次归还本金日期',
-                        width: 80,
-                        align: 'left',
-                        sortable: true
-                    },
-                    {
-                        field: 'totalprofit',
-                        title: '总利润',
-                        width: 100,
-                        align: 'left',
-                        sortable: true
-                    },
-                    {
                         field: 'picturepath',
                         title: '图片路径',
-                        width: 150,
+                        width: 100,
                         align: 'left',
-                        sortable: true
+                        sortable: false
                     },
                     {
                         field: 'isdeleted',
@@ -216,8 +196,8 @@ var LoanInit = {
                         sortable: true
                     },
                     {
-                        field: 'isreturned',
-                        title: '已归还',
+                        field: 'issold',
+                        title: '已售',
                         width: 50,
                         align: 'center',
                         sortable: true
@@ -225,14 +205,7 @@ var LoanInit = {
                     {
                         field: 'settlement',
                         title: '已结算',
-                        width: 50,
-                        align: 'center',
-                        sortable: true
-                    },
-                    {
-                        field: 'isabandon',
-                        title: '已弃车',
-                        width: 50,
+                        width: 80,
                         align: 'center',
                         sortable: true
                     },
@@ -253,22 +226,24 @@ var LoanInit = {
                   //添加“合计”列
                   $('#list').datagrid('appendRow', {
                 	  licenseno: '<span class="subtotal">合计</span>',
-                      borrowamount: '<span class="subtotal">' + list.compute("borrowamount") + '</span>',
-                      interestpaid: '<span class="subtotal">' + list.compute("interestpaid") + '</span>',
-                      parkingfee: '<span class="subtotal">' + list.compute("parkingfee") + '</span>',
-                      otherfee: '<span class="subtotal">' + list.compute("otherfee") + '</span>',
-                      actualloan: '<span class="subtotal">' + list.compute("actualloan") + '</span>',
-                      actualreturn: '<span class="subtotal">' + list.compute("actualreturn") + '</span>',
-                      totalprofit: '<span class="subtotal">' + list.compute("totalprofit") + '</span>'
+                	  purchaseprice: '<span class="subtotal">' + list.compute("purchaseprice") + '</span>',
+                	  actualloan: '<span class="subtotal">' + list.compute("actualloan") + '</span>',
+                	  earnest: '<span class="subtotal">' + list.compute("earnest") + '</span>',
+                	  sellprice: '<span class="subtotal">' + list.compute("sellprice") + '</span>',
+                	  tradecost: '<span class="subtotal">' + list.compute("tradecost") + '</span>',
+                	  pricediff: '<span class="subtotal">' + list.compute("pricediff") + '</span>',
+                	  totalprofit: '<span class="subtotal">' + list.compute("totalprofit") + '</span>',
+                	  profit: '<span class="subtotal">' + list.compute("profit") + '</span>',
+                	  traderprofit: '<span class="subtotal">' + list.compute("traderprofit") + '</span>'
                   });
                 },
                 onLoadError: function () {
                     xutil.ajaxLoadEnd();
                     xutil.exception();
-                },
-                onLoadError: function () {
-                    top.location = basePath;
                 }
+//                onLoadError: function () {
+//                    top.location = basePath;
+//                }
             });
             
             /***********************************************/
@@ -284,92 +259,99 @@ var LoanInit = {
                 validType : ['length[1,100]']
             });
 
-            $('#ownername').textbox({
+            $('#tradername').textbox({
                 width : 200,
                 validType : ['length[0,100]']
+            });
+
+            $('#purchaseprice').textbox({
+                width : 200,
+                validType : ['length[0,100]']
+            });
+            
+            $('#ownername').textbox({
+                width: 200,
+                validType: ['length[0,100]']
             });
 
             $('#ownerid').textbox({
-                width : 200,
-                validType : ['length[0,100]']
-            });
-            
-            $('#borrowdate').datebox({
                 width: 200,
                 validType: ['length[0,100]']
             });
-
-            $('#returndate').datebox({
-                width: 200,
-                validType: ['length[0,100]']
-            });
-            $('#periodmonths').textbox({
+            $('#purchasedate').datebox({
                 width: 200,
                 validType: ['length[0,100]']
             });
             
-            $('#borrowamount').textbox({
+            $('#interestrate').textbox({
                 width: 200,
                 validType: ['length[0,100]']
 //                multiline: true
             });
-            $('#interestrate').textbox({
+            $('#actualloan').textbox({
                 width: 200,
                 validType: ['length[0,100]']
             });
             
-            $('#interestpaid').textbox({
+            $('#spareloan').textbox({
                 width: 200,
                 validType: ['length[0,100]']
             });
 
-            $('#interestpaidto').datebox({
-                width: 200,
-                validType: ['length[0,100]']
-            });
-
-            $('#nextpaymentdate').datebox({
-                width: 200,
-                validType: ['length[0,100]']
-            });
-            $('#midinterestrate').textbox({
-                width: 200,
-                validType: ['length[0,100]']
-            });
-            $('#midinterest').textbox({
-                width: 200,
-                validType: ['length[0,100]']
-            });
-            $('#parkingfee').textbox({
-                width: 200,
-                validType: ['length[0,100]']
-            });
-            $('#otherfee').textbox({
-                width: 200,
-                validType: ['length[0,100]']
-            });
-            $('#actualloan').textbox({
-                width: 200,
-                validType: ['length[0,100]']
+            $('#vehicletype').combobox({
+                width : 120,
+                editable : false,
+                valueField: 'value',
+                textField: 'label',
+                data : [
+                    {
+                        label: '自收车',
+                        value: '自收车',
+                        selected : true
+                    },
+                    {
+                        label: '第三方',
+                        value: '第三方'
+                    }
+                ]
             });
             $('#comments').textbox({
                 width: 200,
                 validType: ['length[0,100]'],
                 multiline: true
             });
-            $('#actualreturn').textbox({
+
+            $('#earnest').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            $('#tradecost').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            $('#sellprice').textbox({
                 width: 200,
                 validType: ['length[0,100]'],
                 disabled: true
             });
-            $('#actualreturndate').datebox({
+            $('#selldate').datebox({
+                width: 200,
+                validType: ['length[0,100]'],
+                disabled: true
+            });
+            $('#buyername').textbox({
+                width: 200,
+                validType: ['length[0,100]'],
+                disabled: true
+            });
+            $('#buyerid').textbox({
                 width: 200,
                 validType: ['length[0,100]'],
                 disabled: true
             });
             
 
-            $('#filterisreturned').combobox({
+            $('#filterissold').combobox({
                 width : 120,
                 editable : false,
                 valueField: 'value',
@@ -381,11 +363,11 @@ var LoanInit = {
                     selected : true
                     },
                     {
-                        label: '已归还',
+                        label: '已售',
                         value: '1'
                     },
                     {
-                        label: '未归还',
+                        label: '未售',
                         value: '0'
                     }
                 ]
@@ -419,26 +401,52 @@ var LoanInit = {
                 width : 200,
                 validType : ['length[1,100]']
             });
+            $('#filtertradername').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
             $('#filtercustomer').textbox({
                 width : 200,
                 validType : ['length[1,100]']
             });
-            $('#loanstart').datebox({
+            $('#filtervehicletype').combobox({
+                width : 120,
+                editable : false,
+                valueField: 'value',
+                textField: 'label',
+                data : [
+                    {
+                    label: '未选择',
+                    value: '',
+                    selected : true
+                    },
+                    {
+                        label: '第三方',
+                        value: '第三方'
+                    },
+                    {
+                        label: '自收车',
+                        value: '自收车'
+                    }
+                ]
+            });
+            $('#purchasestart').datebox({
                 width : 200,
                 validType : ['length[1,100]']
             });
-            $('#loanend').datebox({
+            $('#purchaseend').datebox({
                 width : 200,
                 validType : ['length[1,100]']
             });
-            $('#returnstart').datebox({
+            $('#soldstart').datebox({
                 width : 200,
                 validType : ['length[1,100]']
             });
-            $('#returnend').datebox({
+            $('#soldend').datebox({
                 width : 200,
                 validType : ['length[1,100]']
             });
+
 
             /***********************************************/
             // 列表工具栏初始化
@@ -551,14 +559,15 @@ var LoanInit = {
                             edit.addNew();
                         }
                     },
-//                    {
-//                    	id: 'btnEditupload',
-//                        text: '上传图片',
-//                        iconCls: 'tbtn_addnew',
-//                        handler: function(){
-//                        	$('#dlg_upload').dialog('open');
-//                        }
-//                    },
+
+                    {
+                    	id: 'btnEditupload',
+                        text: '上传图片',
+                        iconCls: 'tbtn_addnew',
+                        handler: function(){
+                        	$('#dlg_upload').dialog('open');
+                        }
+                    },
                     {
                         text: '入库',
                         id:'btnEditSave',
@@ -578,20 +587,11 @@ var LoanInit = {
                     },
                     '-',
                     {
-                    	id: 'btnEditReturned',
-                        text: '已归还',
-                        iconCls: 'tbtn_ok',
+                    	id: 'btnEditSold',
+                        text: '出库',
+                        iconCls: 'tbtn_save',
                         handler: function(){
-                        	edit.save('returned');
-                        }
-                    },
-                    '-',
-                    {
-                    	id: 'btnEditAbandon',
-                        text: '已弃车',
-                        iconCls: 'tbtn_undo',
-                        handler: function(){
-                        	edit.save('abandon');
+                        	edit.save('sold');
                         }
                     },
                     '-',
@@ -754,7 +754,7 @@ var LoanInit = {
             // 窗口初始化
             /***********************************************/
             $('#dlg_filter').dialog({
-                title: '车贷业务',
+                title: '二手车交易报表',
                 width: 700,
                 height: 300,
                 modal: true,
@@ -795,24 +795,24 @@ var LoanInit = {
 //                xutil.focus('#filterValue');
                 }
             }); 
-//            /***********************************************/
-//            // 窗口初始化
-//            /***********************************************/
-//            $('#dlg_upload').dialog({
-//                title: '上传图片',
-//                width: 700,
-//                height: 300,
-//                modal: true,
-//                closed: true,
-//                minimizable: false,
-//                maximizable: false,
-//                resizable: false,
-//                collapsible: false,
-//               
-//                onClose : function(){
-////                xutil.focus('#filterValue');
-//                }
-//            }); 
+            /***********************************************/
+            // 窗口初始化
+            /***********************************************/
+            $('#dlg_upload').dialog({
+                title: '上传图片',
+                width: 700,
+                height: 300,
+                modal: true,
+                closed: true,
+                minimizable: false,
+                maximizable: false,
+                resizable: false,
+                collapsible: false,
+               
+                onClose : function(){
+//                xutil.focus('#filterValue');
+                }
+            }); 
 //            list.doInit();
         };
 

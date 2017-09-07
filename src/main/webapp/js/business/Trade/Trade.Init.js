@@ -422,8 +422,7 @@ var TradeInit = {
                     },
                     {
                         label: '自收车',
-                        value: '自收车',
-                        selected : true
+                        value: '自收车'
                     }
                 ]
             });
@@ -751,7 +750,7 @@ var TradeInit = {
             // 窗口初始化
             /***********************************************/
             $('#dlg_filter').dialog({
-                title: '停车管理',
+                title: '二手车交易',
                 width: 700,
                 height: 300,
                 modal: true,

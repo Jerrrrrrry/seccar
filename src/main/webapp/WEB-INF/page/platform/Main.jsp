@@ -145,17 +145,14 @@
                 lines: true,
                 onClick: function (node) {
 
-                    if (node.id == '车贷') {
-                        addTab('车贷', null, '<%=basePath %>CarLoanAction.do');
-
-                    }else if (node.id == '二手车交易'){
+                    if (node.id == '二手车交易'){
                         addTab('二手车交易', null, '<%=basePath %>TradeAction.do');
 
                     }else if (node.id == '车贷业务'){
                         addTab('车贷业务', null, '<%=basePath %>LoanAction.do');
 
-                    }else if (node.id == '财务报表'){
-                        addTab('财务报表', null, '<%=basePath %>AccountAction.do');
+                    }else if (node.id == '二手车交易报表'){
+                        addTab('二手车交易报表', null, '<%=basePath %>TradeReportAction.do');
                     }else if (node.id == '停车管理'){
                         addTab('停车管理', null, '<%=basePath %>ParkingAction.do');
                     }
@@ -196,18 +193,25 @@
         <div class="easyui-accordion" data-options="fit:true,border:false">
             <div title="主营业务"style="padding:10px;">
                 <ul id="tr_ic" class="easyui-tree" data-options="lines:true">
+                	<!-- 
                     <li data-options="id:'车贷', 'iconCls':'icon-tree-app'">车贷</li>
+                     -->
                     <li data-options="id:'二手车交易', 'iconCls':'icon-tree-app'">二手车交易</li>
+                    <% String CurrentLoginUserAccount = (String)session.getAttribute("CurrentLoginUserAccount");
+                    	String CurrentLoginUserAccesstype = (String)session.getAttribute("CurrentLoginUserAccesstype");
+                        if (CurrentLoginUserAccount != null && "管理员".equals(CurrentLoginUserAccesstype)){
+                    %>
+                    <li data-options="id:'二手车交易报表', 'iconCls':'icon-tree-app'">二手车交易报表</li>
                     <li data-options="id:'车贷业务', 'iconCls':'icon-tree-app'">车贷业务</li>
-                    <li data-options="id:'财务报表', 'iconCls':'icon-tree-app'">财务报表</li>
                     <li data-options="id:'停车管理', 'iconCls':'icon-tree-app'">停车管理</li>
+                    <% } %>
                 </ul>
             </div>
             <div title="系统设置" style="padding:10px;">
                 <ul id="tr_st" class="easyui-tree" data-options="lines:true">
 
-                    <% String acount = (String)session.getAttribute("CurrentLoginUserAccount");
-                        if (acount != null /*&& "superman".equals(acount)*/){
+                    <% 
+                        if (CurrentLoginUserAccount != null && "管理员".equals(CurrentLoginUserAccesstype)){
                     %>
                     <li data-options="id:'用户', 'iconCls':'icon-tree-app'">用户管理</li>
                     <% } %>

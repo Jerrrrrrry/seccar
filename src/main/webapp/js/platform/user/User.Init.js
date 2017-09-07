@@ -153,13 +153,17 @@ var UserInit = {
                 textField: 'label',
                 data : [
                     {
-                        label: '1',
-                        value: '1',
-                        selected : true
+                        label: '管理员',
+                        value: '管理员'
                     },
                     {
-                        label: '2',
-                        value: '2'
+                        label: '自营业务员',
+                        value: '自营业务员'
+                    },
+                    {
+                        label: '三方业务员',
+                        value: '三方业务员',
+                        selected : true
                     }
                 ]
             });

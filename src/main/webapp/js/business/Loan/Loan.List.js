@@ -31,7 +31,7 @@ var LoanList = {
         // 打开过滤界面
         /***********************************************/
         list.openfilter = function () {
-        	list.clearFilter();
+        	//list.clearFilter();
             $('#dlg_filter').dialog('open');
         };
         /***********************************************/

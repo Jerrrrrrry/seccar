@@ -26,21 +26,21 @@ import com.lhcy.core.bo.SysConstant;
 import com.lhcy.core.bo.UuidCreator;
 import com.lhcy.core.util.ContextUtils;
 import com.lhcy.core.util.JsonUtils;
-import com.lhcy.sync.domain.dto.LoanDto;
-import com.lhcy.sync.domain.pojo.Loan;
-import com.lhcy.sync.service.LoanService;
-import com.lhcy.sync.web.form.LoanForm;
+import com.lhcy.sync.domain.dto.TradeDto;
+import com.lhcy.sync.domain.pojo.Trade;
+import com.lhcy.sync.service.TradeService;
+import com.lhcy.sync.web.form.TradeForm;
 
-public class LoanAction extends DispatchAction {
+public class TradeReportAction extends DispatchAction {
 
-    private Logger logger = Logger.getLogger(LoanAction.class);
+    private Logger logger = Logger.getLogger(TradeReportAction.class);
 
 	
     /***********************************************/
     // 取得列表
     /***********************************************/
     public ActionForward list(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	System.out.println("listlistlistlistlistlist"); 
+
         try {
             // 检查登录
         	if (ContextUtils.getCurrentUserID(request) == null) {
@@ -51,10 +51,10 @@ public class LoanAction extends DispatchAction {
 //          Date now = new Date();
 //          sdf.format(date);
         	
-        	LoanForm form = (LoanForm)frm;
+        	TradeForm form = (TradeForm)frm;
 //        	System.out.println(form.getFilterField()+" " +form.getFilterValue() +" " + form.getFilterlicenseno() 
 //        	+ " " + form.getFiltercustomer()+ " " + form.getFiltercardescription()+ " " + form.getFilterinventoryints()+ " " + form.getFilterinventoryoutts());
-        	LoanService ts = new LoanService();
+        	TradeService ts = new TradeService();
             int pageSize = form.getRows();
             int pageNow = form.getPage();
 //            int count = 50;
@@ -62,7 +62,7 @@ public class LoanAction extends DispatchAction {
             int rowBegin = (pageNow - 1) * pageSize;
             int rowEnd = rowBegin + pageSize;
             if(rowBegin > 0) rowBegin++;
-            List<LoanDto> list =  new ArrayList<LoanDto>();
+            List<TradeDto> list =  new ArrayList<TradeDto>();
             list = ts.list(rowBegin, pageSize, form);
             JsonUtils.printFromList(response, list, count);
         }catch(Exception e){
@@ -85,65 +85,108 @@ public class LoanAction extends DispatchAction {
                 throw new Exception(SysConstant.M_NO_LOGIN);
             }
 
-            LoanForm form = (LoanForm)frm;
-            Loan vo = new Loan();
-            LoanService ts = new LoanService();
+            TradeForm form = (TradeForm)frm;
+            Trade vo = new Trade();
+            TradeService ts = new TradeService();
             BeanUtils.copyProperties(vo, form);
+            Date purchasedate = new Date();
+            Date selldate = new Date();;
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
+    		String vehicletype = vo.getVehicletype();
+    		double purchaseprice = vo.getPurchaseprice();
+			double sloan = 0.00;
+			double aloan = 0.00;
+          	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
+            purchasedate =sdf.parse(vo.getPurchasedate().substring(0, 9));
+            if(vo.getSelldate()!=null&&vo.getSelldate()!=""){
+            selldate =sdf.parse(vo.getSelldate().substring(0, 9));
+            }
+            
             //根据不同操作类型给vo赋值
-    		double borrowamount = vo.getBorrowamount();
-    		double interestrate = vo.getInterestrate();
-    		double interestpaid = vo.getInterestpaid();
-    		double actualreturn = vo.getActualreturn();
-    		double periodmonths = vo.getPeriodmonths();
-    		double actualloan = vo.getActualloan();
-    		double midinterest =  vo.getMidinterest();
-    		double otherfee = vo.getOtherfee();
-        	if(form.getOperation().equals("returned")){
-        		double remaininterest = (interestrate/100*borrowamount*periodmonths)-interestpaid;
-
-        		if(remaininterest > 0 || borrowamount > actualreturn){
-        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTALLPAID_ERROR);
+        	if(form.getOperation().equals("sold")){
+//        		double purchaseprice = vo.getPurchaseprice();
+        		double sellprice = vo.getSellprice();
+        		double actualloan = vo.getActualloan();
+        		double interestrate = vo.getInterestrate();
+        		double interest = 0.00;
+        		double interestcost = 0.00;
+        		double pricediff = sellprice - purchaseprice;
+        		double totalprofit = 0.00;
+        		double profit = 0.00;
+        		double traderprofit = 0.00;
+        		if(vehicletype.equals("自收车")){
+	        		int daydiff = getIntervalDays(purchasedate, selldate);
+	        		interest = interestrate/100/30*actualloan;
+	        		interestcost = interest*daydiff;
+	        		totalprofit = pricediff - interestcost - vo.getTradecost();
+//	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
+	        		profit = totalprofit;
         		}else{
-        			vo.setIsreturned("1");
+            		int monthdiff = getIntervalMonths(purchasedate, selldate);
+            		interest = interestrate/100*actualloan;
+	        		interestcost = interest*monthdiff;
+	        		totalprofit = pricediff - interestcost - vo.getTradecost();
+//	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
+	        		profit = totalprofit/2;
+	        		traderprofit = totalprofit/2;
+	        		sloan = ts.getspare() + vo.getPurchaseprice();
+	        		if(vo.getIssold() == null || vo.getIssold().equals("0")){
+	        		ts.updateSpare(sloan);	
+	        		}
         		}
         		
+        		vo.setInterest(interest);
+        		vo.setInterestcost(interestcost);
+        		vo.setPricediff(pricediff);
+        		vo.setTotalprofit(totalprofit);
+        		vo.setProfit(profit);
+        		vo.setTraderprofit(traderprofit);
+        		vo.setSettlement("0");
+        		vo.setSettlementdate(null);
+        		vo.setIssold("1");
         	}else if(form.getOperation().equals("settle"))
         	{
-        		if(vo.getIsdeleted() != "1"){
-	        		if(vo.getIsabandon().equals("1") || vo.getIsreturned().equals("1")){
-	        			double totalprofit = actualreturn + interestpaid - actualloan - midinterest - otherfee;
-	        			vo.setTotalprofit(totalprofit);
-		        		vo.setSettlement("1");
-		        		String settlementdate =sdf.format(new Date());
-		        		vo.setSettlementdate(settlementdate);
-	        		}else{
-	        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTRETURNABANDON_ERROR);
-	        		}
+        		if(vo.getIssold() !=null && vo.getIssold().equals("1") && vo.getIsdeleted() !="1" ){
+	        		vo.setSettlement("1");
+	        		String settlementdate =sdf.format(new Date());
+	        		vo.setSettlementdate(settlementdate);
         		}else
         		{
-        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_DELETED_ERROR);
-        		}
-        	}else if(form.getOperation().equals("abandon"))
-        	{
-        		if(vo.getIsdeleted().equals("1") || vo.getSettlement().equals("1")){
-        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_SETTLEDELETED_ERROR);
-        		}else
-        		{
-        			vo.setIsabandon("1");
+        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTSOLD_DELETED_ERROR);
         		}
         	}else{
+        		if(vehicletype.equals("自收车")){
+//		        	vo.setActualloan(vo.getPurchaseprice());
+		        	aloan = vo.getPurchaseprice();
+		        	vo.setSpareloan(0);
+            		vo.setActualloan(aloan);
+//		        	sloan = ts.getspare();
+        		}else{
+        			double spareloantmp = 0.00;//vo.getspareloan()
+        			spareloantmp = ts.getspare();
+        			if(spareloantmp >= purchaseprice){
+        				sloan = spareloantmp - purchaseprice;
+        				aloan = 0.00;
+        			}else{
+        				aloan = Math.ceil((purchaseprice-spareloantmp)/100000)*100000;
+        				sloan = aloan - (purchaseprice-spareloantmp);
+        			}
+            		vo.setSpareloan(sloan);
+            		vo.setActualloan(aloan);
+                    ts.updateSpare(sloan);
+        		}
+
+        		vo.setSellprice(0);
+        		vo.setSelldate(null);
+        		vo.setIssold("0");
         		vo.setIsdeleted("0");
-        		vo.setIsreturned("0");
-        		vo.setIsabandon("0");
         		vo.setSettlement("0");
         		vo.setSettlementdate(null);
         	}
             // 新增
             if (vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
 
-                LoanDto dto = ts.getEquals(vo.getLicenseno());
+                TradeDto dto = ts.getEquals(vo.getLicenseno());
                 // 已存在
                 if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0){
                     throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
@@ -154,19 +197,17 @@ public class LoanAction extends DispatchAction {
 
                 // 修改
             }else{
-                LoanDto dto = ts.getEquals(vo.getLicenseno());
+                TradeDto dto = ts.getEquals(vo.getLicenseno());
                 System.out.println(dto.getVehicleid()+" ------------- "+dto.getLicenseno());
                 // 已存在
                 if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0 && !dto.getVehicleid().equals(vo.getVehicleid())){
                     throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
                 }else{
-//                	if(form.getOperation().equals("settle")){
-//                		ts.settle(vo);
-//                	}else if(form.getOperation().equals("return")){
-//                		ts.settle(vo);
-//                	}else{
+                	if(form.getOperation().equals("settle")){
+                		ts.settle(vo);
+                	}else{
                 		ts.update(vo);
-//                	}
+                	}
                 }
             }
 
@@ -192,9 +233,9 @@ public class LoanAction extends DispatchAction {
                 throw new Exception( SysConstant.M_NO_LOGIN);
             }
 
-            LoanService sv = new LoanService();
-            LoanForm form = (LoanForm)frm;
-            LoanDto vo = sv.query(form.getVehicleid());
+            TradeService sv = new TradeService();
+            TradeForm form = (TradeForm)frm;
+            TradeDto vo = sv.query(form.getVehicleid());
 
             if (vo == null || vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
                 throw new Exception(SysConstant.M_NO_DATA_FIND);
@@ -220,24 +261,27 @@ public class LoanAction extends DispatchAction {
                 throw new Exception(SysConstant.M_NO_LOGIN);
             }
 
-            LoanForm form = (LoanForm)frm;
+            TradeForm form = (TradeForm)frm;
             if (form.getVehicleid().length() == 0){
                 JsonUtils.printActionResultOK(response);
                 return null;
             }
 
-            LoanService sv = new LoanService();
+            TradeService sv = new TradeService();
             String vehichleid = form.getVehicleid();
+            String vehicletype = form.getVehicletype();
+            String issold = form.getIssold();
+            double purchaseprice = form.getPurchaseprice();
 
             sv.deletesingle(vehichleid);
-//            if(vehicletype.equals("自收车") || issold.equals("1")){
-//            	System.out.println("ID: "+vehichleid+"车辆类型： "+vehicletype+"已售："+issold);
-//    		}else{
-//    			double spareloantmp = 0.00;//vo.getspareloan()
-//    			spareloantmp = sv.getspare();
-//    			double	sloan = spareloantmp + purchaseprice;
-//                sv.updateSpare(sloan);
-//    		}
+            if(vehicletype.equals("自收车") || issold.equals("1")){
+            	System.out.println("ID: "+vehichleid+"车辆类型： "+vehicletype+"已售："+issold);
+    		}else{
+    			double spareloantmp = 0.00;//vo.getspareloan()
+    			spareloantmp = sv.getspare();
+    			double	sloan = spareloantmp + purchaseprice;
+                sv.updateSpare(sloan);
+    		}
             JsonUtils.printActionResultOK(response);
         }catch(Exception e){
             e.printStackTrace();
@@ -247,80 +291,80 @@ public class LoanAction extends DispatchAction {
 
         return null;
     }
-//    
-//    /***********************************************/
-//    // 删除多个
-//    /***********************************************/
-//    public ActionForward delete(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//
-//        try {
-//            // 检查登录
-//            if (ContextUtils.getCurrentUserID(request) == null){
-//                throw new Exception(SysConstant.M_NO_LOGIN);
-//            }
-//
-//            LoanForm form = (LoanForm)frm;
-//            if (form.getVehicleid().length() == 0){
-//                JsonUtils.printActionResultOK(response);
-//                return null;
-//            }
-//
-//            LoanService sv = new LoanService();
-//            String[] list = form.getVehicleid().split(",");
-//            sv.delete(list);
-//            JsonUtils.printActionResultOK(response);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            logger.error(e.getMessage());
-//            JsonUtils.printActionResultFromException(response, e);
-//        }
-//
-//        return null;
-//    }
-//    
-//    /***********************************************/
-//    // 间隔天数
-//    /***********************************************/
-//    private static int getIntervalDays(Date sDate, Date eDate) {
-//
-//        if (null == sDate || null == eDate) {
-//            return -1;
-//        }
-//        long intervalMilli = eDate.getTime() - sDate.getTime();
-//        return (int) (intervalMilli / (24 * 60 * 60 * 1000));
-//     }
-//    
-//    /***********************************************/
-//    // 间隔月数
-//    /***********************************************/
-//    private static int getIntervalMonths(Date sDate, Date eDate) {
-//
-//        if (null == sDate || null == eDate) {
-//            return -1;
-//        }
-//        @SuppressWarnings("deprecation")
-//		int intervalYear = eDate.getYear() - sDate.getYear();
-//        @SuppressWarnings("deprecation")
-//		int intervalMonth = eDate.getMonth()- sDate.getMonth();
-//        intervalMonth = intervalMonth + intervalYear*12;
-//        int days = getIntervalDays(sDate, eDate);	
-//		int monthdiff = 0;
-//		try{
-//				if(intervalMonth==0){
-//					monthdiff = intervalMonth+1;
-//				}else if(days > ((intervalMonth)*31)){
-//					monthdiff = intervalMonth+1;
-//				}else{
-//					monthdiff = intervalMonth;
-//				}
-////				System.out.println("days: " + days + "intervalMonth: " + intervalMonth +"monthdiff" + monthdiff);
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
-//        return monthdiff;
-//     }
-//
-//
+    
+    /***********************************************/
+    // 删除多个
+    /***********************************************/
+    public ActionForward delete(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+            // 检查登录
+            if (ContextUtils.getCurrentUserID(request) == null){
+                throw new Exception(SysConstant.M_NO_LOGIN);
+            }
+
+            TradeForm form = (TradeForm)frm;
+            if (form.getVehicleid().length() == 0){
+                JsonUtils.printActionResultOK(response);
+                return null;
+            }
+
+            TradeService sv = new TradeService();
+            String[] list = form.getVehicleid().split(",");
+            sv.delete(list);
+            JsonUtils.printActionResultOK(response);
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            JsonUtils.printActionResultFromException(response, e);
+        }
+
+        return null;
+    }
+    
+    /***********************************************/
+    // 间隔天数
+    /***********************************************/
+    private static int getIntervalDays(Date sDate, Date eDate) {
+
+        if (null == sDate || null == eDate) {
+            return -1;
+        }
+        long intervalMilli = eDate.getTime() - sDate.getTime();
+        return (int) (intervalMilli / (24 * 60 * 60 * 1000));
+     }
+    
+    /***********************************************/
+    // 间隔月数
+    /***********************************************/
+    private static int getIntervalMonths(Date sDate, Date eDate) {
+
+        if (null == sDate || null == eDate) {
+            return -1;
+        }
+        @SuppressWarnings("deprecation")
+		int intervalYear = eDate.getYear() - sDate.getYear();
+        @SuppressWarnings("deprecation")
+		int intervalMonth = eDate.getMonth()- sDate.getMonth();
+        intervalMonth = intervalMonth + intervalYear*12;
+        int days = getIntervalDays(sDate, eDate);	
+		int monthdiff = 0;
+		try{
+				if(intervalMonth==0){
+					monthdiff = intervalMonth+1;
+				}else if(days > ((intervalMonth)*31)){
+					monthdiff = intervalMonth+1;
+				}else{
+					monthdiff = intervalMonth;
+				}
+//				System.out.println("days: " + days + "intervalMonth: " + intervalMonth +"monthdiff" + monthdiff);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+        return monthdiff;
+     }
+
+
 
     /***********************************************/
     // 跳转

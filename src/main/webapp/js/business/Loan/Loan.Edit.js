@@ -316,65 +316,133 @@ var LoanEdit = {
             var actualreturn = $('#actualreturn').textbox('getValue');
             var actualreturndate = $('#actualreturndate').textbox('getValue');
             var operation = save
+            
+                if (save == 'settle') {
+                    var settlement = 1;
+                    $.messager.confirm(AppConstant.M_INFO, AppConstant.M_CONFIRM_SETTLE, function (r) {
+                        if (r) {
+                        	$.ajax({
+                                type: 'post',
+                                url: basePath + 'LoanAction.do?m=save',
+                                data: {
+                                	isdeleted: isdeleted,
+                                	isreturned: isreturned,
+                                	isabandon: isabandon,
+                                	settlement: settlement,
+                                	traderid: traderid,
+                                	tradername: tradername,
+                                	vehicleid: vehicleid,
+                                	licenseno: licenseno,
+                                	vehicledesc: vehicledesc,
+                                	ownername: ownername,
+                                	ownerid: ownerid,
+                                	borrowdate: borrowdate,
+                                	returndate: returndate,
+                                	periodmonths: periodmonths,
+                                	borrowamount: borrowamount,
+                                	interestrate: interestrate,
+                                	interestpaid: interestpaid,
+                                	interestpaidto: interestpaidto,
+                                	nextpaymentdate: nextpaymentdate,
+                                	midinterestrate: midinterestrate,
+                                	midinterest: midinterest,
+                                	parkingfee: parkingfee,
+                                	otherfee: otherfee,
+                                	actualloan: actualloan,
+                                	comments: comments,
+                                	actualreturn : actualreturn,
+                                	actualreturndate : actualreturndate,
+                                	operation: operation
+                                },
+                                success: function (data) {
+                                    if (data == null || data.length == 0) return;
+                                    var vo = data[0];
 
-            $.ajax({
-                type: 'post',
-                url: basePath + 'LoanAction.do?m=save',
-                data: {
-                	isdeleted: isdeleted,
-                	isreturned: isreturned,
-                	isabandon: isabandon,
-                	settlement: settlement,
-                	traderid: traderid,
-                	tradername: tradername,
-                	vehicleid: vehicleid,
-                	licenseno: licenseno,
-                	vehicledesc: vehicledesc,
-                	ownername: ownername,
-                	ownerid: ownerid,
-                	borrowdate: borrowdate,
-                	returndate: returndate,
-                	periodmonths: periodmonths,
-                	borrowamount: borrowamount,
-                	interestrate: interestrate,
-                	interestpaid: interestpaid,
-                	interestpaidto: interestpaidto,
-                	nextpaymentdate: nextpaymentdate,
-                	midinterestrate: midinterestrate,
-                	midinterest: midinterest,
-                	parkingfee: parkingfee,
-                	otherfee: otherfee,
-                	actualloan: actualloan,
-                	comments: comments,
-                	actualreturn : actualreturn,
-                	actualreturndate : actualreturndate,
-                	operation: operation
-                },
-                success: function (data) {
-                    if (data == null || data.length == 0) return;
-                    var vo = data[0];
+                                    if (vo.status == 'ok') {
 
-                    if (vo.status == 'ok') {
+                                        $('#list').datagrid('reload');
+                                        if (save == 'savenew') {
+                                            edit.clear();
+                                            xutil.focus('#licenseno');
+                                        } else {
+                                            $('#dlg_add').dialog('close');
+                                        }
 
-                        $('#list').datagrid('reload');
-                        if (save == 'savenew') {
-                            edit.clear();
-                            xutil.focus('#licenseno');
-                        } else {
-                            $('#dlg_add').dialog('close');
+                                    } else if (vo.status == 'nologin') {
+                                        top.location = basePath;
+                                    } else {
+                                        $.messager.alert(AppConstant.M_INFO, vo.message, vo.status);
+                                    }
+                                },
+
+                                error: function () {
+                                    top.location = basePath;
+                                }
+                            });
                         }
+            
+                        });
+    		    }else{
+    		    	$.ajax({
+    	                type: 'post',
+    	                url: basePath + 'LoanAction.do?m=save',
+    	                data: {
+    	                	isdeleted: isdeleted,
+    	                	isreturned: isreturned,
+    	                	isabandon: isabandon,
+    	                	settlement: settlement,
+    	                	traderid: traderid,
+    	                	tradername: tradername,
+    	                	vehicleid: vehicleid,
+    	                	licenseno: licenseno,
+    	                	vehicledesc: vehicledesc,
+    	                	ownername: ownername,
+    	                	ownerid: ownerid,
+    	                	borrowdate: borrowdate,
+    	                	returndate: returndate,
+    	                	periodmonths: periodmonths,
+    	                	borrowamount: borrowamount,
+    	                	interestrate: interestrate,
+    	                	interestpaid: interestpaid,
+    	                	interestpaidto: interestpaidto,
+    	                	nextpaymentdate: nextpaymentdate,
+    	                	midinterestrate: midinterestrate,
+    	                	midinterest: midinterest,
+    	                	parkingfee: parkingfee,
+    	                	otherfee: otherfee,
+    	                	actualloan: actualloan,
+    	                	comments: comments,
+    	                	actualreturn : actualreturn,
+    	                	actualreturndate : actualreturndate,
+    	                	operation: operation
+    	                },
+    	                success: function (data) {
+    	                    if (data == null || data.length == 0) return;
+    	                    var vo = data[0];
 
-                    } else if (vo.status == 'nologin') {
-                        top.location = basePath;
-                    } else {
-                        $.messager.alert(AppConstant.M_INFO, vo.message, vo.status);
-                    }
-                },
+    	                    if (vo.status == 'ok') {
 
-                error: function () {
-                    top.location = basePath;
-                }
-            });
+    	                        $('#list').datagrid('reload');
+    	                        if (save == 'savenew') {
+    	                            edit.clear();
+    	                            xutil.focus('#licenseno');
+    	                        } else {
+    	                            $('#dlg_add').dialog('close');
+    	                        }
+
+    	                    } else if (vo.status == 'nologin') {
+    	                        top.location = basePath;
+    	                    } else {
+    	                        $.messager.alert(AppConstant.M_INFO, vo.message, vo.status);
+    	                    }
+    	                },
+
+    	                error: function () {
+    	                    top.location = basePath;
+    	                }
+    	            });
+    		    	}
+            
         };
 //        
 //        /***********************************************/

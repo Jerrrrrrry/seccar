@@ -1,4 +1,4 @@
-var TradeEdit = {
+var TradeReportEdit = {
 
     getInstance: function (basePath) {
 //    	alert("edit");
@@ -10,6 +10,7 @@ var TradeEdit = {
         // 清空
         /***********************************************/
         edit.clear = function () {
+//        	alert("edit.clear");
         	var userid = $('#userid').val();
         	var username = $('#username').val();
         	var CurrentLoginUserAccesstype = $('#CurrentLoginUserAccesstype').val();
@@ -207,7 +208,7 @@ var TradeEdit = {
 
             $.ajax({
                 type: 'post',
-                url: basePath + 'TradeAction.do?m=view',
+                url: basePath + 'TradeReportAction.do?m=view',
                 data: {vehicleid: row.vehicleid},
                 success: function (data) {
 
@@ -492,7 +493,7 @@ var TradeEdit = {
 //            var settlement = 1;
 //            $.ajax({
 //                type: 'post',
-//                url: basePath + 'TradeAction.do?m=save',
+//                url: basePath + 'TradeReportAction.do?m=save',
 //                data: {
 //                	isdeleted: isdeleted,
 //                    issold: issold,
@@ -569,7 +570,7 @@ var TradeEdit = {
                     $('#btnEditDelete').linkbutton('disable');
                     $.ajax({
                         type: 'post',
-                        url: basePath + 'TradeAction.do?m=deletesingle',
+                        url: basePath + 'TradeReportAction.do?m=deletesingle',
                         data: {
                         	vehicleid: vehicleid,
                         	issold: issold,
@@ -617,7 +618,7 @@ var TradeEdit = {
 //                    $('#btnEditDelete').linkbutton('disable');
 //                    $.ajax({
 //                        type: 'post',
-//                        url: basePath + 'TradeAction.do?m=sold',
+//                        url: basePath + 'TradeReportAction.do?m=sold',
 //                        data: {vehicleid: vehicleid},
 //                        success: function (data) {
 //

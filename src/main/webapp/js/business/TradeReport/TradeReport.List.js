@@ -1,4 +1,4 @@
-var TradeList = {
+var TradeReportList = {
 
     getInstance: function (basePath) {
         var list = {};
@@ -8,7 +8,7 @@ var TradeList = {
         /***********************************************/
         list.addNew = function () {
 //        	alert("addnew");
-            var edit = TradeEdit.getInstance(basePath);
+            var edit = TradeReportEdit.getInstance(basePath);
             edit.clear();
             $('#dlg_add').dialog('open');
             xutil.focus('#licenseno');
@@ -122,7 +122,7 @@ var TradeList = {
             xutil.ajaxLoading('body');
             $.ajax({
                 type: 'post',
-                url: basePath + 'TradeAction.do?m=delete',
+                url: basePath + 'TradeReportAction.do?m=delete',
                 data: {vehicleid: vehicleid},
                 success: function (data) {
 
@@ -180,7 +180,7 @@ var TradeList = {
 ////            }
 //            $.ajax({
 //                type: 'post',
-//                url: basePath + 'TradeAction.do?m=save',
+//                url: basePath + 'TradeReportAction.do?m=save',
 //                data: {
 //                	isdeleted: isdeleted,
 //                    issold: issold,
@@ -242,7 +242,7 @@ var TradeList = {
 ////            alert(vehicleid);
 //                $.ajax({
 //                    type: 'post',
-//                    url: basePath + 'TradeAction.do?m=view',
+//                    url: basePath + 'TradeReportAction.do?m=view',
 //                    data: {vehicleid: vehicleid},
 //                    success: function (data) {
 //
@@ -407,7 +407,7 @@ var TradeList = {
 //                };
 //	        $('#list').datagrid('clearSelections');
 //	        $('#list').datagrid({
-//	            url: basePath + 'TradeAction.do?m=list',
+//	            url: basePath + 'TradeReportAction.do?m=list',
 //	            queryParams: prm});
 //        }
         /***********************************************/
@@ -424,7 +424,7 @@ var TradeList = {
 
                     $.ajax({
                         type: 'post',
-                        url: basePath + 'TradeAction.do?m=sync',
+                        url: basePath + 'TradeReportAction.do?m=sync',
                         data: {id: id},
                         success: function (data) {
 
