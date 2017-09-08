@@ -16,6 +16,11 @@ var TradeReportInit = {
             $("#list").datagrid({
                 striped: true,
                 rownumbers: true,
+                rowStyler:function(index,row){
+               	 	var color = list.rowcolor(index,row);
+               	 	return color;
+//               	 	'background-color:pink;color:blue;font-weight:bold;';
+            	   	},
                 pageSize: 50,
                 pageList: [20,50,100],
                 fit: true,

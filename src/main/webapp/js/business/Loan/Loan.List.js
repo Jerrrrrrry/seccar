@@ -15,18 +15,111 @@ var LoanList = {
             xutil.focus('#licenseno');
         };
 
-       //指定列求和
+       //指定列合计
         list.compute = function (colName) {
             var rows = $('#list').datagrid('getRows');
-//        	alert(rows);
             var total = 0;
             for (var i = 0; i < rows.length; i++) {
                 total += parseFloat(rows[i][colName]);
             }
-
-//        	alert(total);
             return total;
-        }
+        };
+      //过期提醒
+        list.rowcolor = function (index, row) {
+//        	alert("rowcolor");
+//        	alert("list.daydiff");
+        	var isreturned = row.isreturned;
+        	var isdeleted = row.isdeleted;
+        	var isabandon = row.isabandon;
+        	var color = '';
+        	if(isreturned == '1' || isdeleted == '1' || isabandon == '1'){
+        		color = '';
+        	}else{
+	        	var today = list.getNowFormatDate();
+            	var ipd = row.interestpaidto;
+            	var npd = row.nextpaymentdate;
+            	var bd = row.borrowdate;
+            	var rd = row.returndate;
+            	var borrowamount = row.borrowamount;
+            	var interestrate = row.interestrate;
+            	var interestpaid = row.interestpaid;
+            	var periodmonths = row.periodmonths;
+            	var actualreturn = row.actualreturn;
+	        	var remaininterest = (interestrate/100*borrowamount*periodmonths)-interestpaid;
+	        	var remainreturn = borrowamount - actualreturn;
+	        	if(remainreturn > 0 && today != '' && today != null && rd != '' && rd != null){
+	        		var nextpaydays = list.getDays(rd.substring(0,10), today.substring(0,10));
+	        		if(nextpaydays < 3 && nextpaydays >=0){
+	        			color =  'background-color:orange;color:black;font-weight:bold;';
+	        		}else if(nextpaydays < 0){
+	        				color =  'background-color:red;color:black;font-weight:bold;';
+	        		}else{
+	        			color =  '';
+	        		}
+	        	}
+	        	if(remaininterest > 0 && today != '' && today != null && npd != '' && npd != null){
+	        		var nextpaydays = list.getDays(npd.substring(0,10), today.substring(0,10));
+	        		if(nextpaydays < 3 && nextpaydays >=0){
+	        			color =  'background-color:blue;color:black;font-weight:bold;';
+	        		}else if(nextpaydays < 0){
+	        				color =  'background-color:pink;color:black;font-weight:bold;';
+	        		}else{
+	        			color =  '';
+	        		}
+	        	}
+        	}
+        	return color;
+        };
+
+        //指定列日期相差天数
+          list.getDays = function (strDateStart,strDateEnd){
+//          	alert("list.getDays");
+          	   var strSeparator = "-"; //日期分隔符
+          	   var oDate1;
+          	   var oDate2;
+          	   var iDays;
+          	   oDate1= strDateStart.split(strSeparator);
+          	   oDate2= strDateEnd.split(strSeparator);
+          	   var strDateS = new Date(oDate1[0], oDate1[1]-1, oDate1[2]);
+          	   var strDateE = new Date(oDate2[0], oDate2[1]-1, oDate2[2]);
+          	   iDays = parseInt(Math.ceil(strDateS - strDateE ) / 1000 / 60 / 60 /24)//把相差的毫秒数转换为天数 
+          	   return iDays ;
+          	};
+          //当前日期格式化
+            list.getNowFormatDate = function () {
+
+                var date = new Date();
+
+                var seperator1 = "-";
+
+                var seperator2 = ":";
+
+                var month = date.getMonth() + 1;
+
+                var strDate = date.getDate();
+
+                if (month >= 1 && month <= 9) {
+
+                    month = "0" + month;
+
+                }
+
+                if (strDate >= 0 && strDate <= 9) {
+
+                    strDate = "0" + strDate;
+
+                }
+
+                var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+
+                        + " " + date.getHours() + seperator2 + date.getMinutes()
+
+                        + seperator2 + date.getSeconds();
+
+                return currentdate;
+
+            } ;             
+              
         /***********************************************/
         // 打开过滤界面
         /***********************************************/
