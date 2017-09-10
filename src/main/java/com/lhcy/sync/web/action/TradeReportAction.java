@@ -63,7 +63,7 @@ public class TradeReportAction extends DispatchAction {
             int rowEnd = rowBegin + pageSize;
             if(rowBegin > 0) rowBegin++;
             List<TradeDto> list =  new ArrayList<TradeDto>();
-            list = ts.list(rowBegin, pageSize, form);
+            list = ts.list(rowBegin, rowEnd, form);
             JsonUtils.printFromList(response, list, count);
         }catch(Exception e){
             e.printStackTrace();

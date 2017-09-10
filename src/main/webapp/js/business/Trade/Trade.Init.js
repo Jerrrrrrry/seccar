@@ -21,7 +21,7 @@ var TradeInit = {
                	 	return color;
 //               	 	'background-color:pink;color:blue;font-weight:bold;';
             	   	},
-                pageSize: 50,
+                pageSize: 20,
                 pageList: [20,50,100],
                 fit: true,
                 singleSelect: false,

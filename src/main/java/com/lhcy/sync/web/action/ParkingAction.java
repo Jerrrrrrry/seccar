@@ -51,12 +51,12 @@ public class ParkingAction extends DispatchAction {
         	ParkingService ps = new ParkingService();
             int pageSize = form.getRows();
             int pageNow = form.getPage();
-            int count = 50;//tsv.count(form);
+            int count = ps.count(form);
             int rowBegin = (pageNow - 1) * pageSize;
             int rowEnd = rowBegin + pageSize;
             if(rowBegin > 0) rowBegin++;
             List<ParkingDto> list =  new ArrayList<ParkingDto>();
-            list = ps.list(rowBegin, pageSize, form);
+            list = ps.list(rowBegin, rowEnd, form);
             JsonUtils.printFromList(response, list, count);
         }catch(Exception e){
             e.printStackTrace();

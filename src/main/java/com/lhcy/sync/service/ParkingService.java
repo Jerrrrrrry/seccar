@@ -14,12 +14,10 @@ public class ParkingService {
     public List<ParkingDto> list(int rowBegin, int pageSize, ParkingForm form) throws Exception{
     return dao.list(rowBegin, pageSize, form);
     }
-//
-//    public int count(ParkingForm form) throws Exception {
-//        return dao.count(form);
-//    }
-//
 
+    public int count(ParkingForm form) throws Exception {
+        return dao.count(form);
+    }
 
     public ParkingDto query(String id) throws Exception{
         return dao.query(id);

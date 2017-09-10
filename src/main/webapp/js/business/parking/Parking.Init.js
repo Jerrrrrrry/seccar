@@ -16,8 +16,8 @@ var ParkingInit = {
             $("#list").datagrid({
                 striped: true,
                 rownumbers: true,
-                pageSize: 50,
-                pageList: [50,100],
+                pageSize: 20,
+                pageList: [20,50,100],
                 fit: true,
                 singleSelect: false,
                 selectOnCheck: true,

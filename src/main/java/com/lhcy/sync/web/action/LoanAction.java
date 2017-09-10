@@ -63,7 +63,7 @@ public class LoanAction extends DispatchAction {
             int rowEnd = rowBegin + pageSize;
             if(rowBegin > 0) rowBegin++;
             List<LoanDto> list =  new ArrayList<LoanDto>();
-            list = ts.list(rowBegin, pageSize, form);
+            list = ts.list(rowBegin, rowEnd, form);
             JsonUtils.printFromList(response, list, count);
         }catch(Exception e){
             e.printStackTrace();

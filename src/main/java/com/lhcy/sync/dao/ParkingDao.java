@@ -29,48 +29,48 @@ public class ParkingDao {
     /***********************************************/
     // 列表的总数量
     /***********************************************/
-//    public int count(ParkingForm form) throws Exception {
-//        int result = 0;
-//        StringBuilder sql = new StringBuilder();
-//        sql.append(" select count(1) as cnt ");
-//        sql.append("   from t_bd_Parking a ");
-//        sql.append("  where 1=1 ");
-//
-//        List args = new ArrayList();
-//        sql.append(getWhere(form, args));
-//
-//        Connection conn = DbConnectionFactory.createHonchenConnection();
-//        if (conn == null){
-//            return result;
-//        }
-//
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            ps = conn.prepareStatement(sql.toString());
-//            rs = DbSqlHelper.executeQuery(ps, args);
-//
-//            if (rs == null){
-//                return result;
-//            }
-//            while(rs.next()){
-//                result = rs.getInt(1);
-//            }
-//        } catch (Exception e) {
-//            throw new Exception(e);
-//        }finally{
-//            try {
-//                rs.close();
-//                ps.close();
-//                conn.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                logger.error(e.getMessage());
-//            }
-//        }
-//        return result;
-//    }
+    public int count(ParkingForm form) throws Exception {
+        int result = 0;
+        StringBuilder sql = new StringBuilder();
+        sql.append(" select count(1) as cnt ");
+	    sql.append("   FROM Parking a ");
+	    sql.append("  WHERE 1=1 ");
+
+        List args = new ArrayList();
+        sql.append(getWhere(form, args));
+
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            return result;
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps, args);
+
+            if (rs == null){
+                return result;
+            }
+            while(rs.next()){
+                result = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+        return result;
+    }
 
     /***********************************************/
     // 列表
