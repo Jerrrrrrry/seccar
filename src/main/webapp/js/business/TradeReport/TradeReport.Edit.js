@@ -271,6 +271,20 @@ var TradeReportEdit = {
                         $('#selldate').textbox('setValue', vo.dto.selldate);
                         $('#buyerid').textbox('setValue', vo.dto.buyerid);
                         $('#buyername').textbox('setValue', vo.dto.buyername);
+                        $("#imgdiv")[0].innerHTML="";
+                        var picturepath = vo.dto.picturepath; 
+                        var picturepaths = picturepath.split(",");
+                        var str ="";
+    					var imgdel = "images\\disable.png";
+                		for(var i=0;i<picturepaths.length;i++){
+                			var id = i+1;
+                			var pic = "upload\\" + picturepaths[i];
+//                			alert(pic);
+                			str = str+"<img name='image' id='img" + id + "' src='"+ pic +"' height='100' width='145'/><img id='del" + id + "' src='"+imgdel+"' height='16' width='16' onclick='delFile(" + id + ")'  />";	
+                		}
+//                		alert(str);
+                		var s_HTML=$("#imgdiv")[0].innerHTML;
+    					$("#imgdiv")[0].innerHTML = s_HTML+str;
 //                        $('#vehicleid').val('');
 //                    	$('#licenseno').textbox('setValue', '');
 //                        $('#vehicledesc').textbox('setValue', '');
@@ -345,6 +359,7 @@ var TradeReportEdit = {
             var selldate = $('#selldate').textbox('getValue');
             var buyerid = $('#buyerid').textbox('getValue');
             var buyername = $('#buyername').textbox('getValue');
+            var picturepath = edit.getpicpath();
             var operation = save
 //            alert(sellprice);
             if (save == 'settle') {
@@ -378,6 +393,7 @@ var TradeReportEdit = {
 			                	buyerid: buyerid,
 			                	buyername: buyername,
 			//                	settlement : settlement,
+				            	picturepath : picturepath,
 			                	operation: operation
 			                },
 			                success: function (data) {
@@ -435,6 +451,7 @@ var TradeReportEdit = {
 		            	selldate: selldate,
 		            	buyerid: buyerid,
 		            	buyername: buyername,
+		            	picturepath : picturepath,
 		//            	settlement : settlement,
 		            	operation: operation
 		            },
@@ -464,6 +481,30 @@ var TradeReportEdit = {
 		            }
 		        });
 		    	}
+		        };
+		        
+		        
+		        /***********************************************/
+		        // 获取图片路径
+		        /***********************************************/
+		        edit.getpicpath = function () {
+//		        	alert("getpicpath");
+		        	var picturepath="";
+		        	var imgLength = $("img[name=image]").length;
+		        	var imgs = $("img[name=image]");
+//		        	alert(imgs.length);
+		        	for(var i=0;i<imgLength;i++){
+		        		var imgid = "img"+i;
+		        		var img = imgs[i];
+		        		var src = img.src;
+		        		var imgname = (src.substring(src.lastIndexOf("/")+1)); 
+		        		if(picturepath ==""){
+			        		picturepath = imgname;
+		        		}else{
+			        		picturepath = picturepath + "," + imgname;		        			
+		        		}
+		    		}
+		        	return picturepath;
 		        };
 //        
 //        /***********************************************/

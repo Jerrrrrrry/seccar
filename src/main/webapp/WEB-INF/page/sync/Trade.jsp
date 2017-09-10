@@ -33,7 +33,7 @@
 				action: '<%= basePath%>'+'TradeAction.do?m=uploadFile',
 				onChange: function(filename) {
 					// Create a span element to notify the user of an upload in progress
-					var $span = $("<span />")
+					/*var $span = $("<span />")
 						.attr("class", $(this).attr("id"))
 						.text("上传中")
 						.insertAfter($(this));
@@ -47,7 +47,7 @@
 						} else {
 							$span.text("上传中");
 						}
-					}, 200);
+					}, 200);*/
 				},
 				onSubmit: function(filename) {
 					// Return false here to cancel the upload
@@ -75,14 +75,33 @@
 						return;
 						}
 					}catch(e){}
-					var $span = $("span." + $(this).attr("id")).text(filename + ", 文件大小 " + response.size + "  状态: "+ response.uploadMsg + ". "),
+				
+					/*var $span = $("span." + $(this).attr("id")).text(filename + ", 文件大小 " + response.size + "  状态: "+ response.uploadMsg + ". "),
 						$fileInput = $("<input />")
 							.attr({
 								type: "file",
 								name: $(this).attr("name"),
 								id: $(this).attr("id")
-							});
+							});*/
 
+					var imgLength = $("img[name=image]").length+1;
+					var imgsrc =response.uploadMsg;
+					var imgdel = "images\\disable.png";
+					//alert(imgsrc);
+					//alert(imgLength);
+					var str="<img name='image' id='img" + imgLength + "' src='"+response.uploadMsg+"' height='100' width='145'/><img id='del" + imgLength + "' src='"+imgdel+"' height='16' width='16' onclick='delFile(" + imgLength + ")'  />";	
+					var s_HTML=$("#imgdiv")[0].innerHTML;
+					$("#imgdiv")[0].innerHTML = s_HTML+str;
+					
+					var s_picturepath = $("#picturepath")[0].value;
+					if(s_picturepath == ""){
+						$("#picturepath")[0].value = response.uploadMsg;						
+					}
+					else{
+						$("#picturepath")[0].value = s_picturepath+","+response.uploadMsg;
+					}
+					
+					
 					if (typeof(response.error) === "string") {
 						$span.replaceWith($fileInput);
 
@@ -108,7 +127,43 @@
 
 		applyAjaxFileUpload("#file1");
     });
+    
+    function addFile(){
+		var fileLength = $("input[name=file]").length+1;
+		var inputFile = "<div id='addFile"+fileLength+"'><input type='file' id='file"+fileLength+"' name='file' />"
+					+"<a href='javascript:void();' onclick='delFile("+fileLength+");'>删除</a></div>";
+		$("#imgdiv").before(inputFile);
+	}
+	//删除附件
+	function delFile(id){
+		//alert("#img"+id);
+		$("#img"+id).remove();
+		$("#del"+id).remove();
+	}
+	
+    function delfile77(){
+    	alert(1);
 
+		var strvalue = $("#picturepath")[0].value.split(",");	
+		alert(strvalue.length);
+		
+		var str_imgsrcs="";
+		for(var i=0;i<strvalue.length;i++){
+			if(strvalue[i] != delpath){
+				str_imgsrcs += strvalue[i];
+				if(str_imgsrcs == ""){
+					str_imgsrcs = strvalue[i];						
+				}
+				else{
+					str_imgsrcs = str_imgsrcs +","+ strvalue[i];	
+				}
+			}
+		}		
+
+    	alert(str_imgsrcs);
+		$("#picturepath")[0].value = str_imgsrcs;	
+    	
+    }
   </script>
 </head>
 <body class="easyui-layout">
@@ -192,8 +247,20 @@
       	<th>购车人身份证</th>
         <td><input id="buyerid"/></td>
       </tr>
+      <tr height="20">
+      </tr>
+      <tr>
+      	<td><a id="btnEditupload"></a></td>
+        <td><input type = "hidden" id="picturepath"/></td>
+        <td></td>
+        <td></td>
+      </tr>
       </tbody>
     </table> 
+	<input type="file" name="file1" id="file1" style="display:none" /> 
+    <div id="imgdiv"></div>
+    
+    
   </div>
 </div>
 
@@ -254,8 +321,8 @@
     <br/>
    	<!-- <input class="easyui-filebox" name="fileUpload" id="fileUploadId" data-options="prompt:'浏览选择文件...', buttonText:'选择',required:true" style="width:80%">
    	 -->
- <input type="file" name="file1" id="file1" /> 
-  </div>
+
+	  </div>
 </div>
 
 <div id="bar_list">

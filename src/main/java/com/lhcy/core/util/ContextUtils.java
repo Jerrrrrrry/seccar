@@ -29,4 +29,13 @@ public class ContextUtils {
         }
         return result;
     }
+    
+    public static String getProjectRealPath(HttpServletRequest request){
+        String result = null;
+        if(request.getSession().getServletContext().getRealPath("/") != null) {
+            result = (String) request.getSession().getServletContext().getRealPath("/");
+        }
+        return result;
+    }
+
 }

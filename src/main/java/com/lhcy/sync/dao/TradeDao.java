@@ -422,10 +422,11 @@ public class TradeDao {
         sql.append("    ,settlement ");
         sql.append("    ,issold ");
         sql.append("    ,isdeleted ");
+        sql.append("    ,picturepath ");
         sql.append("    ,createdts ");
         sql.append("    ,lastupdatedts ");
         sql.append(" )VALUES(");
-        sql.append(StringUtils.getSqlPlaceholder(23));
+        sql.append(StringUtils.getSqlPlaceholder(24));
         sql.append(" )");
 
         List args = new ArrayList();
@@ -450,6 +451,7 @@ public class TradeDao {
         args.add("0");
         args.add("0");
         args.add("0");
+        args.add(vo.getPicturepath());
         args.add(new Date());
         args.add(new Date());
 
@@ -497,6 +499,7 @@ public class TradeDao {
         sql.append("   ,traderprofit = ? ");
         sql.append("   ,buyerid = ? ");
         sql.append("   ,buyername = ? ");
+        sql.append("   ,picturepath = ? ");
         sql.append(" WHERE vehicleid = ? ");
 
         List args = new ArrayList();
@@ -530,6 +533,7 @@ public class TradeDao {
         args.add(vo.getTraderprofit());
         args.add(vo.getBuyerid());
         args.add(vo.getBuyername());
+        args.add(vo.getPicturepath());
         args.add(vo.getVehicleid());
 
         try {

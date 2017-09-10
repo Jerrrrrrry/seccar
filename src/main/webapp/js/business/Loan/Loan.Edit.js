@@ -39,6 +39,7 @@ var LoanEdit = {
             $('#btnEditAbandon').linkbutton('disable');
             $('#btnEditSettle').linkbutton('disable');
             $('#btnEditDelete').linkbutton('disable');
+            $('#btnEditupload').linkbutton('enable');
             
         	$('#isdeleted').val('0');
         	$('#isreturned').val('0');
@@ -65,6 +66,7 @@ var LoanEdit = {
             $('#comments').textbox('setValue', '');
             $('#actualreturn').textbox('setValue', '0');
             $('#actualreturndate').textbox('setValue', '');
+            $("#imgdiv")[0].innerHTML="";
         };
         
         /***********************************************/
@@ -92,12 +94,13 @@ var LoanEdit = {
             $('#comments').textbox({disabled:true});
             $('#actualreturn').textbox({disabled:true});
             $('#actualreturndate').textbox({disabled:true});
-            $('#btnEditSave').linkbutton('enable');
-            $('#btnEditSaveadd').linkbutton('enable');
+            $('#btnEditSave').linkbutton('disable');
+            $('#btnEditSaveadd').linkbutton('disable');
             $('#btnEditReturned').linkbutton('disable');
             $('#btnEditAbandon').linkbutton('disable');
             $('#btnEditSettle').linkbutton('disable');
             $('#btnEditDelete').linkbutton('disable');
+            $('#btnEditupload').linkbutton('disable');
             
         };
         
@@ -131,6 +134,7 @@ var LoanEdit = {
             $('#btnEditAbandon').linkbutton('disable');
             $('#btnEditSettle').linkbutton('enable');
             $('#btnEditDelete').linkbutton('disable');
+            $('#btnEditupload').linkbutton('enable');
             
         };
         
@@ -165,6 +169,7 @@ var LoanEdit = {
             $('#btnEditAbandon').linkbutton('enable');
             $('#btnEditSettle').linkbutton('enable');
             $('#btnEditDelete').linkbutton('enable');
+            $('#btnEditupload').linkbutton('enable');
             
             
         };
@@ -256,7 +261,21 @@ var LoanEdit = {
                         $('#comments').textbox('setValue', vo.dto.comments);
                         $('#actualreturn').textbox('setValue', vo.dto.actualreturn);
                         $('#actualreturndate').textbox('setValue', vo.dto.actualreturndate);
-                        
+
+                        $("#imgdiv")[0].innerHTML="";
+                        var picturepath = vo.dto.picturepath; 
+                        var picturepaths = picturepath.split(",");
+                        var str ="";
+    					var imgdel = "images\\disable.png";
+                		for(var i=0;i<picturepaths.length;i++){
+                			var id = i+1;
+                			var pic = "upload\\" + picturepaths[i];
+//                			alert(pic);
+                			str = str+"<img name='image' id='img" + id + "' src='"+ pic +"' height='100' width='145'/><img id='del" + id + "' src='"+imgdel+"' height='16' width='16' onclick='delFile(" + id + ")'  />";	
+                		}
+//                		alert(str);
+                		var s_HTML=$("#imgdiv")[0].innerHTML;
+    					$("#imgdiv")[0].innerHTML = s_HTML+str;
 
                         $('#dlg_add').dialog('open');
                         xutil.focus('#interestpaid');
@@ -315,6 +334,7 @@ var LoanEdit = {
             var comments = $('#comments').textbox('getValue');
             var actualreturn = $('#actualreturn').textbox('getValue');
             var actualreturndate = $('#actualreturndate').textbox('getValue');
+            var picturepath = edit.getpicpath();
             var operation = save
             
                 if (save == 'settle') {
@@ -352,6 +372,7 @@ var LoanEdit = {
                                 	comments: comments,
                                 	actualreturn : actualreturn,
                                 	actualreturndate : actualreturndate,
+    				            	picturepath : picturepath,
                                 	operation: operation
                                 },
                                 success: function (data) {
@@ -414,6 +435,7 @@ var LoanEdit = {
     	                	comments: comments,
     	                	actualreturn : actualreturn,
     	                	actualreturndate : actualreturndate,
+			            	picturepath : picturepath,
     	                	operation: operation
     	                },
     	                success: function (data) {
@@ -443,6 +465,29 @@ var LoanEdit = {
     	            });
     		    	}
             
+        };
+        
+        /***********************************************/
+        // 获取图片路径
+        /***********************************************/
+        edit.getpicpath = function () {
+//        	alert("getpicpath");
+        	var picturepath="";
+        	var imgLength = $("img[name=image]").length;
+        	var imgs = $("img[name=image]");
+//        	alert(imgs.length);
+        	for(var i=0;i<imgLength;i++){
+        		var imgid = "img"+i;
+        		var img = imgs[i];
+        		var src = img.src;
+        		var imgname = (src.substring(src.lastIndexOf("/")+1)); 
+        		if(picturepath ==""){
+	        		picturepath = imgname;
+        		}else{
+	        		picturepath = picturepath + "," + imgname;		        			
+        		}
+    		}
+        	return picturepath;
         };
 //        
 //        /***********************************************/

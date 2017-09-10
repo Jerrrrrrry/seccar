@@ -383,10 +383,11 @@ public class LoanDao {
         sql.append("    ,isdeleted ");
         sql.append("    ,isreturned ");
         sql.append("    ,isabandon ");
+        sql.append("    ,picturepath ");
         sql.append("    ,createdts ");
         sql.append("    ,lastupdatedts ");
         sql.append(" )VALUES(");
-        sql.append(StringUtils.getSqlPlaceholder(29));
+        sql.append(StringUtils.getSqlPlaceholder(30));
         sql.append(" )");
 
         
@@ -419,6 +420,7 @@ public class LoanDao {
         args.add("0");
         args.add("0");
         args.add("0");
+        args.add(vo.getPicturepath());
         args.add(new Date());
         args.add(new Date());
 
@@ -463,6 +465,7 @@ public class LoanDao {
         sql.append("   ,settlement = ? ");
         sql.append("   ,isreturned = ? ");
         sql.append("   ,isabandon = ? ");
+        sql.append("   ,picturepath = ? ");
         sql.append("   ,lastupdatedts = ? ");
         sql.append(" WHERE vehicleid = ? ");
 
@@ -494,6 +497,7 @@ public class LoanDao {
         args.add(vo.getSettlement());
         args.add(vo.getIsreturned());
         args.add(vo.getIsabandon());
+        args.add(vo.getPicturepath());
         args.add(new Date());
         args.add(vo.getVehicleid());
 

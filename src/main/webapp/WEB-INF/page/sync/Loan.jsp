@@ -25,11 +25,115 @@
 
     $(function(){
     	LoanInit.getInstance('<%=basePath%>').init();
-    	   // $("input",$("#comments").next("td")).click(function(){
-    	   //     alert("ok");
-    	   // });
 
+        var interval;
+
+		function applyAjaxFileUpload(element) {
+			$(element).AjaxFileUpload({
+				action: '<%= basePath%>'+'TradeAction.do?m=uploadFile',
+				onChange: function(filename) {
+					// Create a span element to notify the user of an upload in progress
+					/*var $span = $("<span />")
+						.attr("class", $(this).attr("id"))
+						.text("上传中")
+						.insertAfter($(this));
+
+					$(this).remove();
+
+					interval = window.setInterval(function() {
+						var text = $span.text();
+						if (text.length < 13) {
+							$span.text(text + ".");
+						} else {
+							$span.text("上传中");
+						}
+					}, 200);*/
+				},
+				onSubmit: function(filename) {
+					// Return false here to cancel the upload
+					/*var $fileInput = $("<input />")
+						.attr({
+							type: "file",
+							name: $(this).attr("name"),
+							id: $(this).attr("id")
+						});
+
+					$("span." + $(this).attr("id")).replaceWith($fileInput);
+
+					applyAjaxFileUpload($fileInput);
+
+					return false;*/
+
+					// Return key-value pair to be sent along with the file
+					return true;
+				},
+				onComplete: function(filename, response) {
+					window.clearInterval(interval);
+					try{if (response != null && 'DO_NOT_LOGIN'==response.size)
+						{
+						top.location = '<%= basePath%>';
+						return;
+						}
+					}catch(e){}
+				
+					/*var $span = $("span." + $(this).attr("id")).text(filename + ", 文件大小 " + response.size + "  状态: "+ response.uploadMsg + ". "),
+						$fileInput = $("<input />")
+							.attr({
+								type: "file",
+								name: $(this).attr("name"),
+								id: $(this).attr("id")
+							});*/
+
+					var imgLength = $("img[name=image]").length+1;
+					var imgsrc =response.uploadMsg;
+					var imgdel = "images\\disable.png";
+					//alert(imgsrc);
+					//alert(imgLength);
+					var str="<img name='image' id='img" + imgLength + "' src='"+response.uploadMsg+"' height='100' width='145'/><img id='del" + imgLength + "' src='"+imgdel+"' height='16' width='16' onclick='delFile(" + imgLength + ")'  />";	
+					var s_HTML=$("#imgdiv")[0].innerHTML;
+					$("#imgdiv")[0].innerHTML = s_HTML+str;
+					
+					var s_picturepath = $("#picturepath")[0].value;
+					if(s_picturepath == ""){
+						$("#picturepath")[0].value = response.uploadMsg;						
+					}
+					else{
+						$("#picturepath")[0].value = s_picturepath+","+response.uploadMsg;
+					}
+					
+					
+					if (typeof(response.error) === "string") {
+						$span.replaceWith($fileInput);
+
+						applyAjaxFileUpload($fileInput);
+
+						alert(response.error);
+
+						return;
+					}
+
+					$("<a />")
+						.attr("href", "#")
+						.text("上传新数据")
+						.bind("click", function(e) {
+							$span.replaceWith($fileInput);
+
+							applyAjaxFileUpload($fileInput);
+						})
+						.appendTo($span);
+				}
+			});
+		}
+
+		applyAjaxFileUpload("#file1");
     });
+
+	//删除附件
+	function delFile(id){
+		//alert("#img"+id);
+		$("#img"+id).remove();
+		$("#del"+id).remove();
+	}
 
   </script>
 </head>
@@ -121,8 +225,19 @@
       	<th>上次归还本金时间</th>
         <td><input id="actualreturndate"/></td>
       </tr>
+      <tr height="20">
+      </tr>
+      <tr>
+      	<td><a id="btnEditupload"></a></td>
+        <td><input type = "hidden" id="picturepath"/></td>
+        <td></td>
+        <td></td>
+      </tr>
       </tbody>
     </table> 
+	<input type="file" name="file1" id="file1" style="display:none" /> 
+    <div id="imgdiv"></div>
+    
   </div>
 </div>
 

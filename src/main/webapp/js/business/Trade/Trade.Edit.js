@@ -5,7 +5,8 @@ var TradeEdit = {
         var edit = {};
         var currentIndex = 0;
         var xutil = XUtil.getInstance(basePath);
-
+        
+        
         /***********************************************/
         // 清空
         /***********************************************/
@@ -33,6 +34,7 @@ var TradeEdit = {
             $('#buyername').textbox({disabled:true});
             $('#btnEditSave').linkbutton('enable');
             $('#btnEditSaveadd').linkbutton('enable');
+            $('#btnEditupload').linkbutton('enable');
             $('#btnEditSold').linkbutton('disable');
             $('#btnEditSettle').linkbutton('disable');
             $('#btnEditDelete').linkbutton('disable');
@@ -64,6 +66,7 @@ var TradeEdit = {
             $('#selldate').textbox('setValue', '');
             $('#buyerid').textbox('setValue', '');
             $('#buyername').textbox('setValue', '');
+            $("#imgdiv")[0].innerHTML="";
         };
         
         /***********************************************/
@@ -96,6 +99,7 @@ var TradeEdit = {
             $('#btnEditSold').linkbutton('disable');
             $('#btnEditSettle').linkbutton('disable');
             $('#btnEditDelete').linkbutton('disable');
+            $('#btnEditupload').linkbutton('disable');
             
         };
         
@@ -129,6 +133,7 @@ var TradeEdit = {
             $('#btnEditSold').linkbutton('enable');
             $('#btnEditSettle').linkbutton('enable');
             $('#btnEditDelete').linkbutton('enable');
+            $('#btnEditupload').linkbutton('enable');
             
         };
         
@@ -162,6 +167,7 @@ var TradeEdit = {
             $('#btnEditSold').linkbutton('enable');
             $('#btnEditSettle').linkbutton('disable');
             $('#btnEditDelete').linkbutton('enable');
+            $('#btnEditupload').linkbutton('enable');
             
         };
         
@@ -169,7 +175,6 @@ var TradeEdit = {
         // 新增
         /***********************************************/
         edit.addNew = function () {
-//        	alert("edit.addNew");
             this.clear();
 //            $('#btnEditDelete').linkbutton('disable');
             xutil.focus('#licenseno');
@@ -270,6 +275,22 @@ var TradeEdit = {
                         $('#selldate').textbox('setValue', vo.dto.selldate);
                         $('#buyerid').textbox('setValue', vo.dto.buyerid);
                         $('#buyername').textbox('setValue', vo.dto.buyername);
+                        $("#imgdiv")[0].innerHTML="";
+                        var picturepath = vo.dto.picturepath; 
+                        var picturepaths = picturepath.split(",");
+                        var str ="";
+    					var imgdel = "images\\disable.png";
+                		for(var i=0;i<picturepaths.length;i++){
+                			var id = i+1;
+                			var pic = "upload\\" + picturepaths[i];
+//                			alert(pic);
+                			str = str+"<img name='image' id='img" + id + "' src='"+ pic +"' height='100' width='145'/><img id='del" + id + "' src='"+imgdel+"' height='16' width='16' onclick='delFile(" + id + ")'  />";	
+                		}
+//                		alert(str);
+                		var s_HTML=$("#imgdiv")[0].innerHTML;
+    					$("#imgdiv")[0].innerHTML = s_HTML+str;
+//                        alert(picturepath);
+//                        alert(picturepaths.length);
 //                        $('#vehicleid').val('');
 //                    	$('#licenseno').textbox('setValue', '');
 //                        $('#vehicledesc').textbox('setValue', '');
@@ -344,15 +365,16 @@ var TradeEdit = {
             var selldate = $('#selldate').textbox('getValue');
             var buyerid = $('#buyerid').textbox('getValue');
             var buyername = $('#buyername').textbox('getValue');
+            var picturepath = edit.getpicpath();
             var operation = save
-//            alert(sellprice);
+//            alert(picturepath);
             if (save == 'settle') {
                 var settlement = 1;
                 $.messager.confirm(AppConstant.M_INFO, AppConstant.M_CONFIRM_SETTLE, function (r) {
                     if (r) {
 			            $.ajax({
 			                type: 'post',
-			                url: basePath + 'TradeReportAction.do?m=save',
+			                url: basePath + 'TradeAction.do?m=save',
 			                data: {
 			                	isdeleted: isdeleted,
 			                    issold: issold,
@@ -376,7 +398,7 @@ var TradeEdit = {
 			                	selldate: selldate,
 			                	buyerid: buyerid,
 			                	buyername: buyername,
-			//                	settlement : settlement,
+				            	picturepath : picturepath,
 			                	operation: operation
 			                },
 			                success: function (data) {
@@ -410,7 +432,7 @@ var TradeEdit = {
 		    }else{
 		    	$.ajax({
 		            type: 'post',
-		            url: basePath + 'TradeReportAction.do?m=save',
+		            url: basePath + 'TradeAction.do?m=save',
 		            data: {
 		            	isdeleted: isdeleted,
 		                issold: issold,
@@ -434,7 +456,7 @@ var TradeEdit = {
 		            	selldate: selldate,
 		            	buyerid: buyerid,
 		            	buyername: buyername,
-		//            	settlement : settlement,
+		            	picturepath : picturepath,
 		            	operation: operation
 		            },
 		            success: function (data) {
@@ -464,6 +486,51 @@ var TradeEdit = {
 		        });
 		    	}
 		        };
+
+		        /***********************************************/
+		        // 获取图片路径
+		        /***********************************************/
+		        edit.getpicpath = function () {
+//		        	alert("getpicpath");
+		        	var picturepath="";
+		        	var imgLength = $("img[name=image]").length;
+		        	var imgs = $("img[name=image]");
+//		        	alert(imgs.length);
+		        	for(var i=0;i<imgLength;i++){
+		        		var imgid = "img"+i;
+		        		var img = imgs[i];
+		        		var src = img.src;
+		        		var imgname = (src.substring(src.lastIndexOf("/")+1)); 
+		        		if(picturepath ==""){
+			        		picturepath = imgname;
+		        		}else{
+			        		picturepath = picturepath + "," + imgname;		        			
+		        		}
+		    		}
+		        	return picturepath;
+		        };
+		        
+//		        edit.getpicpath = function () {
+////		        	alert("getpicpath");
+//		        	var picturepath="";
+//		        	var imgLength = $("img[name=image]").length;
+//		        	for(var i=1;i<imgLength+1;i++){
+//		        		var imgid = "img"+i;
+//		        		alert(imgid);
+//		        		$("img[name=image]")
+//		        		var src = document.getElementById(imgid).src;
+//		        		var imgname = (src.substring(src.lastIndexOf("/")+1)); 
+//		        		alert(imgname);
+//		        		if(picturepath ==""){
+//			        		picturepath = imgname;
+//		        		}else{
+//			        		picturepath = picturepath + "," + imgname;		        			
+//		        		}
+//
+//		        		alert(picturepath);
+//		    		}
+//		        	return picturepath;
+//		        };
 //        
 //        /***********************************************/
 //        // 结算

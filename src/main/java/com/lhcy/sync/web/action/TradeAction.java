@@ -2,7 +2,9 @@ package com.lhcy.sync.web.action;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -386,22 +389,33 @@ public class TradeAction extends DispatchAction {
 			throws Exception {
 		FileOutputStream outer = null;
 		FormFile uploadFile = null;
+		
+		String realpath = ContextUtils.getProjectRealPath(request);//request.getSession().getServletContext().getRealPath("/");
+		File file = new File(realpath+"upload"); 
+		if (!file.exists()) {
+			file.mkdir();
+		}
+		
 		try {
 			// 检查登录
 			if (ContextUtils.getCurrentUserID(request) == null) {
 				throw new Exception( SysConstant.M_NO_LOGIN);
 			}
 
-			uploadFile = (FormFile) frm.getMultipartRequestHandler().getFileElements().get("file"); 
+			uploadFile = (FormFile) frm.getMultipartRequestHandler().getFileElements().get("file1"); 
+//            TradeForm form = (TradeForm)frm;
+//            form.getPicturepath();
 			int fileSize = uploadFile.getFileSize();
 			FileProcessor processor = new FileProcessor();
-			File newFile = new File(Constants.PROCESSING_FOLDER_PATH + processor.toProcessingFileName(uploadFile.getFileName()));
+			//File newFile = new File(Constants.PROCESSING_FOLDER_PATH + processor.toProcessingFileName(uploadFile.getFileName()));
+			File newFile = new File(realpath+"upload\\" + processor.toProcessingFileName(uploadFile.getFileName()));
 			outer = new FileOutputStream(newFile);
 			byte[] buffer = uploadFile.getFileData();
 			outer.write(buffer);
 			outer.flush();
 			uploadFile.destroy();
-			String uploadMsg = processor.process(newFile, ContextUtils.getCurrentUserID(request), ContextUtils.getCurrentKisUserID(request));
+			//String uploadMsg = processor.process(newFile, ContextUtils.getCurrentUserID(request), ContextUtils.getCurrentKisUserID(request));
+			String uploadMsg = StringEscapeUtils.escapeJava("upload\\"+newFile.getName());
 			outer.close();
 			response.setContentType("text/html;charset=UTF-8");
 			response.getWriter().print("{\"size\":\""+GetFileSize(fileSize)+ "\", \"uploadMsg\":\"" +uploadMsg+"\"}");
@@ -412,6 +426,7 @@ public class TradeAction extends DispatchAction {
 		} finally {
 			if (outer != null)
 			{
+				
 				try{outer.close();}catch(Exception e){}
 			}
 			if (uploadFile != null)
@@ -422,7 +437,6 @@ public class TradeAction extends DispatchAction {
 
 		return null;
 	}
-
 	public String GetFileSize(int fileSize) {
 		String size = "";
 		long fileS = fileSize + 0L;
@@ -466,6 +480,59 @@ public class TradeAction extends DispatchAction {
 
 //    }
     
+
+    private File[] file;              //鏂囦欢  
+    private String[] fileFileName;    //鏂囦欢鍚�  
+    private String[] filePath;        //鏂囦欢璺緞
+    private String downloadFilePath;  //鏂囦欢涓嬭浇璺緞
+    private InputStream inputStream; 
     
+    public Logger getLogger() {
+		return logger;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+
+	public File[] getFile() {
+		return file;
+	}
+
+	public void setFile(File[] file) {
+		this.file = file;
+	}
+
+	public String[] getFileFileName() {
+		return fileFileName;
+	}
+
+	public void setFileFileName(String[] fileFileName) {
+		this.fileFileName = fileFileName;
+	}
+
+	public String[] getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String[] filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getDownloadFilePath() {
+		return downloadFilePath;
+	}
+
+	public void setDownloadFilePath(String downloadFilePath) {
+		this.downloadFilePath = downloadFilePath;
+	}
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
 }
 

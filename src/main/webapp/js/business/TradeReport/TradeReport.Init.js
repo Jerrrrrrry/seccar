@@ -541,6 +541,14 @@ var TradeReportInit = {
                     window.parent.closeCurrentTab();
                 }
             });
+            $('#btnEditupload').linkbutton({
+                text : '上传图片',
+                plain : true,
+                iconCls : 'tbtn_enable',
+                onClick: function(){
+                	$('#file1').click();
+                }
+            });
             
             /***********************************************/
             // 窗口初始化
@@ -548,7 +556,7 @@ var TradeReportInit = {
             $('#dlg_add').dialog({
                 title: '收车入库',
                 width: 700,
-                height: 400,
+                height: 600,
                 modal: true,
                 closed: true,
                 minimizable: false,
@@ -565,14 +573,14 @@ var TradeReportInit = {
                         }
                     },
 
-                    {
-                    	id: 'btnEditupload',
-                        text: '上传图片',
-                        iconCls: 'tbtn_addnew',
-                        handler: function(){
-                        	$('#dlg_upload').dialog('open');
-                        }
-                    },
+//                    {
+//                    	id: 'btnEditupload',
+//                        text: '上传图片',
+//                        iconCls: 'tbtn_addnew',
+//                        handler: function(){
+//                        	$('#dlg_upload').dialog('open');
+//                        }
+//                    },
                     {
                         text: '入库',
                         id:'btnEditSave',
