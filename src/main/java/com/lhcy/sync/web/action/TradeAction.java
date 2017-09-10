@@ -174,9 +174,6 @@ public class TradeAction extends DispatchAction {
         				aloan = Math.ceil((purchaseprice-spareloantmp)/100000)*100000;
         				sloan = aloan - (purchaseprice-spareloantmp);
         			}
-            		vo.setSpareloan(sloan);
-            		vo.setActualloan(aloan);
-                    ts.updateSpare(sloan);
         		}
 
         		vo.setSellprice(0);
@@ -195,7 +192,10 @@ public class TradeAction extends DispatchAction {
                     throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
                 }else{
                     vo.setVehicleid(UuidCreator.getNewId());
+            		vo.setSpareloan(sloan);
+            		vo.setActualloan(aloan);
                     ts.create(vo);
+                    ts.updateSpare(sloan);
                 }
 
                 // 修改
