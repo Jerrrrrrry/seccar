@@ -123,8 +123,8 @@ var TradeEdit = {
             $('#vehicletype').combobox({disabled:true});
             $('#comments').textbox({disabled:false});
             $('#earnest').textbox({disabled:false});
-            $('#tradecost').textbox({disabled:false});
-            $('#sellprice').textbox({disabled:false});
+            $('#tradecost').textbox({disabled:true});
+            $('#sellprice').textbox({disabled:true});
             $('#selldate').textbox({disabled:false});
             $('#buyerid').textbox({disabled:false});
             $('#buyername').textbox({disabled:false});

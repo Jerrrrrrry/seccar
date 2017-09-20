@@ -17,7 +17,7 @@ var ParkingInit = {
                 striped: true,
                 rownumbers: true,
                 pageSize: 20,
-                pageList: [20,50,100],
+                pageList: [20,100,10000],
                 fit: true,
                 singleSelect: false,
                 selectOnCheck: true,
@@ -136,12 +136,12 @@ var ParkingInit = {
                 validType : ['length[0,100]']
             });
             
-            $('#inventoryints').textbox({
+            $('#inventoryints').datebox({
                 width: 200,
                 validType: ['length[0,100]']
             });
 
-            $('#inventoryoutts').textbox({
+            $('#inventoryoutts').datebox({
                 width: 200,
                 validType: ['length[0,100]']
             });

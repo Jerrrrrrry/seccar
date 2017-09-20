@@ -192,10 +192,13 @@ public class TradeAction extends DispatchAction {
                     throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
                 }else{
                     vo.setVehicleid(UuidCreator.getNewId());
-            		vo.setSpareloan(sloan);
-            		vo.setActualloan(aloan);
+                    if(vehicletype.equals("第三方")){
+	            		vo.setSpareloan(sloan);
+	            		vo.setActualloan(aloan);
+	                    ts.updateSpare(sloan);
+                    }
+                    
                     ts.create(vo);
-                    ts.updateSpare(sloan);
                 }
 
                 // 修改

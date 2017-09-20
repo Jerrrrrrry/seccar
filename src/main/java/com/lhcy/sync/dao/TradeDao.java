@@ -35,7 +35,7 @@ public class TradeDao {
         sql.append(" select count(1) as cnt ");
         sql.append("   from SecCarTrade a ");
         sql.append("  WHERE 1=1  ");
-//        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
+//        sql.append("  WHERE 1=1 and isdeleted !='1' ");
 
         List args = new ArrayList();
         sql.append(getWhere(form, args));
@@ -132,7 +132,7 @@ public class TradeDao {
         sql.append("    ,ROW_NUMBER() OVER (ORDER BY " + sort + " " + order + ") AS 'RowTrade'");
         sql.append("   FROM SecCarTrade a ");
         sql.append("  WHERE 1=1  ");
-//        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
+//        sql.append("  WHERE 1=1 and isdeleted !='1'");
         sql.append(where);
         sql.append(" ) ");
         sql.append(" SELECT * FROM temp ");
@@ -1064,6 +1064,9 @@ public class TradeDao {
                 	}
                 		 	
             }
+        }else{
+        	result.append(" AND (a.isdeleted !='1' ) ");
+//            args.add("%" + form.getFilterisdeleted().trim() + "%");
         }
 
 //        if (form.getEnable() == 1){

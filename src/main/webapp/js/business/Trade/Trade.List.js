@@ -40,10 +40,8 @@ var TradeList = {
              	var purchasedate = row.purchasedate;
  	        	if(today != '' && today != null && purchasedate != '' && purchasedate != null){
  	        		var buyindays = list.getDays(today.substring(0,10), purchasedate.substring(0,10));
- 	        		if(buyindays < 60 && buyindays >=30){
+ 	        		if(buyindays >=30){
  	        			color =  'background-color:orange;color:black;font-weight:bold;';
- 	        		}else if(buyindays >= 60){
- 	        				color =  'background-color:red;color:black;font-weight:bold;';
  	        		}else{
  	        			color =  '';
  	        		}

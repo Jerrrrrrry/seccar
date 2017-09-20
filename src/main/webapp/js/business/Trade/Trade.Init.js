@@ -22,7 +22,7 @@ var TradeInit = {
 //               	 	'background-color:pink;color:blue;font-weight:bold;';
             	   	},
                 pageSize: 20,
-                pageList: [20,50,100],
+                pageList: [20,100,10000],
                 fit: true,
                 singleSelect: false,
                 selectOnCheck: true,
@@ -562,9 +562,9 @@ var TradeInit = {
             // 窗口初始化
             /***********************************************/
             $('#dlg_add').dialog({
-                title: '收车入库',
+                title: '出入库管理',
                 width: 700,
-                height: 600,
+                height: 470,
                 modal: true,
                 closed: true,
                 minimizable: false,
@@ -591,7 +591,7 @@ var TradeInit = {
 //                        }
 //                    },
                     {
-                        text: '入库',
+                        text: '保存',
                         id:'btnEditSave',
                         iconCls: 'tbtn_tempsave',
                         handler: function(){
@@ -601,7 +601,7 @@ var TradeInit = {
                     },
                     {
                     	id: 'btnEditSaveadd',
-                        text: '入库并新增',
+                        text: '保存并新增',
                         iconCls: 'tbtn_savenew',
                         handler: function(){
                             edit.save('savenew');
