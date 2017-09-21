@@ -178,6 +178,12 @@
         <td><input id="ownerid"/></td>
       </tr>
       <tr>
+      	<th>抵押人手机号</th>
+        <td><input id="mobileno"/></td>
+        <th>借款金额</th>
+        <td ><input id="borrowamount"/></td>
+      </tr>
+      <tr>
         <th>借款日期</th>
         <td><input id="borrowdate"></td>
         <th>约定还款日期</th>
@@ -186,12 +192,18 @@
       <tr>
         <th>约定还款周期（月数）</th>
         <td><input id="periodmonths"/></td>
-        <th>借款金额</th>
-        <td ><input id="borrowamount"/></td>
+        <th>利息总额</th>
+        <td><input id="totalinterest"/></td>
       </tr>
       <tr>
         <th>利率</th>
         <td><input id="interestrate"/></td>
+      	<th>定金</th>
+        <td><input id="earnest"/></td>
+      </tr>
+      <tr>
+        <th>实际还款周期</th>
+        <td><input id="actualmonths"/></td>
       	<th>已付利息</th>
         <td><input id="interestpaid"/></td>
       </tr>
@@ -214,7 +226,7 @@
         <td><input id="otherfee"/></td>
       </tr>
       <tr>
-        <th>实付金额</th>
+        <th>实际打款金额</th>
         <td><input id="actualloan"/></td>
       	<th>备注</th>
         <td><input id="comments"/></td>

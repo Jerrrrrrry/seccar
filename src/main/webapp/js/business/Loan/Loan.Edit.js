@@ -17,11 +17,15 @@ var LoanEdit = {
             $('#vehicledesc').textbox({disabled:false});
             $('#ownername').textbox({disabled:false});
             $('#ownerid').textbox({disabled:false});
+            $('#mobileno').textbox({disabled:false});
             $('#borrowdate').textbox({disabled:false});
             $('#returndate').textbox({disabled:false});
             $('#periodmonths').textbox({disabled:false});
+            $('#totalinterest').textbox({disabled:false});
             $('#borrowamount').textbox({disabled:false});
             $('#interestrate').textbox({disabled:false});
+            $('#earnest').textbox({disabled:false});
+            $('#actualmonths').textbox({disabled:false});
             $('#interestpaid').textbox({disabled:false});
             $('#interestpaidto').textbox({disabled:false});
             $('#nextpaymentdate').textbox({disabled:false});
@@ -50,11 +54,15 @@ var LoanEdit = {
             $('#vehicledesc').textbox('setValue', '');
             $('#ownername').textbox('setValue', '');
             $('#ownerid').textbox('setValue', '');
+            $('#mobileno').textbox('setValue', '');
             $('#borrowdate').textbox('setValue', '');
             $('#returndate').textbox('setValue', '');
             $('#periodmonths').textbox('setValue', '0');
+            $('#totalinterest').textbox('setValue', '0');
             $('#borrowamount').textbox('setValue', '0');
             $('#interestrate').textbox('setValue', '1.5');
+            $('#earnest').textbox('setValue', '0');
+            $('#actualmonths').textbox('setValue', '0');
             $('#interestpaid').textbox('setValue', '0');
             $('#interestpaidto').textbox('setValue', '');
             $('#nextpaymentdate').textbox('setValue', '');
@@ -78,11 +86,15 @@ var LoanEdit = {
             $('#vehicledesc').textbox({disabled:true});
             $('#ownername').textbox({disabled:true});
             $('#ownerid').textbox({disabled:true});
+            $('#mobileno').textbox({disabled:true});
             $('#borrowdate').textbox({disabled:true});
             $('#returndate').textbox({disabled:true});
             $('#periodmonths').textbox({disabled:true});
+            $('#totalinterest').textbox({disabled:true});
             $('#borrowamount').textbox({disabled:true});
             $('#interestrate').textbox({disabled:true});
+            $('#earnest').textbox({disabled:true});
+            $('#actualmonths').textbox({disabled:true});
             $('#interestpaid').textbox({disabled:true});
             $('#interestpaidto').textbox({disabled:true});
             $('#nextpaymentdate').textbox({disabled:true});
@@ -112,11 +124,15 @@ var LoanEdit = {
             $('#vehicledesc').textbox({disabled:false});
             $('#ownername').textbox({disabled:false});
             $('#ownerid').textbox({disabled:false});
+            $('#mobileno').textbox({disabled:false});
             $('#borrowdate').textbox({disabled:false});
             $('#returndate').textbox({disabled:false});
             $('#periodmonths').textbox({disabled:true});
+            $('#totalinterest').textbox({disabled:true});
             $('#borrowamount').textbox({disabled:true});
             $('#interestrate').textbox({disabled:true});
+            $('#earnest').textbox({disabled:true});
+            $('#actualmonths').textbox({disabled:true});
             $('#interestpaid').textbox({disabled:true});
             $('#interestpaidto').textbox({disabled:false});
             $('#nextpaymentdate').textbox({disabled:false});
@@ -147,11 +163,15 @@ var LoanEdit = {
             $('#vehicledesc').textbox({disabled:false});
             $('#ownername').textbox({disabled:false});
             $('#ownerid').textbox({disabled:false});
+            $('#mobileno').textbox({disabled:false});
             $('#borrowdate').textbox({disabled:false});
             $('#returndate').textbox({disabled:false});
             $('#periodmonths').textbox({disabled:false});
+            $('#totalinterest').textbox({disabled:false});
             $('#borrowamount').textbox({disabled:false});
             $('#interestrate').textbox({disabled:false});
+            $('#earnest').textbox({disabled:false});
+            $('#actualmonths').textbox({disabled:false});
             $('#interestpaid').textbox({disabled:false});
             $('#interestpaidto').textbox({disabled:false});
             $('#nextpaymentdate').textbox({disabled:false});
@@ -245,11 +265,15 @@ var LoanEdit = {
                         $('#vehicledesc').textbox('setValue', vo.dto.vehicledesc);
                         $('#ownername').textbox('setValue', vo.dto.ownername);
                         $('#ownerid').textbox('setValue', vo.dto.ownerid);
+                        $('#mobileno').textbox('setValue', vo.dto.mobileno);
                         $('#borrowdate').textbox('setValue', vo.dto.borrowdate);
                         $('#returndate').textbox('setValue', vo.dto.returndate);
                         $('#periodmonths').textbox('setValue', vo.dto.periodmonths);
+                        $('#totalinterest').textbox('setValue', vo.dto.totalinterest);
                         $('#borrowamount').textbox('setValue', vo.dto.borrowamount);
                         $('#interestrate').textbox('setValue', vo.dto.interestrate);
+                        $('#earnest').textbox('setValue', vo.dto.earnest);
+                        $('#actualmonths').textbox('setValue', vo.dto.actualmonths);
                         $('#interestpaid').textbox('setValue', vo.dto.interestpaid);
                         $('#interestpaidto').textbox('setValue', vo.dto.interestpaidto);
                         $('#nextpaymentdate').textbox('setValue', vo.dto.nextpaymentdate);
@@ -318,11 +342,15 @@ var LoanEdit = {
             var vehicledesc = $('#vehicledesc').textbox('getValue');
             var ownername = $('#ownername').textbox('getValue');
             var ownerid = $('#ownerid').textbox('getValue');
+            var mobileno = $('#mobileno').textbox('getValue');
             var borrowdate = $('#borrowdate').textbox('getValue');
             var returndate = $('#returndate').textbox('getValue');
             var periodmonths = $('#periodmonths').textbox('getValue');
+            var totalinterest = $('#totalinterest').textbox('getValue');
             var borrowamount = $('#borrowamount').textbox('getValue');
             var interestrate = $('#interestrate').textbox('getValue');
+            var earnest = $('#earnest').textbox('getValue');
+            var actualmonths = $('#actualmonths').textbox('getValue');
             var interestpaid = $('#interestpaid').textbox('getValue');
             var interestpaidto = $('#interestpaidto').textbox('getValue');
             var nextpaymentdate = $('#nextpaymentdate').textbox('getValue');
@@ -356,11 +384,15 @@ var LoanEdit = {
                                 	vehicledesc: vehicledesc,
                                 	ownername: ownername,
                                 	ownerid: ownerid,
+                                	mobileno: mobileno,
                                 	borrowdate: borrowdate,
                                 	returndate: returndate,
                                 	periodmonths: periodmonths,
+                                	totalinterest: totalinterest,
                                 	borrowamount: borrowamount,
                                 	interestrate: interestrate,
+                                	earnest: earnest,
+                                	actualmonths: actualmonths,
                                 	interestpaid: interestpaid,
                                 	interestpaidto: interestpaidto,
                                 	nextpaymentdate: nextpaymentdate,
@@ -419,11 +451,15 @@ var LoanEdit = {
     	                	vehicledesc: vehicledesc,
     	                	ownername: ownername,
     	                	ownerid: ownerid,
+    	                	mobileno: mobileno,
     	                	borrowdate: borrowdate,
     	                	returndate: returndate,
     	                	periodmonths: periodmonths,
+    	                	totalinterest: totalinterest,
     	                	borrowamount: borrowamount,
     	                	interestrate: interestrate,
+    	                	earnest: earnest,
+    	                	actualmonths: actualmonths,
     	                	interestpaid: interestpaid,
     	                	interestpaidto: interestpaidto,
     	                	nextpaymentdate: nextpaymentdate,

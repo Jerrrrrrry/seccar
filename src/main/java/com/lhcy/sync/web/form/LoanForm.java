@@ -68,9 +68,30 @@ public class LoanForm extends ActionForm {
     private String interestpaidto;
     private String nextpaymentdate;
     private double interestcost;
+    private double earnest;
+    private String mobileno;
+    private double actualmonths;
     private String operation;
     
     
+	public double getActualmonths() {
+		return actualmonths;
+	}
+	public void setActualmonths(double actualmonths) {
+		this.actualmonths = actualmonths;
+	}
+	public double getEarnest() {
+		return earnest;
+	}
+	public void setEarnest(double earnest) {
+		this.earnest = earnest;
+	}
+	public String getMobileno() {
+		return mobileno;
+	}
+	public void setMobileno(String mobileno) {
+		this.mobileno = mobileno;
+	}
 	public String getFiltercustomer() {
 		return filtercustomer;
 	}

@@ -145,7 +145,13 @@ public class LoanDao {
                 vo.setComments(rs.getString("comments"));
                 vo.setActualloan(rs.getDouble("actualloan"));
                 vo.setActualreturn(rs.getDouble("actualreturn"));
-                vo.setActualreturndate(rs.getString("actualreturndate"));
+//                vo.setActualreturndate(rs.getString("actualreturndate"));
+                if(rs.getDate("actualreturndate")!=null){
+                	vo.setActualreturndate(rs.getDate("actualreturndate").toString());
+                }else{
+                	vo.setActualreturndate(null);
+                }
+                	
                 vo.setOthercost(rs.getDouble("othercost"));
                 vo.setVehicletype(rs.getString("vehicletype"));
                 vo.setSettlement(rs.getString("settlement"));
@@ -159,7 +165,9 @@ public class LoanDao {
                 vo.setInterestpaidto(rs.getString("interestpaidto"));
                 vo.setNextpaymentdate(rs.getString("nextpaymentdate"));
                 vo.setInterestcost(rs.getDouble("interestcost"));
-
+                vo.setActualmonths(rs.getDouble("actualmonths"));
+                vo.setMobileno(rs.getString("mobileno"));
+                vo.setEarnest(rs.getDouble("earnest"));
                 result.add(vo);
             }
         } catch (Exception e) {
@@ -248,6 +256,7 @@ public class LoanDao {
                 result.setOwnerid(rs.getString("ownerid"));
                 result.setOwnername(rs.getString("ownername"));
                 result.setOwnerdesc(rs.getString("ownerdesc"));
+                result.setMobileno(rs.getString("mobileno"));
                 result.setBorrowdate(rs.getString("borrowdate"));
                 result.setReturndate(rs.getString("returndate"));
                 result.setPeriodmonths(rs.getDouble("periodmonths"));
@@ -258,6 +267,8 @@ public class LoanDao {
                 result.setInterest(rs.getDouble("interest"));
                 result.setInterestpaid(rs.getDouble("interestpaid"));
                 result.setTotalinterest(rs.getDouble("totalinterest"));
+                result.setActualmonths(rs.getDouble("actualmonths"));
+                result.setEarnest(rs.getDouble("earnest"));
                 result.setMidinterestrate(rs.getDouble("midinterestrate"));
                 result.setMidinterest(rs.getDouble("midinterest"));
                 result.setParkingfee(rs.getDouble("parkingfee"));
@@ -384,10 +395,14 @@ public class LoanDao {
         sql.append("    ,isreturned ");
         sql.append("    ,isabandon ");
         sql.append("    ,picturepath ");
+        sql.append("    ,mobileno ");
+        sql.append("    ,totalinterest ");
+        sql.append("    ,earnest ");
+        sql.append("    ,actualmonths ");
         sql.append("    ,createdts ");
         sql.append("    ,lastupdatedts ");
         sql.append(" )VALUES(");
-        sql.append(StringUtils.getSqlPlaceholder(30));
+        sql.append(StringUtils.getSqlPlaceholder(34));
         sql.append(" )");
 
         
@@ -421,6 +436,10 @@ public class LoanDao {
         args.add("0");
         args.add("0");
         args.add(vo.getPicturepath());
+        args.add(vo.getMobileno());
+        args.add(vo.getTotalinterest());
+        args.add(vo.getEarnest());
+        args.add(vo.getActualmonths());
         args.add(new Date());
         args.add(new Date());
 
@@ -466,6 +485,10 @@ public class LoanDao {
         sql.append("   ,isreturned = ? ");
         sql.append("   ,isabandon = ? ");
         sql.append("   ,picturepath = ? ");
+        sql.append("   ,mobileno = ? ");
+        sql.append("   ,totalinterest = ? ");
+        sql.append("   ,earnest = ? ");
+        sql.append("   ,actualmonths = ? ");
         sql.append("   ,lastupdatedts = ? ");
         sql.append(" WHERE vehicleid = ? ");
 
@@ -498,6 +521,10 @@ public class LoanDao {
         args.add(vo.getIsreturned());
         args.add(vo.getIsabandon());
         args.add(vo.getPicturepath());
+        args.add(vo.getMobileno());
+        args.add(vo.getTotalinterest());
+        args.add(vo.getEarnest());
+        args.add(vo.getActualmonths());
         args.add(new Date());
         args.add(vo.getVehicleid());
 
@@ -1025,7 +1052,10 @@ public class LoanDao {
                 	}
                 			 	
             }
-        }
+        }else{
+        	result.append(" AND (a.isdeleted !='1' ) ");
+//          args.add("%" + form.getFilterisdeleted().trim() + "%");
+      }
 
 //        if (form.getEnable() == 1){
 //            result.append(" AND a.FEnable = 1 ");

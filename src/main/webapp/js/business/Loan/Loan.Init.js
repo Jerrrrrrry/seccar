@@ -66,6 +66,13 @@ var LoanInit = {
                         sortable: true
                     },
                     {
+                        field: 'mobileno',
+                        title: '抵押人手机号',
+                        width: 100,
+                        align: 'center',
+                        sortable: true
+                    },
+                    {
                         field: 'borrowdate',
                         title: '借款日期',
                         width: 80,
@@ -82,6 +89,13 @@ var LoanInit = {
                     {
                         field: 'periodmonths',
                         title: '还款周期（月）',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'totalinterest',
+                        title: '利息总额',
                         width: 60,
                         align: 'left',
                         sortable: false
@@ -108,11 +122,11 @@ var LoanInit = {
                         sortable: true
                     },
                     {
-                        field: 'interest',
-                        title: '利息(每月)',
-                        width: 40,
+                        field: 'earnest',
+                        title: '定金',
+                        width: 80,
                         align: 'left',
-                        sortable: false
+                        sortable: true
                     },
                     {
                     	field: 'actualloan',
@@ -121,6 +135,34 @@ var LoanInit = {
                     	align: 'left',
                     	sortable: true
                     },
+                    {
+                        field: 'parkingfee',
+                        title: '停车费',
+                        width: 60,
+                        align: 'left',
+                        sortable: true
+                    },
+                    {
+                        field: 'otherfee',
+                        title: '其他费用',
+                        width: 60,
+                        align: 'left',
+                        sortable: true
+                    },
+                    {
+                        field: 'actualmonths',
+                        title: '实际还款周期',
+                        width: 80,
+                        align: 'left',
+                        sortable: true
+                    },
+//                    {
+//                        field: 'interest',
+//                        title: '利息(每月)',
+//                        width: 40,
+//                        align: 'left',
+//                        sortable: false
+//                    },
                     {
                         field: 'interestpaid',
                         title: '已付利息',
@@ -160,20 +202,6 @@ var LoanInit = {
                         field: 'midinterest',
                         title: '中介利息',
                         width: 80,
-                        align: 'left',
-                        sortable: true
-                    },
-                    {
-                        field: 'parkingfee',
-                        title: '停车费',
-                        width: 60,
-                        align: 'left',
-                        sortable: true
-                    },
-                    {
-                        field: 'otherfee',
-                        title: '其他费用',
-                        width: 60,
                         align: 'left',
                         sortable: true
                     },
@@ -298,6 +326,11 @@ var LoanInit = {
                 width : 200,
                 validType : ['length[0,100]']
             });
+
+            $('#mobileno').textbox({
+                width : 200,
+                validType : ['length[0,100]']
+            });
             
             $('#borrowdate').datebox({
                 width: 200,
@@ -308,7 +341,13 @@ var LoanInit = {
                 width: 200,
                 validType: ['length[0,100]']
             });
+
             $('#periodmonths').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            
+            $('#totalinterest').textbox({
                 width: 200,
                 validType: ['length[0,100]']
             });
@@ -318,9 +357,30 @@ var LoanInit = {
                 validType: ['length[0,100]']
 //                multiline: true
             });
+
             $('#interestrate').textbox({
                 width: 200,
                 validType: ['length[0,100]']
+            });
+            
+            $('#earnest').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+
+            $('#actualmonths').textbox({
+                width: 200,
+                validType: ['length[0,100]'],
+                onChange: function(){  
+
+                	var borrowamount = $('#borrowamount').textbox('getValue');
+                	var actualmonths = $('#actualmonths').textbox('getValue');
+                	var interestrate = $('#interestrate').textbox('getValue');
+                	var interestpaid = $('#interestpaid').textbox('getValue');
+                	interestpaid = borrowamount*(interestrate/100)*actualmonths;
+                    $('#interestpaid').textbox('setValue', interestpaid);
+                	}  
+
             });
             
             $('#interestpaid').textbox({

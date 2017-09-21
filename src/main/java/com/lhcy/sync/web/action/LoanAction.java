@@ -94,16 +94,19 @@ public class LoanAction extends DispatchAction {
             //根据不同操作类型给vo赋值
     		double borrowamount = vo.getBorrowamount();
     		double interestrate = vo.getInterestrate();
+    		double totalinterest = vo.getTotalinterest();
     		double interestpaid = vo.getInterestpaid();
     		double actualreturn = vo.getActualreturn();
+    		double earnest = vo.getEarnest();
     		double periodmonths = vo.getPeriodmonths();
     		double actualloan = vo.getActualloan();
     		double midinterest =  vo.getMidinterest();
     		double otherfee = vo.getOtherfee();
         	if(form.getOperation().equals("returned")){
-        		double remaininterest = (interestrate/100*borrowamount*periodmonths)-interestpaid;
-
-        		if(remaininterest > 0 || borrowamount > actualreturn){
+//        		double remaininterest = (interestrate/100*borrowamount*periodmonths)-interestpaid;
+        		double remaininterest = totalinterest - interestpaid;
+        		double remainamount = borrowamount - actualreturn - earnest;
+        		if(remaininterest > 0 || remainamount > 0){
         			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTALLPAID_ERROR);
         		}else{
         			vo.setIsreturned("1");
@@ -113,7 +116,7 @@ public class LoanAction extends DispatchAction {
         	{
         		if(vo.getIsdeleted() != "1"){
 	        		if(vo.getIsabandon().equals("1") || vo.getIsreturned().equals("1")){
-	        			double totalprofit = actualreturn + interestpaid - actualloan - midinterest - otherfee;
+	        			double totalprofit = actualreturn + earnest + interestpaid - actualloan - midinterest - otherfee;
 	        			vo.setTotalprofit(totalprofit);
 		        		vo.setSettlement("1");
 		        		String settlementdate =sdf.format(new Date());
