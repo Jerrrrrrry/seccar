@@ -74,12 +74,42 @@ var SumSummaryInit = {
 //                    top.location = basePath;
 //                }
             });
-            
-            
+            $('#purchasestart').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#purchaseend').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#btnFilter').linkbutton({
+                text : '过滤',
+                plain : true,
+                iconCls : 'tbtn_filter',
+                onClick: function(){
+                    list.openfilter();
+                }
+            });
+            $('#btnRefresh').linkbutton({
+                text : '刷新',
+                plain : true,
+                iconCls : 'tbtn_refresh',
+                onClick: function(){
+                    list.refresh();
+                }
+            });
+            $('#btnClose').linkbutton({
+                text : '关闭',
+                plain : true,
+                iconCls : 'tbtn_quit',
+                onClick: function(){
+                    window.parent.closeCurrentTab();
+                }
+            });
             $('#dlg_filter').dialog({
-                title: '二手车交易报表',
-                width: 700,
-                height: 300,
+                title: '过滤条件',
+                width: 580,
+                height: 140,
                 modal: true,
                 closed: true,
                 minimizable: false,

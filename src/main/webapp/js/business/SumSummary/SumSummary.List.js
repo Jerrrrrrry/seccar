@@ -31,7 +31,7 @@ var SumSummaryList = {
         /***********************************************/
         list.filter = function () {
         	$('#dlg_filter').dialog('close');
-            var filterField = "filter";
+            /*var filterField = "filter";
             var filterisdeleted = $('#filterisdeleted').prop('checked') ? 1 : 0;
             var filterissold = $('#filterissold').combobox('getValue');
             var filtersettlement = $('#filtersettlement').combobox('getValue');
@@ -39,26 +39,26 @@ var SumSummaryList = {
             var filtercardescription = $('#filtercardescription').textbox('getValue');
             var filtertradername = $('#filtertradername').textbox('getValue');
             var filtercustomer = $('#filtercustomer').textbox('getValue');
-            var filtervehicletype = $('#filtervehicletype').combobox('getValue');
+            var filtervehicletype = $('#filtervehicletype').combobox('getValue');*/
             var purchasestart = $('#purchasestart').datebox('getValue');
             var purchaseend = $('#purchaseend').datebox('getValue');
-            var soldstart = $('#soldstart').datebox('getValue');
-            var soldend = $('#soldend').datebox('getValue');
+           /* var soldstart = $('#soldstart').datebox('getValue');
+            var soldend = $('#soldend').datebox('getValue');*/
 
             var prm = {
-            		filterField: filterField,
+            		/*filterField: filterField,
             		filterlicenseno: filterlicenseno, 
             		filtercardescription: filtercardescription, 
             		filtertradername: filtertradername, 
             		filtercustomer: filtercustomer, 
-            		filtervehicletype: filtervehicletype, 
+            		filtervehicletype: filtervehicletype, */
             		purchasestart: purchasestart,
-            		purchaseend: purchaseend,
+            		purchaseend: purchaseend/*,
             		soldstart: soldstart,
             		soldend: soldend,
             		filterisdeleted: filterisdeleted,
             		filterissold: filterissold,
-            		filtersettlement: filtersettlement
+            		filtersettlement: filtersettlement*/
             		};
             $('#list').datagrid('clearSelections');
             $('#list').datagrid({queryParams: prm});

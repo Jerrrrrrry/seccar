@@ -39,3 +39,30 @@
     </table>
   </div>
 </div>
+<div id="bar_list">
+  <table cellspacing="0" cellpadding="0">
+    <tr>
+      <td><a id="btnFilter"></a></td>
+      <td><a id="btnRefresh"></a></td>
+      <td><div class="datagrid-btn-separator"></div></td>
+      <td><a id="btnClose"></a></td>
+      <td><input type="hidden" id="CurrentLoginUserAccesstype" value="<%= session.getAttribute("CurrentLoginUserAccesstype")%>" /></td>
+    </tr>
+  </table>
+</div>
+<div id="dlg_filter">
+  <div region="center" border="false" title="" style="padding-left: 20px">
+    <br/>
+    <table class="tb_filter" cellspacing="0">
+      <tbody>
+      <tr>
+        <th>开始日期</th>
+        <td><input id="purchasestart"/></td>
+        <th>结束日期</th>
+        <td><input id="purchaseend"/></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
