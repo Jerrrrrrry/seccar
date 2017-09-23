@@ -212,6 +212,12 @@
         <td><input id="ownerid"/></td>
       </tr>
       <tr>
+      	<th>卖车人电话</th>
+        <td><input id="ownermobile"/></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
         <th>收车日期</th>
         <td><input id="purchasedate"/></td>
         <th>借款利率</th>
@@ -246,6 +252,12 @@
         <td><input id="buyername"/></td>
       	<th>购车人身份证</th>
         <td><input id="buyerid"/></td>
+      </tr>
+      <tr>
+      	<th>购车人电话</th>
+        <td><input id="buyermobile"/></td>
+        <td></td>
+        <td></td>
       </tr>
       <tr height="20">
       </tr>

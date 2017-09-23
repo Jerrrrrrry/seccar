@@ -96,6 +96,13 @@ var TradeInit = {
                         sortable: false
                     },
                     {
+                        field: 'ownermobile',
+                        title: '卖车人电话',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
                         field: 'interestrate',
                         title: '利率',
                         width: 35,
@@ -131,6 +138,13 @@ var TradeInit = {
                         sortable: true
                     },
                     {
+                        field: 'buyername',
+                        title: '购车人姓名',
+                        width: 80,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
                         field: 'buyerid',
                         title: '购车人身份证',
                         width: 160,
@@ -138,9 +152,9 @@ var TradeInit = {
                         sortable: false
                     },
                     {
-                        field: 'buyername',
-                        title: '购车人姓名',
-                        width: 80,
+                        field: 'buyermobile',
+                        title: '购车人电话',
+                        width: 120,
                         align: 'left',
                         sortable: false
                     },
@@ -275,6 +289,11 @@ var TradeInit = {
                 validType: ['length[0,100]']
             });
 
+            $('#ownermobile').textbox({
+                width: 200,
+                validType: ['length[0,100]']
+            });
+            
             $('#ownerid').textbox({
                 width: 200,
                 validType: ['length[0,100]']
@@ -350,7 +369,12 @@ var TradeInit = {
                 validType: ['length[0,100]'],
                 disabled: true
             });
-            
+
+            $('#buyermobile').textbox({
+                width: 200,
+                validType: ['length[0,100]'],
+                disabled: true
+            });
 
             $('#filterissold').combobox({
                 width : 120,

@@ -34,7 +34,15 @@ public class ParkingForm extends ActionForm {
     private double parkingfee;
     private String comments;
     private String creator;
+    private String customermobile;
     
+    
+	public String getCustomermobile() {
+		return customermobile;
+	}
+	public void setCustomermobile(String customermobile) {
+		this.customermobile = customermobile;
+	}
 	public String getFilterField() {
 		return filterField;
 	}

@@ -1,7 +1,7 @@
 USE [seccar]
 GO
 
-/****** Object:  Table [dbo].[Parking]    Script Date: 09/04/2017 14:06:04 ******/
+/****** Object:  Table [dbo].[Parking]    Script Date: 09/22/2017 19:52:20 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -20,7 +20,8 @@ CREATE TABLE [dbo].[Parking](
 	[comments] [nvarchar](50) NULL,
 	[createdts] [datetime] NULL,
 	[lastupdatedts] [datetime] NULL,
-	[creator] [nvarchar](20) NULL
+	[creator] [nvarchar](20) NULL,
+	[customermobile] [nvarchar](50) NULL
 ) ON [PRIMARY]
 
 GO

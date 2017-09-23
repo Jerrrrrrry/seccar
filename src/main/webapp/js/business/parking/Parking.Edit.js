@@ -14,6 +14,7 @@ var ParkingEdit = {
         	$('#vehicleid').val('');
         	$('#customer').textbox('setValue', '');
             $('#period').textbox('setValue', '');
+            $('#customermobile').textbox('setValue', '');
             $('#licenseno').textbox('setValue', '');
             $('#cardescription').textbox('setValue', '');
             $('#inventoryints').textbox('setValue', '');
@@ -75,6 +76,7 @@ var ParkingEdit = {
                         $('#vehicleid').val(vo.dto.vehicleid);
                         $('#customer').textbox('setValue', vo.dto.customer);
                         $('#period').textbox('setValue', vo.dto.period);
+                        $('#customermobile').textbox('setValue', vo.dto.customermobile);
                         $('#cardescription').textbox('setValue', vo.dto.cardescription);
                         $('#licenseno').textbox('setValue', vo.dto.licenseno);
                         $('#inventoryints').textbox('setValue', vo.dto.inventoryints);
@@ -126,6 +128,7 @@ var ParkingEdit = {
 //            alert(vehicleid);
             var customer = $('#customer').textbox('getValue');
             var period = $('#period').textbox('getValue');
+            var customermobile = $('#customermobile').textbox('getValue');
             var licenseno = $('#licenseno').textbox('getValue');
             var cardescription = $('#cardescription').textbox('getValue');
             var inventoryints = $('#inventoryints').textbox('getValue');
@@ -141,6 +144,7 @@ var ParkingEdit = {
                 	vehicleid: vehicleid,
                     customer: customer,
                     period: period,
+                    customermobile: customermobile,
                     licenseno: licenseno,
                     cardescription: cardescription,
                     inventoryints: inventoryints,

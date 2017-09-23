@@ -1,7 +1,7 @@
 USE [seccar]
 GO
 
-/****** Object:  Table [dbo].[SecCarTrade]    Script Date: 09/04/2017 14:04:40 ******/
+/****** Object:  Table [dbo].[SecCarTrade]    Script Date: 09/22/2017 19:51:14 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -20,6 +20,7 @@ CREATE TABLE [dbo].[SecCarTrade](
 	[ownerid] [nvarchar](50) NULL,
 	[ownername] [nvarchar](50) NULL,
 	[ownerdesc] [nvarchar](200) NULL,
+	[ownermobile] [nvarchar](50) NULL,
 	[interestrate] [numeric](18, 4) NULL,
 	[interest] [numeric](18, 4) NULL,
 	[actualloan] [numeric](18, 4) NULL,
@@ -44,7 +45,7 @@ CREATE TABLE [dbo].[SecCarTrade](
 	[interestcost] [numeric](18, 4) NULL,
 	[buyerid] [nvarchar](50) NULL,
 	[buyername] [nvarchar](50) NULL,
-	[sbcol3] [nvarchar](20) NULL,
+	[buyermobile] [nvarchar](50) NULL,
  CONSTRAINT [PK_SecCarTrade] PRIMARY KEY CLUSTERED 
 (
 	[vehicleid] ASC

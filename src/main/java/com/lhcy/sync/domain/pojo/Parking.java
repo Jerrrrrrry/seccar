@@ -19,7 +19,15 @@ public class Parking implements Serializable {
     private Date createdts;
     private Date lastupdatedts;
     private String creator;
+    private String customermobile;
     
+    
+	public String getCustomermobile() {
+		return customermobile;
+	}
+	public void setCustomermobile(String customermobile) {
+		this.customermobile = customermobile;
+	}
 	public String getVehicleid() {
 		return vehicleid;
 	}

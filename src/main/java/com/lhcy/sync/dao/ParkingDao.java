@@ -98,6 +98,7 @@ public class ParkingDao {
         sql.append("     a.vehicleid ");
         sql.append("    ,a.period ");
         sql.append("    ,a.customer ");
+        sql.append("    ,a.customermobile ");
         sql.append("    ,a.cardescription ");
         sql.append("    ,a.licenseno ");
         sql.append("    ,a.inventoryints ");
@@ -132,6 +133,7 @@ public class ParkingDao {
                 vo.setVehicleid(rs.getString("vehicleid"));
                 vo.setPeriod(rs.getString("period"));
                 vo.setCustomer(rs.getString("customer"));
+                vo.setCustomermobile(rs.getString("customermobile"));
                 vo.setCardescription(rs.getString("cardescription"));
                 vo.setLicenseno(rs.getString("licenseno"));
                 vo.setInventoryints(rs.getString("inventoryints"));
@@ -167,6 +169,7 @@ public class ParkingDao {
         sql.append("     a.vehicleid ");
         sql.append("    ,a.period ");
         sql.append("    ,a.customer ");
+        sql.append("    ,a.customermobile ");
         sql.append("    ,a.cardescription ");
         sql.append("    ,a.licenseno ");
         sql.append("    ,a.inventoryints ");
@@ -201,6 +204,7 @@ public class ParkingDao {
                 result.setVehicleid(rs.getString("vehicleid"));
                 result.setPeriod(rs.getString("period"));
                 result.setCustomer(rs.getString("customer"));
+                result.setCustomermobile(rs.getString("customermobile"));
                 result.setCardescription(rs.getString("cardescription"));
                 result.setLicenseno(rs.getString("licenseno"));
                 result.setInventoryints(rs.getString("inventoryints"));
@@ -241,6 +245,7 @@ public class ParkingDao {
         sql.append("     vehicleid ");
         sql.append("    ,period ");
         sql.append("    ,customer ");
+        sql.append("    ,customermobile ");
         sql.append("    ,cardescription ");
         sql.append("    ,licenseno ");
         sql.append("    ,inventoryints ");
@@ -251,13 +256,14 @@ public class ParkingDao {
         sql.append("    ,lastupdatedts ");
         sql.append("    ,creator ");
         sql.append(" )VALUES(");
-        sql.append(StringUtils.getSqlPlaceholder(12));
+        sql.append(StringUtils.getSqlPlaceholder(13));
         sql.append(" )");
 
         List args = new ArrayList();
         args.add(vo.getVehicleid());
         args.add(vo.getPeriod());
         args.add(vo.getCustomer());
+        args.add(vo.getCustomermobile());
         args.add(vo.getCardescription());
         args.add(vo.getLicenseno());
         args.add(vo.getInventoryints());
@@ -284,6 +290,7 @@ public class ParkingDao {
         sql.append(" UPDATE Parking SET ");
         sql.append("   period = ? ");
         sql.append("  ,customer = ? ");
+        sql.append("  ,customermobile = ? ");
         sql.append("  ,cardescription = ? ");
         sql.append("  ,licenseno = ? ");
         sql.append("  ,inventoryints = ? ");
@@ -296,6 +303,7 @@ public class ParkingDao {
         List args = new ArrayList();
         args.add(vo.getPeriod());
         args.add(vo.getCustomer());
+        args.add(vo.getCustomermobile());
         args.add(vo.getCardescription());
         args.add(vo.getLicenseno());
         args.add(vo.getInventoryints());

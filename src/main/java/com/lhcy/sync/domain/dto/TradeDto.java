@@ -39,7 +39,22 @@ public class TradeDto implements Serializable {
     private double interestcost;
     private String buyerid;
     private String buyername;
+    private String ownermobile;
+    private String buyermobile;
     
+    
+	public String getOwnermobile() {
+		return ownermobile;
+	}
+	public void setOwnermobile(String ownermobile) {
+		this.ownermobile = ownermobile;
+	}
+	public String getBuyermobile() {
+		return buyermobile;
+	}
+	public void setBuyermobile(String buyermobile) {
+		this.buyermobile = buyermobile;
+	}
 	public String getVehicleid() {
 		return vehicleid;
 	}

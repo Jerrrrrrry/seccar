@@ -73,7 +73,6 @@ public class TradeReportAction extends DispatchAction {
 
         return null;
     }
-    
     /***********************************************/
     // 保存一个
     /***********************************************/
@@ -94,6 +93,7 @@ public class TradeReportAction extends DispatchAction {
 
     		String vehicletype = vo.getVehicletype();
     		double purchaseprice = vo.getPurchaseprice();
+    		double tradecost = vo.getTradecost();
 			double sloan = 0.00;
 			double aloan = 0.00;
           	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
@@ -118,18 +118,18 @@ public class TradeReportAction extends DispatchAction {
 	        		int daydiff = getIntervalDays(purchasedate, selldate);
 	        		interest = interestrate/100/30*actualloan;
 	        		interestcost = interest*daydiff;
-	        		totalprofit = pricediff - interestcost - vo.getTradecost();
+	        		totalprofit = pricediff - interestcost - tradecost;
 //	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
 	        		profit = totalprofit;
         		}else{
             		int monthdiff = getIntervalMonths(purchasedate, selldate);
             		interest = interestrate/100*actualloan;
 	        		interestcost = interest*monthdiff;
-	        		totalprofit = pricediff - interestcost - vo.getTradecost();
+	        		totalprofit = pricediff - interestcost - tradecost;
 //	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
 	        		profit = totalprofit/2;
 	        		traderprofit = totalprofit/2;
-	        		sloan = ts.getspare() + vo.getPurchaseprice();
+	        		sloan = ts.getspare() + purchaseprice + tradecost;
 	        		if(vo.getIssold() == null || vo.getIssold().equals("0")){
 	        		ts.updateSpare(sloan);	
 	        		}
@@ -157,24 +157,22 @@ public class TradeReportAction extends DispatchAction {
         	}else{
         		if(vehicletype.equals("自收车")){
 //		        	vo.setActualloan(vo.getPurchaseprice());
-		        	aloan = vo.getPurchaseprice();
+		        	aloan = purchaseprice + tradecost;
 		        	vo.setSpareloan(0);
             		vo.setActualloan(aloan);
 //		        	sloan = ts.getspare();
-        		}else{
-        			double spareloantmp = 0.00;//vo.getspareloan()
-        			spareloantmp = ts.getspare();
-        			if(spareloantmp >= purchaseprice){
-        				sloan = spareloantmp - purchaseprice;
-        				aloan = 0.00;
-        			}else{
-        				aloan = Math.ceil((purchaseprice-spareloantmp)/100000)*100000;
-        				sloan = aloan - (purchaseprice-spareloantmp);
-        			}
-            		vo.setSpareloan(sloan);
-            		vo.setActualloan(aloan);
-                    ts.updateSpare(sloan);
         		}
+//        		else{
+//        			double spareloantmp = 0.00;//vo.getspareloan()
+//        			spareloantmp = ts.getspare();
+//        			if(spareloantmp >= (purchaseprice + tradecost)){
+//        				sloan = spareloantmp - (purchaseprice + tradecost);
+//        				aloan = 0.00;
+//        			}else{
+//        				aloan = Math.ceil(((purchaseprice + tradecost)-spareloantmp)/100000)*100000;
+//        				sloan = aloan - ((purchaseprice + tradecost)-spareloantmp);
+//        			}
+//        		}
 
         		vo.setSellprice(0);
         		vo.setSelldate(null);
@@ -192,6 +190,21 @@ public class TradeReportAction extends DispatchAction {
                     throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
                 }else{
                     vo.setVehicleid(UuidCreator.getNewId());
+                    if(vehicletype.equals("第三方")){
+                    	double spareloantmp = 0.00;//vo.getspareloan()
+	        			spareloantmp = ts.getspare();
+	        			if(spareloantmp >= (purchaseprice + tradecost)){
+	        				sloan = spareloantmp - (purchaseprice + tradecost);
+	        				aloan = 0.00;
+	        			}else{
+	        				aloan = Math.ceil(((purchaseprice + tradecost)-spareloantmp)/100000)*100000;
+	        				sloan = aloan - ((purchaseprice + tradecost)-spareloantmp);
+	        			}
+	            		vo.setSpareloan(sloan);
+	            		vo.setActualloan(aloan);
+	                    ts.updateSpare(sloan);
+                    }
+                    
                     ts.create(vo);
                 }
 
@@ -206,6 +219,28 @@ public class TradeReportAction extends DispatchAction {
                 	if(form.getOperation().equals("settle")){
                 		ts.settle(vo);
                 	}else{
+                		if(vehicletype.equals("第三方")){
+                			double spareloantmp = 0.00;//vo.getspareloan()
+                			spareloantmp = ts.getspare();
+                			//这里需要获取原始购车价格和交易费用，新增加的部分计算余量和新加部分实际借款金额，并累加到原始额中
+                			double opurchaseprice = dto.getPurchaseprice();
+                			double oactualloan = dto.getActualloan();
+//                			double ospareloan = dto.getSpareloan();
+                			double otradecost = dto.getTradecost();
+                			double odiff = (purchaseprice + tradecost) - opurchaseprice - otradecost;
+                			
+	            			if(spareloantmp >= odiff){
+	            				sloan = spareloantmp - odiff;
+	            				aloan = oactualloan;
+	            			}else{
+	            				aloan = Math.ceil((odiff-spareloantmp)/100000)*100000;
+	            				sloan = aloan - (odiff-spareloantmp);
+	            				aloan = oactualloan + aloan;
+	            			}
+		            		vo.setSpareloan(sloan);
+		            		vo.setActualloan(aloan);
+		                    ts.updateSpare(sloan);
+                		}
                 		ts.update(vo);
                 	}
                 }
@@ -221,6 +256,154 @@ public class TradeReportAction extends DispatchAction {
         return null;
 
     }
+//
+//    /***********************************************/
+//    // 保存一个
+//    /***********************************************/
+//    public ActionForward save(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//
+//        try {
+//            // 检查登录
+//            if (ContextUtils.getCurrentUserID(request) == null){
+//                throw new Exception(SysConstant.M_NO_LOGIN);
+//            }
+//
+//            TradeForm form = (TradeForm)frm;
+//            Trade vo = new Trade();
+//            TradeService ts = new TradeService();
+//            BeanUtils.copyProperties(vo, form);
+//            Date purchasedate = new Date();
+//            Date selldate = new Date();;
+//
+//    		String vehicletype = vo.getVehicletype();
+//    		double purchaseprice = vo.getPurchaseprice();
+//			double sloan = 0.00;
+//			double aloan = 0.00;
+//          	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
+//            purchasedate =sdf.parse(vo.getPurchasedate().substring(0, 9));
+//            if(vo.getSelldate()!=null&&vo.getSelldate()!=""){
+//            selldate =sdf.parse(vo.getSelldate().substring(0, 9));
+//            }
+//            
+//            //根据不同操作类型给vo赋值
+//        	if(form.getOperation().equals("sold")){
+////        		double purchaseprice = vo.getPurchaseprice();
+//        		double sellprice = vo.getSellprice();
+//        		double actualloan = vo.getActualloan();
+//        		double interestrate = vo.getInterestrate();
+//        		double interest = 0.00;
+//        		double interestcost = 0.00;
+//        		double pricediff = sellprice - purchaseprice;
+//        		double totalprofit = 0.00;
+//        		double profit = 0.00;
+//        		double traderprofit = 0.00;
+//        		if(vehicletype.equals("自收车")){
+//	        		int daydiff = getIntervalDays(purchasedate, selldate);
+//	        		interest = interestrate/100/30*actualloan;
+//	        		interestcost = interest*daydiff;
+//	        		totalprofit = pricediff - interestcost - vo.getTradecost();
+////	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
+//	        		profit = totalprofit;
+//        		}else{
+//            		int monthdiff = getIntervalMonths(purchasedate, selldate);
+//            		interest = interestrate/100*actualloan;
+//	        		interestcost = interest*monthdiff;
+//	        		totalprofit = pricediff - interestcost - vo.getTradecost();
+////	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
+//	        		profit = totalprofit/2;
+//	        		traderprofit = totalprofit/2;
+//	        		sloan = ts.getspare() + vo.getPurchaseprice();
+//	        		if(vo.getIssold() == null || vo.getIssold().equals("0")){
+//	        		ts.updateSpare(sloan);	
+//	        		}
+//        		}
+//        		
+//        		vo.setInterest(interest);
+//        		vo.setInterestcost(interestcost);
+//        		vo.setPricediff(pricediff);
+//        		vo.setTotalprofit(totalprofit);
+//        		vo.setProfit(profit);
+//        		vo.setTraderprofit(traderprofit);
+//        		vo.setSettlement("0");
+//        		vo.setSettlementdate(null);
+//        		vo.setIssold("1");
+//        	}else if(form.getOperation().equals("settle"))
+//        	{
+//        		if(vo.getIssold() !=null && vo.getIssold().equals("1") && vo.getIsdeleted() !="1" ){
+//	        		vo.setSettlement("1");
+//	        		String settlementdate =sdf.format(new Date());
+//	        		vo.setSettlementdate(settlementdate);
+//        		}else
+//        		{
+//        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTSOLD_DELETED_ERROR);
+//        		}
+//        	}else{
+//        		if(vehicletype.equals("自收车")){
+////		        	vo.setActualloan(vo.getPurchaseprice());
+//		        	aloan = vo.getPurchaseprice();
+//		        	vo.setSpareloan(0);
+//            		vo.setActualloan(aloan);
+////		        	sloan = ts.getspare();
+//        		}else{
+//        			double spareloantmp = 0.00;//vo.getspareloan()
+//        			spareloantmp = ts.getspare();
+//        			if(spareloantmp >= purchaseprice){
+//        				sloan = spareloantmp - purchaseprice;
+//        				aloan = 0.00;
+//        			}else{
+//        				aloan = Math.ceil((purchaseprice-spareloantmp)/100000)*100000;
+//        				sloan = aloan - (purchaseprice-spareloantmp);
+//        			}
+//            		vo.setSpareloan(sloan);
+//            		vo.setActualloan(aloan);
+//                    ts.updateSpare(sloan);
+//        		}
+//
+//        		vo.setSellprice(0);
+//        		vo.setSelldate(null);
+//        		vo.setIssold("0");
+//        		vo.setIsdeleted("0");
+//        		vo.setSettlement("0");
+//        		vo.setSettlementdate(null);
+//        	}
+//            // 新增
+//            if (vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
+//
+//                TradeDto dto = ts.getEquals(vo.getLicenseno());
+//                // 已存在
+//                if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0){
+//                    throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
+//                }else{
+//                    vo.setVehicleid(UuidCreator.getNewId());
+//                    ts.create(vo);
+//                }
+//
+//                // 修改
+//            }else{
+//                TradeDto dto = ts.getEquals(vo.getLicenseno());
+//                System.out.println(dto.getVehicleid()+" ------------- "+dto.getLicenseno());
+//                // 已存在
+//                if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0 && !dto.getVehicleid().equals(vo.getVehicleid())){
+//                    throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
+//                }else{
+//                	if(form.getOperation().equals("settle")){
+//                		ts.settle(vo);
+//                	}else{
+//                		ts.update(vo);
+//                	}
+//                }
+//            }
+//
+//            JsonUtils.printActionResultOK(response);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            logger.error(e.getMessage());
+//            JsonUtils.printActionResultFromException(response, e);
+//        }
+//
+//        return null;
+//
+//    }
 
     /***********************************************/
     // 显示一个
@@ -250,6 +433,7 @@ public class TradeReportAction extends DispatchAction {
 
         return null;
     }
+    
     /***********************************************/
     // 删除一个
     /***********************************************/
@@ -272,6 +456,7 @@ public class TradeReportAction extends DispatchAction {
             String vehicletype = form.getVehicletype();
             String issold = form.getIssold();
             double purchaseprice = form.getPurchaseprice();
+    		double tradecost = form.getTradecost();
 
             sv.deletesingle(vehichleid);
             if(vehicletype.equals("自收车") || issold.equals("1")){
@@ -279,7 +464,7 @@ public class TradeReportAction extends DispatchAction {
     		}else{
     			double spareloantmp = 0.00;//vo.getspareloan()
     			spareloantmp = sv.getspare();
-    			double	sloan = spareloantmp + purchaseprice;
+    			double	sloan = spareloantmp + purchaseprice + tradecost;
                 sv.updateSpare(sloan);
     		}
             JsonUtils.printActionResultOK(response);
@@ -292,6 +477,48 @@ public class TradeReportAction extends DispatchAction {
         return null;
     }
     
+//    /***********************************************/
+//    // 删除一个
+//    /***********************************************/
+//    public ActionForward deletesingle(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//
+//        try {
+//            // 检查登录
+//            if (ContextUtils.getCurrentUserID(request) == null){
+//                throw new Exception(SysConstant.M_NO_LOGIN);
+//            }
+//
+//            TradeForm form = (TradeForm)frm;
+//            if (form.getVehicleid().length() == 0){
+//                JsonUtils.printActionResultOK(response);
+//                return null;
+//            }
+//
+//            TradeService sv = new TradeService();
+//            String vehichleid = form.getVehicleid();
+//            String vehicletype = form.getVehicletype();
+//            String issold = form.getIssold();
+//            double purchaseprice = form.getPurchaseprice();
+//
+//            sv.deletesingle(vehichleid);
+//            if(vehicletype.equals("自收车") || issold.equals("1")){
+//            	System.out.println("ID: "+vehichleid+"车辆类型： "+vehicletype+"已售："+issold);
+//    		}else{
+//    			double spareloantmp = 0.00;//vo.getspareloan()
+//    			spareloantmp = sv.getspare();
+//    			double	sloan = spareloantmp + purchaseprice;
+//                sv.updateSpare(sloan);
+//    		}
+//            JsonUtils.printActionResultOK(response);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            logger.error(e.getMessage());
+//            JsonUtils.printActionResultFromException(response, e);
+//        }
+//
+//        return null;
+//    }
+//    
     /***********************************************/
     // 删除多个
     /***********************************************/

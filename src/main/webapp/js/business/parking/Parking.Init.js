@@ -49,6 +49,13 @@ var ParkingInit = {
                         sortable: true
                     },
                     {
+                        field: 'customermobile',
+                        title: '客户电话',
+                        width: 120,
+                        align: 'center',
+                        sortable: true
+                    },
+                    {
                         field: 'cardescription',
                         title: '车辆描述',
                         width: 80,
@@ -122,6 +129,11 @@ var ParkingInit = {
             });
 
             $('#period').textbox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            
+            $('#customermobile').textbox({
                 width : 200,
                 validType : ['length[1,100]']
             });

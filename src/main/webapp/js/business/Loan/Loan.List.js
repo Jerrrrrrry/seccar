@@ -45,10 +45,14 @@ var LoanList = {
             	var interestpaid = row.interestpaid;
             	var periodmonths = row.periodmonths;
             	var actualreturn = row.actualreturn;
-	        	var remaininterest = (interestrate/100*borrowamount*periodmonths)-interestpaid;
-	        	var remainreturn = borrowamount - actualreturn;
+            	var totalinterest = row.totalinterest;
+            	var earnest = row.earnest;
+	        	var remaininterest = totalinterest-interestpaid;
+	        	var remainreturn = borrowamount - earnest - actualreturn;
+	        	//alert(remainreturn);
 	        	if(remainreturn > 0 && today != '' && today != null && rd != '' && rd != null){
 	        		var nextpaydays = list.getDays(rd.substring(0,10), today.substring(0,10));
+	        		//alert(nextpaydays);
 	        		if(nextpaydays < 3 && nextpaydays >=0){
 	        			color =  'background-color:orange;color:black;font-weight:bold;';
 	        		}else if(nextpaydays < 0){

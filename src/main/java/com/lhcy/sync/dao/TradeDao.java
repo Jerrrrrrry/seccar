@@ -166,6 +166,7 @@ public class TradeDao {
                 vo.setOwnerid(rs.getString("ownerid"));
                 vo.setOwnername(rs.getString("ownername"));
                 vo.setOwnerdesc(rs.getString("ownerdesc"));
+                vo.setOwnermobile(rs.getString("ownermobile"));
                 vo.setInterestrate(rs.getDouble("interestrate"));
                 vo.setInterest(rs.getDouble("interest"));
                 vo.setActualloan(rs.getDouble("actualloan"));
@@ -190,6 +191,7 @@ public class TradeDao {
                 vo.setInterestcost(rs.getDouble("interestcost"));
                 vo.setBuyername(rs.getString("buyername"));
                 vo.setBuyerid(rs.getString("buyerid"));
+                vo.setBuyermobile(rs.getString("buyermobile"));
 //                vo.setVehicleid(rs.getString("vehicleid"));
 //                vo.setLicenseno(rs.getString("licenseno"));
 //                vo.setVehicledesc(rs.getString("vehicledesc"));
@@ -244,6 +246,7 @@ public class TradeDao {
         sql.append("    ,a.ownerid ");
         sql.append("    ,a.ownername ");
         sql.append("    ,a.ownerdesc ");
+        sql.append("    ,a.ownermobile ");
         sql.append("    ,a.interestrate ");
         sql.append("    ,a.interest ");
         sql.append("    ,a.actualloan ");
@@ -268,6 +271,7 @@ public class TradeDao {
         sql.append("    ,a.interestcost ");
         sql.append("    ,a.buyerid ");
         sql.append("    ,a.buyername ");
+        sql.append("    ,a.buyermobile ");
         sql.append("   FROM SecCarTrade a ");
         sql.append("  WHERE a.vehicleid = ? ");
         System.out.println("query sql: "+sql);
@@ -301,6 +305,7 @@ public class TradeDao {
                 result.setOwnerid(rs.getString("ownerid"));
                 result.setOwnername(rs.getString("ownername"));
                 result.setOwnerdesc(rs.getString("ownerdesc"));
+                result.setOwnermobile(rs.getString("ownermobile"));
                 result.setInterestrate(rs.getDouble("interestrate"));
                 result.setInterest(rs.getDouble("interest"));
                 result.setActualloan(rs.getDouble("actualloan"));
@@ -325,6 +330,7 @@ public class TradeDao {
                 result.setInterestcost(rs.getDouble("interestcost"));
                 result.setBuyername(rs.getString("buyername"));
                 result.setBuyerid(rs.getString("buyerid"));
+                result.setBuyermobile(rs.getString("buyermobile"));
             }
         } catch (Exception e) {
             throw new Exception(e);
@@ -411,6 +417,7 @@ public class TradeDao {
         sql.append("    ,ownerid ");
         sql.append("    ,ownername ");
         sql.append("    ,ownerdesc ");
+        sql.append("    ,ownermobile ");
         sql.append("    ,interestrate ");
         sql.append("    ,interest ");
         sql.append("    ,actualloan ");
@@ -426,7 +433,7 @@ public class TradeDao {
         sql.append("    ,createdts ");
         sql.append("    ,lastupdatedts ");
         sql.append(" )VALUES(");
-        sql.append(StringUtils.getSqlPlaceholder(24));
+        sql.append(StringUtils.getSqlPlaceholder(25));
         sql.append(" )");
 
         List args = new ArrayList();
@@ -440,6 +447,7 @@ public class TradeDao {
         args.add(vo.getOwnerid());
         args.add(vo.getOwnername());
         args.add(vo.getOwnerdesc());
+        args.add(vo.getOwnermobile());
         args.add(vo.getInterestrate());
         args.add(vo.getInterest());
         args.add(vo.getActualloan());
@@ -478,6 +486,7 @@ public class TradeDao {
         sql.append("   ,purchaseprice = ? ");
         sql.append("   ,ownername = ? ");
         sql.append("   ,ownerid = ? ");
+        sql.append("   ,ownermobile = ? ");
         sql.append("   ,purchasedate = ? ");
         sql.append("   ,interestrate = ? ");
         sql.append("   ,actualloan = ? ");
@@ -499,6 +508,7 @@ public class TradeDao {
         sql.append("   ,traderprofit = ? ");
         sql.append("   ,buyerid = ? ");
         sql.append("   ,buyername = ? ");
+        sql.append("   ,buyermobile = ? ");
         sql.append("   ,picturepath = ? ");
         sql.append(" WHERE vehicleid = ? ");
 
@@ -512,6 +522,7 @@ public class TradeDao {
         args.add(vo.getPurchaseprice());
         args.add(vo.getOwnername());
         args.add(vo.getOwnerid());
+        args.add(vo.getOwnermobile());
         args.add(vo.getPurchasedate());
         args.add(vo.getInterestrate());
         args.add(vo.getActualloan());
@@ -533,6 +544,7 @@ public class TradeDao {
         args.add(vo.getTraderprofit());
         args.add(vo.getBuyerid());
         args.add(vo.getBuyername());
+        args.add(vo.getBuyermobile());
         args.add(vo.getPicturepath());
         args.add(vo.getVehicleid());
 
@@ -908,6 +920,10 @@ public class TradeDao {
         sql.append(" SELECT ");
         sql.append("   	vehicleid ");
         sql.append("   ,licenseno ");
+        sql.append("   ,purchaseprice ");
+        sql.append("   ,actualloan ");
+        sql.append("   ,spareloan ");
+        sql.append("   ,tradecost ");
 //        sql.append("   ,ownerid ");
 //        sql.append("   ,traderid ");
         sql.append(" FROM SecCarTrade ");
@@ -933,6 +949,10 @@ public class TradeDao {
             while(rs.next()){
                 result.setVehicleid(rs.getString("vehicleid"));
                 result.setLicenseno(rs.getString("licenseno"));
+                result.setPurchaseprice(rs.getDouble("purchaseprice"));
+                result.setActualloan(rs.getDouble("actualloan"));
+                result.setSpareloan(rs.getDouble("spareloan"));
+                result.setTradecost(rs.getDouble("tradecost"));
 //                result.setOwnerid(rs.getString("ownerid"));
 //                result.setTraderid(rs.getString("traderid"));
             }

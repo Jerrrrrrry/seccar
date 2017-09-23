@@ -97,6 +97,7 @@ public class TradeAction extends DispatchAction {
 
     		String vehicletype = vo.getVehicletype();
     		double purchaseprice = vo.getPurchaseprice();
+    		double tradecost = vo.getTradecost();
 			double sloan = 0.00;
 			double aloan = 0.00;
           	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
@@ -121,18 +122,18 @@ public class TradeAction extends DispatchAction {
 	        		int daydiff = getIntervalDays(purchasedate, selldate);
 	        		interest = interestrate/100/30*actualloan;
 	        		interestcost = interest*daydiff;
-	        		totalprofit = pricediff - interestcost - vo.getTradecost();
+	        		totalprofit = pricediff - interestcost - tradecost;
 //	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
 	        		profit = totalprofit;
         		}else{
             		int monthdiff = getIntervalMonths(purchasedate, selldate);
             		interest = interestrate/100*actualloan;
 	        		interestcost = interest*monthdiff;
-	        		totalprofit = pricediff - interestcost - vo.getTradecost();
+	        		totalprofit = pricediff - interestcost - tradecost;
 //	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
 	        		profit = totalprofit/2;
 	        		traderprofit = totalprofit/2;
-	        		sloan = ts.getspare() + vo.getPurchaseprice();
+	        		sloan = ts.getspare() + purchaseprice + tradecost;
 	        		if(vo.getIssold() == null || vo.getIssold().equals("0")){
 	        		ts.updateSpare(sloan);	
 	        		}
@@ -160,21 +161,22 @@ public class TradeAction extends DispatchAction {
         	}else{
         		if(vehicletype.equals("自收车")){
 //		        	vo.setActualloan(vo.getPurchaseprice());
-		        	aloan = vo.getPurchaseprice();
+		        	aloan = purchaseprice + tradecost;
 		        	vo.setSpareloan(0);
             		vo.setActualloan(aloan);
 //		        	sloan = ts.getspare();
-        		}else{
-        			double spareloantmp = 0.00;//vo.getspareloan()
-        			spareloantmp = ts.getspare();
-        			if(spareloantmp >= purchaseprice){
-        				sloan = spareloantmp - purchaseprice;
-        				aloan = 0.00;
-        			}else{
-        				aloan = Math.ceil((purchaseprice-spareloantmp)/100000)*100000;
-        				sloan = aloan - (purchaseprice-spareloantmp);
-        			}
         		}
+//        		else{
+//        			double spareloantmp = 0.00;//vo.getspareloan()
+//        			spareloantmp = ts.getspare();
+//        			if(spareloantmp >= (purchaseprice + tradecost)){
+//        				sloan = spareloantmp - (purchaseprice + tradecost);
+//        				aloan = 0.00;
+//        			}else{
+//        				aloan = Math.ceil(((purchaseprice + tradecost)-spareloantmp)/100000)*100000;
+//        				sloan = aloan - ((purchaseprice + tradecost)-spareloantmp);
+//        			}
+//        		}
 
         		vo.setSellprice(0);
         		vo.setSelldate(null);
@@ -193,6 +195,15 @@ public class TradeAction extends DispatchAction {
                 }else{
                     vo.setVehicleid(UuidCreator.getNewId());
                     if(vehicletype.equals("第三方")){
+                    	double spareloantmp = 0.00;//vo.getspareloan()
+	        			spareloantmp = ts.getspare();
+	        			if(spareloantmp >= (purchaseprice + tradecost)){
+	        				sloan = spareloantmp - (purchaseprice + tradecost);
+	        				aloan = 0.00;
+	        			}else{
+	        				aloan = Math.ceil(((purchaseprice + tradecost)-spareloantmp)/100000)*100000;
+	        				sloan = aloan - ((purchaseprice + tradecost)-spareloantmp);
+	        			}
 	            		vo.setSpareloan(sloan);
 	            		vo.setActualloan(aloan);
 	                    ts.updateSpare(sloan);
@@ -212,6 +223,28 @@ public class TradeAction extends DispatchAction {
                 	if(form.getOperation().equals("settle")){
                 		ts.settle(vo);
                 	}else{
+                		if(vehicletype.equals("第三方")){
+                			double spareloantmp = 0.00;//vo.getspareloan()
+                			spareloantmp = ts.getspare();
+                			//这里需要获取原始购车价格和交易费用，新增加的部分计算余量和新加部分实际借款金额，并累加到原始额中
+                			double opurchaseprice = dto.getPurchaseprice();
+                			double oactualloan = dto.getActualloan();
+//                			double ospareloan = dto.getSpareloan();
+                			double otradecost = dto.getTradecost();
+                			double odiff = (purchaseprice + tradecost) - opurchaseprice - otradecost;
+                			
+	            			if(spareloantmp >= odiff){
+	            				sloan = spareloantmp - odiff;
+	            				aloan = oactualloan;
+	            			}else{
+	            				aloan = Math.ceil((odiff-spareloantmp)/100000)*100000;
+	            				sloan = aloan - (odiff-spareloantmp);
+	            				aloan = oactualloan + aloan;
+	            			}
+		            		vo.setSpareloan(sloan);
+		            		vo.setActualloan(aloan);
+		                    ts.updateSpare(sloan);
+                		}
                 		ts.update(vo);
                 	}
                 }
@@ -256,6 +289,7 @@ public class TradeAction extends DispatchAction {
 
         return null;
     }
+    
     /***********************************************/
     // 删除一个
     /***********************************************/
@@ -278,6 +312,7 @@ public class TradeAction extends DispatchAction {
             String vehicletype = form.getVehicletype();
             String issold = form.getIssold();
             double purchaseprice = form.getPurchaseprice();
+    		double tradecost = form.getTradecost();
 
             sv.deletesingle(vehichleid);
             if(vehicletype.equals("自收车") || issold.equals("1")){
@@ -285,7 +320,7 @@ public class TradeAction extends DispatchAction {
     		}else{
     			double spareloantmp = 0.00;//vo.getspareloan()
     			spareloantmp = sv.getspare();
-    			double	sloan = spareloantmp + purchaseprice;
+    			double	sloan = spareloantmp + purchaseprice + tradecost;
                 sv.updateSpare(sloan);
     		}
             JsonUtils.printActionResultOK(response);

@@ -117,16 +117,17 @@ var LoanEdit = {
         };
         
         /***********************************************/
-        // 已还视图
+        // 已弃车视图
         /***********************************************/
-        edit.returnedview = function () {
-        	$('#licenseno').textbox({disabled:false});
-            $('#vehicledesc').textbox({disabled:false});
-            $('#ownername').textbox({disabled:false});
-            $('#ownerid').textbox({disabled:false});
-            $('#mobileno').textbox({disabled:false});
-            $('#borrowdate').textbox({disabled:false});
-            $('#returndate').textbox({disabled:false});
+        edit.abandonview = function () {
+//        	alert("edit.clear");
+        	$('#licenseno').textbox({disabled:true});
+            $('#vehicledesc').textbox({disabled:true});
+            $('#ownername').textbox({disabled:true});
+            $('#ownerid').textbox({disabled:true});
+            $('#mobileno').textbox({disabled:true});
+            $('#borrowdate').textbox({disabled:true});
+            $('#returndate').textbox({disabled:true});
             $('#periodmonths').textbox({disabled:true});
             $('#totalinterest').textbox({disabled:true});
             $('#borrowamount').textbox({disabled:true});
@@ -134,14 +135,52 @@ var LoanEdit = {
             $('#earnest').textbox({disabled:true});
             $('#actualmonths').textbox({disabled:true});
             $('#interestpaid').textbox({disabled:true});
-            $('#interestpaidto').textbox({disabled:false});
-            $('#nextpaymentdate').textbox({disabled:false});
-            $('#midinterestrate').textbox({disabled:false});
-            $('#midinterest').textbox({disabled:false});
-            $('#parkingfee').textbox({disabled:false});
-            $('#otherfee').textbox({disabled:false});
-            $('#actualloan').textbox({disabled:false});
-            $('#comments').textbox({disabled:false});
+            $('#interestpaidto').textbox({disabled:true});
+            $('#nextpaymentdate').textbox({disabled:true});
+            $('#midinterestrate').textbox({disabled:true});
+            $('#midinterest').textbox({disabled:true});
+            $('#parkingfee').textbox({disabled:true});
+            $('#otherfee').textbox({disabled:true});
+            $('#actualloan').textbox({disabled:true});
+            $('#comments').textbox({disabled:true});
+            $('#actualreturn').textbox({disabled:true});
+            $('#actualreturndate').textbox({disabled:true});
+            $('#btnEditSave').linkbutton('disable');
+            $('#btnEditSaveadd').linkbutton('disable');
+            $('#btnEditReturned').linkbutton('disable');
+            $('#btnEditAbandon').linkbutton('disable');
+            $('#btnEditSettle').linkbutton('enable');
+            $('#btnEditDelete').linkbutton('disable');
+            $('#btnEditupload').linkbutton('disable');
+            
+        };
+        
+        /***********************************************/
+        // 已还视图
+        /***********************************************/
+        edit.returnedview = function () {
+        	$('#licenseno').textbox({disabled:true});
+            $('#vehicledesc').textbox({disabled:true});
+            $('#ownername').textbox({disabled:true});
+            $('#ownerid').textbox({disabled:true});
+            $('#mobileno').textbox({disabled:true});
+            $('#borrowdate').textbox({disabled:true});
+            $('#returndate').textbox({disabled:true});
+            $('#periodmonths').textbox({disabled:true});
+            $('#totalinterest').textbox({disabled:true});
+            $('#borrowamount').textbox({disabled:true});
+            $('#interestrate').textbox({disabled:true});
+            $('#earnest').textbox({disabled:true});
+            $('#actualmonths').textbox({disabled:true});
+            $('#interestpaid').textbox({disabled:true});
+            $('#interestpaidto').textbox({disabled:true});
+            $('#nextpaymentdate').textbox({disabled:true});
+            $('#midinterestrate').textbox({disabled:true});
+            $('#midinterest').textbox({disabled:true});
+            $('#parkingfee').textbox({disabled:true});
+            $('#otherfee').textbox({disabled:true});
+            $('#actualloan').textbox({disabled:true});
+            $('#comments').textbox({disabled:true});
             $('#actualreturn').textbox({disabled:true});
             $('#actualreturndate').textbox({disabled:false});
             $('#btnEditSave').linkbutton('disable');
@@ -248,8 +287,8 @@ var LoanEdit = {
                     		edit.disabledview();
                     	}else if(vo.dto.settlement=="1"){
                     		edit.disabledview();
-                    	}else if(vo.dto.abandon=="1"){
-                    		edit.disabledview();
+                    	}else if(vo.dto.isabandon=="1"){
+                    		edit.abandonview();
                     	}else if(vo.dto.isreturned=="1"){
                     		edit.returnedview();
                     	}else{

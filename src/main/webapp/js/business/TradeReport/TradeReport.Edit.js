@@ -19,6 +19,7 @@ var TradeReportEdit = {
             $('#tradername').textbox({disabled:true});
             $('#purchaseprice').textbox({disabled:false});
             $('#ownername').textbox({disabled:false});
+            $('#ownermobile').textbox({disabled:false});
             $('#ownerid').textbox({disabled:false});
             $('#purchasedate').textbox({disabled:false});
             $('#interestrate').textbox({disabled:false});
@@ -32,6 +33,7 @@ var TradeReportEdit = {
             $('#selldate').textbox({disabled:true});
             $('#buyerid').textbox({disabled:true});
             $('#buyername').textbox({disabled:true});
+            $('#buyermobile').textbox({disabled:true});
             $('#btnEditSave').linkbutton('enable');
             $('#btnEditSaveadd').linkbutton('enable');
             $('#btnEditSold').linkbutton('disable');
@@ -48,6 +50,7 @@ var TradeReportEdit = {
             $('#tradername').textbox('setValue', username);
             $('#purchaseprice').textbox('setValue', '');
             $('#ownername').textbox('setValue', '');
+            $('#ownermobile').textbox('setValue', '');
             $('#ownerid').textbox('setValue', '');
             $('#purchasedate').textbox('setValue', '');
             $('#interestrate').textbox('setValue', '1.5');
@@ -65,6 +68,8 @@ var TradeReportEdit = {
             $('#selldate').textbox('setValue', '');
             $('#buyerid').textbox('setValue', '');
             $('#buyername').textbox('setValue', '');
+            $('#buyermobile').textbox('setValue', '');
+            $("#imgdiv")[0].innerHTML="";
         };
         
         /***********************************************/
@@ -79,6 +84,7 @@ var TradeReportEdit = {
             $('#tradername').textbox({disabled:true});
             $('#purchaseprice').textbox({disabled:true});
             $('#ownername').textbox({disabled:true});
+            $('#ownermobile').textbox({disabled:true});
             $('#ownerid').textbox({disabled:true});
             $('#purchasedate').textbox({disabled:true});
             $('#interestrate').textbox({disabled:true});
@@ -92,6 +98,7 @@ var TradeReportEdit = {
             $('#selldate').textbox({disabled:true});
             $('#buyerid').textbox({disabled:true});
             $('#buyername').textbox({disabled:true});
+            $('#buyermobile').textbox({disabled:true});
             $('#btnEditSave').linkbutton('disable');
             $('#btnEditSaveadd').linkbutton('disable');
             $('#btnEditSold').linkbutton('disable');
@@ -112,6 +119,7 @@ var TradeReportEdit = {
             $('#tradername').textbox({disabled:true});
             $('#purchaseprice').textbox({disabled:true});
             $('#ownername').textbox({disabled:true});
+            $('#ownermobile').textbox({disabled:true});
             $('#ownerid').textbox({disabled:true});
             $('#purchasedate').textbox({disabled:true});
             $('#interestrate').textbox({disabled:true});
@@ -125,6 +133,7 @@ var TradeReportEdit = {
             $('#selldate').textbox({disabled:false});
             $('#buyerid').textbox({disabled:false});
             $('#buyername').textbox({disabled:false});
+            $('#buyermobile').textbox({disabled:false});
             $('#btnEditSave').linkbutton('disable');
             $('#btnEditSaveadd').linkbutton('disable');
             $('#btnEditSold').linkbutton('enable');
@@ -132,7 +141,6 @@ var TradeReportEdit = {
             $('#btnEditDelete').linkbutton('enable');
             
         };
-        
         /***********************************************/
         // 修改视图
         /***********************************************/
@@ -140,17 +148,18 @@ var TradeReportEdit = {
 //        	alert("edit.clear");
         	var userid = $('#userid').val();
         	var username = $('#username').val();
-        	$('#licenseno').textbox({disabled:true});
-            $('#vehicledesc').textbox({disabled:true});
-            $('#tradername').textbox({disabled:true});
-            $('#purchaseprice').textbox({disabled:true});
-            $('#ownername').textbox({disabled:true});
-            $('#ownerid').textbox({disabled:true});
-            $('#purchasedate').textbox({disabled:true});
-            $('#interestrate').textbox({disabled:true});
+        	$('#licenseno').textbox({disabled:false});
+            $('#vehicledesc').textbox({disabled:false});
+            $('#tradername').textbox({disabled:false});
+            $('#purchaseprice').textbox({disabled:false});
+            $('#ownername').textbox({disabled:false});
+            $('#ownermobile').textbox({disabled:false});
+            $('#ownerid').textbox({disabled:false});
+            $('#purchasedate').textbox({disabled:false});
+            $('#interestrate').textbox({disabled:false});
             $('#actualloan').textbox({disabled:true});
             $('#spareloan').textbox({disabled:true});
-            $('#vehicletype').combobox({disabled:true});
+            $('#vehicletype').combobox({disabled:false});
             $('#comments').textbox({disabled:false});
             $('#earnest').textbox({disabled:false});
             $('#tradecost').textbox({disabled:false});
@@ -158,11 +167,13 @@ var TradeReportEdit = {
             $('#selldate').textbox({disabled:false});
             $('#buyerid').textbox({disabled:false});
             $('#buyername').textbox({disabled:false});
+            $('#buyermobile').textbox({disabled:false});
             $('#btnEditSave').linkbutton('enable');
             $('#btnEditSaveadd').linkbutton('enable');
             $('#btnEditSold').linkbutton('enable');
             $('#btnEditSettle').linkbutton('disable');
             $('#btnEditDelete').linkbutton('enable');
+            $('#btnEditupload').linkbutton('enable');
             
         };
         
@@ -254,6 +265,7 @@ var TradeReportEdit = {
                         $('#tradername').textbox('setValue', vo.dto.tradername);
                         $('#purchaseprice').textbox('setValue', vo.dto.purchaseprice);
                         $('#ownername').textbox('setValue', vo.dto.ownername);
+                        $('#ownermobile').textbox('setValue', vo.dto.ownermobile);
                         $('#ownerid').textbox('setValue', vo.dto.ownerid);
                         $('#purchasedate').textbox('setValue', vo.dto.purchasedate);
                         $('#interestrate').textbox('setValue', vo.dto.interestrate);
@@ -271,6 +283,7 @@ var TradeReportEdit = {
                         $('#selldate').textbox('setValue', vo.dto.selldate);
                         $('#buyerid').textbox('setValue', vo.dto.buyerid);
                         $('#buyername').textbox('setValue', vo.dto.buyername);
+                        $('#buyermobile').textbox('setValue', vo.dto.buyermobile);
                         $("#imgdiv")[0].innerHTML="";
                         var picturepath = vo.dto.picturepath; 
                         var picturepaths = picturepath.split(",");
@@ -346,6 +359,7 @@ var TradeReportEdit = {
             var tradername = $('#tradername').textbox('getValue');
             var purchaseprice = $('#purchaseprice').textbox('getValue');
             var ownername = $('#ownername').textbox('getValue');
+            var ownermobile = $('#ownermobile').textbox('getValue');
             var ownerid = $('#ownerid').textbox('getValue');
             var purchasedate = $('#purchasedate').textbox('getValue');
             var interestrate = $('#interestrate').textbox('getValue');
@@ -359,6 +373,7 @@ var TradeReportEdit = {
             var selldate = $('#selldate').textbox('getValue');
             var buyerid = $('#buyerid').textbox('getValue');
             var buyername = $('#buyername').textbox('getValue');
+            var buyermobile = $('#buyermobile').textbox('getValue');
             var picturepath = edit.getpicpath();
             var operation = save
 //            alert(sellprice);
@@ -379,6 +394,7 @@ var TradeReportEdit = {
 			                	tradername: tradername,
 			                	purchaseprice: purchaseprice,
 			                	ownername: ownername,
+			                	ownermobile: ownermobile,
 			                	ownerid: ownerid,
 			                	purchasedate: purchasedate,
 			                	interestrate: interestrate,
@@ -392,6 +408,7 @@ var TradeReportEdit = {
 			                	selldate: selldate,
 			                	buyerid: buyerid,
 			                	buyername: buyername,
+			                	buyermobile: buyermobile,
 			//                	settlement : settlement,
 				            	picturepath : picturepath,
 			                	operation: operation
@@ -438,6 +455,7 @@ var TradeReportEdit = {
 		            	tradername: tradername,
 		            	purchaseprice: purchaseprice,
 		            	ownername: ownername,
+		            	ownermobile: ownermobile,
 		            	ownerid: ownerid,
 		            	purchasedate: purchasedate,
 		            	interestrate: interestrate,
@@ -451,6 +469,7 @@ var TradeReportEdit = {
 		            	selldate: selldate,
 		            	buyerid: buyerid,
 		            	buyername: buyername,
+		            	buyermobile: buyermobile,
 		            	picturepath : picturepath,
 		//            	settlement : settlement,
 		            	operation: operation
@@ -596,6 +615,7 @@ var TradeReportEdit = {
             var vehicletype = $('#vehicletype').combobox('getValue');
 //            var vehicletype = $('#vehicletype').val();
             var purchaseprice = $('#purchaseprice').textbox('getValue');
+            var tradecost = $('#tradecost').textbox('getValue');
             
             if (vehicleid == null || vehicleid.length == 0) {
                 $.messager.alert(AppConstant.M_INFO, AppConstant.M_NO_SAVED, 'warning');
@@ -616,7 +636,8 @@ var TradeReportEdit = {
                         	vehicleid: vehicleid,
                         	issold: issold,
                         	vehicletype: vehicletype,
-                        	purchaseprice: purchaseprice
+                        	purchaseprice: purchaseprice,
+                        	tradecost: tradecost
                         },
                         success: function (data) {
 

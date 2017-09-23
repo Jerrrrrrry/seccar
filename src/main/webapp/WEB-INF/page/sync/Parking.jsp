@@ -139,6 +139,12 @@
         <td><input id="period"/></td>
       </tr>
       <tr>
+        <th>客户电话</th>
+        <td><input id="customermobile"/></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
         <th>车牌号</th>
         <td><input id="licenseno"/></td>
         <th>车辆描述</th>

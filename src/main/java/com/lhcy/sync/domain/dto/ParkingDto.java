@@ -19,7 +19,15 @@ public class ParkingDto implements Serializable {
     private String createdts;
     private String lastupdatedts;
     private String creator;
+    private String customermobile;
     
+    
+	public String getCustomermobile() {
+		return customermobile;
+	}
+	public void setCustomermobile(String customermobile) {
+		this.customermobile = customermobile;
+	}
 	public String getVehicleid() {
 		return vehicleid;
 	}
