@@ -3,13 +3,10 @@ package com.lhcy.sync.dao;
 import com.hongchen.kis.db.DbConnectionFactory;
 import com.hongchen.kis.db.DbSqlHelper;
 import com.lhcy.core.bo.*;
-import com.lhcy.core.util.ConvertUtils;
 import com.lhcy.core.util.StringUtils;
-import com.lhcy.core.util.TreeListUtils;
-import com.lhcy.sync.domain.dto.TradeDto;
+import com.lhcy.sync.domain.dto.CarSummaryDto;
 import com.lhcy.sync.domain.dto.TradeDto;
 import com.lhcy.sync.domain.pojo.Trade;
-import com.lhcy.sync.web.form.TradeForm;
 import com.lhcy.sync.web.form.TradeForm;
 
 import org.apache.log4j.Logger;
@@ -347,7 +344,56 @@ public class TradeDao {
 
         return result;
     }
-    
+    /***********************************************/
+    // 查询卖出的车辆数量和未卖出的车辆数量
+    /***********************************************/
+    public CarSummaryDto getSummaryForCarTrade() throws Exception{
+    	CarSummaryDto result = new CarSummaryDto();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" select issold,COUNT(*) as num from SecCarTrade where isdeleted<>'1' group by issold ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            while(rs.next()){
+                if ("1".equalsIgnoreCase(rs.getString("issold")))//卖出去的车的数量
+           		{
+                	result.setOutStockCarsAmount(rs.getInt("num"));
+                } else
+                {
+                	//库存车辆数量
+                	result.setInStockCarsAmount(rs.getInt("num"));
+                }
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
     /***********************************************/
     // 查询余量
     /***********************************************/

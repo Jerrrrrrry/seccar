@@ -6,6 +6,7 @@ import com.lhcy.core.bo.*;
 import com.lhcy.core.util.ConvertUtils;
 import com.lhcy.core.util.StringUtils;
 import com.lhcy.core.util.TreeListUtils;
+import com.lhcy.sync.domain.dto.CarSummaryDto;
 import com.lhcy.sync.domain.dto.LoanDto;
 import com.lhcy.sync.domain.pojo.Loan;
 import com.lhcy.sync.web.form.LoanForm;
@@ -306,7 +307,56 @@ public class LoanDao {
 
         return result;
     }
-    
+    /***********************************************/
+    // 查询车贷的车辆库存车辆和已抵押完毕的车辆
+    /***********************************************/
+    public CarSummaryDto getSummaryForCarLoan() throws Exception{
+    	CarSummaryDto result = new CarSummaryDto();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" select isreturned,COUNT(*) as num from SecCarLoan where isdeleted<>'1' group by isreturned ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            while(rs.next()){
+                if ("1".equalsIgnoreCase(rs.getString("isreturned")))//抵押完毕的车辆
+           		{
+                	result.setOutStockCarsAmount(rs.getInt("num"));
+                } else
+                {
+                	//库存车辆数量
+                	result.setInStockCarsAmount(rs.getInt("num"));
+                }
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
 //    /***********************************************/
 //    // 查询余量
 //    /***********************************************/

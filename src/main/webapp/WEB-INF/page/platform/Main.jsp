@@ -155,6 +155,8 @@
                         addTab('二手车交易报表', null, '<%=basePath %>TradeReportAction.do');
                     }else if (node.id == '停车管理'){
                         addTab('停车管理', null, '<%=basePath %>ParkingAction.do');
+                    }else if (node.id == '合计汇总'){
+                        addTab('合计汇总', null, '<%=basePath %>SumSummaryAction.do');
                     }
                 }
             });
@@ -204,6 +206,7 @@
                     <li data-options="id:'二手车交易报表', 'iconCls':'icon-tree-app'">二手车交易报表</li>
                     <li data-options="id:'车贷业务', 'iconCls':'icon-tree-app'">车贷业务</li>
                     <li data-options="id:'停车管理', 'iconCls':'icon-tree-app'">停车管理</li>
+                    <li data-options="id:'合计汇总', 'iconCls':'icon-tree-app'">合计汇总</li>
                     <% } %>
                 </ul>
             </div>
