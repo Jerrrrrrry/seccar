@@ -15,7 +15,9 @@ public class ParkingForm extends ActionForm {
     private String filterlicenseno;
     private String filtercardescription;
     private String filterinventoryints;
+    private String filterinventoryintsend;
     private String filterinventoryoutts;
+    private String filterinventoryouttsend;
     
     // 列表
     private int rows;
@@ -169,6 +171,18 @@ public class ParkingForm extends ActionForm {
 	}
 	public void setInventoryoutts(String inventoryoutts) {
 		this.inventoryoutts = inventoryoutts;
+	}
+	public String getFilterinventoryintsend() {
+		return filterinventoryintsend;
+	}
+	public void setFilterinventoryintsend(String filterinventoryintsend) {
+		this.filterinventoryintsend = filterinventoryintsend;
+	}
+	public String getFilterinventoryouttsend() {
+		return filterinventoryouttsend;
+	}
+	public void setFilterinventoryouttsend(String filterinventoryouttsend) {
+		this.filterinventoryouttsend = filterinventoryouttsend;
 	}
 
 }

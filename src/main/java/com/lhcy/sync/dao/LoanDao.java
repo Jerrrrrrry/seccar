@@ -8,6 +8,8 @@ import com.lhcy.core.util.StringUtils;
 import com.lhcy.core.util.TreeListUtils;
 import com.lhcy.sync.domain.dto.CarSummaryDto;
 import com.lhcy.sync.domain.dto.LoanDto;
+import com.lhcy.sync.domain.dto.SummaryLoanDto;
+import com.lhcy.sync.domain.dto.SummaryTradeDto;
 import com.lhcy.sync.domain.pojo.Loan;
 import com.lhcy.sync.web.form.LoanForm;
 
@@ -146,7 +148,6 @@ public class LoanDao {
                 vo.setComments(rs.getString("comments"));
                 vo.setActualloan(rs.getDouble("actualloan"));
                 vo.setActualreturn(rs.getDouble("actualreturn"));
-//                vo.setActualreturndate(rs.getString("actualreturndate"));
                 if(rs.getDate("actualreturndate")!=null){
                 	vo.setActualreturndate(rs.getDate("actualreturndate").toString());
                 }else{
@@ -314,7 +315,182 @@ public class LoanDao {
     	CarSummaryDto result = new CarSummaryDto();
         StringBuilder sql = new StringBuilder();
         //删除的车辆不考虑
-        sql.append(" select isreturned,COUNT(*) as num from SecCarLoan where isdeleted<>'1' group by isreturned ");
+        sql.append(" select case when isreturned =1 then 1 when isabandon=1 then 2 else 0  end as isreturned,COUNT(*) as num from SecCarLoan where isdeleted<>'1' group by isreturned,isabandon ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            int out =0;
+            int in = 0;
+            while(rs.next()){
+                if ("0".equalsIgnoreCase(rs.getString("isreturned")))//抵押完毕的车辆
+           		{
+                	in =rs.getInt("num");
+                } else
+                {
+                	out = out + rs.getInt("num");
+                }
+            }
+
+        	result.setInStockCarsAmount(in);
+        	result.setOutStockCarsAmount(out);//库存车辆数量
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    } 
+    
+    
+
+    /***********************************************/
+    // 押车利息已出库
+    /***********************************************/
+    public CarSummaryDto getSummaryLoanOutInterest() throws Exception{
+    	CarSummaryDto result = new CarSummaryDto();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+//        sql.append(" declare @td  datetime; ");
+//        sql.append(" select @td = GETDATE(); ");
+        sql.append(" select sum(1.5/100/30*borrowamount*DATEDIFF(DAY,borrowdate,returndate)) as totalinterest from SecCarLoan where isdeleted<>'1' and (isabandon=1 or isreturned=1) ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            double loaninterestout =0;
+//            int totalprofitthird = 0;
+            while(rs.next()){
+            	loaninterestout = rs.getDouble("totalinterest");
+//                if ("第三方".equalsIgnoreCase(rs.getString("vehicletype")))//抵押完毕的车辆
+//           		{
+//                	totalprofitthird =rs.getInt("totalprofit");
+//                } else
+//                {
+//                	totalprofitself = rs.getInt("totalprofit");
+//                }
+            }
+
+        	result.setLoaninterestout(loaninterestout);
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+    
+
+    /***********************************************/
+    // 押车利息在库
+    /***********************************************/
+    public CarSummaryDto getSummaryLoanInInterest() throws Exception{
+    	CarSummaryDto result = new CarSummaryDto();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" declare @td  datetime; ");
+        sql.append(" select @td = GETDATE(); ");
+        sql.append(" select sum(1.5/100/30*borrowamount*DATEDIFF(DAY,borrowdate,@td)) as totalinterest from SecCarLoan where isdeleted<>'1' and isabandon !=1 and isreturned!=1 ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            double loaninterestin =0;
+//            int totalprofitthird = 0;
+            while(rs.next()){
+            	loaninterestin = rs.getDouble("totalinterest");
+//                if ("第三方".equalsIgnoreCase(rs.getString("vehicletype")))//抵押完毕的车辆
+//           		{
+//                	totalprofitthird =rs.getInt("totalprofit");
+//                } else
+//                {
+//                	totalprofitself = rs.getInt("totalprofit");
+//                }
+            }
+
+        	result.setLoaninterestin(loaninterestin);
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+    /***********************************************/
+    // 查询二手车交易汇总
+    /***********************************************/
+    public List<SummaryLoanDto> listLoan() throws Exception{
+    	List<SummaryLoanDto> result = new ArrayList<SummaryLoanDto>();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" select CASE WHEN isreturned=1 THEN '已归还' ELSE '未归还' END AS isreturned,   ");
+        sql.append(" CASE WHEN isabandon=1 THEN '已弃车' END AS isabandon,  CASE  WHEN settlement = '1' THEN '已结算' ELSE '未结算' END AS settlement,  ");
+        sql.append(" SUM(borrowamount) AS borrowamount,SUM(interestpaid) AS interestpaid, SUM(totalinterest) AS totalinterest,SUM(parkingfee) AS parkingfee, SUM(otherfee) AS othercost, ");
+        sql.append(" SUM(midinterest) AS midinterest, SUM(actualloan) AS actualloan,SUM(actualreturn) AS actualreturn,SUM(totalprofit) AS totalprofit   from SecCarLoan where isdeleted<>'1'  ");
+        sql.append(" GROUP BY isreturned,ISABANDON,settlement ");
         System.out.println("query sql: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
@@ -332,14 +508,28 @@ public class LoanDao {
                 return result;
             }
             while(rs.next()){
-                if ("1".equalsIgnoreCase(rs.getString("isreturned")))//抵押完毕的车辆
-           		{
-                	result.setOutStockCarsAmount(rs.getInt("num"));
-                } else
-                {
-                	//库存车辆数量
-                	result.setInStockCarsAmount(rs.getInt("num"));
-                }
+            	SummaryLoanDto vo = new SummaryLoanDto();
+            	vo.setIsreturned(rs.getString("isreturned"));
+            	vo.setIsabandon(rs.getString("isabandon"));
+            	vo.setSettlement(rs.getString("settlement"));
+            	vo.setBorrowamount(rs.getString("borrowamount"));
+            	vo.setParkingfee(rs.getString("parkingfee"));
+            	vo.setOthercost(rs.getString("othercost"));
+            	vo.setInterestpaid(rs.getString("interestpaid"));
+            	vo.setMidinterest(rs.getString("midinterest"));
+            	vo.setActualreturn(rs.getString("actualreturn"));
+            	vo.setTotalprofit(rs.getString("totalprofit"));
+            	vo.setTotalinterest(rs.getString("totalinterest"));
+            	vo.setActualloan(rs.getString("actualloan"));
+//                if ("1".equalsIgnoreCase(rs.getString("issold")))//卖出去的车的数量
+//           		{
+//                	result.setOutStockCarsAmount(rs.getInt("num"));
+//                } else
+//                {
+//                	//库存车辆数量
+//                	result.setInStockCarsAmount(rs.getInt("num"));
+//                }
+            	result.add(vo);
             }
 
         } catch (Exception e) {
@@ -357,6 +547,8 @@ public class LoanDao {
 
         return result;
     }
+    
+    
 //    /***********************************************/
 //    // 查询余量
 //    /***********************************************/
@@ -449,10 +641,11 @@ public class LoanDao {
         sql.append("    ,totalinterest ");
         sql.append("    ,earnest ");
         sql.append("    ,actualmonths ");
+        sql.append("    ,interestcost ");
         sql.append("    ,createdts ");
         sql.append("    ,lastupdatedts ");
         sql.append(" )VALUES(");
-        sql.append(StringUtils.getSqlPlaceholder(34));
+        sql.append(StringUtils.getSqlPlaceholder(35));
         sql.append(" )");
 
         
@@ -490,6 +683,7 @@ public class LoanDao {
         args.add(vo.getTotalinterest());
         args.add(vo.getEarnest());
         args.add(vo.getActualmonths());
+        args.add(vo.getInterestcost());
         args.add(new Date());
         args.add(new Date());
 
@@ -539,6 +733,7 @@ public class LoanDao {
         sql.append("   ,totalinterest = ? ");
         sql.append("   ,earnest = ? ");
         sql.append("   ,actualmonths = ? ");
+        sql.append("   ,interestcost = ? ");
         sql.append("   ,lastupdatedts = ? ");
         sql.append(" WHERE vehicleid = ? ");
 
@@ -575,6 +770,7 @@ public class LoanDao {
         args.add(vo.getTotalinterest());
         args.add(vo.getEarnest());
         args.add(vo.getActualmonths());
+        args.add(vo.getInterestcost());
         args.add(new Date());
         args.add(vo.getVehicleid());
 

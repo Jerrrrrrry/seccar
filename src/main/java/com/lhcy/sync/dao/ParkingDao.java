@@ -590,9 +590,17 @@ public class ParkingDao {
                     result.append(" AND (a.inventoryints >= ? ) ");
                     args.add(form.getFilterinventoryints().trim());
                 	}
+            	if(form.getFilterinventoryintsend() != null && form.getFilterinventoryintsend().length() > 0){
+                    result.append(" AND (a.inventoryints <= ? ) ");
+                    args.add(form.getFilterinventoryintsend().trim());
+                	}
             	if(form.getFilterinventoryoutts() != null && form.getFilterinventoryoutts().length() > 0){
-                    result.append(" AND (a.inventoryoutts <= ? ) ");
+                    result.append(" AND (a.inventoryoutts >= ? ) ");
                     args.add(form.getFilterinventoryoutts().trim());
+                	}
+            	if(form.getFilterinventoryouttsend() != null && form.getFilterinventoryouttsend().length() > 0){
+                    result.append(" AND (a.inventoryoutts <= ? ) ");
+                    args.add(form.getFilterinventoryouttsend().trim());
                 	}
                 			 	
             }

@@ -228,6 +228,13 @@ var LoanInit = {
                         sortable: true
                     },
                     {
+                        field: 'interestcost',
+                        title: '利息成本',
+                        width: 80,
+                        align: 'left',
+                        sortable: true
+                    },
+                    {
                         field: 'totalprofit',
                         title: '总利润',
                         width: 100,

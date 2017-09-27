@@ -184,7 +184,15 @@ var ParkingInit = {
                 width : 200,
                 validType : ['length[1,100]']
             });
+            $('#filterinventoryintsend').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
             $('#filterinventoryoutts').datebox({
+                width : 200,
+                validType : ['length[1,100]']
+            });
+            $('#filterinventoryouttsend').datebox({
                 width : 200,
                 validType : ['length[1,100]']
             });

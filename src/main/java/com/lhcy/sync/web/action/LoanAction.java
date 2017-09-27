@@ -102,6 +102,21 @@ public class LoanAction extends DispatchAction {
     		double actualloan = vo.getActualloan();
     		double midinterest =  vo.getMidinterest();
     		double otherfee = vo.getOtherfee();
+    		Date borrowdate = new Date();
+            Date returndate = new Date();
+            
+          	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");  
+          	borrowdate =df.parse(vo.getBorrowdate().substring(0, 10));
+          	if(vo.getInterestpaidto()!=null&&vo.getInterestpaidto()!=""){
+              	returndate =df.parse(vo.getInterestpaidto().substring(0, 10));
+            }
+          	if(vo.getActualreturndate()!=null&&vo.getActualreturndate()!=""){
+              	returndate =df.parse(vo.getActualreturndate().substring(0, 10));
+                }
+    		int daydiff = getIntervalDays(borrowdate, returndate);
+    		double interest = 1.5/100/30*borrowamount;
+    		double interestcost = interest*daydiff;
+            vo.setInterestcost(interestcost);
         	if(form.getOperation().equals("returned")){
 //        		double remaininterest = (interestrate/100*borrowamount*periodmonths)-interestpaid;
         		double remaininterest = totalinterest - interestpaid;
@@ -116,7 +131,8 @@ public class LoanAction extends DispatchAction {
         	{
         		if(vo.getIsdeleted() != "1"){
 	        		if(vo.getIsabandon().equals("1") || vo.getIsreturned().equals("1")){
-	        			double totalprofit = actualreturn + earnest + interestpaid - actualloan - midinterest - otherfee;
+
+	        			double totalprofit = actualreturn + earnest + interestpaid - actualloan - midinterest - otherfee - interestcost;
 	        			vo.setTotalprofit(totalprofit);
 		        		vo.setSettlement("1");
 		        		String settlementdate =sdf.format(new Date());
@@ -142,6 +158,7 @@ public class LoanAction extends DispatchAction {
         		vo.setIsabandon("0");
         		vo.setSettlement("0");
         		vo.setSettlementdate(null);
+        		vo.setActualreturndate(null);
         	}
             // 新增
             if (vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
@@ -397,6 +414,17 @@ public class LoanAction extends DispatchAction {
 		}
 		return size;
 	}
+	 /***********************************************/
+    // 间隔天数
+    /***********************************************/
+    private static int getIntervalDays(Date sDate, Date eDate) {
+
+        if (null == sDate || null == eDate) {
+            return -1;
+        }
+        long intervalMilli = eDate.getTime() - sDate.getTime();
+        return (int) (intervalMilli / (24 * 60 * 60 * 1000));
+     }
     
 //    public static void main(String args[])
 //    {

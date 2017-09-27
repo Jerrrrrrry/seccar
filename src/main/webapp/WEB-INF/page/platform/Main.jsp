@@ -157,6 +157,10 @@
                         addTab('停车管理', null, '<%=basePath %>ParkingAction.do');
                     }else if (node.id == '合计汇总'){
                         addTab('合计汇总', null, '<%=basePath %>SumSummaryAction.do');
+                    }else if (node.id == '收卖车汇总'){
+                        addTab('收卖车汇总', null, '<%=basePath %>SumTradeAction.do');
+                    }else if (node.id == '押车汇总'){
+                        addTab('押车汇总', null, '<%=basePath %>SumLoanAction.do');
                     }
                 }
             });
@@ -207,6 +211,8 @@
                     <li data-options="id:'车贷业务', 'iconCls':'icon-tree-app'">车贷业务</li>
                     <li data-options="id:'停车管理', 'iconCls':'icon-tree-app'">停车管理</li>
                     <li data-options="id:'合计汇总', 'iconCls':'icon-tree-app'">合计汇总</li>
+                    <li data-options="id:'收卖车汇总', 'iconCls':'icon-tree-app'">收卖车汇总</li>
+                    <li data-options="id:'押车汇总', 'iconCls':'icon-tree-app'">押车汇总</li>
                     <% } %>
                 </ul>
             </div>

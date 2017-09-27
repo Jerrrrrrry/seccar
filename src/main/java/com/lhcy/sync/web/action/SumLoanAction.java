@@ -16,10 +16,12 @@ import com.lhcy.core.bo.SysConstant;
 import com.lhcy.core.util.ContextUtils;
 import com.lhcy.core.util.JsonUtils;
 import com.lhcy.sync.domain.dto.SummaryDto;
+import com.lhcy.sync.domain.dto.SummaryLoanDto;
+import com.lhcy.sync.domain.dto.SummaryTradeDto;
 import com.lhcy.sync.service.SumSummaryService;
 import com.lhcy.sync.web.form.SumSummaryForm;
 
-public class SumSummaryAction extends DispatchAction {
+public class SumLoanAction extends DispatchAction {
 
     private Logger logger = Logger.getLogger(TradeReportAction.class);
 
@@ -45,8 +47,8 @@ public class SumSummaryAction extends DispatchAction {
 //            int rowBegin = (pageNow - 1) * pageSize;
 //            int rowEnd = rowBegin + pageSize;
 //            if(rowBegin > 0) rowBegin++;
-            List<SummaryDto> list =  new ArrayList<SummaryDto>();
-            list = ts.list(form);
+            List<SummaryLoanDto> list =  new ArrayList<SummaryLoanDto>();
+            list = ts.listLoan(form);
             JsonUtils.printFromList(response, list, list.size());
         }catch(Exception e){
             e.printStackTrace();
@@ -56,7 +58,7 @@ public class SumSummaryAction extends DispatchAction {
 
         return null;
     }
-//    
+    
 //    public ActionForward listTrade(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //
 //        try {

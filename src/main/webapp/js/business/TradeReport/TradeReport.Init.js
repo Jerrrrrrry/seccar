@@ -166,6 +166,13 @@ var TradeReportInit = {
                         sortable: false
                     },
                     {
+                        field: 'interestcost',
+                        title: '借款利息',
+                        width: 60,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
                         field: 'pricediff',
                         title: '价差',
                         width: 60,
@@ -250,6 +257,7 @@ var TradeReportInit = {
                 	  earnest: '<span class="subtotal">' + list.compute("earnest") + '</span>',
                 	  sellprice: '<span class="subtotal">' + list.compute("sellprice") + '</span>',
                 	  tradecost: '<span class="subtotal">' + list.compute("tradecost") + '</span>',
+                	  interestcost: '<span class="subtotal">' + list.compute("interestcost") + '</span>',
                 	  pricediff: '<span class="subtotal">' + list.compute("pricediff") + '</span>',
                 	  totalprofit: '<span class="subtotal">' + list.compute("totalprofit") + '</span>',
                 	  profit: '<span class="subtotal">' + list.compute("profit") + '</span>',

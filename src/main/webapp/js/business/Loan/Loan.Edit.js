@@ -60,7 +60,7 @@ var LoanEdit = {
             $('#periodmonths').textbox('setValue', '0');
             $('#totalinterest').textbox('setValue', '0');
             $('#borrowamount').textbox('setValue', '0');
-            $('#interestrate').textbox('setValue', '1.5');
+            $('#interestrate').textbox('setValue', '0.0');
             $('#earnest').textbox('setValue', '0');
             $('#actualmonths').textbox('setValue', '0');
             $('#interestpaid').textbox('setValue', '0');

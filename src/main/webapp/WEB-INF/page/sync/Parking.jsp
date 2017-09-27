@@ -185,10 +185,16 @@
         <td></td>
       </tr>
       <tr>
-        <th>入库时间</th>
+        <th>入库时间起</th>
         <td><input id="filterinventoryints"/></td>
-        <th>出库时间</th>
+        <th>入库时间止</th>
+        <td><input id="filterinventoryintsend"/></td>
+      </tr>
+      <tr>
+        <th>出库时间起</th>
         <td><input id="filterinventoryoutts"/></td>
+        <th>出库时间止</th>
+        <td><input id="filterinventoryouttsend"/></td>
       </tr>
       </tbody>
     </table>

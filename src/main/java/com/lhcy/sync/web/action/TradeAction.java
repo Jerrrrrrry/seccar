@@ -101,9 +101,9 @@ public class TradeAction extends DispatchAction {
 			double sloan = 0.00;
 			double aloan = 0.00;
           	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
-            purchasedate =sdf.parse(vo.getPurchasedate().substring(0, 9));
+            purchasedate =sdf.parse(vo.getPurchasedate().substring(0, 10));
             if(vo.getSelldate()!=null&&vo.getSelldate()!=""){
-            selldate =sdf.parse(vo.getSelldate().substring(0, 9));
+            selldate =sdf.parse(vo.getSelldate().substring(0, 10));
             }
             
             //根据不同操作类型给vo赋值

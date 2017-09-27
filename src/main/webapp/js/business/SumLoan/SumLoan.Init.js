@@ -1,10 +1,10 @@
-var SumSummaryInit = {
+var SumLoanInit = {
 
     getInstance: function (basePath){
         var init = {};
         init.init = function (){
 
-            var list = SumSummaryList.getInstance(basePath);
+            var list = SumLoanList.getInstance(basePath);
             var xutil = XUtil.getInstance(basePath);
 
             /***********************************************/
@@ -15,7 +15,7 @@ var SumSummaryInit = {
             $("#list").datagrid({
                 striped: true,
                 rownumbers: true,
-                pageSize: 100,
+                pageSize: 20,
                 pageList: [20,100,10000],
                 fit: true,
                 singleSelect: false,
@@ -23,31 +23,94 @@ var SumSummaryInit = {
                 pagination: true,
                 border: false,
                 method: 'post',
-                url: basePath + 'SumSummaryAction.do?m=list',
+                url: basePath + 'SumLoanAction.do?m=list',
                // idField: 'vehicleid',
                 //sortName: 'purchasedate',
                 //sortOrder: 'desc',
                 toolbar: '#bar_list',
                 columns: [[
 					{
-					    field: 'category',
-					    title: '合计类别',
-					    width: 100,
+					    field: 'isreturned',
+					    title: '是否已归还',
+					    width: 80,
 					    align: 'left',
 					    sortable: true
 					},
 					{
-                        field: 'itemType',
-                        title: '项目',
-                        width: 120,
+                        field: 'isabandon',
+                        title: '是否已弃车',
+                        width: 80,
                         align: 'left',
                         sortable: true
                     },
                     {
-                        field: 'details',
-                        title: '明细',
-                        width: 150,
-                        align: 'right',
+                        field: 'settlement',
+                        title: '是否结算',
+                        width: 80,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'borrowamount',
+                        title: '借款金额',
+                        width: 100,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'actualloan',
+                        title: '打款金额',
+                        width: 100,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'totalinterest',
+                        title: '总利息',
+                        width: 80,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'parkingfee',
+                        title: '停车费',
+                        width: 100,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'othercost',
+                        title: '其他费用',
+                        width: 80,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'interestpaid',
+                        title: '已付利息',
+                        width: 80,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'midinterest',
+                        title: '中介利息',
+                        width: 100,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'actualreturn',
+                        title: '已归还金额',
+                        width: 100,
+                        align: 'left',
+                        sortable: false
+                    },
+                    {
+                        field: 'totalprofit',
+                        title: '总利润',
+                        width: 100,
+                        align: 'left',
                         sortable: false
                     }
                     
@@ -65,6 +128,18 @@ var SumSummaryInit = {
                 onLoadSuccess : function (data) {
                   xutil.ajaxLoadEnd();
                   //添加“合计”列
+                  $('#list').datagrid('appendRow', {
+                	  isreturned: '<span class="subtotal">合计</span>',
+                	  borrowamount: '<span class="subtotal">' + list.compute("borrowamount") + '</span>',
+                	  actualloan: '<span class="subtotal">' + list.compute("actualloan") + '</span>',
+                	  totalinterest: '<span class="subtotal">' + list.compute("totalinterest") + '</span>',
+                	  parkingfee: '<span class="subtotal">' + list.compute("parkingfee") + '</span>',
+                	  othercost: '<span class="subtotal">' + list.compute("othercost") + '</span>',
+                	  interestpaid: '<span class="subtotal">' + list.compute("interestpaid") + '</span>',
+                	  midinterest: '<span class="subtotal">' + list.compute("midinterest") + '</span>',
+                	  actualreturn: '<span class="subtotal">' + list.compute("actualreturn") + '</span>',
+                	  totalprofit: '<span class="subtotal">' + list.compute("totalprofit") + '</span>'
+                  });
                 },
                 onLoadError: function () {
                     xutil.ajaxLoadEnd();

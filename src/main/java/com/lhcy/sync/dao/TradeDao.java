@@ -5,6 +5,8 @@ import com.hongchen.kis.db.DbSqlHelper;
 import com.lhcy.core.bo.*;
 import com.lhcy.core.util.StringUtils;
 import com.lhcy.sync.domain.dto.CarSummaryDto;
+import com.lhcy.sync.domain.dto.LoanDto;
+import com.lhcy.sync.domain.dto.SummaryTradeDto;
 import com.lhcy.sync.domain.dto.TradeDto;
 import com.lhcy.sync.domain.pojo.Trade;
 import com.lhcy.sync.web.form.TradeForm;
@@ -344,6 +346,7 @@ public class TradeDao {
 
         return result;
     }
+    
     /***********************************************/
     // 查询卖出的车辆数量和未卖出的车辆数量
     /***********************************************/
@@ -394,6 +397,330 @@ public class TradeDao {
 
         return result;
     }
+    /***********************************************/
+    // 查询卖车总差价
+    /***********************************************/
+    public CarSummaryDto getSummaryTradeProfit() throws Exception{
+    	CarSummaryDto result = new CarSummaryDto();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" select vehicletype,SUM(sellprice-purchaseprice) as  totalprofit from SecCarTrade where isdeleted<>'1' and issold=1 group by vehicletype ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            double totalprofitself =0;
+            double totalprofitthird = 0;
+            while(rs.next()){
+                if ("第三方".equalsIgnoreCase(rs.getString("vehicletype")))//抵押完毕的车辆
+           		{
+                	totalprofitthird =rs.getDouble("totalprofit");
+                } else
+                {
+                	totalprofitself = rs.getDouble("totalprofit");
+                }
+            }
+
+        	result.setTotalprofitself(totalprofitself);
+        	result.setTotalprofitthird(totalprofitthird);
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+    
+
+    /***********************************************/
+    // 查询三方未售车利息成本
+    /***********************************************/
+    public CarSummaryDto getSumTradeInterestInThird() throws Exception{
+    	CarSummaryDto result = new CarSummaryDto();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" declare @td  datetime; ");
+        sql.append(" select @td = GETDATE(); ");
+        sql.append(" WITH TMP AS (select CASE WHEN DATEDIFF(Month,purchasedate,@td)=0 THEN 1.5/100*purchaseprice*1  ");
+        sql.append(" WHEN DATEDIFF(DAY,purchasedate,@td)>DATEDIFF(Month,purchasedate,@td)*31 THEN 1.5/100*purchaseprice*(DATEDIFF(Month,purchasedate,@td)+1)  ");
+        sql.append(" ELSE 1.5/100*purchaseprice*DATEDIFF(Month,purchasedate,@td) END AS interestcost  ");
+        sql.append(" from SecCarTrade where isdeleted<>'1' and issold!=1 and vehicletype='第三方') ");
+        sql.append(" SELECT SUM(interestcost) as interestcost FROM TMP  ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            double tradeinterestinthird =0;
+            while(rs.next()){
+            	tradeinterestinthird = rs.getDouble("interestcost");
+            }
+
+        	result.setTradeinterestinthird(tradeinterestinthird);
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+    
+    /***********************************************/
+    // 查询三方已售车利息成本
+    /***********************************************/
+    public CarSummaryDto getSumTradeInterestOutThird() throws Exception{
+    	CarSummaryDto result = new CarSummaryDto();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" WITH TMP AS (select CASE WHEN DATEDIFF(Month,purchasedate,selldate)=0 THEN 1.5/100*purchaseprice*1  ");
+        sql.append(" WHEN DATEDIFF(DAY,purchasedate,selldate)>DATEDIFF(Month,purchasedate,selldate)*31 THEN 1.5/100*purchaseprice*(DATEDIFF(Month,purchasedate,selldate)+1) ");
+        sql.append(" ELSE 1.5/100*purchaseprice*DATEDIFF(Month,purchasedate,selldate) END AS interestcost from SecCarTrade where isdeleted<>'1' and issold=1 and vehicletype='第三方')  ");
+        sql.append(" SELECT SUM(interestcost) as interestcost FROM TMP  ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            double tradeinterestoutthird =0;
+            while(rs.next()){
+            	tradeinterestoutthird = rs.getDouble("interestcost");
+            }
+
+        	result.setTradeinterestoutthird(tradeinterestoutthird);
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+    
+    /***********************************************/
+    // 查询自收未售车利息成本
+    /***********************************************/
+    public CarSummaryDto getSumTradeInterestInSelf() throws Exception{
+    	CarSummaryDto result = new CarSummaryDto();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" declare @td  datetime; ");
+        sql.append(" select @td = GETDATE(); ");
+        sql.append(" select SUM(1.5/100/30*purchaseprice*DATEDIFF(day,purchasedate,@td)) as interestcost from SecCarTrade where isdeleted<>'1' and issold!=1 and vehicletype='自收车'  ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            double tradeinterestinself =0;
+            while(rs.next()){
+            	tradeinterestinself = rs.getDouble("interestcost");
+            }
+
+        	result.setTradeinterestinself(tradeinterestinself);;
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+    
+    /***********************************************/
+    // 查询自收未售车利息成本
+    /***********************************************/
+    public CarSummaryDto getSumTradeInterestOutSelf() throws Exception{
+    	CarSummaryDto result = new CarSummaryDto();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" select SUM(1.5/100/30*purchaseprice*DATEDIFF(DAY,purchasedate,selldate)) as interestcost from SecCarTrade where isdeleted<>'1' and issold=1 and vehicletype='自收车'  ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            double tradeinterestoutself =0;
+            while(rs.next()){
+            	tradeinterestoutself = rs.getDouble("interestcost");
+            }
+
+        	result.setTradeinterestoutself(tradeinterestoutself);;
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+    
+    /***********************************************/
+    // 查询二手车交易汇总
+    /***********************************************/
+    public List<SummaryTradeDto> listTrade() throws Exception{
+    	List<SummaryTradeDto> result = new ArrayList<SummaryTradeDto>();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" select vehicletype,CASE  WHEN issold = '1' THEN '已售' ELSE '未售' END AS issold, CASE  WHEN settlement = '1' THEN '已结算' ELSE '未结算' END AS settlement, ");
+        sql.append(" SUM(purchaseprice) as purchaseprice,SUM(actualloan) as actualloan,SUM(earnest) as earnest,SUM(sellprice) as sellprice,SUM(tradecost) as tradecost, ");
+        sql.append(" SUM(InterestCost) as InterestCost,SUM(pricediff) as pricediff,SUM(totalprofit) as totalprofit,SUM(profit)as profit,SUM(traderprofit) as traderprofit from SecCarTrade where isdeleted<>'1' ");
+        sql.append(" group by vehicletype,ISSOLD,settlement ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            while(rs.next()){
+            	SummaryTradeDto vo = new SummaryTradeDto();
+            	vo.setVehicletype(rs.getString("vehicletype"));
+            	vo.setIssold(rs.getString("issold"));
+            	vo.setSettlement(rs.getString("settlement"));
+            	vo.setPurchaseprice(rs.getString("purchaseprice"));
+            	vo.setActualloan(rs.getString("actualloan"));
+            	vo.setEarnest(rs.getString("earnest"));
+            	vo.setSellprice(rs.getString("sellprice"));
+            	vo.setTradecost(rs.getString("tradecost"));
+            	vo.setInterestcost(rs.getString("interestcost"));
+            	vo.setPricediff(rs.getString("pricediff"));
+            	vo.setTotalprofit(rs.getString("totalprofit"));
+            	vo.setProfit(rs.getString("profit"));
+            	vo.setTraderprofit(rs.getString("traderprofit"));
+//                if ("1".equalsIgnoreCase(rs.getString("issold")))//卖出去的车的数量
+//           		{
+//                	result.setOutStockCarsAmount(rs.getInt("num"));
+//                } else
+//                {
+//                	//库存车辆数量
+//                	result.setInStockCarsAmount(rs.getInt("num"));
+//                }
+            	result.add(vo);
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+    
     /***********************************************/
     // 查询余量
     /***********************************************/

@@ -31,7 +31,9 @@ var ParkingList = {
             var filterlicenseno = $('#filterlicenseno').textbox('getValue');
             var filtercardescription = $('#filtercardescription').textbox('getValue');
             var filterinventoryints = $('#filterinventoryints').datebox('getValue');
+            var filterinventoryintsend = $('#filterinventoryintsend').datebox('getValue');
             var filterinventoryoutts = $('#filterinventoryoutts').datebox('getValue');
+            var filterinventoryouttsend = $('#filterinventoryouttsend').datebox('getValue');
 
             var prm = {
             		filterField: filterField,
@@ -39,7 +41,9 @@ var ParkingList = {
             		filterlicenseno: filterlicenseno, 
             		filtercardescription: filtercardescription, 
             		filterinventoryints: filterinventoryints,
-            		filterinventoryoutts: filterinventoryoutts};
+            		filterinventoryintsend: filterinventoryintsend,
+            		filterinventoryoutts: filterinventoryoutts,
+            		filterinventoryouttsend: filterinventoryouttsend};
             $('#list').datagrid('clearSelections');
             $('#list').datagrid({queryParams: prm});
 //            xutil.focus('#filterValue');
@@ -71,7 +75,9 @@ var ParkingList = {
         /***********************************************/
         list.clearFilter = function () {
             $('#filterinventoryints').datebox('clear');
+            $('#filterinventoryintsend').datebox('clear');
             $('#filterinventoryoutts').datebox('clear');
+            $('#filterinventoryouttsend').datebox('clear');
             $('#filtercustomer').textbox('clear');
             $('#filterlicenseno').textbox('clear');
             $('#filtercardescription').textbox('clear');

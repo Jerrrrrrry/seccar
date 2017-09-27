@@ -16,6 +16,8 @@
         <form-bean name="TradeForm" type="com.lhcy.sync.web.form.TradeForm"/>
         <form-bean name="LoanForm" type="com.lhcy.sync.web.form.LoanForm"/>
         <form-bean name="SumSummaryForm" type="com.lhcy.sync.web.form.SumSummaryForm"/>
+        <form-bean name="SumSummaryForm" type="com.lhcy.sync.web.form.SumSummaryForm"/>
+        <form-bean name="SumSummaryForm" type="com.lhcy.sync.web.form.SumSummaryForm"/>
     </form-beans>
     <global-exceptions/>
     <global-forwards>
@@ -62,6 +64,12 @@
         </action>
         <action path="/SumSummaryAction"  scope="request" name="SumSummaryForm" parameter="m" type="com.lhcy.sync.web.action.SumSummaryAction">
             <forward name="show" path="/WEB-INF/page/sync/SumSummary.jsp"/>
+        </action>
+        <action path="/SumTradeAction"  scope="request" name="SumTradeForm" parameter="m" type="com.lhcy.sync.web.action.SumTradeAction">
+            <forward name="show" path="/WEB-INF/page/sync/SumTrade.jsp"/>
+        </action>
+        <action path="/SumLoanAction"  scope="request" name="SumLoanForm" parameter="m" type="com.lhcy.sync.web.action.SumLoanAction">
+            <forward name="show" path="/WEB-INF/page/sync/SumLoan.jsp"/>
         </action>
         <action path="/LoanAction"  scope="request" name="LoanForm" parameter="m" type="com.lhcy.sync.web.action.LoanAction">
             <forward name="show" path="/WEB-INF/page/sync/Loan.jsp"/>
