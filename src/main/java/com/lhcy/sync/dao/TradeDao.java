@@ -462,9 +462,9 @@ public class TradeDao {
         //删除的车辆不考虑
         sql.append(" declare @td  datetime; ");
         sql.append(" select @td = GETDATE(); ");
-        sql.append(" WITH TMP AS (select CASE WHEN DATEDIFF(Month,purchasedate,@td)=0 THEN 1.5/100*purchaseprice*1  ");
-        sql.append(" WHEN DATEDIFF(DAY,purchasedate,@td)>DATEDIFF(Month,purchasedate,@td)*31 THEN 1.5/100*purchaseprice*(DATEDIFF(Month,purchasedate,@td)+1)  ");
-        sql.append(" ELSE 1.5/100*purchaseprice*DATEDIFF(Month,purchasedate,@td) END AS interestcost  ");
+        sql.append(" WITH TMP AS (select CASE WHEN DATEDIFF(Month,purchasedate,@td)=0 THEN 1.5/100*(purchaseprice+tradecost)*1  ");
+        sql.append(" WHEN DATEDIFF(DAY,purchasedate,@td)>DATEDIFF(Month,purchasedate,@td)*31 THEN 1.5/100*(purchaseprice+tradecost)*(DATEDIFF(Month,purchasedate,@td)+1)  ");
+        sql.append(" ELSE 1.5/100*(purchaseprice+tradecost)*DATEDIFF(Month,purchasedate,@td) END AS interestcost  ");
         sql.append(" from SecCarTrade where isdeleted<>'1' and issold!=1 and vehicletype='第三方') ");
         sql.append(" SELECT SUM(interestcost) as interestcost FROM TMP  ");
         System.out.println("query sql: "+sql);
@@ -513,9 +513,9 @@ public class TradeDao {
     	CarSummaryDto result = new CarSummaryDto();
         StringBuilder sql = new StringBuilder();
         //删除的车辆不考虑
-        sql.append(" WITH TMP AS (select CASE WHEN DATEDIFF(Month,purchasedate,selldate)=0 THEN 1.5/100*purchaseprice*1  ");
-        sql.append(" WHEN DATEDIFF(DAY,purchasedate,selldate)>DATEDIFF(Month,purchasedate,selldate)*31 THEN 1.5/100*purchaseprice*(DATEDIFF(Month,purchasedate,selldate)+1) ");
-        sql.append(" ELSE 1.5/100*purchaseprice*DATEDIFF(Month,purchasedate,selldate) END AS interestcost from SecCarTrade where isdeleted<>'1' and issold=1 and vehicletype='第三方')  ");
+        sql.append(" WITH TMP AS (select CASE WHEN DATEDIFF(Month,purchasedate,selldate)=0 THEN 1.5/100*(purchaseprice+tradecost)*1  ");
+        sql.append(" WHEN DATEDIFF(DAY,purchasedate,selldate)>DATEDIFF(Month,purchasedate,selldate)*31 THEN 1.5/100*(purchaseprice+tradecost)*(DATEDIFF(Month,purchasedate,selldate)+1) ");
+        sql.append(" ELSE 1.5/100*(purchaseprice+tradecost)*DATEDIFF(Month,purchasedate,selldate) END AS interestcost from SecCarTrade where isdeleted<>'1' and issold=1 and vehicletype='第三方')  ");
         sql.append(" SELECT SUM(interestcost) as interestcost FROM TMP  ");
         System.out.println("query sql: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
@@ -565,7 +565,7 @@ public class TradeDao {
         //删除的车辆不考虑
         sql.append(" declare @td  datetime; ");
         sql.append(" select @td = GETDATE(); ");
-        sql.append(" select SUM(1.5/100/30*purchaseprice*DATEDIFF(day,purchasedate,@td)) as interestcost from SecCarTrade where isdeleted<>'1' and issold!=1 and vehicletype='自收车'  ");
+        sql.append(" select SUM(1.5/100/30*(purchaseprice+tradecost)*DATEDIFF(day,purchasedate,@td)) as interestcost from SecCarTrade where isdeleted<>'1' and issold!=1 and vehicletype='自收车'  ");
         System.out.println("query sql: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
@@ -612,7 +612,7 @@ public class TradeDao {
     	CarSummaryDto result = new CarSummaryDto();
         StringBuilder sql = new StringBuilder();
         //删除的车辆不考虑
-        sql.append(" select SUM(1.5/100/30*purchaseprice*DATEDIFF(DAY,purchasedate,selldate)) as interestcost from SecCarTrade where isdeleted<>'1' and issold=1 and vehicletype='自收车'  ");
+        sql.append(" select SUM(1.5/100/30*(purchaseprice+tradecost)*DATEDIFF(DAY,purchasedate,selldate)) as interestcost from SecCarTrade where isdeleted<>'1' and issold=1 and vehicletype='自收车'  ");
         System.out.println("query sql: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
@@ -660,7 +660,7 @@ public class TradeDao {
         StringBuilder sql = new StringBuilder();
         //删除的车辆不考虑
         sql.append(" select vehicletype,CASE  WHEN issold = '1' THEN '已售' ELSE '未售' END AS issold, CASE  WHEN settlement = '1' THEN '已结算' ELSE '未结算' END AS settlement, ");
-        sql.append(" SUM(purchaseprice) as purchaseprice,SUM(actualloan) as actualloan,SUM(earnest) as earnest,SUM(sellprice) as sellprice,SUM(tradecost) as tradecost, ");
+        sql.append(" SUM((purchaseprice+tradecost)) as (purchaseprice+tradecost),SUM(actualloan) as actualloan,SUM(earnest) as earnest,SUM(sellprice) as sellprice,SUM(tradecost) as tradecost, ");
         sql.append(" SUM(InterestCost) as InterestCost,SUM(pricediff) as pricediff,SUM(totalprofit) as totalprofit,SUM(profit)as profit,SUM(traderprofit) as traderprofit from SecCarTrade where isdeleted<>'1' ");
         sql.append(" group by vehicletype,ISSOLD,settlement ");
         System.out.println("query sql: "+sql);

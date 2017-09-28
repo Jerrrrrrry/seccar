@@ -3,6 +3,7 @@ package com.lhcy.sync.web.action;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -33,7 +35,8 @@ import com.lhcy.sync.web.form.TradeForm;
 
 public class TradeReportAction extends DispatchAction {
 
-    private Logger logger = Logger.getLogger(TradeReportAction.class);
+
+    private Logger logger = Logger.getLogger(TradeAction.class);
 
 	
     /***********************************************/
@@ -73,6 +76,7 @@ public class TradeReportAction extends DispatchAction {
 
         return null;
     }
+   
     /***********************************************/
     // 保存一个
     /***********************************************/
@@ -97,9 +101,9 @@ public class TradeReportAction extends DispatchAction {
 			double sloan = 0.00;
 			double aloan = 0.00;
           	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
-            purchasedate =sdf.parse(vo.getPurchasedate().substring(0, 9));
+            purchasedate =sdf.parse(vo.getPurchasedate().substring(0, 10));
             if(vo.getSelldate()!=null&&vo.getSelldate()!=""){
-            selldate =sdf.parse(vo.getSelldate().substring(0, 9));
+            selldate =sdf.parse(vo.getSelldate().substring(0, 10));
             }
             
             //根据不同操作类型给vo赋值
@@ -256,154 +260,6 @@ public class TradeReportAction extends DispatchAction {
         return null;
 
     }
-//
-//    /***********************************************/
-//    // 保存一个
-//    /***********************************************/
-//    public ActionForward save(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//
-//        try {
-//            // 检查登录
-//            if (ContextUtils.getCurrentUserID(request) == null){
-//                throw new Exception(SysConstant.M_NO_LOGIN);
-//            }
-//
-//            TradeForm form = (TradeForm)frm;
-//            Trade vo = new Trade();
-//            TradeService ts = new TradeService();
-//            BeanUtils.copyProperties(vo, form);
-//            Date purchasedate = new Date();
-//            Date selldate = new Date();;
-//
-//    		String vehicletype = vo.getVehicletype();
-//    		double purchaseprice = vo.getPurchaseprice();
-//			double sloan = 0.00;
-//			double aloan = 0.00;
-//          	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
-//            purchasedate =sdf.parse(vo.getPurchasedate().substring(0, 9));
-//            if(vo.getSelldate()!=null&&vo.getSelldate()!=""){
-//            selldate =sdf.parse(vo.getSelldate().substring(0, 9));
-//            }
-//            
-//            //根据不同操作类型给vo赋值
-//        	if(form.getOperation().equals("sold")){
-////        		double purchaseprice = vo.getPurchaseprice();
-//        		double sellprice = vo.getSellprice();
-//        		double actualloan = vo.getActualloan();
-//        		double interestrate = vo.getInterestrate();
-//        		double interest = 0.00;
-//        		double interestcost = 0.00;
-//        		double pricediff = sellprice - purchaseprice;
-//        		double totalprofit = 0.00;
-//        		double profit = 0.00;
-//        		double traderprofit = 0.00;
-//        		if(vehicletype.equals("自收车")){
-//	        		int daydiff = getIntervalDays(purchasedate, selldate);
-//	        		interest = interestrate/100/30*actualloan;
-//	        		interestcost = interest*daydiff;
-//	        		totalprofit = pricediff - interestcost - vo.getTradecost();
-////	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
-//	        		profit = totalprofit;
-//        		}else{
-//            		int monthdiff = getIntervalMonths(purchasedate, selldate);
-//            		interest = interestrate/100*actualloan;
-//	        		interestcost = interest*monthdiff;
-//	        		totalprofit = pricediff - interestcost - vo.getTradecost();
-////	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
-//	        		profit = totalprofit/2;
-//	        		traderprofit = totalprofit/2;
-//	        		sloan = ts.getspare() + vo.getPurchaseprice();
-//	        		if(vo.getIssold() == null || vo.getIssold().equals("0")){
-//	        		ts.updateSpare(sloan);	
-//	        		}
-//        		}
-//        		
-//        		vo.setInterest(interest);
-//        		vo.setInterestcost(interestcost);
-//        		vo.setPricediff(pricediff);
-//        		vo.setTotalprofit(totalprofit);
-//        		vo.setProfit(profit);
-//        		vo.setTraderprofit(traderprofit);
-//        		vo.setSettlement("0");
-//        		vo.setSettlementdate(null);
-//        		vo.setIssold("1");
-//        	}else if(form.getOperation().equals("settle"))
-//        	{
-//        		if(vo.getIssold() !=null && vo.getIssold().equals("1") && vo.getIsdeleted() !="1" ){
-//	        		vo.setSettlement("1");
-//	        		String settlementdate =sdf.format(new Date());
-//	        		vo.setSettlementdate(settlementdate);
-//        		}else
-//        		{
-//        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTSOLD_DELETED_ERROR);
-//        		}
-//        	}else{
-//        		if(vehicletype.equals("自收车")){
-////		        	vo.setActualloan(vo.getPurchaseprice());
-//		        	aloan = vo.getPurchaseprice();
-//		        	vo.setSpareloan(0);
-//            		vo.setActualloan(aloan);
-////		        	sloan = ts.getspare();
-//        		}else{
-//        			double spareloantmp = 0.00;//vo.getspareloan()
-//        			spareloantmp = ts.getspare();
-//        			if(spareloantmp >= purchaseprice){
-//        				sloan = spareloantmp - purchaseprice;
-//        				aloan = 0.00;
-//        			}else{
-//        				aloan = Math.ceil((purchaseprice-spareloantmp)/100000)*100000;
-//        				sloan = aloan - (purchaseprice-spareloantmp);
-//        			}
-//            		vo.setSpareloan(sloan);
-//            		vo.setActualloan(aloan);
-//                    ts.updateSpare(sloan);
-//        		}
-//
-//        		vo.setSellprice(0);
-//        		vo.setSelldate(null);
-//        		vo.setIssold("0");
-//        		vo.setIsdeleted("0");
-//        		vo.setSettlement("0");
-//        		vo.setSettlementdate(null);
-//        	}
-//            // 新增
-//            if (vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
-//
-//                TradeDto dto = ts.getEquals(vo.getLicenseno());
-//                // 已存在
-//                if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0){
-//                    throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
-//                }else{
-//                    vo.setVehicleid(UuidCreator.getNewId());
-//                    ts.create(vo);
-//                }
-//
-//                // 修改
-//            }else{
-//                TradeDto dto = ts.getEquals(vo.getLicenseno());
-//                System.out.println(dto.getVehicleid()+" ------------- "+dto.getLicenseno());
-//                // 已存在
-//                if (dto != null && dto.getLicenseno() != null && dto.getLicenseno().length() > 0 && !dto.getVehicleid().equals(vo.getVehicleid())){
-//                    throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_EXIST_ERROR);
-//                }else{
-//                	if(form.getOperation().equals("settle")){
-//                		ts.settle(vo);
-//                	}else{
-//                		ts.update(vo);
-//                	}
-//                }
-//            }
-//
-//            JsonUtils.printActionResultOK(response);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            logger.error(e.getMessage());
-//            JsonUtils.printActionResultFromException(response, e);
-//        }
-//
-//        return null;
-//
-//    }
 
     /***********************************************/
     // 显示一个
@@ -477,48 +333,6 @@ public class TradeReportAction extends DispatchAction {
         return null;
     }
     
-//    /***********************************************/
-//    // 删除一个
-//    /***********************************************/
-//    public ActionForward deletesingle(ActionMapping mapping, ActionForm frm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//
-//        try {
-//            // 检查登录
-//            if (ContextUtils.getCurrentUserID(request) == null){
-//                throw new Exception(SysConstant.M_NO_LOGIN);
-//            }
-//
-//            TradeForm form = (TradeForm)frm;
-//            if (form.getVehicleid().length() == 0){
-//                JsonUtils.printActionResultOK(response);
-//                return null;
-//            }
-//
-//            TradeService sv = new TradeService();
-//            String vehichleid = form.getVehicleid();
-//            String vehicletype = form.getVehicletype();
-//            String issold = form.getIssold();
-//            double purchaseprice = form.getPurchaseprice();
-//
-//            sv.deletesingle(vehichleid);
-//            if(vehicletype.equals("自收车") || issold.equals("1")){
-//            	System.out.println("ID: "+vehichleid+"车辆类型： "+vehicletype+"已售："+issold);
-//    		}else{
-//    			double spareloantmp = 0.00;//vo.getspareloan()
-//    			spareloantmp = sv.getspare();
-//    			double	sloan = spareloantmp + purchaseprice;
-//                sv.updateSpare(sloan);
-//    		}
-//            JsonUtils.printActionResultOK(response);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            logger.error(e.getMessage());
-//            JsonUtils.printActionResultFromException(response, e);
-//        }
-//
-//        return null;
-//    }
-//    
     /***********************************************/
     // 删除多个
     /***********************************************/
@@ -613,22 +427,33 @@ public class TradeReportAction extends DispatchAction {
 			throws Exception {
 		FileOutputStream outer = null;
 		FormFile uploadFile = null;
+		
+		String realpath = ContextUtils.getProjectRealPath(request);//request.getSession().getServletContext().getRealPath("/");
+		File file = new File(realpath+"upload"); 
+		if (!file.exists()) {
+			file.mkdir();
+		}
+		
 		try {
 			// 检查登录
 			if (ContextUtils.getCurrentUserID(request) == null) {
 				throw new Exception( SysConstant.M_NO_LOGIN);
 			}
 
-			uploadFile = (FormFile) frm.getMultipartRequestHandler().getFileElements().get("file"); 
+			uploadFile = (FormFile) frm.getMultipartRequestHandler().getFileElements().get("file1"); 
+//            TradeForm form = (TradeForm)frm;
+//            form.getPicturepath();
 			int fileSize = uploadFile.getFileSize();
 			FileProcessor processor = new FileProcessor();
-			File newFile = new File(Constants.PROCESSING_FOLDER_PATH + processor.toProcessingFileName(uploadFile.getFileName()));
+			//File newFile = new File(Constants.PROCESSING_FOLDER_PATH + processor.toProcessingFileName(uploadFile.getFileName()));
+			File newFile = new File(realpath+"upload\\" + processor.toProcessingFileName(uploadFile.getFileName()));
 			outer = new FileOutputStream(newFile);
 			byte[] buffer = uploadFile.getFileData();
 			outer.write(buffer);
 			outer.flush();
 			uploadFile.destroy();
-			String uploadMsg = processor.process(newFile, ContextUtils.getCurrentUserID(request), ContextUtils.getCurrentKisUserID(request));
+			//String uploadMsg = processor.process(newFile, ContextUtils.getCurrentUserID(request), ContextUtils.getCurrentKisUserID(request));
+			String uploadMsg = StringEscapeUtils.escapeJava("upload\\"+newFile.getName());
 			outer.close();
 			response.setContentType("text/html;charset=UTF-8");
 			response.getWriter().print("{\"size\":\""+GetFileSize(fileSize)+ "\", \"uploadMsg\":\"" +uploadMsg+"\"}");
@@ -639,6 +464,7 @@ public class TradeReportAction extends DispatchAction {
 		} finally {
 			if (outer != null)
 			{
+				
 				try{outer.close();}catch(Exception e){}
 			}
 			if (uploadFile != null)
@@ -649,7 +475,6 @@ public class TradeReportAction extends DispatchAction {
 
 		return null;
 	}
-
 	public String GetFileSize(int fileSize) {
 		String size = "";
 		long fileS = fileSize + 0L;
@@ -693,6 +518,59 @@ public class TradeReportAction extends DispatchAction {
 
 //    }
     
+
+    private File[] file;              //鏂囦欢  
+    private String[] fileFileName;    //鏂囦欢鍚�  
+    private String[] filePath;        //鏂囦欢璺緞
+    private String downloadFilePath;  //鏂囦欢涓嬭浇璺緞
+    private InputStream inputStream; 
     
+    public Logger getLogger() {
+		return logger;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+
+	public File[] getFile() {
+		return file;
+	}
+
+	public void setFile(File[] file) {
+		this.file = file;
+	}
+
+	public String[] getFileFileName() {
+		return fileFileName;
+	}
+
+	public void setFileFileName(String[] fileFileName) {
+		this.fileFileName = fileFileName;
+	}
+
+	public String[] getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String[] filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getDownloadFilePath() {
+		return downloadFilePath;
+	}
+
+	public void setDownloadFilePath(String downloadFilePath) {
+		this.downloadFilePath = downloadFilePath;
+	}
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
 }
 
