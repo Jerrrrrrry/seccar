@@ -660,7 +660,7 @@ public class TradeDao {
         StringBuilder sql = new StringBuilder();
         //删除的车辆不考虑
         sql.append(" select vehicletype,CASE  WHEN issold = '1' THEN '已售' ELSE '未售' END AS issold, CASE  WHEN settlement = '1' THEN '已结算' ELSE '未结算' END AS settlement, ");
-        sql.append(" SUM((purchaseprice+tradecost)) as (purchaseprice+tradecost),SUM(actualloan) as actualloan,SUM(earnest) as earnest,SUM(sellprice) as sellprice,SUM(tradecost) as tradecost, ");
+        sql.append(" SUM(purchaseprice+tradecost) as purchaseprice,SUM(actualloan) as actualloan,SUM(earnest) as earnest,SUM(sellprice) as sellprice,SUM(tradecost) as tradecost, ");
         sql.append(" SUM(InterestCost) as InterestCost,SUM(pricediff) as pricediff,SUM(totalprofit) as totalprofit,SUM(profit)as profit,SUM(traderprofit) as traderprofit from SecCarTrade where isdeleted<>'1' ");
         sql.append(" group by vehicletype,ISSOLD,settlement ");
         System.out.println("query sql: "+sql);
