@@ -9,7 +9,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[SpareLoan](
-	[spareloan] [decimal](18, 4) NULL
+	[spareloan] [decimal](18, 4) NULL,
+	[userid] [nvarchar](20) NOT NULL
 ) ON [PRIMARY]
 
 GO

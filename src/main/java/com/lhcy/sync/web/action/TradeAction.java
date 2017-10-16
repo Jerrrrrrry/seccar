@@ -133,9 +133,9 @@ public class TradeAction extends DispatchAction {
 //	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
 	        		profit = totalprofit/2;
 	        		traderprofit = totalprofit/2;
-	        		sloan = ts.getspare() + purchaseprice + tradecost;
+	        		sloan = ts.getspare(vo.getTraderid()) + purchaseprice + tradecost;
 	        		if(vo.getIssold() == null || vo.getIssold().equals("0")){
-	        		ts.updateSpare(sloan);	
+	        		ts.updateSpare(vo.getTraderid(), sloan);	
 	        		}
         		}
         		
@@ -196,7 +196,7 @@ public class TradeAction extends DispatchAction {
                     vo.setVehicleid(UuidCreator.getNewId());
                     if(vehicletype.equals("第三方")){
                     	double spareloantmp = 0.00;//vo.getspareloan()
-	        			spareloantmp = ts.getspare();
+	        			spareloantmp = ts.getspare(vo.getTraderid());
 	        			if(spareloantmp >= (purchaseprice + tradecost)){
 	        				sloan = spareloantmp - (purchaseprice + tradecost);
 	        				aloan = 0.00;
@@ -206,7 +206,7 @@ public class TradeAction extends DispatchAction {
 	        			}
 	            		vo.setSpareloan(sloan);
 	            		vo.setActualloan(aloan);
-	                    ts.updateSpare(sloan);
+	                    ts.updateSpare(vo.getTraderid(), sloan);
                     }
                     
                     ts.create(vo);
@@ -225,7 +225,7 @@ public class TradeAction extends DispatchAction {
                 	}else{
                 		if(vehicletype.equals("第三方")){
                 			double spareloantmp = 0.00;//vo.getspareloan()
-                			spareloantmp = ts.getspare();
+                			spareloantmp = ts.getspare(vo.getTraderid());
                 			//这里需要获取原始购车价格和交易费用，新增加的部分计算余量和新加部分实际借款金额，并累加到原始额中
                 			double opurchaseprice = dto.getPurchaseprice();
                 			double oactualloan = dto.getActualloan();
@@ -243,7 +243,7 @@ public class TradeAction extends DispatchAction {
 	            			}
 		            		vo.setSpareloan(sloan);
 		            		vo.setActualloan(aloan);
-		                    ts.updateSpare(sloan);
+		                    ts.updateSpare(vo.getTraderid(), sloan);
                 		}
                 		ts.update(vo);
                 	}
@@ -313,15 +313,16 @@ public class TradeAction extends DispatchAction {
             String issold = form.getIssold();
             double purchaseprice = form.getPurchaseprice();
     		double tradecost = form.getTradecost();
-
+    		String traderId = form.getTraderid();
+    		
             sv.deletesingle(vehichleid);
             if(vehicletype.equals("自收车") || issold.equals("1")){
             	System.out.println("ID: "+vehichleid+"车辆类型： "+vehicletype+"已售："+issold);
     		}else{
     			double spareloantmp = 0.00;//vo.getspareloan()
-    			spareloantmp = sv.getspare();
+    			spareloantmp = sv.getspare(traderId);
     			double	sloan = spareloantmp + purchaseprice + tradecost;
-                sv.updateSpare(sloan);
+                sv.updateSpare(traderId, sloan);
     		}
             JsonUtils.printActionResultOK(response);
         }catch(Exception e){

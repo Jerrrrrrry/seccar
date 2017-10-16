@@ -5,7 +5,6 @@ import com.hongchen.kis.db.DbSqlHelper;
 import com.lhcy.core.bo.*;
 import com.lhcy.core.util.StringUtils;
 import com.lhcy.sync.domain.dto.CarSummaryDto;
-import com.lhcy.sync.domain.dto.LoanDto;
 import com.lhcy.sync.domain.dto.SummaryTradeDto;
 import com.lhcy.sync.domain.dto.TradeDto;
 import com.lhcy.sync.domain.pojo.Trade;
@@ -234,7 +233,7 @@ public class TradeDao {
         TradeDto result = new TradeDto();
         StringBuilder sql = new StringBuilder();
 //        sql.append(" SELECT * ");
-        sql.append(" SELECT (select top 1 spareloan from SpareLoan) as spareloan ");
+        sql.append(" SELECT b.spareloan ");
         sql.append("    ,a.vehicleid ");
         sql.append("    ,a.licenseno ");
         sql.append("    ,a.vehicledesc ");
@@ -271,8 +270,8 @@ public class TradeDao {
         sql.append("    ,a.buyerid ");
         sql.append("    ,a.buyername ");
         sql.append("    ,a.buyermobile ");
-        sql.append("   FROM SecCarTrade a ");
-        sql.append("  WHERE a.vehicleid = ? ");
+        sql.append("   FROM SecCarTrade a,  SpareLoan b");
+        sql.append("  WHERE a.vehicleid = ? and a.traderid = b.userid");
         System.out.println("query sql: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
@@ -724,13 +723,13 @@ public class TradeDao {
     /***********************************************/
     // 查询余量
     /***********************************************/
-    public double getspare() throws Exception{
+    public double getspare(String userId) throws Exception{
 
     	double result = 0.00;
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT  spareloan ");
         sql.append("   FROM SpareLoan ");
-        sql.append("  WHERE 1 = 1 ");
+        sql.append("  WHERE userid = ? ");
         System.out.println("query sql: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
@@ -738,14 +737,14 @@ public class TradeDao {
         }
 
         List args = new ArrayList();
-//        args.add(id);
+        args.add(userId);
 
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
             ps = conn.prepareStatement(sql.toString());
-            rs = DbSqlHelper.executeQuery(ps);
+            rs = DbSqlHelper.executeQuery(ps, args);
 
             if (rs == null){
                 return result;
@@ -769,6 +768,55 @@ public class TradeDao {
         return result;
     }
     
+    public boolean spareExists(String userId) throws Exception{
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT  1 ");
+        sql.append("   FROM SpareLoan ");
+        sql.append("  WHERE userid = ? ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        List args = new ArrayList();
+        args.add(userId);
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps, args);
+
+            if (rs == null){
+                return false;
+            }
+            while(rs.next())
+            {
+            	int result = rs.getInt(1);
+            	if (result == 1)
+            	{
+            		return true;
+            	}
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return false;
+    }
     /***********************************************/
     // 创建一个
     /***********************************************/
@@ -1009,13 +1057,14 @@ public class TradeDao {
     /***********************************************/
     // 更新余量
     /***********************************************/
-    public void updateSpare(double sloan) throws Exception{
+    public void updateSpare(String userId, double sloan) throws Exception{
 
     	StringBuilder sql = new StringBuilder();
 
       
     	sql.append(" UPDATE SpareLoan SET ");
-    	sql.append("   spareloan = ? ");
+    	sql.append("   spareloan = ?"
+    			+ " where userid=? ");
     	Connection conn = DbConnectionFactory.createHonchenConnection();
     	if (conn == null){
     		return;
@@ -1029,6 +1078,7 @@ public class TradeDao {
 
               List args = new ArrayList();
               args.add(sloan);
+              args.add(userId);
               DbSqlHelper.executeNonQueryWithBatch(conn, ps, args);
 	          ps.executeBatch();
 	          conn.commit();
@@ -1052,6 +1102,50 @@ public class TradeDao {
               logger.error(e.getMessage());
           }
       }
+    }
+    	 public void insertSpare(String userId, double sloan) throws Exception{
+
+    	    	StringBuilder sql = new StringBuilder();
+
+    	      
+    	    	sql.append(" insert SpareLoan values(?,?) ");
+    	    	Connection conn = DbConnectionFactory.createHonchenConnection();
+    	    	if (conn == null){
+    	    		return;
+    	    	}
+
+    	    	PreparedStatement ps = null;
+    	    	String pk = null;
+    	    	try {
+    	          conn.setAutoCommit(false);
+    	          ps = conn.prepareStatement(sql.toString());
+
+    	              List args = new ArrayList();
+    	              args.add(sloan);
+    	              args.add(userId);
+    	              DbSqlHelper.executeNonQueryWithBatch(conn, ps, args);
+    		          ps.executeBatch();
+    		          conn.commit();
+    	      }catch (Exception e){
+
+    	          try{
+    	              conn.rollback();
+    	          }catch (Exception e1){
+    	              e1.printStackTrace();
+    	              logger.error(e1.getMessage());
+    	          }
+
+    	          throw new Exception(e);
+
+    	      }finally{
+    	          try {
+    	              ps.close();
+    	              conn.close();
+    	          } catch (Exception e) {
+    	              e.printStackTrace();
+    	              logger.error(e.getMessage());
+    	          }
+    	      }
 //
 //        StringBuilder sql = new StringBuilder();
 //

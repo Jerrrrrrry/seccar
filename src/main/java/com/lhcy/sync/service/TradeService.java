@@ -27,8 +27,8 @@ public class TradeService {
         dao.create(vo);
     }
     
-    public double getspare() throws Exception{
-        return dao.getspare();
+    public double getspare(String userId) throws Exception{
+        return dao.getspare(userId);
     }
     
     public void update(Trade vo) throws Exception{
@@ -39,8 +39,8 @@ public class TradeService {
         dao.settle(vo);
     }
     
-    public void updateSpare(double sloan) throws Exception{
-        dao.updateSpare(sloan);
+    public void updateSpare(String userId, double sloan) throws Exception{
+        dao.updateSpare(userId, sloan);
     }
        
     public void deletesingle(String vehicleid) throws Exception{
