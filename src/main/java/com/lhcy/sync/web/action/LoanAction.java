@@ -158,7 +158,7 @@ public class LoanAction extends DispatchAction {
         		vo.setIsabandon("0");
         		vo.setSettlement("0");
         		vo.setSettlementdate(null);
-        		vo.setActualreturndate(null);
+//        		vo.setActualreturndate(null);
         	}
             // 新增
             if (vo.getVehicleid() == null || vo.getVehicleid().length() == 0){

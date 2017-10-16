@@ -378,16 +378,65 @@ var LoanEdit = {
             var tradername = $('#username').val();
             var vehicleid = $('#vehicleid').val();
             var licenseno = $('#licenseno').textbox('getValue');
+            if (licenseno.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入车牌号");
+            	return;
+            }
             var vehicledesc = $('#vehicledesc').textbox('getValue');
+            if (vehicledesc.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入车辆描述");
+            	return;
+            }
             var ownername = $('#ownername').textbox('getValue');
+            if (ownername.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入抵押人姓名");
+            	return;
+            }
             var ownerid = $('#ownerid').textbox('getValue');
             var mobileno = $('#mobileno').textbox('getValue');
-            var borrowdate = $('#borrowdate').textbox('getValue');
-            var returndate = $('#returndate').textbox('getValue');
-            var periodmonths = $('#periodmonths').textbox('getValue');
-            var totalinterest = $('#totalinterest').textbox('getValue');
             var borrowamount = $('#borrowamount').textbox('getValue');
+            if (borrowamount.replace(/(^\s*)|(\s*$)/g, "")=="" ||borrowamount.replace(/(^\s*)|(\s*$)/g, "")=="0")
+            {
+            	alert("请输入有效的借款金额(大于0的值)");
+            	return;
+            }
+            var borrowdate = $('#borrowdate').textbox('getValue');
+            if (borrowdate.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入借款日期");
+            	return;
+            }
+            var returndate = $('#returndate').textbox('getValue');
+            if (returndate.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入约定还款日期");
+            	return;
+            }
+            var periodmonths = $('#periodmonths').textbox('getValue');
+            if (periodmonths.replace(/(^\s*)|(\s*$)/g, "")==""||periodmonths.replace(/(^\s*)|(\s*$)/g, "")=="0")
+            {
+            	alert("请输入有效的约定还款周期(大于0的值)");
+            	return;
+            }
+            var totalinterest = $('#totalinterest').textbox('getValue');
+            if (totalinterest.replace(/(^\s*)|(\s*$)/g, "")=="" ||totalinterest.replace(/(^\s*)|(\s*$)/g, "")=="0")
+            {
+            	alert("请输入有效的利息总额(大于0的值)");
+            	return;
+            }
             var interestrate = $('#interestrate').textbox('getValue');
+            if (interestrate.replace(/(^\s*)|(\s*$)/g, "")=="" ||isNaN(interestrate))
+            {
+            	alert("请输入有效的利率(大于0的值)");
+            	return;
+            } else if (interestrate <= 0 )
+            	{
+            	alert("请输入有效的利率(大于0的值)");
+            	return;
+            	}
             var earnest = $('#earnest').textbox('getValue');
             var actualmonths = $('#actualmonths').textbox('getValue');
             var interestpaid = $('#interestpaid').textbox('getValue');
@@ -398,6 +447,11 @@ var LoanEdit = {
             var parkingfee = $('#parkingfee').textbox('getValue');
             var otherfee = $('#otherfee').textbox('getValue');
             var actualloan = $('#actualloan').textbox('getValue');
+            if (actualloan.replace(/(^\s*)|(\s*$)/g, "")=="" ||actualloan.replace(/(^\s*)|(\s*$)/g, "")=="0")
+            {
+            	alert("请输入有效的实际打款金额(大于0的值)");
+            	return;
+            }
             var comments = $('#comments').textbox('getValue');
             var actualreturn = $('#actualreturn').textbox('getValue');
             var actualreturndate = $('#actualreturndate').textbox('getValue');
