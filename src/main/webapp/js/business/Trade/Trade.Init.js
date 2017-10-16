@@ -31,7 +31,7 @@ var TradeInit = {
                 method: 'post',
                 url: basePath + 'TradeAction.do?m=list',
                 idField: 'vehicleid',
-                sortName: 'purchasedate',
+                sortName: 'createdts',
                 sortOrder: 'desc',
                 toolbar: '#bar_list',
                 columns: [[

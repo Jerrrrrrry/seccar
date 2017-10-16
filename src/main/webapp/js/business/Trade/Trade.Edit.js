@@ -132,7 +132,7 @@ var TradeEdit = {
             $('#earnest').textbox({disabled:false});
             $('#tradecost').textbox({disabled:true});
             $('#sellprice').textbox({disabled:true});
-            $('#selldate').textbox({disabled:false});
+            $('#selldate').textbox({disabled:true});
             $('#buyerid').textbox({disabled:false});
             $('#buyername').textbox({disabled:false});
             $('#buyermobile').textbox({disabled:false});
