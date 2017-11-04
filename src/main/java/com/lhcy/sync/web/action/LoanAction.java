@@ -43,7 +43,9 @@ public class LoanAction extends DispatchAction {
     	System.out.println("listlistlistlistlistlist"); 
         try {
             // 检查登录
-        	if (ContextUtils.getCurrentUserID(request) == null) {
+        	String userId = ContextUtils.getCurrentUserID(request);
+        	String accessType = ContextUtils.getCurrentUserAccessType(request);
+        	if (userId == null || accessType == null) {
                 throw new Exception(SysConstant.M_NO_LOGIN);
             }
 
@@ -52,18 +54,19 @@ public class LoanAction extends DispatchAction {
 //          sdf.format(date);
         	
         	LoanForm form = (LoanForm)frm;
+        	form.setTraderid(ContextUtils.getCurrentUserAccount(request));
 //        	System.out.println(form.getFilterField()+" " +form.getFilterValue() +" " + form.getFilterlicenseno() 
 //        	+ " " + form.getFiltercustomer()+ " " + form.getFiltercardescription()+ " " + form.getFilterinventoryints()+ " " + form.getFilterinventoryoutts());
         	LoanService ts = new LoanService();
             int pageSize = form.getRows();
             int pageNow = form.getPage();
 //            int count = 50;
-            int count = ts.count(form);
+            int count = ts.count(form, accessType);
             int rowBegin = (pageNow - 1) * pageSize;
             int rowEnd = rowBegin + pageSize;
             if(rowBegin > 0) rowBegin++;
             List<LoanDto> list =  new ArrayList<LoanDto>();
-            list = ts.list(rowBegin, rowEnd, form);
+            list = ts.list(rowBegin, rowEnd, form, accessType);
             JsonUtils.printFromList(response, list, count);
         }catch(Exception e){
             e.printStackTrace();

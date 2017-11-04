@@ -11,12 +11,12 @@ public class LoanService {
 
     private LoanDao dao = new LoanDao();
 
-    public List<LoanDto> list(int rowBegin, int pageSize, LoanForm form) throws Exception{
-    return dao.list(rowBegin, pageSize, form);
+    public List<LoanDto> list(int rowBegin, int pageSize, LoanForm form, String accessType) throws Exception{
+    return dao.list(rowBegin, pageSize, form, accessType);
     }
 
-    public int count(LoanForm form) throws Exception {
-        return dao.count(form);
+    public int count(LoanForm form, String accessType) throws Exception {
+        return dao.count(form, accessType);
     }
 
     public LoanDto query(String id) throws Exception{

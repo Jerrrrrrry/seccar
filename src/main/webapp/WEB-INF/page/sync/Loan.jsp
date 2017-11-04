@@ -249,6 +249,7 @@
     </table> 
 	<input type="file" name="file1" id="file1" style="display:none" /> 
     <div id="imgdiv"></div>
+    <input type="hidden" id="CurrentLoginUserAccesstype" value="<%= session.getAttribute("CurrentLoginUserAccesstype")%>" />
     
   </div>
 </div>

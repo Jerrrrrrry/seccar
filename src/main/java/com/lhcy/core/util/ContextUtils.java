@@ -14,6 +14,13 @@ public class ContextUtils {
         return result;
     }
 
+    public static String getCurrentUserAccessType(HttpServletRequest request){
+        String result = null;
+        if(request.getSession().getAttribute("CurrentLoginUserAccesstype") != null) {
+            result = (String) request.getSession().getAttribute("CurrentLoginUserAccesstype");
+        }
+        return result;
+    }
     public static String getCurrentUserAccount(HttpServletRequest request){
         String result = null;
         if(request.getSession().getAttribute("CurrentLoginUserAccount") != null) {

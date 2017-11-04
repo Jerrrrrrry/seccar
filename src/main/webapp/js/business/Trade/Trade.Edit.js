@@ -25,7 +25,7 @@ var TradeEdit = {
             $('#interestrate').textbox({disabled:false});
             $('#actualloan').textbox({disabled:true});
             $('#spareloan').textbox({disabled:true});
-            $('#vehicletype').combobox({disabled:false});
+            $('#vehicletype').combobox({disabled:true});
             $('#comments').textbox({disabled:false});
             $('#earnest').textbox({disabled:false});
             $('#tradecost').textbox({disabled:false});
@@ -163,7 +163,7 @@ var TradeEdit = {
             $('#interestrate').textbox({disabled:false});
             $('#actualloan').textbox({disabled:true});
             $('#spareloan').textbox({disabled:true});
-            $('#vehicletype').combobox({disabled:false});
+            //$('#vehicletype').combobox({disabled:false});
             $('#comments').textbox({disabled:false});
             $('#earnest').textbox({disabled:false});
             $('#tradecost').textbox({disabled:false});
@@ -230,15 +230,22 @@ var TradeEdit = {
                     var vo = data[0];
 
                     if (vo.status == "ok") {
-                    	if(vo.dto.isdeleted=="1"){
-                    		edit.disabledview();
-                    	}else if(vo.dto.settlement=="1"){
-                    		edit.disabledview();
-                    	}else if(vo.dto.issold=="1"){
-                    		edit.soldview();
-                    	}else{
-                    		edit.editview();
-                    	}
+                    	 var CurrentLoginUserAccesstype = $('#CurrentLoginUserAccesstype').val();
+                         if(CurrentLoginUserAccesstype == "管理员")
+                         {
+                        	 if(vo.dto.isdeleted=="1"){
+                        		 edit.disabledview();
+                        	 }else if(vo.dto.settlement=="1"){
+                        		 edit.disabledview();
+                        	 }else if(vo.dto.issold=="1"){
+                        		 edit.soldview();
+                        	 }else{
+                        		 edit.editview();
+                        	 }
+                         } else
+                        {
+                        	 edit.disabledview();
+                        }
 //                    	$('#licenseno').textbox({disabled:true});
 //                        $('#vehicledesc').textbox({disabled:false});
 //                        $('#tradername').textbox({disabled:true});
@@ -360,13 +367,38 @@ var TradeEdit = {
             var traderid = $('#traderid').val();
             var vehicleid = $('#vehicleid').val();
             var licenseno = $('#licenseno').textbox('getValue');
+            if (licenseno.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入车牌号");
+            	return;
+            }
             var vehicledesc = $('#vehicledesc').textbox('getValue');
+            if (vehicledesc.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入车辆描述");
+            	return;
+            }
             var tradername = $('#tradername').textbox('getValue');
             var purchaseprice = $('#purchaseprice').textbox('getValue');
+            if (purchaseprice.replace(/(^\s*)|(\s*$)/g, "")=="" ||purchaseprice.replace(/(^\s*)|(\s*$)/g, "")=="0")
+            {
+            	alert("请输入有效的收车价(大于0的值)");
+            	return;
+            }
             var ownername = $('#ownername').textbox('getValue');
+            if (ownername.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入卖车人姓名");
+            	return;
+            }
             var ownermobile = $('#ownermobile').textbox('getValue');
             var ownerid = $('#ownerid').textbox('getValue');
             var purchasedate = $('#purchasedate').textbox('getValue');
+            if ((save == 'save'||save == 'savenew') && purchasedate.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入收车日期");
+            	return;
+            }
             var interestrate = $('#interestrate').textbox('getValue');
             var actualloan = $('#actualloan').textbox('getValue');
             var spareloan = $('#spareloan').textbox('getValue');
@@ -376,6 +408,11 @@ var TradeEdit = {
             var tradecost = $('#tradecost').textbox('getValue');
             var sellprice = $('#sellprice').textbox('getValue');
             var selldate = $('#selldate').textbox('getValue');
+            if (save == 'sold' && selldate.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入销售日期");
+            	return;
+            }
             var buyerid = $('#buyerid').textbox('getValue');
             var buyername = $('#buyername').textbox('getValue');
             var buyermobile = $('#buyermobile').textbox('getValue');
@@ -631,7 +668,7 @@ var TradeEdit = {
         // 删除
         /***********************************************/
         edit.del = function () {
-
+        	var traderid = $('#traderid').val();
             var vehicleid = $('#vehicleid').val();
             var isdeleted = $('#isdeleted').val();
             var issold = $('#issold').val();
@@ -661,7 +698,8 @@ var TradeEdit = {
                         	issold: issold,
                         	vehicletype: vehicletype,
                         	purchaseprice: purchaseprice,
-                        	tradecost: tradecost
+                        	tradecost: tradecost,
+                        	traderid:traderid
                         },
                         success: function (data) {
 

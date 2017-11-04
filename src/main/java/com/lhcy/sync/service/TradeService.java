@@ -11,12 +11,12 @@ public class TradeService {
 
     private TradeDao dao = new TradeDao();
 
-    public List<TradeDto> list(int rowBegin, int pageSize, TradeForm form) throws Exception{
-    return dao.list(rowBegin, pageSize, form);
+    public List<TradeDto> list(int rowBegin, int pageSize, TradeForm form, String accessType) throws Exception{
+    return dao.list(rowBegin, pageSize, form, accessType);
     }
 
-    public int count(TradeForm form) throws Exception {
-        return dao.count(form);
+    public int count(TradeForm form, String accessType) throws Exception {
+        return dao.count(form, accessType);
     }
 
     public TradeDto query(String id) throws Exception{

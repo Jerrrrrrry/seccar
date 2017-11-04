@@ -30,7 +30,7 @@ public class LoanDao {
     /***********************************************/
     // 列表的总数量
     /***********************************************/
-    public int count(LoanForm form) throws Exception {
+    public int count(LoanForm form, String accessType) throws Exception {
         int result = 0;
         StringBuilder sql = new StringBuilder();
         sql.append(" select count(1) as cnt ");
@@ -39,6 +39,11 @@ public class LoanDao {
 //        sql.append("  WHERE 1=1 and isdeleted !='1' and settlement !='1' ");
 
         List args = new ArrayList();
+        if (!"管理员".equalsIgnoreCase(accessType))
+        {
+        	sql.append(" AND (a.traderid =?) ");
+            args.add(form.getTraderid());
+        }
         sql.append(getWhere(form, args));
 
         Connection conn = DbConnectionFactory.createHonchenConnection();
@@ -77,10 +82,17 @@ public class LoanDao {
     /***********************************************/
     // 列表
     /***********************************************/
-    public List<LoanDto> list(int rowBegin, int rowEnd, LoanForm form) throws Exception{
+    public List<LoanDto> list(int rowBegin, int rowEnd, LoanForm form, String accessType) throws Exception{
 
         List args = new ArrayList();
-        String where = getWhere(form, args);
+        StringBuilder pre = new StringBuilder();
+        if (!"管理员".equalsIgnoreCase(accessType))
+        {
+        	pre.append(" AND (a.traderid =?) ");
+            args.add(form.getTraderid());
+        }
+        pre.append(getWhere(form, args));
+        String where = pre.toString();
 
         String order = "desc";
         if (form.getOrder() != null && form.getOrder().length() > 0){

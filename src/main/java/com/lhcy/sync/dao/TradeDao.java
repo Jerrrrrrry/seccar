@@ -27,15 +27,19 @@ public class TradeDao {
     /***********************************************/
     // 列表的总数量
     /***********************************************/
-    public int count(TradeForm form) throws Exception {
+    public int count(TradeForm form, String accessType) throws Exception {
         int result = 0;
         StringBuilder sql = new StringBuilder();
         sql.append(" select count(1) as cnt ");
         sql.append("   from SecCarTrade a ");
         sql.append("  WHERE 1=1  ");
 //        sql.append("  WHERE 1=1 and isdeleted !='1' ");
-
         List args = new ArrayList();
+        if (!"管理员".equalsIgnoreCase(accessType))
+        {
+        	sql.append(" AND (a.traderid =?) ");
+            args.add(form.getTraderid());
+        }
         sql.append(getWhere(form, args));
 
         Connection conn = DbConnectionFactory.createHonchenConnection();
@@ -74,10 +78,9 @@ public class TradeDao {
     /***********************************************/
     // 列表
     /***********************************************/
-    public List<TradeDto> list(int rowBegin, int rowEnd, TradeForm form) throws Exception{
+    public List<TradeDto> list(int rowBegin, int rowEnd, TradeForm form, String accessType) throws Exception{
 
         List args = new ArrayList();
-        String where = getWhere(form, args);
 
         String order = "desc";
         if (form.getOrder() != null && form.getOrder().length() > 0){
@@ -131,7 +134,12 @@ public class TradeDao {
         sql.append("   FROM SecCarTrade a ");
         sql.append("  WHERE 1=1  ");
 //        sql.append("  WHERE 1=1 and isdeleted !='1'");
-        sql.append(where);
+        if (!"管理员".equalsIgnoreCase(accessType))
+        {
+        	sql.append(" AND (a.traderid =?) ");
+            args.add(form.getTraderid());
+        }
+        sql.append(getWhere(form, args));
         sql.append(" ) ");
         sql.append(" SELECT * FROM temp ");
         sql.append(" WHERE RowTrade BETWEEN " + rowBegin + " AND " + rowEnd + " ");

@@ -283,17 +283,23 @@ var LoanEdit = {
                     var vo = data[0];
 
                     if (vo.status == "ok") {
-                    	if(vo.dto.isdeleted=="1"){
-                    		edit.disabledview();
-                    	}else if(vo.dto.settlement=="1"){
-                    		edit.disabledview();
-                    	}else if(vo.dto.isabandon=="1"){
-                    		edit.abandonview();
-                    	}else if(vo.dto.isreturned=="1"){
-                    		edit.returnedview();
-                    	}else{
-                    		edit.editview();
-                    	}
+                    	 var CurrentLoginUserAccesstype = $('#CurrentLoginUserAccesstype').val();
+                         if(CurrentLoginUserAccesstype == "管理员")
+                         {
+	                    	if(vo.dto.isdeleted=="1"){
+	                    		edit.disabledview();
+	                    	}else if(vo.dto.settlement=="1"){
+	                    		edit.disabledview();
+	                    	}else if(vo.dto.isabandon=="1"){
+	                    		edit.abandonview();
+	                    	}else if(vo.dto.isreturned=="1"){
+	                    		edit.returnedview();
+	                    	}else{
+	                    		edit.editview();
+	                    	}
+                         } else{
+                        	 edit.disabledview();
+                         }
                     	
                     	$('#isdeleted').val(vo.dto.isdeleted);
                     	$('#isreturned').val(vo.dto.isreturned);
@@ -334,7 +340,7 @@ var LoanEdit = {
                 			var id = i+1;
                 			var pic = "upload\\" + picturepaths[i];
 //                			alert(pic);
-                			str = str+"<img name='image' id='img" + id + "' src='"+ pic +"' height='100' width='145'/><img id='del" + id + "' src='"+imgdel+"' height='16' width='16' onclick='delFile(" + id + ")'  />";	
+                			str = str+"<img name='image' id='img" + id + "' src='"+ pic +"' height='100' width='145'/><img id='del" + id + "' src='"+imgdel+"' height='16' width='16' onclick='delFile(" + id + ")'  disabled/>";	
                 		}
 //                		alert(str);
                 		var s_HTML=$("#imgdiv")[0].innerHTML;
@@ -700,7 +706,7 @@ var LoanEdit = {
         // 删除
         /***********************************************/
         edit.del = function () {
-
+        	var traderid = $('#traderid').val();
             var vehicleid = $('#vehicleid').val();
             var isdeleted = $('#isdeleted').val();
             var isabandon = $('#isabandon').val();
@@ -729,7 +735,8 @@ var LoanEdit = {
                         	vehicleid: vehicleid,
                         	isabandon: isabandon,
                         	isreturned: isreturned,
-                        	settlement: settlement
+                        	settlement: settlement,
+                        	traderid:traderid
                         },
                         success: function (data) {
 

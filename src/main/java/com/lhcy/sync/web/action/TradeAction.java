@@ -46,27 +46,28 @@ public class TradeAction extends DispatchAction {
 
         try {
             // 检查登录
-        	if (ContextUtils.getCurrentUserID(request) == null) {
+        	String userId = ContextUtils.getCurrentUserID(request);
+        	String accessType = ContextUtils.getCurrentUserAccessType(request);
+        	if (userId == null || accessType == null) {
                 throw new Exception(SysConstant.M_NO_LOGIN);
             }
-
 //          	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 	
 //          Date now = new Date();
 //          sdf.format(date);
-        	
         	TradeForm form = (TradeForm)frm;
+    		form.setTraderid(ContextUtils.getCurrentUserAccount(request));
 //        	System.out.println(form.getFilterField()+" " +form.getFilterValue() +" " + form.getFilterlicenseno() 
 //        	+ " " + form.getFiltercustomer()+ " " + form.getFiltercardescription()+ " " + form.getFilterinventoryints()+ " " + form.getFilterinventoryoutts());
         	TradeService ts = new TradeService();
             int pageSize = form.getRows();
             int pageNow = form.getPage();
 //            int count = 50;
-            int count = ts.count(form);
+            int count = ts.count(form, accessType);
             int rowBegin = (pageNow - 1) * pageSize;
             int rowEnd = rowBegin + pageSize;
             if(rowBegin > 0) rowBegin++;
             List<TradeDto> list =  new ArrayList<TradeDto>();
-            list = ts.list(rowBegin, rowEnd, form);
+            list = ts.list(rowBegin, rowEnd, form, accessType);
             JsonUtils.printFromList(response, list, count);
         }catch(Exception e){
             e.printStackTrace();
@@ -125,7 +126,7 @@ public class TradeAction extends DispatchAction {
 	        		totalprofit = pricediff - interestcost - tradecost;
 //	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
 	        		profit = totalprofit;
-        		}else{
+        		}else if (vehicletype.equals("第三方")){
             		int monthdiff = getIntervalMonths(purchasedate, selldate);
             		interest = interestrate/100*actualloan;
 	        		interestcost = interest*monthdiff;
@@ -318,7 +319,7 @@ public class TradeAction extends DispatchAction {
             sv.deletesingle(vehichleid);
             if(vehicletype.equals("自收车") || issold.equals("1")){
             	System.out.println("ID: "+vehichleid+"车辆类型： "+vehicletype+"已售："+issold);
-    		}else{
+    		}else if (vehicletype.equals("第三方")){
     			double spareloantmp = 0.00;//vo.getspareloan()
     			spareloantmp = sv.getspare(traderId);
     			double	sloan = spareloantmp + purchaseprice + tradecost;

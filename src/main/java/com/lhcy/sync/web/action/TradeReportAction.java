@@ -46,7 +46,8 @@ public class TradeReportAction extends DispatchAction {
 
         try {
             // 检查登录
-        	if (ContextUtils.getCurrentUserID(request) == null) {
+        	String accessType = ContextUtils.getCurrentUserAccessType(request);
+        	if (ContextUtils.getCurrentUserID(request) == null || accessType == null) {
                 throw new Exception(SysConstant.M_NO_LOGIN);
             }
 
@@ -61,12 +62,12 @@ public class TradeReportAction extends DispatchAction {
             int pageSize = form.getRows();
             int pageNow = form.getPage();
 //            int count = 50;
-            int count = ts.count(form);
+            int count = ts.count(form, accessType);
             int rowBegin = (pageNow - 1) * pageSize;
             int rowEnd = rowBegin + pageSize;
             if(rowBegin > 0) rowBegin++;
             List<TradeDto> list =  new ArrayList<TradeDto>();
-            list = ts.list(rowBegin, rowEnd, form);
+            list = ts.list(rowBegin, rowEnd, form, accessType);
             JsonUtils.printFromList(response, list, count);
         }catch(Exception e){
             e.printStackTrace();
@@ -125,7 +126,7 @@ public class TradeReportAction extends DispatchAction {
 	        		totalprofit = pricediff - interestcost - tradecost;
 //	        		totalprofit = pricediff - interestcost - vo.getEarnest() - vo.getTradecost();
 	        		profit = totalprofit;
-        		}else{
+        		}else if (vehicletype.equals("第三方")){
             		int monthdiff = getIntervalMonths(purchasedate, selldate);
             		interest = interestrate/100*actualloan;
 	        		interestcost = interest*monthdiff;
@@ -317,7 +318,7 @@ public class TradeReportAction extends DispatchAction {
             sv.deletesingle(vehichleid);
             if(vehicletype.equals("自收车") || issold.equals("1")){
             	System.out.println("ID: "+vehichleid+"车辆类型： "+vehicletype+"已售："+issold);
-    		}else{
+    		}else if (vehicletype.equals("第三方")){
     			double spareloantmp = 0.00;//vo.getspareloan()
     			spareloantmp = sv.getspare(form.getTraderid());
     			double	sloan = spareloantmp + purchaseprice + tradecost;

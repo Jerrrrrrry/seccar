@@ -47,10 +47,17 @@
                 $('#info').html(html);
             }
         });
+        function on_return(){
+        	 if(window.event.keyCode == 13){
+        	  if (document.getElementById('loginLinkBtn')!=null){
+        		  document.getElementById('loginLinkBtn').click();
+        	   }
+        	 }
+        	 }
 
     </script>
 </head>
-<body onload="load()">
+<body onload="load()" onkeydown="on_return();">
 <form id="ff" action="<%=basePath %>LoginAction.do?m=login" method="post">
     <div id="info"></div>
     <div style="margin:10px 0;"></div>
@@ -69,7 +76,7 @@
                 </table>
             </div>
             <div style="text-align:center;padding:5px">
-                <a onclick="return submitForm();" class="easyui-linkbutton" data-options="iconCls:'tbtn_ok'">登录</a>
+                <a id="loginLinkBtn" onclick="return submitForm();" class="easyui-linkbutton" data-options="iconCls:'tbtn_ok'">登录</a>
             </div>
         </div>
     </div>
