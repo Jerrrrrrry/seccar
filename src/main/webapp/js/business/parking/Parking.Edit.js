@@ -134,7 +134,7 @@ var ParkingEdit = {
             var inventoryints = $('#inventoryints').textbox('getValue');
             var inventoryoutts = $('#inventoryoutts').textbox('getValue');
             var parkingfee = $('#parkingfee').textbox('getValue');
-            var comments = $('#comments').prop('checked') ? 0 : 1;
+            var comments = $('#comments').textbox('getValue');
 
 
             $.ajax({
