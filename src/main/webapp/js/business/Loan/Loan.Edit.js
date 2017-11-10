@@ -11,8 +11,8 @@ var LoanEdit = {
         /***********************************************/
         edit.clear = function () {
 //        	alert("edit.clear");
-//        	var userid = $('#userid').val();
-//        	var username = $('#username').val();
+        	var userid = $('#userid').val();
+        	var username = $('#username').val();
         	$('#licenseno').textbox({disabled:false});
             $('#vehicledesc').textbox({disabled:false});
             $('#ownername').textbox({disabled:false});
@@ -49,6 +49,8 @@ var LoanEdit = {
         	$('#isdeleted').val('0');
         	$('#isreturned').val('0');
         	$('#isabandon').val('0');
+        	$('#traderid').val(userid);
+        	$('#tradername').val(username);
         	$('#settlement').val('0');
         	$('#vehicleid').val('');
         	$('#licenseno').textbox('setValue', '');
@@ -468,6 +470,11 @@ var LoanEdit = {
             var comments = $('#comments').textbox('getValue');
             var actualreturn = $('#actualreturn').textbox('getValue');
             var actualreturndate = $('#actualreturndate').textbox('getValue');
+            /*if (actualreturndate.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入上次归还本金时间");
+            	return;
+            }*/
             var picturepath = edit.getpicpath();
             var operation = save
             
