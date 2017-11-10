@@ -21,7 +21,8 @@ CREATE TABLE [dbo].[Parking](
 	[createdts] [datetime] NULL,
 	[lastupdatedts] [datetime] NULL,
 	[creator] [nvarchar](20) NULL,
-	[customermobile] [nvarchar](50) NULL
+	[customermobile] [nvarchar](50) NULL,
+	[issold] [nvarchar](10) NULL
 ) ON [PRIMARY]
 
 GO

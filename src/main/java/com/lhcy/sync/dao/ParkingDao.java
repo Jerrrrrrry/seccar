@@ -2,14 +2,11 @@ package com.lhcy.sync.dao;
 
 import com.hongchen.kis.db.DbConnectionFactory;
 import com.hongchen.kis.db.DbSqlHelper;
-import com.lhcy.core.bo.*;
 import com.lhcy.core.util.ConvertUtils;
 import com.lhcy.core.util.StringUtils;
-import com.lhcy.core.util.TreeListUtils;
-import com.lhcy.sync.domain.dto.ParkingDto;
+import com.lhcy.sync.domain.dto.ParkingSummaryDto;
 import com.lhcy.sync.domain.dto.ParkingDto;
 import com.lhcy.sync.domain.pojo.Parking;
-import com.lhcy.sync.web.form.ParkingForm;
 import com.lhcy.sync.web.form.ParkingForm;
 
 import org.apache.log4j.Logger;
@@ -105,6 +102,7 @@ public class ParkingDao {
         sql.append("    ,a.inventoryoutts ");
         sql.append("    ,a.parkingfee ");
         sql.append("    ,a.comments ");
+        sql.append("    ,a.issold ");
         sql.append("    ,ROW_NUMBER() OVER (ORDER BY " + sort + " " + order + ") AS 'RowParking'");
         sql.append("   FROM Parking a ");
         sql.append("  WHERE 1=1 ");
@@ -140,7 +138,7 @@ public class ParkingDao {
                 vo.setInventoryoutts(rs.getString("inventoryoutts"));
                 vo.setParkingfee(rs.getDouble("parkingfee"));
                 vo.setComments(rs.getString("comments"));
-
+                vo.setIssold(rs.getString("issold"));
                 result.add(vo);
             }
         } catch (Exception e) {
@@ -179,6 +177,7 @@ public class ParkingDao {
         sql.append("    ,a.createdts ");
         sql.append("    ,a.lastupdatedts ");
         sql.append("    ,a.creator ");
+        sql.append("    ,a.issold ");
         sql.append("   FROM Parking a ");
         sql.append("  WHERE a.vehicleid = ? ");
 
@@ -214,6 +213,7 @@ public class ParkingDao {
                 result.setCreatedts(ConvertUtils.timestampToString(rs.getTimestamp("createdts")));
                 result.setLastupdatedts(ConvertUtils.timestampToString(rs.getTimestamp("lastupdatedts")));
                 result.setCreator(rs.getString("creator"));
+                result.setIssold(rs.getString("issold"));
             }
         } catch (Exception e) {
             throw new Exception(e);
@@ -298,6 +298,7 @@ public class ParkingDao {
         sql.append("  ,parkingfee = ? ");
         sql.append("  ,comments = ? ");
         sql.append("  ,lastupdatedts = ? ");
+        sql.append("  ,issold = ? ");
         sql.append(" WHERE vehicleid = ? ");
 
         List args = new ArrayList();
@@ -311,6 +312,7 @@ public class ParkingDao {
         args.add(vo.getParkingfee());
         args.add(vo.getComments());
         args.add(new Date());
+        args.add(vo.getIssold());
         args.add(vo.getVehicleid());
 
         try {
@@ -611,5 +613,54 @@ public class ParkingDao {
 //        }
 
         return result.toString();
+    }
+    public ParkingSummaryDto getSummaryForCarParking() throws Exception{
+    	ParkingSummaryDto result = new ParkingSummaryDto();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" select issold,COUNT(*) as num, SUM(parkingfee)as fee  from Parking group by issold ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return result;
+            }
+            while(rs.next()){
+                if ("1".equalsIgnoreCase(rs.getString("issold")))//卖出去的车的数量
+           		{
+                	result.setOutStockCarsAmount(rs.getInt("num"));
+                	result.setOutStockTotalFee(rs.getDouble("fee"));
+                } else
+                {
+                	//库存车辆数量
+                	result.setInStockCarsAmount(rs.getInt("num"));
+                	result.setInStockTotalFee(rs.getDouble("fee"));
+                }
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return result;
     }
 }

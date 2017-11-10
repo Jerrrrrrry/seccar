@@ -61,6 +61,7 @@ var LoanList = {
 	        			color =  '';
 	        		}
 	        	}
+	        	if (color == ''){
 	        	if(remaininterest > 0 && today != '' && today != null && npd != '' && npd != null){
 	        		var nextpaydays = list.getDays(npd.substring(0,10), today.substring(0,10));
 	        		if(nextpaydays < 3 && nextpaydays >=0){
@@ -70,7 +71,7 @@ var LoanList = {
 	        		}else{
 	        			color =  '';
 	        		}
-	        	}
+	        	}}
         	}
         	return color;
         };

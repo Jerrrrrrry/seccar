@@ -21,6 +21,36 @@ var ParkingEdit = {
             $('#inventoryoutts').textbox('setValue', '');
             $('#parkingfee').textbox('setValue', '');
             $('#comments').textbox('setValue', '');
+            $('#customer').textbox({disabled:false});
+            $('#period').textbox({disabled:false});
+            $('#customermobile').textbox({disabled:false});
+            $('#licenseno').textbox({disabled:false});
+            $('#cardescription').textbox({disabled:false});
+            $('#inventoryints').textbox({disabled:false});
+            $('#inventoryoutts').textbox({disabled:false});
+            $('#parkingfee').textbox({disabled:false});
+            $('#comments').textbox({disabled:false});
+            
+            $('#btnEditSave').linkbutton('enable');
+            $('#btnEditSaveAndNew').linkbutton('enable');
+            $('#btnSoldOut').linkbutton('disable');
+        };
+           
+        
+        edit.soldview = function () {
+        	$('#customer').textbox({disabled:true});
+            $('#period').textbox({disabled:true});
+            $('#customermobile').textbox({disabled:true});
+            $('#licenseno').textbox({disabled:true});
+            $('#cardescription').textbox({disabled:true});
+            $('#inventoryints').textbox({disabled:true});
+            $('#inventoryoutts').textbox({disabled:true});
+            $('#parkingfee').textbox({disabled:true});
+            $('#comments').textbox({disabled:true});
+            
+            $('#btnEditSave').linkbutton('disable');
+            $('#btnEditSaveAndNew').linkbutton('disable');
+            $('#btnSoldOut').linkbutton('disable');
         };
 
         /***********************************************/
@@ -84,7 +114,12 @@ var ParkingEdit = {
                         $('#parkingfee').textbox('setValue', vo.dto.parkingfee);
                         $('#comments').textbox('setValue', vo.dto.comments);
 //                        $('#btnEditDelete').linkbutton('enable');
-
+                        if (vo.dto.issold == '1')
+                        {
+                        	edit.soldview(); 
+                        } else {
+                        	 $('#btnSoldOut').linkbutton('enable');
+                        }
                         $('#dlg_edit').dialog('open');
                         xutil.focus('#customer');
                     } else if (vo.status == 'nologin') {
@@ -130,13 +165,40 @@ var ParkingEdit = {
             var period = $('#period').textbox('getValue');
             var customermobile = $('#customermobile').textbox('getValue');
             var licenseno = $('#licenseno').textbox('getValue');
+            if (licenseno.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入车牌号");
+            	return;
+            }
             var cardescription = $('#cardescription').textbox('getValue');
             var inventoryints = $('#inventoryints').textbox('getValue');
+            if (inventoryints.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入入库时间");
+            	return;
+            }
             var inventoryoutts = $('#inventoryoutts').textbox('getValue');
             var parkingfee = $('#parkingfee').textbox('getValue');
+            if (addnew == 'sold')
+            {
+	            if (parkingfee.replace(/(^\s*)|(\s*$)/g, "")=="" ||parkingfee.replace(/(^\s*)|(\s*$)/g, "")=="0")
+	            {
+	            	alert("请输入有效的停车费用(大于0的值)");
+	            	return;
+	            }
+            }
             var comments = $('#comments').textbox('getValue');
-
-
+            
+            if (addnew == 'sold' && inventoryoutts.replace(/(^\s*)|(\s*$)/g, "")=="")
+            {
+            	alert("请输入出库时间");
+            	return;
+            }
+            var issold = '0';
+            if (addnew == 'sold')
+            {
+            	issold = '1';
+            }
             $.ajax({
                 type: 'post',
                 url: basePath + 'ParkingAction.do?m=save',
@@ -150,7 +212,8 @@ var ParkingEdit = {
                     inventoryints: inventoryints,
                     inventoryoutts: inventoryoutts,
                     parkingfee: parkingfee,
-                    comments: comments
+                    comments: comments,
+                    issold:issold
                 },
                 success: function (data) {
                     if (data == null || data.length == 0) return;
@@ -159,7 +222,7 @@ var ParkingEdit = {
                     if (vo.status == 'ok') {
 
                         $('#list').datagrid('reload');
-                        if (addnew) {
+                        if (addnew=='saveandnew') {
                             edit.clear();
                             xutil.focus('#customer');
                         } else {

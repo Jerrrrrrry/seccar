@@ -17,6 +17,7 @@ var LoanEdit = {
             $('#vehicledesc').textbox({disabled:false});
             $('#ownername').textbox({disabled:false});
             $('#ownerid').textbox({disabled:false});
+            $('#tradername').textbox({disabled:true});
             $('#mobileno').textbox({disabled:false});
             $('#borrowdate').textbox({disabled:false});
             $('#returndate').textbox({disabled:false});
@@ -86,6 +87,7 @@ var LoanEdit = {
             $('#vehicledesc').textbox({disabled:true});
             $('#ownername').textbox({disabled:true});
             $('#ownerid').textbox({disabled:true});
+            $('#tradername').textbox({disabled:true});
             $('#mobileno').textbox({disabled:true});
             $('#borrowdate').textbox({disabled:true});
             $('#returndate').textbox({disabled:true});
@@ -127,6 +129,7 @@ var LoanEdit = {
             $('#ownerid').textbox({disabled:true});
             $('#mobileno').textbox({disabled:true});
             $('#borrowdate').textbox({disabled:true});
+            $('#tradername').textbox({disabled:true});
             $('#returndate').textbox({disabled:true});
             $('#periodmonths').textbox({disabled:true});
             $('#totalinterest').textbox({disabled:true});
@@ -164,6 +167,7 @@ var LoanEdit = {
             $('#ownername').textbox({disabled:true});
             $('#ownerid').textbox({disabled:true});
             $('#mobileno').textbox({disabled:true});
+            $('#tradername').textbox({disabled:true});
             $('#borrowdate').textbox({disabled:true});
             $('#returndate').textbox({disabled:true});
             $('#periodmonths').textbox({disabled:true});
@@ -202,6 +206,7 @@ var LoanEdit = {
             $('#vehicledesc').textbox({disabled:false});
             $('#ownername').textbox({disabled:false});
             $('#ownerid').textbox({disabled:false});
+            $('#tradername').textbox({disabled:true});
             $('#mobileno').textbox({disabled:false});
             $('#borrowdate').textbox({disabled:false});
             $('#returndate').textbox({disabled:false});
@@ -306,6 +311,8 @@ var LoanEdit = {
                     	$('#isabandon').val(vo.dto.isabandon);
                     	$('#settlement').val(vo.dto.settlement);
                     	$('#vehicleid').val(vo.dto.vehicleid);
+                    	$('#tradername').val(vo.dto.tradername);
+                    	$('#traderid').val(vo.dto.traderid);
                     	$('#licenseno').textbox('setValue', vo.dto.licenseno);
                         $('#vehicledesc').textbox('setValue', vo.dto.vehicledesc);
                         $('#ownername').textbox('setValue', vo.dto.ownername);
@@ -380,8 +387,8 @@ var LoanEdit = {
             var isreturned = $('#isreturned').val();
             var isabandon = $('#isabandon').val();
             var settlement = $('#settlement').val();
-            var traderid = $('#userid').val();
-            var tradername = $('#username').val();
+            var traderid = $('#traderid').val();
+            var tradername = $('#tradername').val();
             var vehicleid = $('#vehicleid').val();
             var licenseno = $('#licenseno').textbox('getValue');
             if (licenseno.replace(/(^\s*)|(\s*$)/g, "")=="")

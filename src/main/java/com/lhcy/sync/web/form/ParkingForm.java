@@ -37,8 +37,14 @@ public class ParkingForm extends ActionForm {
     private String comments;
     private String creator;
     private String customermobile;
+    private String issold;
     
-    
+	public String getIssold() {
+		return issold;
+	}
+	public void setIssold(String issold) {
+		this.issold = issold;
+	}
 	public String getCustomermobile() {
 		return customermobile;
 	}

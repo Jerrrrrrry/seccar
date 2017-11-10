@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
+
 
 
 import com.lhcy.core.bo.SysConstant;
@@ -82,7 +84,14 @@ public class ParkingAction extends DispatchAction {
             Parking vo = new Parking();
             ParkingService ps = new ParkingService();
             BeanUtils.copyProperties(vo, form);
-
+            if (StringUtils.isBlank(vo.getInventoryints()))
+            {
+            	vo.setInventoryints(null);
+            }
+            if (StringUtils.isBlank(vo.getInventoryoutts()))
+            {
+            	vo.setInventoryoutts(null);
+            }
             // 新增
             if (vo.getVehicleid() == null || vo.getVehicleid().length() == 0){
 

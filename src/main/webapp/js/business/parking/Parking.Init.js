@@ -16,6 +16,10 @@ var ParkingInit = {
             $("#list").datagrid({
                 striped: true,
                 rownumbers: true,
+                rowStyler:function(index,row){
+               	 	var color = list.rowcolor(index,row);
+               	 	return color;
+            	   	},
                 pageSize: 20,
                 pageList: [20,100,10000],
                 fit: true,
@@ -89,6 +93,13 @@ var ParkingInit = {
                         width: 80,
                         align: 'center',
                         sortable: false
+                    },
+                    {
+                    	field: 'issold',
+                    	title: '出库',
+                    	width: 80,
+                    	align: 'left',
+                    	sortable: false
                     },
                     {
                         field: 'comments',
@@ -304,15 +315,24 @@ var ParkingInit = {
                         iconCls: 'tbtn_save',
                         handler: function(){
                         	//alert('btnEditSavefalse');
-                            edit.save(false);
+                            edit.save('save');
                         }
                     },
                     {
                         text: '保存并新增',
                         iconCls: 'tbtn_savenew',
+                        id:'btnEditSaveAndNew',
                         handler: function(){
-                            edit.save(true);
+                            edit.save('saveandnew');
                         }
+                    },
+                    {
+                      text: '出库',
+                      iconCls: 'tbtn_tempsave',
+                      id:'btnSoldOut',
+                      handler: function(){
+                    	  edit.save('sold');
+                      }
                     },
                     '-',
                     {

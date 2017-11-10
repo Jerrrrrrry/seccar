@@ -157,7 +157,7 @@
         <input type="hidden" id="settlement" />
         </td>
         <td>
-          <input type="hidden" id="traderid"/>
+          <input type="hidden" id="traderid"/><input type="hidden" id="tradername"/>
           <input type="hidden" id="userid" value="<%= session.getAttribute("CurrentLoginUserAccount")%>" />
           <input type="hidden" id="username" value="<%= session.getAttribute("CurrentLoginUserName")%>" />
         </td>

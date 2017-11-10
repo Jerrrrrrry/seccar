@@ -265,7 +265,16 @@ var ParkingList = {
             });
 
         };
-
+        list.rowcolor = function (index, row) {
+//         	alert("rowcolor");
+//         	alert("list.daydiff");
+         	var issold = row.issold;
+         	var color = '';
+         	if(issold == '1'){
+         		color =  'background-color:rgb(205,205,180);';
+         	}
+         	return color;
+         };
         return list;
     }
 };

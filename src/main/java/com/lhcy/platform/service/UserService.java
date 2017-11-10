@@ -8,6 +8,8 @@ import com.lhcy.sync.dao.TradeDao;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 public class UserService {
 
     private UserDao dao = new UserDao();
@@ -49,7 +51,7 @@ public class UserService {
     public User loginCheck(String account, String password) throws Exception{
         User user = dao.loginCheck(account, password);
         try{
-        	if(!tradeDao.spareExists(user.getUserid())){
+        	if((!StringUtils.isBlank(user.getUserid())) && (!tradeDao.spareExists(user.getUserid()))){
         		tradeDao.insertSpare(user.getUserid(), 0.0);
         	}
         } catch(Exception e){e.printStackTrace();}
