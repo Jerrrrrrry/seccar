@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -559,8 +560,64 @@ public class LoanDao {
 
         return result;
     }
-    
-    
+    public SummaryLoanDto listLoanReport() throws Exception{
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" select SUM(borrowamount) AS borrowamount,SUM(interestpaid) AS interestpaid, SUM(totalinterest) AS totalinterest,SUM(parkingfee) AS parkingfee,SUM(midinterest) AS midinterest, SUM(midinterestrate) AS midinterestrate,SUM(actualloan) AS actualloan,SUM(actualreturn) AS actualreturn,SUM(totalprofit) AS totalprofit   from SecCarLoan where isdeleted<>'1' ");
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return null;
+            }
+            SummaryLoanDto vo = new SummaryLoanDto();
+            while(rs.next()){
+            	vo.setBorrowamount(rs.getString("borrowamount"));//借款金额合计
+            	vo.setActualloan(rs.getString("actualloan"));//实际打款金额合计
+            	vo.setInterestpaid(rs.getString("interestpaid"));//已付利息合计
+            	vo.setMidinterest(rs.getString("midinterest"));//中介返点合计
+            	vo.setMidinterestrate(rs.getString("midinterestrate"));//已还本金差合计
+            	double b = rs.getDouble("actualreturn") - rs.getDouble("midinterestrate");
+            	vo.setActualreturn(toTwoDigits(b));//已还本金合计
+//                if ("1".equalsIgnoreCase(rs.getString("issold")))//卖出去的车的数量
+//           		{
+//                	result.setOutStockCarsAmount(rs.getInt("num"));
+//                } else
+//                {
+//                	//库存车辆数量
+//                	result.setInStockCarsAmount(rs.getInt("num"));
+//                }
+            	return vo;
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return null;
+    }
+    private String toTwoDigits(double d){
+		DecimalFormat    df   = new DecimalFormat("#################0.00");   
+		return df.format(d);
+	}
 //    /***********************************************/
 //    // 查询余量
 //    /***********************************************/

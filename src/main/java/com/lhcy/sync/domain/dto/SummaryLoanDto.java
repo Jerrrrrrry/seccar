@@ -17,6 +17,7 @@ public class SummaryLoanDto implements Serializable {
     private String othercost;
     private String interestpaid;
     private String midinterest;
+    private String midinterestrate;
     private String actualreturn;
     private String totalprofit;
     private String details;
@@ -114,6 +115,12 @@ public class SummaryLoanDto implements Serializable {
 	}
 	public void setTotalprofit(String totalprofit) {
 		this.totalprofit = totalprofit;
+	}
+	public String getMidinterestrate() {
+		return midinterestrate;
+	}
+	public void setMidinterestrate(String midinterestrate) {
+		this.midinterestrate = midinterestrate;
 	}
     
     

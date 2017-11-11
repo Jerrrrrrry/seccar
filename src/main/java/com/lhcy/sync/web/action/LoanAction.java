@@ -121,16 +121,16 @@ public class LoanAction extends DispatchAction {
     		int daydiff = getIntervalDays(borrowdate, returndate);
     		double interest = 1.5/100/30*borrowamount;
     		double interestcost = interest*daydiff;
-            vo.setInterestcost(interestcost);
+            //vo.setInterestcost(interestcost);
         	if(form.getOperation().equals("returned")){
 //        		double remaininterest = (interestrate/100*borrowamount*periodmonths)-interestpaid;
         		double remaininterest = totalinterest - interestpaid;
         		double remainamount = borrowamount - actualreturn - earnest;
-        		if(remaininterest > 0 || remainamount > 0){
-        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTALLPAID_ERROR);
-        		}else{
+//        		if(remaininterest > 0 || remainamount > 0){
+//        			throw new Exception( "车辆:" + vo.getLicenseno() + SysConstant.M_NOTALLPAID_ERROR);
+//        		}else{
         			vo.setIsreturned("1");
-        		}
+//        		}
         		
         	}else if(form.getOperation().equals("settle"))
         	{

@@ -193,14 +193,14 @@ var LoanInit = {
                     },
                     {
                         field: 'midinterestrate',
-                        title: '中介返点',
-                        width: 160,
+                        title: '已还本金差',
+                        width: 80,
                         align: 'left',
                         sortable: true
                     },
                     {
                         field: 'midinterest',
-                        title: '已还本金差',
+                        title: '中介返点',
                         width: 80,
                         align: 'left',
                         sortable: true
@@ -227,7 +227,7 @@ var LoanInit = {
                         align: 'left',
                         sortable: true
                     },
-                    {
+                    /*{
                         field: 'interestcost',
                         title: '利息成本',
                         width: 80,
@@ -240,7 +240,7 @@ var LoanInit = {
                         width: 100,
                         align: 'left',
                         sortable: true
-                    },
+                    },*/
                     {
                         field: 'picturepath',
                         title: '图片路径',

@@ -31,6 +31,7 @@ public class SumSummaryService {
 		CarSummaryDto tradeInterestInSelfDto = tradeDao.getSumTradeInterestInSelf();
 		CarSummaryDto tradeInterestOutSelfDto = tradeDao.getSumTradeInterestOutSelf();
 		ParkingSummaryDto parkingSummaryDto= parkingDao.getSummaryForCarParking();
+		SummaryLoanDto carloanSummary = loanDao.listLoanReport();
 		
 		List<SummaryDto> args = new ArrayList<SummaryDto>();
 		SummaryDto dto = new SummaryDto();
@@ -131,6 +132,51 @@ public class SumSummaryService {
 		args.add(dto);
 		
 		dto = new SummaryDto();
+		dto.setCategory("押车汇总");
+		dto.setDetails("");
+		dto.setItemType("");
+		args.add(dto);
+		
+		dto = new SummaryDto();
+		dto.setCategory("");
+		dto.setItemType("总借款金额合计");
+		dto.setDetails(carloanSummary.getBorrowamount()+"元");
+		args.add(dto);
+		
+		dto = new SummaryDto();
+		dto.setCategory("");
+		dto.setItemType("实际打款金额合计");
+		dto.setDetails(carloanSummary.getActualloan()+"元");
+		args.add(dto);
+		
+		dto = new SummaryDto();
+		dto.setCategory("");
+		dto.setItemType("已付利息合计");
+		dto.setDetails(carloanSummary.getInterestpaid()+"元");
+		args.add(dto);
+		
+		dto = new SummaryDto();
+		dto.setCategory("");
+		dto.setItemType("中介返点合计");
+		dto.setDetails(carloanSummary.getMidinterest()+"元");
+		args.add(dto);
+		
+		dto = new SummaryDto();
+		dto.setCategory("");
+		dto.setItemType("已还本金合计(减去本金差)");
+		dto.setDetails(carloanSummary.getActualreturn()+"元");
+		args.add(dto);
+		
+		
+		/****************************/
+		/****************************/
+		dto = new SummaryDto();
+		dto.setCategory("");
+		dto.setDetails("");
+		dto.setItemType("");
+		args.add(dto);
+		
+		dto = new SummaryDto();
 		dto.setCategory("卖车利润合计");
 		dto.setDetails("");
 		dto.setItemType("");
@@ -168,7 +214,7 @@ public class SumSummaryService {
 		dto.setItemType("");
 		args.add(dto);
 		
-		dto = new SummaryDto();
+		/*dto = new SummaryDto();
 		dto.setCategory("");
 		dto.setItemType("押车已出库利息成本");
 		dto.setDetails(toTwoDigits(loaninterestoutDto.getLoaninterestout())+"元");
@@ -185,7 +231,7 @@ public class SumSummaryService {
 		dto.setCategory("");
 		dto.setItemType("押车总利息成本");
 		dto.setDetails(toTwoDigits(loaninterestoutDto.getLoaninterestout()+loaninterestinDto.getLoaninterestin())+"元");
-		args.add(dto);
+		args.add(dto);*/
 		
 		dto = new SummaryDto();
 		dto.setCategory("");

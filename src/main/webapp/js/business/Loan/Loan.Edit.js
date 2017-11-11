@@ -470,7 +470,6 @@ var LoanEdit = {
             var comments = $('#comments').textbox('getValue');
             var actualreturn = $('#actualreturn').textbox('getValue');
             var actualreturndate = $('#actualreturndate').datebox('getValue');
-            alert(document.getElementById("actualreturndate").value);
             /*if (actualreturndate.replace(/(^\s*)|(\s*$)/g, "")=="")
             {
             	alert("请输入上次归还本金时间");
