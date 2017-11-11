@@ -115,6 +115,8 @@ public class LoanAction extends DispatchAction {
             }
           	if(vo.getActualreturndate()!=null&&vo.getActualreturndate()!=""){
               	returndate =df.parse(vo.getActualreturndate().substring(0, 10));
+                } else {
+                	vo.setActualreturndate(null);
                 }
     		int daydiff = getIntervalDays(borrowdate, returndate);
     		double interest = 1.5/100/30*borrowamount;

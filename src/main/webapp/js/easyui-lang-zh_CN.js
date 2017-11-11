@@ -33,6 +33,7 @@ if ($.fn.calendar){
 }
 if ($.fn.datebox){
 	$.fn.datebox.defaults.currentText = '今天';
+	$.fn.datebox.defaults.cleanText = '清空';
 	$.fn.datebox.defaults.closeText = '关闭';
 	$.fn.datebox.defaults.okText = '确定';
 	$.fn.datebox.defaults.formatter = function(date){
@@ -57,6 +58,7 @@ if ($.fn.datebox){
 if ($.fn.datetimebox && $.fn.datebox){
 	$.extend($.fn.datetimebox.defaults,{
 		currentText: $.fn.datebox.defaults.currentText,
+		cleanText: $.fn.datebox.defaults.cleanText,
 		closeText: $.fn.datebox.defaults.closeText,
 		okText: $.fn.datebox.defaults.okText
 	});

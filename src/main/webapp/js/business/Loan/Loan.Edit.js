@@ -36,8 +36,8 @@ var LoanEdit = {
             $('#otherfee').textbox({disabled:false});
             $('#actualloan').textbox({disabled:false});
             $('#comments').textbox({disabled:false});
-            $('#actualreturn').textbox({disabled:true});
-            $('#actualreturndate').textbox({disabled:true});
+            $('#actualreturn').textbox({disabled:false});
+            $('#actualreturndate').datebox({disabled:false});
             $('#btnEditSave').linkbutton('enable');
             $('#btnEditSaveadd').linkbutton('enable');
             $('#btnEditReturned').linkbutton('disable');
@@ -76,7 +76,7 @@ var LoanEdit = {
             $('#actualloan').textbox('setValue', '0');
             $('#comments').textbox('setValue', '');
             $('#actualreturn').textbox('setValue', '0');
-            $('#actualreturndate').textbox('setValue', '');
+            $('#actualreturndate').datebox('setValue', '');
             $("#imgdiv")[0].innerHTML="";
         };
         
@@ -109,7 +109,7 @@ var LoanEdit = {
             $('#actualloan').textbox({disabled:true});
             $('#comments').textbox({disabled:true});
             $('#actualreturn').textbox({disabled:true});
-            $('#actualreturndate').textbox({disabled:true});
+            $('#actualreturndate').datebox({disabled:true});
             $('#btnEditSave').linkbutton('disable');
             $('#btnEditSaveadd').linkbutton('disable');
             $('#btnEditReturned').linkbutton('disable');
@@ -149,7 +149,7 @@ var LoanEdit = {
             $('#actualloan').textbox({disabled:true});
             $('#comments').textbox({disabled:true});
             $('#actualreturn').textbox({disabled:true});
-            $('#actualreturndate').textbox({disabled:true});
+            $('#actualreturndate').datebox({disabled:true});
             $('#btnEditSave').linkbutton('disable');
             $('#btnEditSaveadd').linkbutton('disable');
             $('#btnEditReturned').linkbutton('disable');
@@ -188,7 +188,7 @@ var LoanEdit = {
             $('#actualloan').textbox({disabled:true});
             $('#comments').textbox({disabled:true});
             $('#actualreturn').textbox({disabled:true});
-            $('#actualreturndate').textbox({disabled:false});
+            $('#actualreturndate').datebox({disabled:false});
             $('#btnEditSave').linkbutton('disable');
             $('#btnEditSaveadd').linkbutton('disable');
             $('#btnEditReturned').linkbutton('enable');
@@ -228,7 +228,7 @@ var LoanEdit = {
             $('#actualloan').textbox({disabled:false});
             $('#comments').textbox({disabled:false});
             $('#actualreturn').textbox({disabled:false});
-            $('#actualreturndate').textbox({disabled:false});
+            $('#actualreturndate').datebox({disabled:false});
             $('#btnEditSave').linkbutton('enable');
             $('#btnEditSaveadd').linkbutton('enable');
             $('#btnEditReturned').linkbutton('enable');
@@ -469,7 +469,8 @@ var LoanEdit = {
             }
             var comments = $('#comments').textbox('getValue');
             var actualreturn = $('#actualreturn').textbox('getValue');
-            var actualreturndate = $('#actualreturndate').textbox('getValue');
+            var actualreturndate = $('#actualreturndate').datebox('getValue');
+            alert(document.getElementById("actualreturndate").value);
             /*if (actualreturndate.replace(/(^\s*)|(\s*$)/g, "")=="")
             {
             	alert("请输入上次归还本金时间");

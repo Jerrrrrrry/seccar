@@ -311,7 +311,8 @@ var TradeReportInit = {
             });
             $('#purchasedate').datebox({
                 width: 200,
-                validType: ['length[0,100]']
+                validType: ['length[0,100]'],
+                editable:false
             });
             
             $('#interestrate').textbox({
@@ -368,7 +369,8 @@ var TradeReportInit = {
             $('#selldate').datebox({
                 width: 200,
                 validType: ['length[0,100]'],
-                disabled: true
+                disabled: true,
+                editable:false
             });
             $('#buyername').textbox({
                 width: 200,
@@ -469,19 +471,23 @@ var TradeReportInit = {
             });
             $('#purchasestart').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#purchaseend').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#soldstart').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#soldend').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
 
 

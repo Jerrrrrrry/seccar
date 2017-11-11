@@ -208,14 +208,16 @@ var ICStockInit = {
                 width: 160,
                 validType: ['length[0,10]', 'date'],
                 required: true,
-                missingMessage: AppConstant.M_REQUIRED
+                missingMessage: AppConstant.M_REQUIRED,
+                editable:false
             });
 
             $('#bizDateTo').datebox({
                 width: 160,
                 validType: ['length[0,10]', 'date'],
                 required: true,
-                missingMessage: AppConstant.M_REQUIRED
+                missingMessage: AppConstant.M_REQUIRED,
+                editable:false
             });
 
             $('#departmentNumber').textbox({

@@ -161,12 +161,14 @@ var ParkingInit = {
             
             $('#inventoryints').datebox({
                 width: 200,
-                validType: ['length[0,100]']
+                validType: ['length[0,100]'],
+                editable:false
             });
 
             $('#inventoryoutts').datebox({
                 width: 200,
-                validType: ['length[0,100]']
+                validType: ['length[0,100]'],
+                editable:false
             });
             $('#parkingfee').textbox({
                 width: 200,
@@ -193,19 +195,23 @@ var ParkingInit = {
             });
             $('#filterinventoryints').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#filterinventoryintsend').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#filterinventoryoutts').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#filterinventoryouttsend').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
 
             /***********************************************/

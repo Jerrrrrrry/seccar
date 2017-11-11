@@ -193,14 +193,14 @@ var LoanInit = {
                     },
                     {
                         field: 'midinterestrate',
-                        title: '中介利率',
+                        title: '中介返点',
                         width: 160,
                         align: 'left',
                         sortable: true
                     },
                     {
                         field: 'midinterest',
-                        title: '中介利息',
+                        title: '已还本金差',
                         width: 80,
                         align: 'left',
                         sortable: true
@@ -222,7 +222,7 @@ var LoanInit = {
                     },
                     {
                         field: 'actualreturndate',
-                        title: '上次归还本金日期',
+                        title: '归还本金日期',
                         width: 80,
                         align: 'left',
                         sortable: true
@@ -341,12 +341,14 @@ var LoanInit = {
             
             $('#borrowdate').datebox({
                 width: 200,
-                validType: ['length[0,100]']
+                validType: ['length[0,100]'],
+                editable:false
             });
 
             $('#returndate').datebox({
                 width: 200,
-                validType: ['length[0,100]']
+                validType: ['length[0,100]'],
+                editable:false
             });
 
             $('#periodmonths').textbox({
@@ -377,7 +379,7 @@ var LoanInit = {
 
             $('#actualmonths').textbox({
                 width: 200,
-                validType: ['length[0,100]'],
+                validType: ['length[0,100]']/*,
                 onChange: function(){  
 
                 	var borrowamount = $('#borrowamount').textbox('getValue');
@@ -386,7 +388,7 @@ var LoanInit = {
                 	var interestpaid = $('#interestpaid').textbox('getValue');
                 	interestpaid = borrowamount*(interestrate/100)*actualmonths;
                     $('#interestpaid').textbox('setValue', interestpaid);
-                	}  
+                	} */ 
 
             });
             
@@ -397,12 +399,14 @@ var LoanInit = {
 
             $('#interestpaidto').datebox({
                 width: 200,
-                validType: ['length[0,100]']
+                validType: ['length[0,100]'],
+                editable:false
             });
 
             $('#nextpaymentdate').datebox({
                 width: 200,
-                validType: ['length[0,100]']
+                validType: ['length[0,100]'],
+                editable:false
             });
             $('#midinterestrate').textbox({
                 width: 200,
@@ -437,7 +441,8 @@ var LoanInit = {
             $('#actualreturndate').datebox({
                 width: 200,
                 validType: ['length[0,100]'],
-                disabled: true
+                disabled:true,
+                editable:false
             });
             
 
@@ -497,19 +502,23 @@ var LoanInit = {
             });
             $('#loanstart').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#loanend').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#returnstart').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#returnend').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
 
             /***********************************************/

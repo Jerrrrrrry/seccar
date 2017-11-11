@@ -159,11 +159,13 @@ var SumTradeInit = {
             });
             $('#purchasestart').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#purchaseend').datebox({
                 width : 200,
-                validType : ['length[1,100]']
+                validType : ['length[1,100]'],
+                editable:false
             });
             $('#btnFilter').linkbutton({
                 text : '过滤',

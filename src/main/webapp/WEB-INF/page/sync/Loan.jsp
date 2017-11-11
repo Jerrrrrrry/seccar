@@ -214,9 +214,9 @@
         <td><input id="nextpaymentdate"/></td>
       </tr>
       <tr>
-        <th>中介利率</th>
+        <th>已还本金差</th>
         <td><input id="midinterestrate"/></td>
-      	<th>中介利息</th>
+      	<th>中介返点</th>
         <td><input id="midinterest"/></td>
       </tr>
       <tr>
@@ -234,7 +234,7 @@
       <tr>
         <th>已还本金额</th>
         <td><input id="actualreturn"/></td>
-      	<th>上次归还本金时间</th>
+      	<th>归还本金时间</th>
         <td><input id="actualreturndate"/></td>
       </tr>
       <tr height="20">
