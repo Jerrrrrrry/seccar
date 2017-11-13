@@ -483,6 +483,14 @@ var TradeEdit = {
         
                     });
 		    }else{
+		    	var msg = '是否已经确认您输入的信息准确无误?';
+		    	if (save == 'savenew' || save=='save') {
+		    		msg = '请确认本次操作您输入的信息准确无误，您本次要保存的车辆是　\r\n车牌号：'+licenseno+ ' 车辆信息 :'+vehicledesc + '\r\n是否继续?';
+		    	} else if (save == 'sold'){
+		    		msg = '您本次将出库以下车辆，错误出库将会导致余量计算的不准确， 请确认是否继续?　\r\n车牌号：'+licenseno+ ' 车辆信息 :'+vehicledesc;
+		    	}
+		    	$.messager.confirm(AppConstant.M_INFO, msg, function (r) {
+	                if (r) {
 		    	$.ajax({
 		            type: 'post',
 		            url: basePath + 'TradeAction.do?m=save',
@@ -539,6 +547,7 @@ var TradeEdit = {
 		                top.location = basePath;
 		            }
 		        });
+	                }});
 		    	}
 		        };
 

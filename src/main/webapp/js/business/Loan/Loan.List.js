@@ -13,6 +13,7 @@ var LoanList = {
             edit.clear();
             $('#dlg_add').dialog('open');
             xutil.focus('#licenseno');
+            $('#tradername').textbox('setValue',$('#username').val());
         };
 
        //指定列合计

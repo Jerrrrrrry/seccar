@@ -29,7 +29,7 @@ var LoanInit = {
                 method: 'post',
                 url: basePath + 'LoanAction.do?m=list',
                 idField: 'vehicleid',
-                sortName: 'borrowdate',
+                sortName: 'createdts',
                 sortOrder: 'desc',
                 toolbar: '#bar_list',
                 columns: [[
@@ -319,6 +319,10 @@ var LoanInit = {
             /***********************************************/
             // 字段初始化
             /***********************************************/
+            $('#tradername').textbox({
+                width : 200,
+                validType : ['length[0,100]']
+            });
             $('#licenseno').textbox({
                 width : 200,
                 validType : ['length[1,100]']

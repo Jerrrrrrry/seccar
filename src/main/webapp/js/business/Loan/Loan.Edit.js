@@ -50,7 +50,7 @@ var LoanEdit = {
         	$('#isreturned').val('0');
         	$('#isabandon').val('0');
         	$('#traderid').val(userid);
-        	$('#tradername').val(username);
+        	$('#tradername').textbox('setValue','');
         	$('#settlement').val('0');
         	$('#vehicleid').val('');
         	$('#licenseno').textbox('setValue', '');
@@ -247,6 +247,7 @@ var LoanEdit = {
 //        	alert("edit.addNew");
             this.clear();
 //            $('#btnEditDelete').linkbutton('disable');
+            $('#tradername').textbox('setValue',$('#username').val());
             xutil.focus('#licenseno');
         };
 
@@ -313,7 +314,7 @@ var LoanEdit = {
                     	$('#isabandon').val(vo.dto.isabandon);
                     	$('#settlement').val(vo.dto.settlement);
                     	$('#vehicleid').val(vo.dto.vehicleid);
-                    	$('#tradername').val(vo.dto.tradername);
+                    	$('#tradername').textbox('setValue',vo.dto.tradername);
                     	$('#traderid').val(vo.dto.traderid);
                     	$('#licenseno').textbox('setValue', vo.dto.licenseno);
                         $('#vehicledesc').textbox('setValue', vo.dto.vehicledesc);
@@ -390,7 +391,7 @@ var LoanEdit = {
             var isabandon = $('#isabandon').val();
             var settlement = $('#settlement').val();
             var traderid = $('#traderid').val();
-            var tradername = $('#tradername').val();
+            var tradername = $('#tradername').textbox('getValue');
             var vehicleid = $('#vehicleid').val();
             var licenseno = $('#licenseno').textbox('getValue');
             if (licenseno.replace(/(^\s*)|(\s*$)/g, "")=="")
@@ -530,6 +531,7 @@ var LoanEdit = {
                                         if (save == 'savenew') {
                                             edit.clear();
                                             xutil.focus('#licenseno');
+                                            $('#tradername').textbox('setValue',$('#username').val());
                                         } else {
                                             $('#dlg_add').dialog('close');
                                         }
@@ -549,6 +551,14 @@ var LoanEdit = {
             
                         });
     		    }else{
+    		    	var msg = '是否已经确认您输入的信息准确无误?';
+    		    	if (save == 'savenew' || save=='save') {
+    		    		msg = '请确认本次操作您输入的信息准确无误，您本次要保存的车辆是　\r\n车牌号：'+licenseno+ ' 车辆信息 :'+vehicledesc + '\r\n是否继续?';
+    		    	} else if (save == 'sold'){
+    		    		msg = '您本次将出库以下车辆，错误出库将会导致余量计算的不准确， 请确认是否继续?　\r\n车牌号：'+licenseno+ ' 车辆信息 :'+vehicledesc;
+    		    	}
+    		    	$.messager.confirm(AppConstant.M_INFO, msg, function (r) {
+    	                if (r) {
     		    	$.ajax({
     	                type: 'post',
     	                url: basePath + 'LoanAction.do?m=save',
@@ -597,6 +607,7 @@ var LoanEdit = {
     	                        if (save == 'savenew') {
     	                            edit.clear();
     	                            xutil.focus('#licenseno');
+    	                            $('#tradername').textbox('setValue',$('#username').val());
     	                        } else {
     	                            $('#dlg_add').dialog('close');
     	                        }
@@ -613,6 +624,7 @@ var LoanEdit = {
     	                }
     	            });
     		    	}
+    		    	});}
             
         };
         
@@ -762,6 +774,7 @@ var LoanEdit = {
                                 $('#list').datagrid('reload');
                                 edit.clear();
                                 xutil.focus('#licenseno');
+                                $('#tradername').textbox('setValue',$('#username').val());
                             } else if (vo.status == 'nologin') {
                                 top.location = basePath;
                             } else {
