@@ -140,25 +140,25 @@ public class SumSummaryService {
 		dto = new SummaryDto();
 		dto.setCategory("");
 		dto.setItemType("总借款金额合计");
-		dto.setDetails(carloanSummary.getBorrowamount()+"元");
+		dto.setDetails((carloanSummary.getBorrowamount()==null?"0.00":carloanSummary.getBorrowamount())+"元");
 		args.add(dto);
 		
 		dto = new SummaryDto();
 		dto.setCategory("");
 		dto.setItemType("实际打款金额合计");
-		dto.setDetails(carloanSummary.getActualloan()+"元");
+		dto.setDetails((carloanSummary.getActualloan()==null?"0.00":carloanSummary.getActualloan())+"元");
 		args.add(dto);
 		
 		dto = new SummaryDto();
 		dto.setCategory("");
 		dto.setItemType("已付利息合计");
-		dto.setDetails(carloanSummary.getInterestpaid()+"元");
+		dto.setDetails((carloanSummary.getInterestpaid()==null?"0.00":carloanSummary.getInterestpaid())+"元");
 		args.add(dto);
 		
 		dto = new SummaryDto();
 		dto.setCategory("");
 		dto.setItemType("中介返点合计");
-		dto.setDetails(carloanSummary.getMidinterest()+"元");
+		dto.setDetails((carloanSummary.getMidinterest()==null?"0.00":carloanSummary.getMidinterest())+"元");
 		args.add(dto);
 		
 		dto = new SummaryDto();
