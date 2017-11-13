@@ -310,7 +310,7 @@
 <div id="bar_list">
   <table cellspacing="0" cellpadding="0">
     <tr>
-      <td><a id="btnAddnew"></a></td>
+      <!-- <td><a id="btnAddnew"></a></td> -->
       <td><a id="btnFilter"></a></td>
       <td><a id="btnRefresh"></a></td>
       <!-- 

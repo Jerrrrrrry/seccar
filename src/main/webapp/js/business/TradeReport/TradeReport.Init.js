@@ -499,14 +499,14 @@ var TradeReportInit = {
             /***********************************************/
             // 列表工具栏初始化
             /***********************************************/
-            $('#btnAddnew').linkbutton({
+            /*$('#btnAddnew').linkbutton({
                 text : '新增',
                 plain : true,
                 iconCls : 'tbtn_addnew',
                 onClick: function(){
                     list.addNew();
                 }
-            });
+            });*/
 //            $('#btnView').linkbutton({
 //                text : '查看',
 //                plain : true,
