@@ -6,7 +6,7 @@ var LoanInit = {
             var xutil = XUtil.getInstance(basePath);
             var list = LoanList.getInstance(basePath);
             var edit = LoanEdit.getInstance(basePath);
-
+            var lstSaveTS = 0;
             /***********************************************/
             // 表格初始化
             /***********************************************/
@@ -279,6 +279,11 @@ var LoanInit = {
                     
                 ]],
                 onDblClickRow: function(index, data){
+                	var now = Date.now();
+                	if((now - lstSaveTS)<1000){
+                		return;
+                	}
+                	lstSaveTS = now;
                     $('#btnFirst').linkbutton('enable');
                     $('#btnPrevious').linkbutton('enable');
                     $('#btnNext').linkbutton('enable');
@@ -654,7 +659,11 @@ var LoanInit = {
                         id:'btnEditSave',
                         iconCls: 'tbtn_tempsave',
                         handler: function(){
-                        	//alert('btnEditSavefalse');
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.save('save');
                         }
                     },
@@ -663,6 +672,11 @@ var LoanInit = {
                         text: '保存并新增',
                         iconCls: 'tbtn_savenew',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.save('savenew');
                         }
                     },
@@ -672,6 +686,11 @@ var LoanInit = {
                         text: '已归还',
                         iconCls: 'tbtn_ok',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                         	edit.save('returned');
                         }
                     },
@@ -681,6 +700,11 @@ var LoanInit = {
                         text: '已弃车',
                         iconCls: 'tbtn_undo',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                         	edit.save('abandon');
                         }
                     },
@@ -690,6 +714,11 @@ var LoanInit = {
                         text : '结算',
                         iconCls : 'tbtn_submit',
                         onClick: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.save('settle');
                         }
                     },
@@ -698,6 +727,11 @@ var LoanInit = {
                         id: 'btnFirst',
                         iconCls: 'tbtn_first',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('first');
                         }
                     },
@@ -705,6 +739,11 @@ var LoanInit = {
                         id: 'btnPrevious',
                         iconCls: 'tbtn_previous',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('previous');
                         }
                     },
@@ -712,6 +751,11 @@ var LoanInit = {
                         id: 'btnNext',
                         iconCls: 'tbtn_next',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('next');
                         }
                     },
@@ -719,6 +763,11 @@ var LoanInit = {
                         id: 'btnLast',
                         iconCls: 'tbtn_last',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('last');
                         }
                     },
@@ -728,6 +777,11 @@ var LoanInit = {
                         id: 'btnEditDelete',
                         iconCls: 'tbtn_remove',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.del();
                         }
                     },

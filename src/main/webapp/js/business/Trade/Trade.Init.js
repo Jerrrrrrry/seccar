@@ -7,7 +7,7 @@ var TradeInit = {
             var list = TradeList.getInstance(basePath);
             var edit = TradeEdit.getInstance(basePath);
             var xutil = XUtil.getInstance(basePath);
-
+            var lstSaveTS = 0;
             /***********************************************/
             // 表格初始化
             /***********************************************/
@@ -231,6 +231,11 @@ var TradeInit = {
                     
                 ]],
                 onDblClickRow: function(index, data){
+                	var now = Date.now();
+                	if((now - lstSaveTS)<1000){
+                		return;
+                	}
+                	lstSaveTS = now;
                     $('#btnFirst').linkbutton('enable');
                     $('#btnPrevious').linkbutton('enable');
                     $('#btnNext').linkbutton('enable');
@@ -625,7 +630,11 @@ var TradeInit = {
                         id:'btnEditSave',
                         iconCls: 'tbtn_tempsave',
                         handler: function(){
-                        	//alert('btnEditSavefalse');
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.save('save');
                         }
                     },
@@ -634,6 +643,11 @@ var TradeInit = {
                         text: '保存并新增',
                         iconCls: 'tbtn_savenew',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.save('savenew');
                         }
                     },
@@ -643,6 +657,11 @@ var TradeInit = {
                         text: '出库',
                         iconCls: 'tbtn_save',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                         	edit.save('sold');
                         }
                     },
@@ -652,6 +671,11 @@ var TradeInit = {
                         text : '结算',
                         iconCls : 'tbtn_submit',
                         onClick: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.save('settle');
                         }
                     },
@@ -660,6 +684,11 @@ var TradeInit = {
                         id: 'btnFirst',
                         iconCls: 'tbtn_first',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('first');
                         }
                     },
@@ -667,6 +696,11 @@ var TradeInit = {
                         id: 'btnPrevious',
                         iconCls: 'tbtn_previous',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('previous');
                         }
                     },
@@ -674,6 +708,11 @@ var TradeInit = {
                         id: 'btnNext',
                         iconCls: 'tbtn_next',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('next');
                         }
                     },
@@ -681,6 +720,11 @@ var TradeInit = {
                         id: 'btnLast',
                         iconCls: 'tbtn_last',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('last');
                         }
                     },
@@ -690,6 +734,11 @@ var TradeInit = {
                         id: 'btnEditDelete',
                         iconCls: 'tbtn_remove',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.del();
                         }
                     },

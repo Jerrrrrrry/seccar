@@ -7,7 +7,7 @@ var UserInit = {
             var list = UserList.getInstance(basePath);
             var edit = UserEdit.getInstance(basePath);
             var xutil = XUtil.getInstance(basePath);
-
+            var lstSaveTS = 0;
             /***********************************************/
             // 表格初始化
             /***********************************************/
@@ -98,6 +98,11 @@ var UserInit = {
                     $('#btnPrevious').linkbutton('enable');
                     $('#btnNext').linkbutton('enable');
                     $('#btnLast').linkbutton('enable');
+                    var now = Date.now();
+                	if((now - lstSaveTS)<1000){
+                		return;
+                	}
+                	lstSaveTS = now;
                     edit.view(index);
                 },
                 onBeforeLoad : function(param){
@@ -335,6 +340,11 @@ var UserInit = {
                         text: '复制',
                         iconCls: 'tbtn_copy',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.copy();
                         }
                     },
@@ -343,7 +353,11 @@ var UserInit = {
                         id:'btnEditSave',
                         iconCls: 'tbtn_save',
                         handler: function(){
-                        	//alert('btnEditSavefalse');
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.save(false);
                         }
                     },
@@ -351,6 +365,11 @@ var UserInit = {
                         text: '保存并新增',
                         iconCls: 'tbtn_savenew',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.save(true);
                         }
                     },
@@ -359,6 +378,11 @@ var UserInit = {
                         id: 'btnFirst',
                         iconCls: 'tbtn_first',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('first');
                         }
                     },
@@ -366,6 +390,11 @@ var UserInit = {
                         id: 'btnPrevious',
                         iconCls: 'tbtn_previous',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('previous');
                         }
                     },
@@ -373,6 +402,11 @@ var UserInit = {
                         id: 'btnNext',
                         iconCls: 'tbtn_next',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('next');
                         }
                     },
@@ -380,6 +414,11 @@ var UserInit = {
                         id: 'btnLast',
                         iconCls: 'tbtn_last',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('last');
                         }
                     },

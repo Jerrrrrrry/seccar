@@ -16,14 +16,14 @@ public class ICStockBill {
     private int sManagerID;                 // 保管人ID
     private int billerID;                   // 制单人ID
     private int vchInterID;                 // 凭证ID
-    private int saleStyle;                  // �?售方�?
+    private int saleStyle;                  // 售方
     private int relateBrID;                 // 订货机构
     private String explanation;             // 摘要
     private int brID;                       // 制单机构
-    private String poOrdBillNo;             // 对方单据�?
+    private String poOrdBillNo;             // 对方单据
     private Date settleDate;                // 收款日期
     private int manageType;                 // 税管类型
-    private int consignee;                  // 收货�?
+    private int consignee;                  // 收货
     private int wlCompany;                  // 物流公司
 
     public String getBrNo() {

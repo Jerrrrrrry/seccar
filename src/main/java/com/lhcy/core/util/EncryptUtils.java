@@ -4,6 +4,7 @@ import sun.misc.BASE64Encoder;
 
 import java.security.MessageDigest;
 
+@SuppressWarnings("restriction")
 public class EncryptUtils {
 	
 	public static String getMd5String(String str){

@@ -7,7 +7,7 @@ var TradeReportInit = {
             var list = TradeReportList.getInstance(basePath);
             var edit = TradeReportEdit.getInstance(basePath);
             var xutil = XUtil.getInstance(basePath);
-
+            var lstSaveTS = 0;
             /***********************************************/
             // 表格初始化
             /***********************************************/
@@ -242,6 +242,11 @@ var TradeReportInit = {
                     $('#btnPrevious').linkbutton('enable');
                     $('#btnNext').linkbutton('enable');
                     $('#btnLast').linkbutton('enable');
+                    var now = Date.now();
+                	if((now - lstSaveTS)<1000){
+                		return;
+                	}
+                	lstSaveTS = now;
                     edit.view(index);
                 },
                 onBeforeLoad : function(param){
@@ -624,7 +629,11 @@ var TradeReportInit = {
                         id:'btnEditSave',
                         iconCls: 'tbtn_tempsave',
                         handler: function(){
-                        	//alert('btnEditSavefalse');
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.save('save');
                         }
                     },
@@ -642,6 +651,11 @@ var TradeReportInit = {
                         text: '出库',
                         iconCls: 'tbtn_save',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                         	edit.save('sold');
                         }
                     },
@@ -651,6 +665,11 @@ var TradeReportInit = {
                         text : '结算',
                         iconCls : 'tbtn_submit',
                         onClick: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.save('settle');
                         }
                     },
@@ -659,6 +678,11 @@ var TradeReportInit = {
                         id: 'btnFirst',
                         iconCls: 'tbtn_first',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('first');
                         }
                     },
@@ -666,6 +690,11 @@ var TradeReportInit = {
                         id: 'btnPrevious',
                         iconCls: 'tbtn_previous',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('previous');
                         }
                     },
@@ -673,6 +702,11 @@ var TradeReportInit = {
                         id: 'btnNext',
                         iconCls: 'tbtn_next',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('next');
                         }
                     },
@@ -680,6 +714,11 @@ var TradeReportInit = {
                         id: 'btnLast',
                         iconCls: 'tbtn_last',
                         handler: function () {
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.showNext('last');
                         }
                     },
@@ -689,6 +728,11 @@ var TradeReportInit = {
                         id: 'btnEditDelete',
                         iconCls: 'tbtn_remove',
                         handler: function(){
+                        	var now = Date.now();
+                        	if((now - lstSaveTS)<1000){
+                        		return;
+                        	}
+                        	lstSaveTS = now;
                             edit.del();
                         }
                     },

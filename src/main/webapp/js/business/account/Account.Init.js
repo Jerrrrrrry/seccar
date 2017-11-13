@@ -8,7 +8,7 @@ var AccountInit = {
             var list = AccountList.getInstance(basePath);
             var edit = AccountEdit.getInstance(basePath);
             var xutil = XUtil.getInstance(basePath);
-
+            var lstSaveTS = 0;
             /***********************************************/
             // 表格初始化
             /***********************************************/

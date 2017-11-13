@@ -6,7 +6,7 @@ var VoucherInit = {
 
             var list = VoucherList.getInstance(basePath);
             var xutil = XUtil.getInstance(basePath);
-
+            var lstSaveTS = 0;
             /***********************************************/
             // 表格初始化
             /***********************************************/

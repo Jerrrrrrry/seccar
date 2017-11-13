@@ -6,7 +6,7 @@ var SumTradeInit = {
 
             var list = SumTradeList.getInstance(basePath);
             var xutil = XUtil.getInstance(basePath);
-
+            var lstSaveTS = 0;
             /***********************************************/
             // 表格初始化
             /***********************************************/
@@ -127,6 +127,11 @@ var SumTradeInit = {
                     $('#btnPrevious').linkbutton('enable');
                     $('#btnNext').linkbutton('enable');
                     $('#btnLast').linkbutton('enable');
+                    var now = Date.now();
+                	if((now - lstSaveTS)<1000){
+                		return;
+                	}
+                	lstSaveTS = now;
                     edit.view(index);
                 },
                 onBeforeLoad : function(param){
