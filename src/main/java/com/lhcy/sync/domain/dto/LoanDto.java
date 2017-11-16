@@ -1,6 +1,11 @@
 package com.lhcy.sync.domain.dto;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import org.apache.commons.lang.StringUtils;
 
 public class LoanDto implements Serializable {
 	private String vehicleid;
@@ -46,8 +51,78 @@ public class LoanDto implements Serializable {
     private double earnest;
     private String mobileno;
     private double actualmonths;
+    private String lixichengben;
     
-    
+    private Calendar getDate(Date date)
+    {
+		Calendar cal2=Calendar.getInstance();  
+		cal2.setTime(date);
+		cal2.set(Calendar.HOUR, 0);
+		cal2.set(Calendar.MINUTE, 0);
+		cal2.set(Calendar.SECOND, 0);
+		cal2.set(Calendar.MILLISECOND, 0);
+		return cal2;
+    }
+    private Calendar formatDate(String dateString){
+    	
+    	if (!StringUtils.isBlank(dateString))
+	    {
+    		try
+	    	{
+	    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    		Date date = sdf.parse(dateString);
+	    		return getDate(date);
+	    	}
+	    	catch (Exception e)
+	    	{
+	    		System.out.println(e.getMessage());
+	    	}
+    	}
+    	return null;
+    }
+    private String toDateStr(Calendar cal)
+    {
+    	return cal.get(Calendar.YEAR) + "-" +cal.get(Calendar.MONTH) +"-"+ cal.get(Calendar.DATE);
+    }
+    public void calculateLiXiChengBen(){
+    	StringBuilder sb = new StringBuilder();
+    	if (!"1".equalsIgnoreCase(isdeleted)){
+    		Calendar today = getDate(new Date());
+    		Calendar borrowDateC = formatDate(borrowdate);
+    		if (borrowDateC != null)
+    		{
+    			if(borrowDateC.before(today))
+    			{
+    				while (borrowDateC.before(today))
+    				{
+    					String start = toDateStr(borrowDateC);
+    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
+    					String end= toDateStr(borrowDateC);
+    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+    				}
+    			} else 
+    			{
+    				String start = toDateStr(today);
+    				today.set(Calendar.MONTH, today.get(Calendar.MONTH) + 1);
+    				String end= toDateStr(today);
+    				sb.append(start+"到"+end+ "利息 	0元");
+    			}
+    		} else
+    		{
+    			sb.append("无法计算");
+    		}
+    	} else
+    	{
+    		sb.append("已删除");
+    	}
+    	lixichengben = sb.toString();
+    }
+	public String getLixichengben() {
+		return lixichengben;
+	}
+	public void setLixichengben(String lixichengben) {
+		this.lixichengben = lixichengben;
+	}
 	public double getActualmonths() {
 		return actualmonths;
 	}

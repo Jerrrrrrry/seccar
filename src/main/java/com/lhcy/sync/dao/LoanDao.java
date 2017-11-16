@@ -183,6 +183,7 @@ public class LoanDao {
                 vo.setActualmonths(rs.getDouble("actualmonths"));
                 vo.setMobileno(rs.getString("mobileno"));
                 vo.setEarnest(rs.getDouble("earnest"));
+                vo.calculateLiXiChengBen();
                 result.add(vo);
             }
         } catch (Exception e) {
@@ -305,6 +306,7 @@ public class LoanDao {
                 result.setInterestpaidto(rs.getString("interestpaidto"));
                 result.setNextpaymentdate(rs.getString("nextpaymentdate"));
                 result.setInterestcost(rs.getDouble("interestcost"));
+                result.calculateLiXiChengBen();
             }
         } catch (Exception e) {
             throw new Exception(e);

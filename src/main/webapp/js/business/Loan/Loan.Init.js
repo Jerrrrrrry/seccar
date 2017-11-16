@@ -38,6 +38,13 @@ var LoanInit = {
 					    checkbox: true
 					},
                     {
+                        field: 'tradername',
+                        title: '经办人',
+                        width: 80,
+                        align: 'center',
+                        sortable: false
+                    },
+                    {
                         field: 'licenseno',
                         title: '车牌号码',
                         width: 80,
@@ -101,13 +108,6 @@ var LoanInit = {
                         sortable: false
                     },
                     {
-                        field: 'tradername',
-                        title: '经办人',
-                        width: 80,
-                        align: 'center',
-                        sortable: false
-                    },
-                    {
                         field: 'borrowamount',
                         title: '借款金额',
                         width: 100,
@@ -134,6 +134,15 @@ var LoanInit = {
                     	width: 100,
                     	align: 'left',
                     	sortable: true
+                    },
+                    {
+                    	field: 'lixichengben',
+                    	title: '利息成本',
+                    	width: 100,
+                    	align: 'left',
+                    	formatter: function (value) {
+                    		return '<span title="'+value+'"  class="easyui-tooltip">鼠标移动到此处</span>' 
+                    	}
                     },
                     {
                         field: 'parkingfee',
@@ -170,7 +179,7 @@ var LoanInit = {
                         align: 'left',
                         sortable: true
                     },
-                    {
+                    /*{
                         field: 'interestpaidto',
                         title: '利息付至',
                         width: 80,
@@ -190,7 +199,7 @@ var LoanInit = {
                         width: 80,
                         align: 'left',
                         sortable: true
-                    },
+                    },*/
                     {
                         field: 'midinterestrate',
                         title: '已还本金差',
@@ -296,7 +305,7 @@ var LoanInit = {
                 onLoadSuccess : function (data) {
                   xutil.ajaxLoadEnd();
                   //添加“合计”列
-                  $('#list').datagrid('appendRow', {
+                  /*$('#list').datagrid('appendRow', {
                 	  licenseno: '<span class="subtotal">合计</span>',
                       borrowamount: '<span class="subtotal">' + list.compute("borrowamount") + '</span>',
                       interestpaid: '<span class="subtotal">' + list.compute("interestpaid") + '</span>',
@@ -305,7 +314,15 @@ var LoanInit = {
                       actualloan: '<span class="subtotal">' + list.compute("actualloan") + '</span>',
                       actualreturn: '<span class="subtotal">' + list.compute("actualreturn") + '</span>',
                       totalprofit: '<span class="subtotal">' + list.compute("totalprofit") + '</span>'
+                  });*/
+                  $(".easyui-tooltip").tooltip({
+                      onShow: function () {
+                          $(this).tooltip('tip').css({
+                              borderColor: '#000'
+                          });
+                      }
                   });
+                  
                 },
                 onLoadError: function () {
                     xutil.ajaxLoadEnd();
