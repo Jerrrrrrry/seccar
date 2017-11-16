@@ -82,30 +82,63 @@ public class LoanDto implements Serializable {
     }
     private String toDateStr(Calendar cal)
     {
-    	return cal.get(Calendar.YEAR) + "-" +cal.get(Calendar.MONTH) +"-"+ cal.get(Calendar.DATE);
+    	int month = cal.get(Calendar.MONTH)+1;
+    	int date = cal.get(Calendar.DATE);
+    	return cal.get(Calendar.YEAR) + "-" +(month<10?("0"+month):month) +"-"+ (date<10?("0"+date):date);
     }
     public void calculateLiXiChengBen(){
     	StringBuilder sb = new StringBuilder();
     	if (!"1".equalsIgnoreCase(isdeleted)){
     		Calendar today = getDate(new Date());
     		Calendar borrowDateC = formatDate(borrowdate);
+    		Calendar actualreturndateC = formatDate(actualreturndate);
     		if (borrowDateC != null)
     		{
-    			if(borrowDateC.before(today))
+    			if(actualreturndateC!= null)
     			{
-    				while (borrowDateC.before(today))
+    				while (borrowDateC.before(actualreturndateC))
+        			{
+    					String start = toDateStr(borrowDateC);
+    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
+    					String end= toDateStr(borrowDateC);
+    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+        			}
+    				if (borrowDateC.equals(actualreturndateC))
     				{
     					String start = toDateStr(borrowDateC);
     					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
     					String end= toDateStr(borrowDateC);
     					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+    				} else 
+    				{
+    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    					String start = toDateStr(borrowDateC);
+    					String end= toDateStr(actualreturndateC);
+    					long time1 = borrowDateC.getTimeInMillis();                  
+    					long time2 = actualreturndateC.getTimeInMillis();          
+    					int between_days=Integer.parseInt(String.valueOf((time2-time1)/(1000*3600*24)));     
+
+    					sb.append(start+"到"+end+ "利息 	" + ((actualloan * 1.5 * between_days)/(30*100))+"元</br>");
     				}
-    			} else 
+    			}
+    			else
     			{
-    				String start = toDateStr(today);
-    				today.set(Calendar.MONTH, today.get(Calendar.MONTH) + 1);
-    				String end= toDateStr(today);
-    				sb.append(start+"到"+end+ "利息 	0元");
+	    			if(borrowDateC.before(today))
+	    			{
+	    				while (borrowDateC.before(today))
+	    				{
+	    					String start = toDateStr(borrowDateC);
+	    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
+	    					String end= toDateStr(borrowDateC);
+	    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+	    				}
+	    			} else 
+	    			{
+	    				String start = toDateStr(today);
+	    				today.set(Calendar.MONTH, today.get(Calendar.MONTH) + 1);
+	    				String end= toDateStr(today);
+	    				sb.append(start+"到"+end+ "利息 	0元");
+	    			}
     			}
     		} else
     		{
