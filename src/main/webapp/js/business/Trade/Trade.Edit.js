@@ -380,10 +380,13 @@ var TradeEdit = {
             }
             var tradername = $('#tradername').textbox('getValue');
             var purchaseprice = $('#purchaseprice').textbox('getValue');
-            if (purchaseprice.replace(/(^\s*)|(\s*$)/g, "")=="" ||purchaseprice.replace(/(^\s*)|(\s*$)/g, "")=="0")
-            {
-            	alert("请输入有效的收车价(大于0的值)");
-            	return;
+            var vehicletype = $('#vehicletype').combobox('getValue');
+            if(vehicletype=='第三方'){
+	            if (purchaseprice.replace(/(^\s*)|(\s*$)/g, "")=="" ||purchaseprice.replace(/(^\s*)|(\s*$)/g, "")=="0")
+	            {
+	            	alert("请输入有效的收车价(大于0的值)");
+	            	return;
+	            }
             }
             var ownername = $('#ownername').textbox('getValue');
             if (ownername.replace(/(^\s*)|(\s*$)/g, "")=="")
@@ -402,7 +405,6 @@ var TradeEdit = {
             var interestrate = $('#interestrate').textbox('getValue');
             var actualloan = $('#actualloan').textbox('getValue');
             var spareloan = $('#spareloan').textbox('getValue');
-            var vehicletype = $('#vehicletype').combobox('getValue');
             var comments = $('#comments').textbox('getValue');
             var earnest = $('#earnest').textbox('getValue');
             var tradecost = $('#tradecost').textbox('getValue');
