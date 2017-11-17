@@ -92,33 +92,59 @@ public class LoanDto implements Serializable {
     		Calendar today = getDate(new Date());
     		Calendar borrowDateC = formatDate(borrowdate);
     		Calendar actualreturndateC = formatDate(actualreturndate);
+    		Calendar borrowDateCopy = formatDate(borrowdate);
     		if (borrowDateC != null)
     		{
     			if(actualreturndateC!= null)
     			{
-    				while (borrowDateC.before(actualreturndateC))
-        			{
-    					String start = toDateStr(borrowDateC);
-    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
-    					String end= toDateStr(borrowDateC);
-    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
-        			}
-    				if (borrowDateC.equals(actualreturndateC))
+    				if (borrowDateCopy.before(actualreturndateC))
     				{
-    					String start = toDateStr(borrowDateC);
-    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
-    					String end= toDateStr(borrowDateC);
-    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
-    				} else 
-    				{
-    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
-    					String start = toDateStr(borrowDateC);
-    					String end= toDateStr(actualreturndateC);
-    					long time1 = borrowDateC.getTimeInMillis();                  
-    					long time2 = actualreturndateC.getTimeInMillis();          
-    					int between_days=Integer.parseInt(String.valueOf((time2-time1)/(1000*3600*24)));     
+    					borrowDateCopy.set(Calendar.MONTH, borrowDateCopy.get(Calendar.MONTH) + 1);
+    					if (borrowDateCopy.equals(actualreturndateC))
+    					{
+    						String start = toDateStr(borrowDateC);
+        					String end= toDateStr(actualreturndateC);
+        					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+    					} else if (borrowDateCopy.after(actualreturndateC)){
+    						String start = toDateStr(borrowDateC);
+        					String end= toDateStr(actualreturndateC);
+        					long time1 = borrowDateC.getTimeInMillis();                  
+        					long time2 = actualreturndateC.getTimeInMillis();          
+        					int between_days=Integer.parseInt(String.valueOf((time2-time1)/(1000*3600*24)));     
 
-    					sb.append(start+"到"+end+ "利息 	" + ((actualloan * 1.5 * between_days)/(30*100))+"元</br>");
+        					sb.append(start+"到"+end+ "利息 	" + ((actualloan * 1.5 * between_days)/(30*100))+"元</br>");
+    					} else {
+    						while (borrowDateC.before(actualreturndateC))
+    	        			{
+    	    					String start = toDateStr(borrowDateC);
+    	    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
+    	    					if (!borrowDateC.before(actualreturndateC))
+    	    					{
+    	    						break;
+    	    					}
+    	    					String end= toDateStr(borrowDateC);
+    	    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+    	        			}
+    	    				if (borrowDateC.equals(actualreturndateC))
+    	    				{
+    	    					String start = toDateStr(borrowDateC);
+    	    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
+    	    					String end= toDateStr(borrowDateC);
+    	    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+    	    				} else 
+    	    				{
+    	    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    	    					String start = toDateStr(borrowDateC);
+    	    					String end= toDateStr(actualreturndateC);
+    	    					long time1 = borrowDateC.getTimeInMillis();                  
+    	    					long time2 = actualreturndateC.getTimeInMillis();          
+    	    					int between_days=Integer.parseInt(String.valueOf((time2-time1)/(1000*3600*24)));     
+
+    	    					sb.append(start+"到"+end+ "利息 	" + ((actualloan * 1.5 * between_days)/(30*100))+"元</br>");
+    	    				}
+    					}
+    				} else {
+    					sb.append("无法计算");
     				}
     			}
     			else
