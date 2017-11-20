@@ -34,7 +34,7 @@ var LoanList = {
         	var isabandon = row.isabandon;
         	var color = '';
         	if(isreturned == '1' || isdeleted == '1' || isabandon == '1'){
-        		color = '';
+        		color = 'background-color: #d0d0d0 ';
         	}else{
 	        	var today = list.getNowFormatDate();
             	var ipd = row.interestpaidto;
