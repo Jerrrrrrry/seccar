@@ -24,6 +24,11 @@
 
     $(function(){
     	SumSummaryInit.getInstance('<%= basePath%>').init();
+    	var myDate = new Date();
+    	var currentMonth= myDate.getMonth() + 1;  
+    	var currentYearMonth =myDate.getFullYear()+'年'+currentMonth+'月';
+    	document.getElementById('stockLabelId').innerText = currentYearMonth+'库存合计：';
+    	document.getElementById('soldLabelId').innerText = currentYearMonth+'卖车合计：';
     }
 
        );
@@ -34,18 +39,37 @@
 </head>
 <body class="easyui-layout">
 <div region="center" border="false" title="" class="grid_line">
-  <div class="easyui-layout" fit="true" style="overflow:hidden;width:100%;height:100%">
-    <table id="list">
+  <div class="easyui-layout"  style="overflow:hidden;width:100%;height:30%">
+    <table id="stocklist">
+    </table>
+  </div>
+  <div class="easyui-layout"  style="overflow:hidden;width:100%;height:30%">
+    <table id="soldlist">
     </table>
   </div>
 </div>
-<div id="bar_list">
+<div id="stock_bar_list">
   <table cellspacing="0" cellpadding="0">
     <tr>
-      <td><a id="btnFilter"></a></td>
+      <td><font color="red" id="stockLabelId"></font></td>
+      <!-- <td><a id="btnFilter"></a></td> -->
       <td><a id="btnRefresh"></a></td>
       <td><div class="datagrid-btn-separator"></div></td>
-      <td><a id="btnClose"></a></td>
+      <!-- <td><a id="btnClose"></a></td> -->
+      <td><a id="exportStockbtn"></a></td>
+      <td><input type="hidden" id="CurrentLoginUserAccesstype" value="<%= session.getAttribute("CurrentLoginUserAccesstype")%>" /></td>
+    </tr>
+  </table>
+</div>
+<div id="sold_bar_list">
+  <table cellspacing="0" cellpadding="0">
+    <tr>
+      <td><font color="red"  id="soldLabelId"></font></td>
+      <!-- <td><a id="btnFilter"></a></td> -->
+      <td><a id="btnSoldRefresh"></a></td>
+      <td><div class="datagrid-btn-separator"></div></td>
+      <!-- <td><a id="btnClose"></a></td> -->
+      <td><a id="exportSoldbtn"></a></td>
       <td><input type="hidden" id="CurrentLoginUserAccesstype" value="<%= session.getAttribute("CurrentLoginUserAccesstype")%>" /></td>
     </tr>
   </table>

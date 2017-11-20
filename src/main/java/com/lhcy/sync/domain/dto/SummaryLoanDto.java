@@ -24,7 +24,71 @@ public class SummaryLoanDto implements Serializable {
     private String settlement;
     private String totalinterest;
     private String actualloan;
+    private int year;
+    private int month;
+    private int sumTotalNewCarLoanAmount;
+    private double sumTotalLoan;
+    private double sumTotalActualLoan;
+    private int sumTotalReturnedCarLoanAmount;
+    private double sumTotalPaidInterest;
+    private double sumTotalProxyInterest;
+    private double sumTotalReturnedPrincipalLoan;
     
+	public int getSumTotalNewCarLoanAmount() {
+		return sumTotalNewCarLoanAmount;
+	}
+	public void setSumTotalNewCarLoanAmount(int sumTotalNewCarLoanAmount) {
+		this.sumTotalNewCarLoanAmount = sumTotalNewCarLoanAmount;
+	}
+	public double getSumTotalLoan() {
+		return sumTotalLoan;
+	}
+	public void setSumTotalLoan(double sumTotalLoan) {
+		this.sumTotalLoan = sumTotalLoan;
+	}
+	public double getSumTotalActualLoan() {
+		return sumTotalActualLoan;
+	}
+	public void setSumTotalActualLoan(double sumTotalActualLoan) {
+		this.sumTotalActualLoan = sumTotalActualLoan;
+	}
+	public int getSumTotalReturnedCarLoanAmount() {
+		return sumTotalReturnedCarLoanAmount;
+	}
+	public void setSumTotalReturnedCarLoanAmount(int sumTotalReturnedCarLoanAmount) {
+		this.sumTotalReturnedCarLoanAmount = sumTotalReturnedCarLoanAmount;
+	}
+	public double getSumTotalPaidInterest() {
+		return sumTotalPaidInterest;
+	}
+	public void setSumTotalPaidInterest(double sumTotalPaidInterest) {
+		this.sumTotalPaidInterest = sumTotalPaidInterest;
+	}
+	public double getSumTotalProxyInterest() {
+		return sumTotalProxyInterest;
+	}
+	public void setSumTotalProxyInterest(double sumTotalProxyInterest) {
+		this.sumTotalProxyInterest = sumTotalProxyInterest;
+	}
+	public double getSumTotalReturnedPrincipalLoan() {
+		return sumTotalReturnedPrincipalLoan;
+	}
+	public void setSumTotalReturnedPrincipalLoan(
+			double sumTotalReturnedPrincipalLoan) {
+		this.sumTotalReturnedPrincipalLoan = sumTotalReturnedPrincipalLoan;
+	}
+	public int getYear() {
+		return year;
+	}
+	public void setYear(int year) {
+		this.year = year;
+	}
+	public int getMonth() {
+		return month;
+	}
+	public void setMonth(int month) {
+		this.month = month;
+	}
 	public String getTotalinterest() {
 		return totalinterest;
 	}

@@ -68,10 +68,12 @@ var SumSummaryList = {
         /***********************************************/
         // 刷新
         /***********************************************/
-        list.refresh = function () {
-            $('#list').datagrid('reload');
+        list.refreshStock = function () {
+            $('#stocklist').datagrid('reload');
         };
-
+        list.refreshSold = function () {
+            $('#soldlist').datagrid('reload');
+        };
         /***********************************************/
         // 全选
         /***********************************************/

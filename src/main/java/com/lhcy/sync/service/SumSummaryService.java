@@ -1,7 +1,9 @@
 package com.lhcy.sync.service;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.lhcy.sync.dao.LoanDao;
@@ -13,15 +15,126 @@ import com.lhcy.sync.domain.dto.ParkingSummaryDto;
 import com.lhcy.sync.domain.dto.SummaryDto;
 import com.lhcy.sync.domain.dto.SummaryLoanDto;
 import com.lhcy.sync.domain.dto.SummaryTradeDto;
+import com.lhcy.sync.domain.dto.TradeDto;
+import com.lhcy.sync.web.form.LoanForm;
 import com.lhcy.sync.web.form.SumSummaryForm;
+import com.lhcy.sync.web.form.TradeForm;
 
 public class SumSummaryService {
 	private TradeDao tradeDao = new TradeDao();
 	private LoanDao loanDao = new LoanDao();
 	private ParkingDao parkingDao = new ParkingDao();
 	
+	public List<CarSummaryDto> listStock(SumSummaryForm form) throws Exception {
+		List<CarSummaryDto> newlist = new ArrayList<CarSummaryDto>();
+//		TradeForm tradeForm = new TradeForm();
+//		tradeForm.setFilterissold("0");
+//		tradeForm.setFilterisdeleted("0");
+//		tradeForm.setSort("createdts");
+//		tradeForm.setOrder("desc");
+//		List<TradeDto> list  = tradeDao.list(0, Integer.MAX_VALUE, tradeForm, "管理员");
+//		for (TradeDto dto : list)
+//		{
+//			SummaryDto newdto = new SummaryDto();
+//			newdto.setCarDesc(dto.getVehicledesc());
+//			newdto.setCategory("押车");
+//			newdto.setInstockDate(removeTime(dto.getPurchasedate()));
+//			newdto.setActualPaiedToLoaner(String.valueOf(dto.getActualloan()));
+//			newlist.add(newdto);
+//		}
+		List<CarSummaryDto> list  = tradeDao.getSummaryForCarTrade();
+		for (CarSummaryDto dto : list)
+		{
+			if (!dto.isSold()){
+				newlist.add(dto);
+			}
+		}
+		CarSummaryDto dto = loanDao.getSummaryForCarLoan();
+		newlist.add(dto);
+		return newlist;
+	}
+	public List<CarSummaryDto> listSold(SumSummaryForm form) throws Exception {
+		List<CarSummaryDto> newlist = new ArrayList<CarSummaryDto>();
+		
+		List<TradeDto> list  = tradeDao.getTradeCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
+		CarSummaryDto sanfang = new CarSummaryDto();sanfang.setCarType("三方车");newlist.add(sanfang);
+		CarSummaryDto zishouche = new CarSummaryDto();zishouche.setCarType("自收车");newlist.add(zishouche);
+		for (TradeDto dto : list) {
+			if ("第三方".equalsIgnoreCase(dto.getVehicletype()))
+			{
+				sanfang.setOutStockCarsAmount(sanfang.getOutStockCarsAmount()+1);
+				sanfang.setOutStockCarsMoney(sanfang.getOutStockCarsMoney() + dto.getSellprice());
+			} else {
+				zishouche.setOutStockCarsAmount(zishouche.getOutStockCarsAmount()+1);
+				zishouche.setOutStockCarsMoney(zishouche.getOutStockCarsMoney() + dto.getSellprice());
+			}
+		}
+		List<LoanDto> list2 = loanDao.getLoanCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
+		CarSummaryDto chedai = new CarSummaryDto();newlist.add(chedai);
+		chedai.setCarType("抵押车");
+		chedai.setOutStockCarsAmount(list2.size());
+		for (LoanDto dto : list2) {
+			chedai.setOutStockCarsMoney(chedai.getOutStockCarsMoney() + dto.getActualreturn());
+		}
+		return newlist;
+	}
+	public List<TradeDto> getTradeCarsSellInPeriod() throws Exception {
+		return tradeDao.getTradeCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
+	}
+	public List<LoanDto> getLoanCarsSellInPeriod() throws Exception {
+		return loanDao.getLoanCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
+		
+	}
+	private String getFirstDayOfCurrentMonth(int offset){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		 Calendar   cal_1=Calendar.getInstance();
+		 cal_1.add(Calendar.MONTH, offset);
+	   cal_1.set(Calendar.DAY_OF_MONTH,1);
+	   String firstDay = format.format(cal_1.getTime());
+	   return firstDay;
+	}
+	private String getLastDayOfCurrentMonth(int offset){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		 Calendar ca = Calendar.getInstance(); 
+		 ca.add(Calendar.MONTH, offset);
+		   ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));  
+		   String last = format.format(ca.getTime());
+		   return last;
+	}
+  
+	public List<TradeDto> listTradeStock(SumSummaryForm form) throws Exception {
+		TradeForm tradeForm = new TradeForm();
+		tradeForm.setFilterissold("0");
+		tradeForm.setFilterisdeleted("0");
+		tradeForm.setSort("createdts");
+		tradeForm.setOrder("desc");
+		tradeForm.setFilterField("isdeteled");
+		List<TradeDto> list  = tradeDao.list(0, Integer.MAX_VALUE, tradeForm, "管理员");
+		return list;
+	}
+	public List<LoanDto> listLoanStock(SumSummaryForm form) throws Exception {
+		LoanForm loanForm = new LoanForm();
+		loanForm.setFilterisreturned("0");
+		loanForm.setFilterisdeleted("0");
+		loanForm.setFilterisabandon("0");
+		loanForm.setFilterField("isdeteled");
+		loanForm.setSort("createdts");
+		loanForm.setOrder("desc");
+		List<LoanDto> list  = loanDao.list(0, Integer.MAX_VALUE, loanForm, "管理员");
+		return list;
+	}
+	private String removeTime(String date){
+		if (date != null){
+			date = date.replace("00:00:00.0", "");
+		}
+		return date;
+	}
+	public List<SummaryLoanDto> list2(SumSummaryForm form) throws Exception {
+		List<SummaryLoanDto> carloanSummary = loanDao.listLoanReportEachMonth();
+		return carloanSummary;
+	}
 	public List<SummaryDto> list(SumSummaryForm form) throws Exception {
-		CarSummaryDto carTradeSummaryDto = tradeDao.getSummaryForCarTrade();
+		CarSummaryDto carTradeSummaryDto = new  CarSummaryDto();//tradeDao.getSummaryForCarTrade();
 		CarSummaryDto carLoanSummaryDto = loanDao.getSummaryForCarLoan();
 		CarSummaryDto tradeProfitDto = tradeDao.getSummaryTradeProfit();
 		CarSummaryDto loaninterestoutDto = loanDao.getSummaryLoanOutInterest();
@@ -125,7 +238,7 @@ public class SumSummaryService {
 		
 		/****************************/
 		/****************************/
-		dto = new SummaryDto();
+		/*dto = new SummaryDto();
 		dto.setCategory("");
 		dto.setDetails("");
 		dto.setItemType("");
@@ -166,7 +279,7 @@ public class SumSummaryService {
 		dto.setItemType("已还本金合计(减去本金差)");
 		dto.setDetails(carloanSummary.getActualreturn()+"元");
 		args.add(dto);
-		
+		*/
 		
 		/****************************/
 		/****************************/

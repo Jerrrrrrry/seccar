@@ -323,14 +323,104 @@ public class LoanDao {
 
         return result;
     }
+    public List<LoanDto>  getLoanCarsSellInPeriod(String startDate, String endDate) throws Exception{
+    	List<LoanDto> list = new ArrayList<LoanDto>();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" select * from SecCarLoan where isdeleted<>'1' and isreturned='1' and actualreturndate>=? and actualreturndate <=? " );
+        sql.append(" union ");
+        sql.append(" select * from SecCarLoan where isdeleted<>'1' and isreturned='0' and isabandon='1' and lastupdatedts>=? and lastupdatedts <=? ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List args = new ArrayList();
+        args.add(startDate);
+        args.add(endDate);
+        args.add(startDate);
+        args.add(endDate);
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps, args);
+
+            if (rs == null){
+                return list;
+            }
+            while(rs.next()){
+            	LoanDto result = new LoanDto();
+            	result.setVehicleid(rs.getString("vehicleid"));
+                result.setVIN(rs.getString("VIN"));
+                result.setLicenseno(rs.getString("licenseno"));
+                result.setVehicledesc(rs.getString("vehicledesc"));
+                result.setOwnerid(rs.getString("ownerid"));
+                result.setOwnername(rs.getString("ownername"));
+                result.setOwnerdesc(rs.getString("ownerdesc"));
+                result.setMobileno(rs.getString("mobileno"));
+                result.setBorrowdate(rs.getString("borrowdate"));
+                result.setReturndate(rs.getString("returndate"));
+                result.setPeriodmonths(rs.getDouble("periodmonths"));
+                result.setTraderid(rs.getString("traderid"));
+                result.setTradername(rs.getString("tradername"));
+                result.setBorrowamount(rs.getDouble("borrowamount"));
+                result.setInterestrate(rs.getDouble("interestrate"));
+                result.setInterest(rs.getDouble("interest"));
+                result.setInterestpaid(rs.getDouble("interestpaid"));
+                result.setTotalinterest(rs.getDouble("totalinterest"));
+                result.setActualmonths(rs.getDouble("actualmonths"));
+                result.setEarnest(rs.getDouble("earnest"));
+                result.setMidinterestrate(rs.getDouble("midinterestrate"));
+                result.setMidinterest(rs.getDouble("midinterest"));
+                result.setParkingfee(rs.getDouble("parkingfee"));
+                result.setOtherfee(rs.getDouble("otherfee"));
+                result.setComments(rs.getString("comments"));
+                result.setActualloan(rs.getDouble("actualloan"));
+                result.setActualreturn(rs.getDouble("actualreturn"));
+                result.setActualreturndate(rs.getString("actualreturndate"));
+                result.setOthercost(rs.getDouble("othercost"));
+                result.setVehicletype(rs.getString("vehicletype"));
+                result.setSettlement(rs.getString("settlement"));
+                result.setSettlementdate(rs.getString("settlementdate"));
+                result.setTotalprofit(rs.getDouble("totalprofit"));
+                result.setPicturepath(rs.getString("picturepath"));
+                result.setIsdeleted(rs.getString("isdeleted"));
+                result.setIsreturned(rs.getString("isreturned"));
+                result.setIsabandon(rs.getString("isabandon"));
+                result.setComments2(rs.getString("comments2"));
+                result.setInterestpaidto(rs.getString("interestpaidto"));
+                result.setNextpaymentdate(rs.getString("nextpaymentdate"));
+                result.setInterestcost(rs.getDouble("interestcost"));
+                result.calculateLiXiChengBen();
+                list.add(result);
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return list;
+    } 
     /***********************************************/
     // 查询车贷的车辆库存车辆和已抵押完毕的车辆
     /***********************************************/
     public CarSummaryDto getSummaryForCarLoan() throws Exception{
     	CarSummaryDto result = new CarSummaryDto();
+    	result.setCarType("抵押车");
         StringBuilder sql = new StringBuilder();
         //删除的车辆不考虑
-        sql.append(" select case when isreturned =1 then 1 when isabandon=1 then 2 else 0  end as isreturned,COUNT(*) as num from SecCarLoan where isdeleted<>'1' group by isreturned,isabandon ");
+        sql.append(" select case when isreturned =1 then 1 when isabandon=1 then 2 else 0  end as isreturned,COUNT(*) as num,SUM(actualloan) as amount from SecCarLoan where isdeleted<>'1' group by isreturned,isabandon ");
         System.out.println("query sql: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
@@ -353,6 +443,7 @@ public class LoanDao {
                 if ("0".equalsIgnoreCase(rs.getString("isreturned")))//抵押完毕的车辆
            		{
                 	in =rs.getInt("num");
+                	result.setInStockCarMoney(rs.getDouble("amount"));
                 } else
                 {
                 	out = out + rs.getInt("num");
@@ -615,6 +706,109 @@ public class LoanDao {
         }
 
         return null;
+    }
+    public List<SummaryLoanDto> listLoanReportEachMonth() throws Exception{
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" declare @begin datetime,@end datetime ");
+        sql.append(" select @begin=MIN(borrowdate) from SecCarLoan  ");
+        sql.append(" set @end=GETDATE()  ");
+
+        sql.append(" declare @months int  ");
+        sql.append(" set @months=DATEDIFF(month,@begin,@end)  ");
+        sql.append(" select a.*,b.入库数,b.借款金额合计,b.实际打款金额合计,c.归还数,c.已付利息合计,c.中介返点合计,c.已还本金合计 from (  ");
+        sql.append(" select Year(DATEADD(month,number,@begin)) as 年, MONTH ( DATEADD(month,number,@begin) ) as 月份  ");
+		sql.append(" from master.dbo.spt_values   ");
+        sql.append(" where type='p' AND number<=@months) as a left join  ");
+        sql.append(" (SELECT  ");
+        sql.append(" Year(borrowdate) as 年, MONTH ( borrowdate ) as 月份,  ");
+		sql.append(" count(*)入库数,  ");
+		sql.append(" SUM( borrowamount ) as 借款金额合计,  ");
+		sql.append(" SUM( actualloan ) as 实际打款金额合计  ");
+		sql.append(" FROM  ");
+		sql.append(" SecCarLoan  ");
+		sql.append(" WHERE  ");
+		sql.append(" isdeleted<>'1'  ");
+		
+		sql.append(" GROUP BY  ");
+		sql.append(" Year(borrowdate), MONTH ( borrowdate )) as b  ");
+		sql.append(" on a.年 = b.年  ");
+		sql.append(" and a.月份 = b.月份  ");
+		sql.append(" left join  ");
+		sql.append(" (SELECT  ");
+		sql.append(" Year(actualreturndate) as 年, MONTH ( actualreturndate ) as 月份,  ");
+		sql.append(" count(*)归还数,  ");
+		sql.append(" SUM( interestpaid ) as 已付利息合计,  ");
+		sql.append(" SUM( midinterest ) as 中介返点合计,  ");
+		sql.append(" SUM( actualreturn ) as 已还本金合计  ");
+		sql.append(" FROM  ");
+		sql.append(" SecCarLoan  ");
+		sql.append(" WHERE  ");
+		sql.append(" isdeleted<>'1'  ");
+
+		sql.append(" GROUP BY  ");
+		sql.append(" Year(actualreturndate), MONTH ( actualreturndate )) as c  ");
+		sql.append(" on a.年 = c.年  ");
+		sql.append("  and a.月份 = c.月份  ");
+		
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<SummaryLoanDto>  list = new ArrayList<SummaryLoanDto>();
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+
+            if (rs == null){
+                return null;
+            }
+            while(rs.next()){
+            	SummaryLoanDto vo = new SummaryLoanDto();
+            	vo.setYear(rs.getInt("年"));
+            	vo.setMonth(rs.getInt("月份"));
+            	vo.setSumTotalNewCarLoanAmount(rs.getInt("入库数"));
+            	vo.setSumTotalLoan(rs.getDouble("借款金额合计"));
+            	vo.setSumTotalActualLoan(rs.getDouble("实际打款金额合计"));
+            	vo.setSumTotalReturnedCarLoanAmount(rs.getInt("归还数"));
+            	vo.setSumTotalPaidInterest(rs.getDouble("已付利息合计"));
+            	vo.setSumTotalProxyInterest(rs.getDouble("中介返点合计"));
+            	vo.setSumTotalReturnedPrincipalLoan(rs.getDouble("已还本金合计"));
+            	list.add(vo);
+//            	vo.setBorrowamount(rs.getString("borrowamount"));//借款金额合计
+//            	vo.setActualloan(rs.getString("actualloan"));//实际打款金额合计
+//            	vo.setInterestpaid(rs.getString("interestpaid"));//已付利息合计
+//            	vo.setMidinterest(rs.getString("midinterest"));//中介返点合计
+//            	vo.setMidinterestrate(rs.getString("midinterestrate"));//已还本金差合计
+//            	double b = rs.getDouble("actualreturn") - rs.getDouble("midinterestrate");
+//            	vo.setActualreturn(toTwoDigits(b));//已还本金合计
+//                if ("1".equalsIgnoreCase(rs.getString("issold")))//卖出去的车的数量
+//           		{
+//                	result.setOutStockCarsAmount(rs.getInt("num"));
+//                } else
+//                {
+//                	//库存车辆数量
+//                	result.setInStockCarsAmount(rs.getInt("num"));
+//                }
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return list;
     }
     private String toTwoDigits(double d){
 		DecimalFormat    df   = new DecimalFormat("#################0.00");   

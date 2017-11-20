@@ -354,39 +354,68 @@ public class TradeDao {
         return result;
     }
     
-    /***********************************************/
-    // 查询卖出的车辆数量和未卖出的车辆数量
-    /***********************************************/
-    public CarSummaryDto getSummaryForCarTrade() throws Exception{
-    	CarSummaryDto result = new CarSummaryDto();
+    public List<TradeDto> getTradeCarsSellInPeriod(String startDate, String endDate) throws Exception{
+    	List<TradeDto> list = new ArrayList<TradeDto>();
         StringBuilder sql = new StringBuilder();
         //删除的车辆不考虑
-        sql.append(" select issold,COUNT(*) as num from SecCarTrade where isdeleted<>'1' group by issold ");
+        sql.append(" select * from SecCarTrade where isdeleted<>'1' and issold='1' and selldate>=? and selldate <=? ");
         System.out.println("query sql: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
             throw new Exception("无法获取数据库连接！");
         }
-
+        List args = new ArrayList();
+        args.add(startDate);
+        args.add(endDate);
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
             ps = conn.prepareStatement(sql.toString());
-            rs = DbSqlHelper.executeQuery(ps);
-
+            rs = DbSqlHelper.executeQuery(ps, args);
             if (rs == null){
-                return result;
+                return list;
             }
             while(rs.next()){
-                if ("1".equalsIgnoreCase(rs.getString("issold")))//卖出去的车的数量
-           		{
-                	result.setOutStockCarsAmount(rs.getInt("num"));
-                } else
-                {
-                	//库存车辆数量
-                	result.setInStockCarsAmount(rs.getInt("num"));
-                }
+            	TradeDto result = new TradeDto();
+            	result.setVehicleid(rs.getString("vehicleid"));
+//                result.setVIN(rs.getString("VIN"));
+                result.setLicenseno(rs.getString("licenseno"));
+                result.setVehicledesc(rs.getString("vehicledesc"));
+                result.setTraderid(rs.getString("traderid"));
+                result.setTradername(rs.getString("tradername"));
+                result.setPurchaseprice(rs.getDouble("purchaseprice"));
+                result.setPurchasedate(rs.getString("purchasedate"));
+                result.setOwnerid(rs.getString("ownerid"));
+                result.setOwnername(rs.getString("ownername"));
+                result.setOwnerdesc(rs.getString("ownerdesc"));
+                result.setOwnermobile(rs.getString("ownermobile"));
+                result.setInterestrate(rs.getDouble("interestrate"));
+                result.setInterest(rs.getDouble("interest"));
+                result.setActualloan(rs.getDouble("actualloan"));
+                result.setSpareloan(rs.getDouble("spareloan"));
+                result.setEarnest(rs.getDouble("earnest"));
+                result.setSellprice(rs.getDouble("sellprice"));
+                result.setSelldate(rs.getString("selldate"));
+                result.setPricediff(rs.getDouble("pricediff"));
+                result.setTradecost(rs.getDouble("tradecost"));
+                result.setProfit(rs.getDouble("profit"));
+                result.setVehicletype(rs.getString("vehicletype"));
+                result.setSettlement(rs.getString("settlement"));
+                result.setSettlementdate(rs.getString("settlementdate"));
+                result.setTotalprofit(rs.getDouble("totalprofit"));
+                result.setTraderprofit(rs.getDouble("traderprofit"));
+                result.setPicturepath(rs.getString("picturepath"));
+                result.setIsdeleted(rs.getString("isdeleted"));
+                result.setIssold(rs.getString("issold"));
+                result.setComments(rs.getString("comments"));
+                result.setCreatedts(rs.getString("createdts"));
+                result.setLastupdatedts(rs.getString("lastupdatedts"));
+                result.setInterestcost(rs.getDouble("interestcost"));
+                result.setBuyername(rs.getString("buyername"));
+                result.setBuyerid(rs.getString("buyerid"));
+                result.setBuyermobile(rs.getString("buyermobile"));
+                list.add(result);
             }
 
         } catch (Exception e) {
@@ -402,7 +431,63 @@ public class TradeDao {
             }
         }
 
-        return result;
+        return list;
+    }
+    /***********************************************/
+    // 查询卖出的车辆数量和未卖出的车辆数量
+    /***********************************************/
+    public List<CarSummaryDto> getSummaryForCarTrade() throws Exception{
+    	List<CarSummaryDto> list = new ArrayList<CarSummaryDto>();
+        StringBuilder sql = new StringBuilder();
+        //删除的车辆不考虑
+        sql.append(" select issold,vehicletype,COUNT(*) as number,sum(purchaseprice) as amount from SecCarTrade where isdeleted<>'1' group by issold, vehicletype ");
+        System.out.println("query sql: "+sql);
+        Connection conn = DbConnectionFactory.createHonchenConnection();
+        if (conn == null){
+            throw new Exception("无法获取数据库连接！");
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(sql.toString());
+            rs = DbSqlHelper.executeQuery(ps);
+            if (rs == null){
+                return list;
+            }
+            while(rs.next()){
+            	CarSummaryDto result = new CarSummaryDto();
+            	result.setCarType(rs.getString("vehicletype"));
+                if ("1".equalsIgnoreCase(rs.getString("issold")))//卖出去的车的数量
+           		{
+                	result.setSold(true);
+                	result.setOutStockCarsAmount(rs.getInt("number"));
+                	result.setOutStockCarsMoney(rs.getDouble("amount"));
+                } else
+                {
+                	//库存车辆数量
+                	result.setSold(false);
+                	result.setInStockCarsAmount(rs.getInt("number"));
+                	result.setInStockCarMoney(rs.getDouble("amount"));
+                }
+                list.add(result);
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            }
+        }
+
+        return list;
     }
     /***********************************************/
     // 查询卖车总差价

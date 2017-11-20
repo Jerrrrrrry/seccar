@@ -8,7 +8,11 @@ public class CarSummaryDto implements Serializable {
 	 */
 	private static final long serialVersionUID = 6563360880780754475L;
 	private int inStockCarsAmount;
+	private double inStockCarMoney;
     private int outStockCarsAmount;
+    private double outStockCarsMoney;
+    private String carType;
+    private boolean isSold;
     private double totalprofitself;
     private double totalprofitthird;
     private double loaninterestout;
@@ -19,6 +23,32 @@ public class CarSummaryDto implements Serializable {
     private double tradeinterestinself;
     
     
+	public boolean isSold() {
+		return isSold;
+	}
+	public void setSold(boolean isSold) {
+		this.isSold = isSold;
+	}
+	public String getCarType() {
+		return carType;
+	}
+	public void setCarType(String carType) {
+		this.carType = carType;
+	}
+	public double getInStockCarMoney() {
+		return inStockCarMoney;
+	}
+	public void setInStockCarMoney(double inStockCarMoney) {
+		this.inStockCarMoney = inStockCarMoney;
+	}
+
+	
+	public double getOutStockCarsMoney() {
+		return outStockCarsMoney;
+	}
+	public void setOutStockCarsMoney(double outStockCarsMoney) {
+		this.outStockCarsMoney = outStockCarsMoney;
+	}
 	public int getInStockCarsAmount() {
 		return inStockCarsAmount;
 	}

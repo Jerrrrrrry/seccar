@@ -1,6 +1,9 @@
 package com.lhcy.sync.web.action;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,15 +18,381 @@ import org.apache.struts.actions.DispatchAction;
 import com.lhcy.core.bo.SysConstant;
 import com.lhcy.core.util.ContextUtils;
 import com.lhcy.core.util.JsonUtils;
+import com.lhcy.sync.domain.dto.CarSummaryDto;
+import com.lhcy.sync.domain.dto.LoanDto;
 import com.lhcy.sync.domain.dto.SummaryDto;
+import com.lhcy.sync.domain.dto.TradeDto;
 import com.lhcy.sync.service.SumSummaryService;
 import com.lhcy.sync.web.form.SumSummaryForm;
 
+import java.text.SimpleDateFormat;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 public class SumSummaryAction extends DispatchAction {
 
     private Logger logger = Logger.getLogger(TradeReportAction.class);
+    
+    public ActionForward listStock(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-    public ActionForward list(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+        	if (ContextUtils.getCurrentUserID(request) == null) {
+                throw new Exception(SysConstant.M_NO_LOGIN);
+            }
+
+//          	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 	
+//          Date now = new Date();
+//          sdf.format(date);
+        	
+        	SumSummaryForm form = (SumSummaryForm)m;
+//        	System.out.println(form.getFilterField()+" " +form.getFilterValue() +" " + form.getFilterlicenseno() 
+//        	+ " " + form.getFiltercustomer()+ " " + form.getFiltercardescription()+ " " + form.getFilterinventoryints()+ " " + form.getFilterinventoryoutts());
+        	SumSummaryService ts = new SumSummaryService();
+//            int pageSize = form.getRows();
+//            int pageNow = form.getPage();
+//            int count = 50;
+//            int count = ts.count(form);
+//            int rowBegin = (pageNow - 1) * pageSize;
+//            int rowEnd = rowBegin + pageSize;
+//            if(rowBegin > 0) rowBegin++;
+        	 List<CarSummaryDto> list =  new ArrayList<CarSummaryDto>();
+             list = ts.listStock(form);
+            JsonUtils.printFromList(response, list, list.size());
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            request.getSession().setAttribute("ex", e);
+        }
+
+        return null;
+    }
+   
+
+ 
+
+    	private HSSFWorkbook generateStockXls() throws Exception
+    	{
+    		SumSummaryService ts = new SumSummaryService();
+    		List<TradeDto> tradeList  = ts.listTradeStock(null);
+    		List<LoanDto> loanList  = ts.listLoanStock(null);
+    		HSSFWorkbook wb = new HSSFWorkbook();
+    		HSSFSheet sanfangSheet = wb.createSheet("三方车");
+    		HSSFRow sanfangrow = sanfangSheet.createRow((int) 0);
+    		createTradeHeaders(sanfangrow);
+    		
+    		HSSFSheet zishouSheet = wb.createSheet("自收车");
+    		HSSFRow zishourow = zishouSheet.createRow((int) 0);
+    		createTradeHeaders(zishourow);
+    		int i = 1;
+    		int k = 1;
+//    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+    		for (TradeDto dto:tradeList)
+        	{
+    			HSSFRow row  = null;
+    			if ("第三方".equalsIgnoreCase(dto.getVehicletype()))
+    			{
+    				row = sanfangSheet.createRow(i);
+    				i++;
+    			} else {
+    				row = zishouSheet.createRow(k);
+    				k++;
+    			}
+    			row.createCell((short) 0).setCellValue(dto.getTradername());
+    			row.createCell((short) 1).setCellValue(dto.getPurchasedate());
+    			row.createCell((short) 2).setCellValue(dto.getLicenseno());
+    			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
+    			row.createCell((short) 4).setCellValue(dto.getVehicletype());
+    			row.createCell((short) 5).setCellValue(dto.getPurchaseprice());
+    			row.createCell((short) 6).setCellValue(dto.getOwnerid());
+    			row.createCell((short) 7).setCellValue(dto.getOwnername());
+    			row.createCell((short) 8).setCellValue(dto.getOwnermobile());
+    			row.createCell((short) 9).setCellValue(dto.getInterestrate());
+    			row.createCell((short) 10).setCellValue(dto.getActualloan());
+    			row.createCell((short) 11).setCellValue(dto.getEarnest());
+    			row.createCell((short) 12).setCellValue(dto.getSellprice());
+    			row.createCell((short) 13).setCellValue(dto.getSelldate());
+    			row.createCell((short) 14).setCellValue(dto.getBuyername());
+    			row.createCell((short) 15).setCellValue(dto.getBuyerid());
+    			row.createCell((short) 16).setCellValue(dto.getBuyermobile());
+    			row.createCell((short) 17).setCellValue(dto.getTradecost());
+        	}
+    		HSSFSheet chedaiSheet = wb.createSheet("车贷");
+    		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
+    		createLoanHeaders(loanrow);
+    		int j = 1;
+    		for (LoanDto dto : loanList)
+    		{
+    			HSSFRow row = chedaiSheet.createRow(j);j++;
+    			row.createCell((short) 0).setCellValue(dto.getTradername());
+    			row.createCell((short) 1).setCellValue(dto.getBorrowdate());
+    			row.createCell((short) 2).setCellValue(dto.getLicenseno());
+    			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
+    			row.createCell((short) 4).setCellValue("押车");
+    			row.createCell((short) 5).setCellValue(dto.getOwnername());
+    			row.createCell((short) 6).setCellValue(dto.getOwnerid());
+    			row.createCell((short) 7).setCellValue(dto.getMobileno());
+    			row.createCell((short) 8).setCellValue(dto.getReturndate());
+    			row.createCell((short) 9).setCellValue(dto.getPeriodmonths());
+    			row.createCell((short) 10).setCellValue(dto.getTotalinterest());
+    			row.createCell((short) 11).setCellValue(dto.getBorrowamount());
+    			row.createCell((short) 12).setCellValue(dto.getInterestrate());
+    			row.createCell((short) 13).setCellValue(dto.getEarnest());
+    			row.createCell((short) 14).setCellValue(dto.getActualloan());
+    			row.createCell((short) 15).setCellValue(dto.getLixichengben());
+    			row.createCell((short) 16).setCellValue(dto.getParkingfee());
+    			row.createCell((short) 17).setCellValue(dto.getOtherfee());
+    			row.createCell((short) 18).setCellValue(dto.getActualmonths());
+    			row.createCell((short) 19).setCellValue(dto.getInterestpaid());
+    			row.createCell((short) 20).setCellValue(dto.getMidinterestrate());
+    			row.createCell((short) 21).setCellValue(dto.getMidinterest());
+    			row.createCell((short) 22).setCellValue(dto.getComments());
+    			row.createCell((short) 23).setCellValue(dto.getActualreturn());
+    			row.createCell((short) 24).setCellValue(dto.getActualreturndate());
+    		}
+    		return wb;
+    }
+    	private void createTradeHeaders(HSSFRow row) {
+    		String[] tradeHeaders = new String[]{"经办人","收车日期","车牌号码","车辆描述","车辆类型","收车价","卖车人身份证","卖车人姓名","卖车人电话",
+    				"利率","实际借款金额","定金","销售价格","销售日期","购车人姓名","购车人身份证","购车人电话","交易费用"};
+    		for (int i = 0; i < tradeHeaders.length; i++)
+    		{
+    			HSSFCell cell = row.createCell((short) i);
+    			cell.setCellValue(tradeHeaders[i]);
+    		}
+    	}
+    	private void createLoanHeaders(HSSFRow row) {
+    		String[] tradeHeaders = new String[]{"经办人","借款日期","车牌号码","车辆描述","车辆类型","抵押人姓名","抵押人身份证","抵押人手机号","约定还款日期"
+    				,"还款周期(月)","利息总额","借款金额","利率","定金","实际打款金额","利息成本","停车费","其他费用","实际还款周期","已付利息"
+    				,"已还本金差","中介返点","备注","已还本金额","归还本金日期"};
+    		for (int i = 0; i < tradeHeaders.length; i++)
+    		{
+    			HSSFCell cell = row.createCell((short) i);
+    			cell.setCellValue(tradeHeaders[i]);
+    		}
+    	}
+    	/********************sold start***************************/
+    	public ActionForward listSold(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+            try {
+            	if (ContextUtils.getCurrentUserID(request) == null) {
+                    throw new Exception(SysConstant.M_NO_LOGIN);
+                }
+
+//              	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 	
+//              Date now = new Date();
+//              sdf.format(date);
+            	
+            	SumSummaryForm form = (SumSummaryForm)m;
+//            	System.out.println(form.getFilterField()+" " +form.getFilterValue() +" " + form.getFilterlicenseno() 
+//            	+ " " + form.getFiltercustomer()+ " " + form.getFiltercardescription()+ " " + form.getFilterinventoryints()+ " " + form.getFilterinventoryoutts());
+            	SumSummaryService ts = new SumSummaryService();
+//                int pageSize = form.getRows();
+//                int pageNow = form.getPage();
+//                int count = 50;
+//                int count = ts.count(form);
+//                int rowBegin = (pageNow - 1) * pageSize;
+//                int rowEnd = rowBegin + pageSize;
+//                if(rowBegin > 0) rowBegin++;
+            	 List<CarSummaryDto> list =  new ArrayList<CarSummaryDto>();
+                 list = ts.listSold(form);
+                JsonUtils.printFromList(response, list, list.size());
+            }catch(Exception e){
+                e.printStackTrace();
+                logger.error(e.getMessage());
+                request.getSession().setAttribute("ex", e);
+            }
+
+            return null;
+        }
+        public ActionForward downloadStock(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {        
+
+            //获取用户的名称
+        	try {
+            	if (ContextUtils.getCurrentUserID(request) == null) {
+                    throw new Exception(SysConstant.M_NO_LOGIN);
+                }
+            	Calendar calendar = Calendar.getInstance();
+            	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HHmmss_SSS");
+            	String filename = "库存合计"+formatter.format(calendar.getTime())+".xls";
+            response.setContentType("text/html;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename="+ java.net.URLEncoder.encode(filename,"utf-8"));
+            
+            //下载文件
+            //1.先获取到要下载文件的绝对路径
+           
+//            ByteArrayOutputStream fis=new ByteArrayOutputStream();
+            OutputStream os=null;
+            try {
+                
+                os=response.getOutputStream();
+                this.generateStockXls().write(os);                
+            } catch (Exception e) {
+                
+                e.printStackTrace();
+            } finally{
+                try {
+                    os.close();
+//                    fis.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+                
+            }catch(Exception e){
+                e.printStackTrace();
+                logger.error(e.getMessage());
+                request.getSession().setAttribute("ex", e);
+            }
+            
+            return null;
+    }
+        public ActionForward downloadSold(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {        
+
+            //获取用户的名称
+        	try {
+            	if (ContextUtils.getCurrentUserID(request) == null) {
+                    throw new Exception(SysConstant.M_NO_LOGIN);
+                }
+            	Calendar calendar = Calendar.getInstance();
+            	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HHmmss_SSS");
+            	String filename = "卖车合计"+formatter.format(calendar.getTime())+".xls";
+            response.setContentType("text/html;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename="+ java.net.URLEncoder.encode(filename,"utf-8"));
+            
+            //下载文件
+            //1.先获取到要下载文件的绝对路径
+           
+//            ByteArrayOutputStream fis=new ByteArrayOutputStream();
+            OutputStream os=null;
+            try {
+                
+                os=response.getOutputStream();
+                this.generateSoldXls().write(os);                
+            } catch (Exception e) {
+                
+                e.printStackTrace();
+            } finally{
+                try {
+                    os.close();
+//                    fis.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+                
+            }catch(Exception e){
+                e.printStackTrace();
+                logger.error(e.getMessage());
+                request.getSession().setAttribute("ex", e);
+            }
+            
+            return null;
+    }
+        private HSSFWorkbook generateSoldXls() throws Exception
+    	{
+    		SumSummaryService ts = new SumSummaryService();
+    		List<TradeDto> tradeList  = ts.getTradeCarsSellInPeriod();
+    		List<LoanDto> loanList  = ts.getLoanCarsSellInPeriod();
+    		HSSFWorkbook wb = new HSSFWorkbook();
+    		HSSFSheet sanfangSheet = wb.createSheet("三方车");
+    		HSSFRow sanfangrow = sanfangSheet.createRow((int) 0);
+    		createSoldTradeHeaders(sanfangrow);
+    		
+    		HSSFSheet zishouSheet = wb.createSheet("自收车");
+    		HSSFRow zishourow = zishouSheet.createRow((int) 0);
+    		createSoldTradeHeaders(zishourow);
+    		int i = 1;
+    		int k = 1;
+//    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+    		for (TradeDto dto:tradeList)
+        	{
+    			HSSFRow row  = null;
+    			if ("第三方".equalsIgnoreCase(dto.getVehicletype()))
+    			{
+    				row = sanfangSheet.createRow(i);
+    				i++;
+    			} else {
+    				row = zishouSheet.createRow(k);
+    				k++;
+    			}
+    			row.createCell((short) 0).setCellValue(dto.getTradername());
+    			row.createCell((short) 1).setCellValue(dto.getPurchasedate());
+    			row.createCell((short) 2).setCellValue(dto.getLicenseno());
+    			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
+    			row.createCell((short) 4).setCellValue(dto.getVehicletype());
+    			row.createCell((short) 5).setCellValue(dto.getPurchaseprice());
+    			row.createCell((short) 6).setCellValue(dto.getOwnerid());
+    			row.createCell((short) 7).setCellValue(dto.getOwnername());
+    			row.createCell((short) 8).setCellValue(dto.getOwnermobile());
+    			row.createCell((short) 9).setCellValue(dto.getInterestrate());
+    			row.createCell((short) 10).setCellValue(dto.getActualloan());
+    			row.createCell((short) 11).setCellValue(dto.getEarnest());
+    			row.createCell((short) 12).setCellValue(dto.getSellprice());
+    			row.createCell((short) 13).setCellValue(dto.getSelldate());
+    			row.createCell((short) 14).setCellValue(dto.getBuyername());
+    			row.createCell((short) 15).setCellValue(dto.getBuyerid());
+    			row.createCell((short) 16).setCellValue(dto.getBuyermobile());
+    			row.createCell((short) 17).setCellValue(dto.getTradecost());
+        	}
+    		HSSFSheet chedaiSheet = wb.createSheet("车贷");
+    		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
+    		createSoldLoanHeaders(loanrow);
+    		int j = 1;
+    		for (LoanDto dto : loanList)
+    		{
+    			HSSFRow row = chedaiSheet.createRow(j);j++;
+    			row.createCell((short) 0).setCellValue(dto.getTradername());
+    			row.createCell((short) 1).setCellValue(dto.getBorrowdate());
+    			row.createCell((short) 2).setCellValue(dto.getLicenseno());
+    			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
+    			row.createCell((short) 4).setCellValue("押车");
+    			row.createCell((short) 5).setCellValue(dto.getOwnername());
+    			row.createCell((short) 6).setCellValue(dto.getOwnerid());
+    			row.createCell((short) 7).setCellValue(dto.getMobileno());
+    			row.createCell((short) 8).setCellValue(dto.getReturndate());
+    			row.createCell((short) 9).setCellValue(dto.getPeriodmonths());
+    			row.createCell((short) 10).setCellValue(dto.getTotalinterest());
+    			row.createCell((short) 11).setCellValue(dto.getBorrowamount());
+    			row.createCell((short) 12).setCellValue(dto.getInterestrate());
+    			row.createCell((short) 13).setCellValue(dto.getEarnest());
+    			row.createCell((short) 14).setCellValue(dto.getActualloan());
+    			row.createCell((short) 15).setCellValue(dto.getLixichengben());
+    			row.createCell((short) 16).setCellValue(dto.getParkingfee());
+    			row.createCell((short) 17).setCellValue(dto.getOtherfee());
+    			row.createCell((short) 18).setCellValue(dto.getActualmonths());
+    			row.createCell((short) 19).setCellValue(dto.getInterestpaid());
+    			row.createCell((short) 20).setCellValue(dto.getMidinterestrate());
+    			row.createCell((short) 21).setCellValue(dto.getMidinterest());
+    			row.createCell((short) 22).setCellValue(dto.getComments());
+    			row.createCell((short) 23).setCellValue(dto.getActualreturn());
+    			row.createCell((short) 24).setCellValue(dto.getActualreturndate());
+    		}
+    		return wb;
+    }
+    	private void createSoldTradeHeaders(HSSFRow row) {
+    		String[] tradeHeaders = new String[]{"经办人","收车日期","车牌号码","车辆描述","车辆类型","收车价","卖车人身份证","卖车人姓名","卖车人电话",
+    				"利率","实际借款金额","定金","销售价格","销售日期","购车人姓名","购车人身份证","购车人电话","交易费用"};
+    		for (int i = 0; i < tradeHeaders.length; i++)
+    		{
+    			HSSFCell cell = row.createCell((short) i);
+    			cell.setCellValue(tradeHeaders[i]);
+    		}
+    	}
+    	private void createSoldLoanHeaders(HSSFRow row) {
+    		String[] tradeHeaders = new String[]{"经办人","借款日期","车牌号码","车辆描述","车辆类型","抵押人姓名","抵押人身份证","抵押人手机号","约定还款日期"
+    				,"还款周期(月)","利息总额","借款金额","利率","定金","实际打款金额","利息成本","停车费","其他费用","实际还款周期","已付利息"
+    				,"已还本金差","中介返点","备注","已还本金额","归还本金日期"};
+    		for (int i = 0; i < tradeHeaders.length; i++)
+    		{
+    			HSSFCell cell = row.createCell((short) i);
+    			cell.setCellValue(tradeHeaders[i]);
+    		}
+    	}
+    public ActionForward listCars(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         try {
         	if (ContextUtils.getCurrentUserID(request) == null) {
