@@ -21,8 +21,29 @@ public class CarSummaryDto implements Serializable {
     private double tradeinterestinthird;
     private double tradeinterestoutself;
     private double tradeinterestinself;
+    private double totalSellPrice;
+    private double totalPuchasePrice;
+    private double totalProfit;
     
     
+	public double getTotalProfit() {
+		return totalProfit;
+	}
+	public void setTotalProfit(double totalProfit) {
+		this.totalProfit = totalProfit;
+	}
+	public double getTotalSellPrice() {
+		return totalSellPrice;
+	}
+	public void setTotalSellPrice(double totalSellPrice) {
+		this.totalSellPrice = totalSellPrice;
+	}
+	public double getTotalPuchasePrice() {
+		return totalPuchasePrice;
+	}
+	public void setTotalPuchasePrice(double totalPuchasePrice) {
+		this.totalPuchasePrice = totalPuchasePrice;
+	}
 	public boolean isSold() {
 		return isSold;
 	}

@@ -28,7 +28,8 @@
     	var currentMonth= myDate.getMonth() + 1;  
     	var currentYearMonth =myDate.getFullYear()+'年'+currentMonth+'月';
     	document.getElementById('stockLabelId').innerText = currentYearMonth+'库存合计：';
-    	document.getElementById('soldLabelId').innerText = currentYearMonth+'卖车合计：';
+    	document.getElementById('loanLabelId').innerText = currentYearMonth+'车贷合计';
+    	document.getElementById('soldLabelId').innerText = currentYearMonth+'利润合计：';
     }
 
        );
@@ -43,10 +44,17 @@
     <table id="stocklist">
     </table>
   </div>
+  <hr />
+   <div class="easyui-layout"  style="overflow:hidden;width:100%;height:20%">
+    <table id="loanlist">
+    </table>
+  </div>
+  <hr />
   <div class="easyui-layout"  style="overflow:hidden;width:100%;height:30%">
     <table id="soldlist">
     </table>
   </div>
+  <hr />
 </div>
 <div id="stock_bar_list">
   <table cellspacing="0" cellpadding="0">
@@ -61,6 +69,19 @@
     </tr>
   </table>
 </div>
+<div id="loan_bar_list">
+  <table cellspacing="0" cellpadding="0">
+    <tr>
+      <td><font color="red" id="loanLabelId"></font></td>
+      <!-- <td><a id="btnFilter"></a></td> -->
+      <td><a id="loanBtnRefresh"></a></td>
+      <td><div class="datagrid-btn-separator"></div></td>
+      <!-- <td><a id="btnClose"></a></td> -->
+      <td><a id="exportLoanbtn"></a></td>
+      <td><input type="hidden" id="CurrentLoginUserAccesstype" value="<%= session.getAttribute("CurrentLoginUserAccesstype")%>" /></td>
+    </tr>
+  </table>
+</div>
 <div id="sold_bar_list">
   <table cellspacing="0" cellpadding="0">
     <tr>
@@ -70,6 +91,8 @@
       <td><div class="datagrid-btn-separator"></div></td>
       <!-- <td><a id="btnClose"></a></td> -->
       <td><a id="exportSoldbtn"></a></td>
+      <td><div class="datagrid-btn-separator"></div></td>
+      <td><font color="red">注:对于抵押车，收车价格合计＝打款金额合计;　卖车价格合计＝已付利息合计＋已还本金合计</font></td>
       <td><input type="hidden" id="CurrentLoginUserAccesstype" value="<%= session.getAttribute("CurrentLoginUserAccesstype")%>" /></td>
     </tr>
   </table>

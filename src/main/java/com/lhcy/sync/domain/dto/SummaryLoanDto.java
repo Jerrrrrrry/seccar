@@ -33,7 +33,29 @@ public class SummaryLoanDto implements Serializable {
     private double sumTotalPaidInterest;
     private double sumTotalProxyInterest;
     private double sumTotalReturnedPrincipalLoan;
+    private double sumTotalReturn;
+    private double sumTotalMidinterest;
     
+    public double getSumTotalMidinterest() {
+		return sumTotalMidinterest;
+	}
+	public void setSumTotalMidinterest(double sumTotalMidinterest) {
+		this.sumTotalMidinterest = sumTotalMidinterest;
+	}
+	public double getSumTotalReturn() {
+		return sumTotalReturn;
+	}
+	public void setSumTotalReturn(double sumTotalReturn) {
+		this.sumTotalReturn = sumTotalReturn;
+	}
+	private int totalOutStock;
+    
+	public int getTotalOutStock() {
+		return totalOutStock;
+	}
+	public void setTotalOutStock(int totalOutStock) {
+		this.totalOutStock = totalOutStock;
+	}
 	public int getSumTotalNewCarLoanAmount() {
 		return sumTotalNewCarLoanAmount;
 	}

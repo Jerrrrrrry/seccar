@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import com.lhcy.core.util.ContextUtils;
 import com.lhcy.core.util.JsonUtils;
 import com.lhcy.sync.domain.dto.CarSummaryDto;
 import com.lhcy.sync.domain.dto.LoanDto;
-import com.lhcy.sync.domain.dto.SummaryDto;
+import com.lhcy.sync.domain.dto.SummaryLoanDto;
 import com.lhcy.sync.domain.dto.TradeDto;
 import com.lhcy.sync.service.SumSummaryService;
 import com.lhcy.sync.web.form.SumSummaryForm;
@@ -74,10 +75,31 @@ public class SumSummaryAction extends DispatchAction {
 
     	private HSSFWorkbook generateStockXls() throws Exception
     	{
+    		
     		SumSummaryService ts = new SumSummaryService();
     		List<TradeDto> tradeList  = ts.listTradeStock(null);
     		List<LoanDto> loanList  = ts.listLoanStock(null);
     		HSSFWorkbook wb = new HSSFWorkbook();
+    		
+    		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    		String dateStr = format.format(new Date());
+    		dateStr = dateStr + " 汇总";
+    		HSSFSheet huizongSheet = wb.createSheet(dateStr);
+    		HSSFRow huizongrow = huizongSheet.createRow((int) 0);
+    		huizongrow.createCell((short) 0).setCellValue("车辆类别");
+    		huizongrow.createCell((short) 1).setCellValue("当前在库数量(辆)");
+    		huizongrow.createCell((short) 2).setCellValue("总计金额(元)");
+
+    		 List<CarSummaryDto> list = ts.listStock(null);
+    		 int q = 1;
+     		for (CarSummaryDto dto : list)
+     		{
+     			HSSFRow row = huizongSheet.createRow(q);q++;
+     			row.createCell((short) 0).setCellValue(dto.getCarType());
+     			row.createCell((short) 1).setCellValue(dto.getInStockCarsAmount());
+     			row.createCell((short) 2).setCellValue(dto.getInStockCarMoney());
+     		}
+    		
     		HSSFSheet sanfangSheet = wb.createSheet("三方车");
     		HSSFRow sanfangrow = sanfangSheet.createRow((int) 0);
     		createTradeHeaders(sanfangrow);
@@ -151,6 +173,7 @@ public class SumSummaryAction extends DispatchAction {
     			row.createCell((short) 23).setCellValue(dto.getActualreturn());
     			row.createCell((short) 24).setCellValue(dto.getActualreturndate());
     		}
+    		
     		return wb;
     }
     	private void createTradeHeaders(HSSFRow row) {
@@ -298,6 +321,31 @@ public class SumSummaryAction extends DispatchAction {
     		List<TradeDto> tradeList  = ts.getTradeCarsSellInPeriod();
     		List<LoanDto> loanList  = ts.getLoanCarsSellInPeriod();
     		HSSFWorkbook wb = new HSSFWorkbook();
+    		
+    		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    		String dateStr = format.format(new Date());
+    		dateStr = dateStr + " 汇总";
+    		HSSFSheet huizongSheet = wb.createSheet(dateStr);
+    		HSSFRow huizongrow = huizongSheet.createRow((int) 0);
+    		huizongrow.createCell((short) 0).setCellValue("车辆类别");
+    		huizongrow.createCell((short) 1).setCellValue("本月出库数量(辆)");
+    		huizongrow.createCell((short) 2).setCellValue("收车价格合计(元)");
+    		huizongrow.createCell((short) 3).setCellValue("卖车价格合计(元)");
+    		huizongrow.createCell((short) 4).setCellValue("利润(元)");
+
+ 
+    		List<CarSummaryDto> list =  ts.listSold(null);
+   		 	int q = 1;
+    		for (CarSummaryDto dto : list)
+    		{
+    			HSSFRow row = huizongSheet.createRow(q);q++;
+    			row.createCell((short) 0).setCellValue(dto.getCarType());
+    			row.createCell((short) 1).setCellValue(dto.getOutStockCarsAmount());
+    			row.createCell((short) 2).setCellValue(dto.getTotalPuchasePrice());
+    			row.createCell((short) 3).setCellValue(dto.getTotalSellPrice());
+    			row.createCell((short) 4).setCellValue(dto.getTotalProfit());
+    		}
+    		
     		HSSFSheet sanfangSheet = wb.createSheet("三方车");
     		HSSFRow sanfangrow = sanfangSheet.createRow((int) 0);
     		createSoldTradeHeaders(sanfangrow);
@@ -392,7 +440,118 @@ public class SumSummaryAction extends DispatchAction {
     			cell.setCellValue(tradeHeaders[i]);
     		}
     	}
-    public ActionForward listCars(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	public ActionForward downloadLoan(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {        
+
+            //获取用户的名称
+        	try {
+            	if (ContextUtils.getCurrentUserID(request) == null) {
+                    throw new Exception(SysConstant.M_NO_LOGIN);
+                }
+            	Calendar calendar = Calendar.getInstance();
+            	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HHmmss_SSS");
+            	String filename = "车贷合计"+formatter.format(calendar.getTime())+".xls";
+            response.setContentType("text/html;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename="+ java.net.URLEncoder.encode(filename,"utf-8"));
+            
+            //下载文件
+            //1.先获取到要下载文件的绝对路径
+           
+//            ByteArrayOutputStream fis=new ByteArrayOutputStream();
+            OutputStream os=null;
+            try {
+                
+                os=response.getOutputStream();
+                this.generateLoanXls().write(os);                
+            } catch (Exception e) {
+                
+                e.printStackTrace();
+            } finally{
+                try {
+                    os.close();
+//                    fis.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+                
+            }catch(Exception e){
+                e.printStackTrace();
+                logger.error(e.getMessage());
+                request.getSession().setAttribute("ex", e);
+            }
+            
+            return null;
+    }
+    	private HSSFWorkbook generateLoanXls() throws Exception
+    	{
+    		SumSummaryService ts = new SumSummaryService();
+    		List<LoanDto> loanList  = ts.getLoanCarsSellInPeriod();
+    		HSSFWorkbook wb = new HSSFWorkbook();
+    
+    		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    		String dateStr = format.format(new Date());
+    		dateStr = dateStr + " 汇总";
+    		HSSFSheet huizongSheet = wb.createSheet(dateStr);
+    		HSSFRow huizongrow = huizongSheet.createRow((int) 0);
+    		huizongrow.createCell((short) 0).setCellValue("车辆类别");
+    		huizongrow.createCell((short) 1).setCellValue("本月出库数量(辆)");
+    		huizongrow.createCell((short) 2).setCellValue("中介返点合计(元)");
+    		huizongrow.createCell((short) 3).setCellValue("实际打款金额合计(元)");
+    		huizongrow.createCell((short) 4).setCellValue("已付利息合计(元)");
+    		huizongrow.createCell((short) 5).setCellValue("回款总额合计(元) ");
+
+ 
+    		List<SummaryLoanDto> list = ts.listLoans(null);
+   		 	int q = 1;
+    		for (SummaryLoanDto dto : list)
+    		{
+    			HSSFRow row = huizongSheet.createRow(q);q++;
+    			row.createCell((short) 0).setCellValue(dto.getCategory());
+    			row.createCell((short) 1).setCellValue(dto.getTotalOutStock());
+    			row.createCell((short) 2).setCellValue(dto.getSumTotalMidinterest());
+    			row.createCell((short) 3).setCellValue(dto.getSumTotalActualLoan());
+    			row.createCell((short) 4).setCellValue(dto.getSumTotalPaidInterest());
+    			row.createCell((short) 5).setCellValue(dto.getSumTotalReturn());
+    		}
+
+    		
+    		HSSFSheet chedaiSheet = wb.createSheet("车贷");
+    		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
+    		createSoldLoanHeaders(loanrow);
+    		int j = 1;
+    		for (LoanDto dto : loanList)
+    		{
+    			HSSFRow row = chedaiSheet.createRow(j);j++;
+    			row.createCell((short) 0).setCellValue(dto.getTradername());
+    			row.createCell((short) 1).setCellValue(dto.getBorrowdate());
+    			row.createCell((short) 2).setCellValue(dto.getLicenseno());
+    			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
+    			row.createCell((short) 4).setCellValue("押车");
+    			row.createCell((short) 5).setCellValue(dto.getOwnername());
+    			row.createCell((short) 6).setCellValue(dto.getOwnerid());
+    			row.createCell((short) 7).setCellValue(dto.getMobileno());
+    			row.createCell((short) 8).setCellValue(dto.getReturndate());
+    			row.createCell((short) 9).setCellValue(dto.getPeriodmonths());
+    			row.createCell((short) 10).setCellValue(dto.getTotalinterest());
+    			row.createCell((short) 11).setCellValue(dto.getBorrowamount());
+    			row.createCell((short) 12).setCellValue(dto.getInterestrate());
+    			row.createCell((short) 13).setCellValue(dto.getEarnest());
+    			row.createCell((short) 14).setCellValue(dto.getActualloan());
+    			row.createCell((short) 15).setCellValue(dto.getLixichengben());
+    			row.createCell((short) 16).setCellValue(dto.getParkingfee());
+    			row.createCell((short) 17).setCellValue(dto.getOtherfee());
+    			row.createCell((short) 18).setCellValue(dto.getActualmonths());
+    			row.createCell((short) 19).setCellValue(dto.getInterestpaid());
+    			row.createCell((short) 20).setCellValue(dto.getMidinterestrate());
+    			row.createCell((short) 21).setCellValue(dto.getMidinterest());
+    			row.createCell((short) 22).setCellValue(dto.getComments());
+    			row.createCell((short) 23).setCellValue(dto.getActualreturn());
+    			row.createCell((short) 24).setCellValue(dto.getActualreturndate());
+    		}
+    		return wb;
+    }
+    public ActionForward listLoans(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         try {
         	if (ContextUtils.getCurrentUserID(request) == null) {
@@ -414,8 +573,8 @@ public class SumSummaryAction extends DispatchAction {
 //            int rowBegin = (pageNow - 1) * pageSize;
 //            int rowEnd = rowBegin + pageSize;
 //            if(rowBegin > 0) rowBegin++;
-            List<SummaryDto> list =  new ArrayList<SummaryDto>();
-            list = ts.list(form);
+            List<SummaryLoanDto> list =  new ArrayList<SummaryLoanDto>();
+            list = ts.listLoans(form);
             JsonUtils.printFromList(response, list, list.size());
         }catch(Exception e){
             e.printStackTrace();

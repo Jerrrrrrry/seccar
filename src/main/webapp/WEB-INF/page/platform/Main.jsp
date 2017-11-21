@@ -207,11 +207,11 @@
                     	String CurrentLoginUserAccesstype = (String)session.getAttribute("CurrentLoginUserAccesstype");
                         if (CurrentLoginUserAccount != null && "管理员".equals(CurrentLoginUserAccesstype)){
                     %>
-                    <li data-options="id:'二手车交易报表', 'iconCls':'icon-tree-app'">二手车交易报表</li>
+                    <!-- <li data-options="id:'二手车交易报表', 'iconCls':'icon-tree-app'">二手车交易报表</li> -->
                     <li data-options="id:'车贷业务', 'iconCls':'icon-tree-app'">车贷业务</li>
                     <li data-options="id:'停车管理', 'iconCls':'icon-tree-app'">停车管理</li>
                     <li data-options="id:'合计汇总', 'iconCls':'icon-tree-app'">合计汇总</li>
-                    <li data-options="id:'收卖车汇总', 'iconCls':'icon-tree-app'">收卖车汇总</li>
+                    <!--  <li data-options="id:'收卖车汇总', 'iconCls':'icon-tree-app'">收卖车汇总</li>-->
                     <!-- <li data-options="id:'押车汇总', 'iconCls':'icon-tree-app'">押车汇总</li> -->
                     <% } else if ("自营业务员".equals(CurrentLoginUserAccesstype)){%>
                     	<li data-options="id:'车贷业务', 'iconCls':'icon-tree-app'">车贷业务</li>

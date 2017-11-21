@@ -35,7 +35,7 @@ var SumSummaryInit = {
                        ,
                        {
                            field: 'inStockCarMoney',
-                           title: '总计购车金额(元)',
+                           title: '总计金额(元)',
                            width: 100,
                            align: 'right',
                            sortable: false
@@ -171,13 +171,28 @@ var SumSummaryInit = {
                        }
                        ,
                        {
-                           field: 'outStockCarsMoney',
-                           title: '打款合计金额(元)',
+                           field: 'totalPuchasePrice',
+                           title: '收车价格合计(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       },
+                       {
+                           field: 'totalSellPrice',
+                           title: '卖车价格合计(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       },
+                       {
+                           field: 'totalProfit',
+                           title: '利润(元)',
                            width: 100,
                            align: 'right',
                            sortable: false
                        }
                 ]],
+                
                 onBeforeLoad : function(param){
                     xutil.ajaxLoading('body');
                 },
@@ -211,6 +226,98 @@ var SumSummaryInit = {
                 iconCls : 'tbtn_refresh',
                 onClick: function(){
                     list.refreshSold();
+                }
+            });
+            
+            /*****loan*********/
+            $("#loanlist").datagrid({
+                striped: true,
+                rownumbers: true,
+                fit: true,
+                border: false,
+                method: 'post',
+                url: basePath + 'SumSummaryAction.do?m=listLoans',
+               // idField: 'vehicleid',
+                //sortName: 'purchasedate',
+                //sortOrder: 'desc',
+                toolbar: '#loan_bar_list',
+                columns: [[
+                           {     field: 'category',
+   					    title: '车辆类别',
+   					    width: 80,
+   					    align: 'left',
+   					    sortable: true
+   					},
+                       {
+                           field: 'totalOutStock',
+                           title: '本月出库数量(辆)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       }
+                       ,
+                       {
+                           field: 'sumTotalMidinterest',
+                           title: '中介返点合计(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       },
+                       {
+                           field: 'sumTotalActualLoan',
+                           title: '实际打款金额合计(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       },
+                       {
+                           field: 'sumTotalPaidInterest',
+                           title: '已付利息合计(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       },
+                       {
+                           field: 'sumTotalReturn',
+                           title: '回款总额合计(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       }
+                ]],
+                onBeforeLoad : function(param){
+                    xutil.ajaxLoading('body');
+                },
+                onLoadSuccess : function (data) {
+                  xutil.ajaxLoadEnd();
+                },
+                onLoadError: function () {
+                    xutil.ajaxLoadEnd();
+                    xutil.exception();
+                }
+//                onLoadError: function () {
+//                    top.location = basePath;
+//                }
+            });
+            $('#exportLoanbtn').linkbutton({
+                text : '导出明细',
+                plain : true,
+                iconCls : 'tbtn_importexcel',
+                onClick: function(){
+                    var url = basePath + 'SumSummaryAction.do?m=downloadLoan';
+                    var fileName = "testAjaxDownload.txt";
+                    var form = $("<form></form>").attr("action", url).attr("method", "post");
+                    form.append($("<input></input>").attr("type", "hidden").attr("name", "fileName").attr("value", fileName));
+                    form.appendTo('body').submit().remove();
+                    //list.openfilter();
+                }
+            });
+            $('#loanBtnRefresh').linkbutton({
+                text : '刷新',
+                plain : true,
+                iconCls : 'tbtn_refresh',
+                onClick: function(){
+                    list.refreshLoan();
                 }
             });
         };

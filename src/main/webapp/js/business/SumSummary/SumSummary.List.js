@@ -74,6 +74,10 @@ var SumSummaryList = {
         list.refreshSold = function () {
             $('#soldlist').datagrid('reload');
         };
+        list.refreshLoan = function () {
+            $('#loanlist').datagrid('reload');
+        };
+        
         /***********************************************/
         // 全选
         /***********************************************/

@@ -63,19 +63,39 @@ public class SumSummaryService {
 			if ("第三方".equalsIgnoreCase(dto.getVehicletype()))
 			{
 				sanfang.setOutStockCarsAmount(sanfang.getOutStockCarsAmount()+1);
-				sanfang.setOutStockCarsMoney(sanfang.getOutStockCarsMoney() + dto.getSellprice());
+				sanfang.setTotalPuchasePrice(sanfang.getTotalPuchasePrice() + dto.getPurchaseprice());
+				sanfang.setTotalSellPrice(sanfang.getTotalSellPrice() + dto.getSellprice());
 			} else {
 				zishouche.setOutStockCarsAmount(zishouche.getOutStockCarsAmount()+1);
-				zishouche.setOutStockCarsMoney(zishouche.getOutStockCarsMoney() + dto.getSellprice());
+				zishouche.setTotalPuchasePrice(zishouche.getTotalPuchasePrice() + dto.getPurchaseprice());
+				zishouche.setTotalSellPrice(zishouche.getTotalSellPrice() + dto.getSellprice());
 			}
 		}
+		sanfang.setTotalProfit(sanfang.getTotalSellPrice() - sanfang.getTotalPuchasePrice());
+		zishouche.setTotalProfit(zishouche.getTotalSellPrice() - zishouche.getTotalPuchasePrice());
 		List<LoanDto> list2 = loanDao.getLoanCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
 		CarSummaryDto chedai = new CarSummaryDto();newlist.add(chedai);
 		chedai.setCarType("抵押车");
 		chedai.setOutStockCarsAmount(list2.size());
 		for (LoanDto dto : list2) {
-			chedai.setOutStockCarsMoney(chedai.getOutStockCarsMoney() + dto.getActualreturn());
+			chedai.setTotalPuchasePrice(chedai.getTotalPuchasePrice() + dto.getActualloan());
+			chedai.setTotalSellPrice(chedai.getTotalSellPrice() + dto.getActualreturn() + dto.getInterestpaid());
 		}
+		chedai.setTotalProfit(chedai.getTotalSellPrice() - chedai.getTotalPuchasePrice());
+		return newlist;
+	}
+	public List<SummaryLoanDto> listLoans(SumSummaryForm form) throws Exception {
+		List<SummaryLoanDto> newlist = new ArrayList<SummaryLoanDto>();
+		List<LoanDto> list2 = loanDao.getLoanCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
+		SummaryLoanDto chedai = new SummaryLoanDto();newlist.add(chedai);
+		chedai.setCategory("抵押车");
+		chedai.setTotalOutStock(list2.size());
+		for (LoanDto dto : list2) {
+			chedai.setSumTotalMidinterest(chedai.getSumTotalMidinterest() + dto.getMidinterest());//中介返点合计
+			chedai.setSumTotalActualLoan(chedai.getSumTotalActualLoan() + dto.getActualloan());//实际打款金额合计
+			chedai.setSumTotalPaidInterest(chedai.getSumTotalPaidInterest() + dto.getInterestpaid());//已付利息合计
+		}
+		chedai.setSumTotalReturn(chedai.getSumTotalActualLoan()+chedai.getSumTotalPaidInterest());
 		return newlist;
 	}
 	public List<TradeDto> getTradeCarsSellInPeriod() throws Exception {
@@ -85,6 +105,7 @@ public class SumSummaryService {
 		return loanDao.getLoanCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
 		
 	}
+	
 	private String getFirstDayOfCurrentMonth(int offset){
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
 		 Calendar   cal_1=Calendar.getInstance();
