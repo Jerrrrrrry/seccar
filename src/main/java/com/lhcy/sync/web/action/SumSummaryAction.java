@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -575,6 +576,183 @@ public class SumSummaryAction extends DispatchAction {
 //            if(rowBegin > 0) rowBegin++;
             List<SummaryLoanDto> list =  new ArrayList<SummaryLoanDto>();
             list = ts.listLoans(form);
+            JsonUtils.printFromList(response, list, list.size());
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            request.getSession().setAttribute("ex", e);
+        }
+
+        return null;
+    }
+    
+    public ActionForward downloadInterestCost(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {        
+
+        //获取用户的名称
+    	try {
+        	if (ContextUtils.getCurrentUserID(request) == null) {
+                throw new Exception(SysConstant.M_NO_LOGIN);
+            }
+        	Calendar calendar = Calendar.getInstance();
+        	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HHmmss_SSS");
+        	String filename = "利息成本合计"+formatter.format(calendar.getTime())+".xls";
+        response.setContentType("text/html;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename="+ java.net.URLEncoder.encode(filename,"utf-8"));
+        
+        //下载文件
+        //1.先获取到要下载文件的绝对路径
+       
+//        ByteArrayOutputStream fis=new ByteArrayOutputStream();
+        OutputStream os=null;
+        try {
+            
+            os=response.getOutputStream();
+            this.generateInterestXls().write(os);                
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+        } finally{
+            try {
+                os.close();
+//                fis.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            request.getSession().setAttribute("ex", e);
+        }
+        
+        return null;
+}
+    private HSSFWorkbook generateInterestXls() throws Exception{
+    	SumSummaryService ts = new SumSummaryService();
+		List<LoanDto> loanList  = ts.listInterestCostOnly(null);
+		
+		Calendar currentMonth = Calendar.getInstance();
+		String month = String.valueOf(currentMonth.get(Calendar.MONTH));
+		int actualCurrentMonth = currentMonth.get(Calendar.MONTH) + 1;
+		currentMonth.add(Calendar.MONTH, -1);
+		int actualPreviousMonth = currentMonth.get(Calendar.MONTH) + 1;
+		String previousMonth = String.valueOf(currentMonth.get(Calendar.MONTH));
+		System.out.print(previousMonth + " " + month);
+		double accruedTotalCost = 0;
+		double previousMonthCost = 0;
+		double currentMonthCost = 0;
+		for (LoanDto dto : loanList) {
+			for (Entry<String, Double> a : dto.getMonthAndCost().entrySet())
+			{
+				accruedTotalCost = accruedTotalCost + a.getValue().doubleValue();
+				if (month.equals(a.getKey()))
+				{
+					currentMonthCost = currentMonthCost + a.getValue().doubleValue();
+				}
+				if (previousMonth.equals(a.getKey()))
+				{
+					previousMonthCost = previousMonthCost + a.getValue().doubleValue();
+				}
+			}
+		}
+		
+		HSSFWorkbook wb = new HSSFWorkbook();
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String dateStr = format.format(new Date());
+		dateStr = dateStr + " 汇总";
+		HSSFSheet huizongSheet = wb.createSheet(dateStr);
+		HSSFRow huizongrow = huizongSheet.createRow((int) 0);
+		huizongrow.createCell((short) 0).setCellValue("车辆类别");
+		huizongrow.createCell((short) 1).setCellValue("上月金额合计(元)");
+		huizongrow.createCell((short) 2).setCellValue("当月金额合计(元) ");
+		huizongrow.createCell((short) 3).setCellValue("累计(元) ");
+
+		HSSFRow huizongrow2 = huizongSheet.createRow(1);
+		huizongrow2.createCell((short) 0).setCellValue("抵押车");
+		huizongrow2.createCell((short) 1).setCellValue(previousMonthCost);
+		huizongrow2.createCell((short) 2).setCellValue(currentMonthCost);
+		huizongrow2.createCell((short) 3).setCellValue(accruedTotalCost);
+		
+		HSSFSheet chedaiSheet = wb.createSheet("车贷");
+		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
+		createSoldLoanHeaders(loanrow);
+		loanrow.createCell(loanrow.getLastCellNum()).setCellValue(actualPreviousMonth+"月利息成本");
+		loanrow.createCell(loanrow.getLastCellNum()).setCellValue(actualCurrentMonth+"月利息成本");;
+		int j = 1;
+		for (LoanDto dto : loanList)
+		{
+			HSSFRow row = chedaiSheet.createRow(j);j++;
+			row.createCell((short) 0).setCellValue(dto.getTradername());
+			row.createCell((short) 1).setCellValue(dto.getBorrowdate());
+			row.createCell((short) 2).setCellValue(dto.getLicenseno());
+			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
+			row.createCell((short) 4).setCellValue("押车");
+			row.createCell((short) 5).setCellValue(dto.getOwnername());
+			row.createCell((short) 6).setCellValue(dto.getOwnerid());
+			row.createCell((short) 7).setCellValue(dto.getMobileno());
+			row.createCell((short) 8).setCellValue(dto.getReturndate());
+			row.createCell((short) 9).setCellValue(dto.getPeriodmonths());
+			row.createCell((short) 10).setCellValue(dto.getTotalinterest());
+			row.createCell((short) 11).setCellValue(dto.getBorrowamount());
+			row.createCell((short) 12).setCellValue(dto.getInterestrate());
+			row.createCell((short) 13).setCellValue(dto.getEarnest());
+			row.createCell((short) 14).setCellValue(dto.getActualloan());
+			row.createCell((short) 15).setCellValue(dto.getLixichengben());
+			row.createCell((short) 16).setCellValue(dto.getParkingfee());
+			row.createCell((short) 17).setCellValue(dto.getOtherfee());
+			row.createCell((short) 18).setCellValue(dto.getActualmonths());
+			row.createCell((short) 19).setCellValue(dto.getInterestpaid());
+			row.createCell((short) 20).setCellValue(dto.getMidinterestrate());
+			row.createCell((short) 21).setCellValue(dto.getMidinterest());
+			row.createCell((short) 22).setCellValue(dto.getComments());
+			row.createCell((short) 23).setCellValue(dto.getActualreturn());
+			row.createCell((short) 24).setCellValue(dto.getActualreturndate());
+			if (dto.getMonthAndCost().get(previousMonth) == null)
+			{
+				row.createCell((short) 25).setCellValue(0);
+			} else {
+				row.createCell((short) 25).setCellValue(dto.getMonthAndCost().get(previousMonth).doubleValue());
+			}
+			if (dto.getMonthAndCost().get(month) == null)
+			{
+				row.createCell((short) 26).setCellValue(0);
+			} else {
+				row.createCell((short) 26).setCellValue(dto.getMonthAndCost().get(month).doubleValue());
+			}
+		}
+		return wb;
+	}
+
+
+
+
+	public ActionForward listInterestCost(ActionMapping mapping, ActionForm m, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try {
+        	if (ContextUtils.getCurrentUserID(request) == null) {
+                throw new Exception(SysConstant.M_NO_LOGIN);
+            }
+
+//          	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 	
+//          Date now = new Date();
+//          sdf.format(date);
+        	
+        	SumSummaryForm form = (SumSummaryForm)m;
+//        	System.out.println(form.getFilterField()+" " +form.getFilterValue() +" " + form.getFilterlicenseno() 
+//        	+ " " + form.getFiltercustomer()+ " " + form.getFiltercardescription()+ " " + form.getFilterinventoryints()+ " " + form.getFilterinventoryoutts());
+        	SumSummaryService ts = new SumSummaryService();
+//            int pageSize = form.getRows();
+//            int pageNow = form.getPage();
+//            int count = 50;
+//            int count = ts.count(form);
+//            int rowBegin = (pageNow - 1) * pageSize;
+//            int rowEnd = rowBegin + pageSize;
+//            if(rowBegin > 0) rowBegin++;
+        	 List<CarSummaryDto> list =  new ArrayList<CarSummaryDto>();
+             list = ts.listInterestCost(form);
             JsonUtils.printFromList(response, list, list.size());
         }catch(Exception e){
             e.printStackTrace();

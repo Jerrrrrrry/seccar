@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -52,12 +54,19 @@ public class LoanDto implements Serializable {
     private String mobileno;
     private double actualmonths;
     private String lixichengben;
+    private Map<String, Double> monthAndCost = new HashMap<String, Double>();
     
-    private Calendar getDate(Date date)
+    public Map<String, Double> getMonthAndCost() {
+		return monthAndCost;
+	}
+	public void setMonthAndCost(Map<String, Double> monthAndCost) {
+		this.monthAndCost = monthAndCost;
+	}
+	private Calendar getDate(Date date)
     {
 		Calendar cal2=Calendar.getInstance();  
 		cal2.setTime(date);
-		cal2.set(Calendar.HOUR, 0);
+		cal2.set(Calendar.HOUR_OF_DAY, 0);
 		cal2.set(Calendar.MINUTE, 0);
 		cal2.set(Calendar.SECOND, 0);
 		cal2.set(Calendar.MILLISECOND, 0);
@@ -105,6 +114,7 @@ public class LoanDto implements Serializable {
     						String start = toDateStr(borrowDateC);
         					String end= toDateStr(actualreturndateC);
         					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+        					monthAndCost.put(String.valueOf(borrowDateCopy.get(Calendar.MONTH)), Double.valueOf(actualloan * 1.5/100));
     					} else if (borrowDateCopy.after(actualreturndateC)){
     						String start = toDateStr(borrowDateC);
         					String end= toDateStr(actualreturndateC);
@@ -113,6 +123,7 @@ public class LoanDto implements Serializable {
         					int between_days=Integer.parseInt(String.valueOf((time2-time1)/(1000*3600*24)));     
 
         					sb.append(start+"到"+end+ "利息 	" + ((actualloan * 1.5 * between_days)/(30*100))+"元</br>");
+        					monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), Double.valueOf((actualloan * 1.5 * between_days)/(30*100)));
     					} else {
     						while (borrowDateC.before(actualreturndateC))
     	        			{
@@ -124,13 +135,15 @@ public class LoanDto implements Serializable {
     	    					}
     	    					String end= toDateStr(borrowDateC);
     	    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+    	    					monthAndCost.put(String.valueOf(borrowDateC.get(Calendar.MONTH)), Double.valueOf(actualloan * 1.5/100));
     	        			}
     	    				if (borrowDateC.equals(actualreturndateC))
     	    				{
+    	    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
     	    					String start = toDateStr(borrowDateC);
-    	    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
-    	    					String end= toDateStr(borrowDateC);
+    	    					String end= toDateStr(actualreturndateC);
     	    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+    	    					monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), Double.valueOf(actualloan * 1.5/100));
     	    				} else 
     	    				{
     	    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
@@ -141,6 +154,7 @@ public class LoanDto implements Serializable {
     	    					int between_days=Integer.parseInt(String.valueOf((time2-time1)/(1000*3600*24)));     
 
     	    					sb.append(start+"到"+end+ "利息 	" + ((actualloan * 1.5 * between_days)/(30*100))+"元</br>");
+    	    					monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), Double.valueOf((actualloan * 1.5 * between_days)/(30*100)));
     	    				}
     					}
     				} else {
@@ -149,21 +163,55 @@ public class LoanDto implements Serializable {
     			}
     			else
     			{
-	    			if(borrowDateC.before(today))
+	    			if(borrowDateCopy.before(today))
 	    			{
-	    				while (borrowDateC.before(today))
-	    				{
-	    					String start = toDateStr(borrowDateC);
-	    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
-	    					String end= toDateStr(borrowDateC);
-	    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
-	    				}
+	    				borrowDateCopy.set(Calendar.MONTH, borrowDateCopy.get(Calendar.MONTH) + 1);
+	    				if (borrowDateCopy.equals(today))
+    					{
+    						String start = toDateStr(borrowDateC);
+        					String end= toDateStr(today);
+        					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+        					monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), Double.valueOf(actualloan * 1.5/100));
+    					} else if (borrowDateCopy.after(today)){
+        					String end= toDateStr(borrowDateCopy);
+        					sb.append("目前利息成本为0，到下月"+end+ "才开始计算利息成本</br>");
+        					monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), Double.valueOf(0));
+    					} else {
+		    				while (borrowDateC.before(today))
+		    				{
+		    					String start = toDateStr(borrowDateC);
+		    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
+		    					if (!borrowDateC.before(today))
+    	    					{
+    	    						break;
+    	    					}
+		    					String end= toDateStr(borrowDateC);
+		    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+		    					monthAndCost.put(String.valueOf(borrowDateC.get(Calendar.MONTH)), Double.valueOf(actualloan * 1.5/100));
+		    				}
+		    				if (borrowDateC.equals(today))
+    	    				{
+    	    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    	    					String start = toDateStr(borrowDateC);
+    	    					String end= toDateStr(today);
+    	    					sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
+    	    					monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), Double.valueOf(actualloan * 1.5/100));
+    	    				} else 
+    	    				{
+    	    					String end= toDateStr(borrowDateC);
+    	    					borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    	    					String start = toDateStr(borrowDateC);
+    	    					sb.append(start+"到"+end+ "利息 0元，下个月"+end+"开始计算利息</br>");
+    	    					monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), Double.valueOf(0));
+    	    				
+    	    				}
+    					}
 	    			} else 
 	    			{
-	    				String start = toDateStr(today);
 	    				today.set(Calendar.MONTH, today.get(Calendar.MONTH) + 1);
 	    				String end= toDateStr(today);
-	    				sb.append(start+"到"+end+ "利息 	0元");
+	    				sb.append("目前利息成本为0，到下月"+end+ "才开始计算利息成本</br>");
+	    				monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), Double.valueOf(0));
 	    			}
     			}
     		} else

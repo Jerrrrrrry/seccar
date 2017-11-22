@@ -100,7 +100,7 @@ public class LoanDao {
             order = form.getOrder();
         }
 
-        String sort = "purchasedate";
+        String sort = "createdts";
         if (form.getSort() != null && form.getSort().length() > 0){
             sort = form.getSort();
         }

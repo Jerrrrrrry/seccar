@@ -25,7 +25,31 @@ public class CarSummaryDto implements Serializable {
     private double totalPuchasePrice;
     private double totalProfit;
     
+    private double previousMonthCost;
+    private double currentMonthCost;
+    private double accruedTotalCost;
     
+    
+    
+    
+	public double getPreviousMonthCost() {
+		return previousMonthCost;
+	}
+	public void setPreviousMonthCost(double previousMonthCost) {
+		this.previousMonthCost = previousMonthCost;
+	}
+	public double getCurrentMonthCost() {
+		return currentMonthCost;
+	}
+	public void setCurrentMonthCost(double currentMonthCost) {
+		this.currentMonthCost = currentMonthCost;
+	}
+	public double getAccruedTotalCost() {
+		return accruedTotalCost;
+	}
+	public void setAccruedTotalCost(double accruedTotalCost) {
+		this.accruedTotalCost = accruedTotalCost;
+	}
 	public double getTotalProfit() {
 		return totalProfit;
 	}

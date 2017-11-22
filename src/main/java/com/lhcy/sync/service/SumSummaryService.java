@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.lhcy.sync.dao.LoanDao;
 import com.lhcy.sync.dao.ParkingDao;
@@ -79,7 +80,7 @@ public class SumSummaryService {
 		chedai.setOutStockCarsAmount(list2.size());
 		for (LoanDto dto : list2) {
 			chedai.setTotalPuchasePrice(chedai.getTotalPuchasePrice() + dto.getActualloan());
-			chedai.setTotalSellPrice(chedai.getTotalSellPrice() + dto.getActualreturn() + dto.getInterestpaid());
+			chedai.setTotalSellPrice(chedai.getTotalSellPrice() + dto.getActualloan() + dto.getInterestpaid());
 		}
 		chedai.setTotalProfit(chedai.getTotalSellPrice() - chedai.getTotalPuchasePrice());
 		return newlist;
@@ -150,6 +151,44 @@ public class SumSummaryService {
 		}
 		return date;
 	}
+	public List<LoanDto> listInterestCostOnly(SumSummaryForm form) throws Exception {
+		return loanDao.list(0, Integer.MAX_VALUE, new LoanForm(), "管理员");
+	}
+	public List<CarSummaryDto> listInterestCost(SumSummaryForm form) throws Exception {
+		List<CarSummaryDto> newlist = new ArrayList<CarSummaryDto>();
+		List<LoanDto> list2 = loanDao.list(0, Integer.MAX_VALUE, new LoanForm(), "管理员");
+		CarSummaryDto chedai = new CarSummaryDto();newlist.add(chedai);
+		chedai.setCarType("抵押车");
+		Calendar currentMonth = Calendar.getInstance();
+		String month = String.valueOf(currentMonth.get(Calendar.MONTH));
+		currentMonth.add(Calendar.MONTH, -1);
+		String previousMonth = String.valueOf(currentMonth.get(Calendar.MONTH));
+		System.out.print(previousMonth + " " + month);
+		double accruedTotalCost = 0;
+		double previousMonthCost = 0;
+		double currentMonthCost = 0;
+		for (LoanDto dto : list2) {
+			for (Entry<String, Double> a : dto.getMonthAndCost().entrySet())
+			{
+				accruedTotalCost = accruedTotalCost + a.getValue().doubleValue();
+				if (month.equals(a.getKey()))
+				{
+					currentMonthCost = currentMonthCost + a.getValue().doubleValue();
+				}
+				if (previousMonth.equals(a.getKey()))
+				{
+					previousMonthCost = previousMonthCost + a.getValue().doubleValue();
+				}
+			}
+		}
+		chedai.setPreviousMonthCost(previousMonthCost);
+		chedai.setCurrentMonthCost(currentMonthCost);
+		chedai.setAccruedTotalCost(accruedTotalCost);
+		return newlist;
+	}
+	
+	
+	
 	public List<SummaryLoanDto> list2(SumSummaryForm form) throws Exception {
 		List<SummaryLoanDto> carloanSummary = loanDao.listLoanReportEachMonth();
 		return carloanSummary;

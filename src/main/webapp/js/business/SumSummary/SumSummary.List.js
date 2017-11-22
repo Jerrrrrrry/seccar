@@ -77,7 +77,9 @@ var SumSummaryList = {
         list.refreshLoan = function () {
             $('#loanlist').datagrid('reload');
         };
-        
+        list.refreshInterestCost = function () {
+            $('#interestCostlist').datagrid('reload');
+        };
         /***********************************************/
         // 全选
         /***********************************************/

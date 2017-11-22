@@ -30,6 +30,7 @@
     	document.getElementById('stockLabelId').innerText = currentYearMonth+'库存合计：';
     	document.getElementById('loanLabelId').innerText = currentYearMonth+'车贷合计';
     	document.getElementById('soldLabelId').innerText = currentYearMonth+'利润合计：';
+    	document.getElementById('interestLabelId').innerText = '利息成本合计：';
     }
 
        );
@@ -40,7 +41,7 @@
 </head>
 <body class="easyui-layout">
 <div region="center" border="false" title="" class="grid_line">
-  <div class="easyui-layout"  style="overflow:hidden;width:100%;height:30%">
+  <div class="easyui-layout"  style="overflow:hidden;width:100%;height:25%">
     <table id="stocklist">
     </table>
   </div>
@@ -50,11 +51,15 @@
     </table>
   </div>
   <hr />
-  <div class="easyui-layout"  style="overflow:hidden;width:100%;height:30%">
+  <div class="easyui-layout"  style="overflow:hidden;width:100%;height:25%">
     <table id="soldlist">
     </table>
   </div>
   <hr />
+  <div class="easyui-layout"  style="overflow:hidden;width:100%;height:30%">
+    <table id="interestCostlist">
+    </table>
+  </div>
 </div>
 <div id="stock_bar_list">
   <table cellspacing="0" cellpadding="0">
@@ -91,8 +96,21 @@
       <td><div class="datagrid-btn-separator"></div></td>
       <!-- <td><a id="btnClose"></a></td> -->
       <td><a id="exportSoldbtn"></a></td>
+      <!-- <td><div class="datagrid-btn-separator"></div></td>
+      <td><font color="red">注:对于抵押车，收车价格合计＝打款金额合计;　卖车价格合计＝已付利息合计＋已还本金合计</font></td> -->
+      <td><input type="hidden" id="CurrentLoginUserAccesstype" value="<%= session.getAttribute("CurrentLoginUserAccesstype")%>" /></td>
+    </tr>
+  </table>
+</div>
+<div id="interest_bar_list">
+  <table cellspacing="0" cellpadding="0">
+    <tr>
+      <td><font color="red"  id="interestLabelId"></font></td>
+      <!-- <td><a id="btnFilter"></a></td> -->
+      <td><a id="btnInterestCostRefresh"></a></td>
       <td><div class="datagrid-btn-separator"></div></td>
-      <td><font color="red">注:对于抵押车，收车价格合计＝打款金额合计;　卖车价格合计＝已付利息合计＋已还本金合计</font></td>
+      <!-- <td><a id="btnClose"></a></td> -->
+      <td><a id="exportInterestCostbtn"></a></td>
       <td><input type="hidden" id="CurrentLoginUserAccesstype" value="<%= session.getAttribute("CurrentLoginUserAccesstype")%>" /></td>
     </tr>
   </table>

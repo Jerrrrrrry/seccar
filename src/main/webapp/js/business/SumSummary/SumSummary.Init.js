@@ -319,6 +319,85 @@ var SumSummaryInit = {
                 onClick: function(){
                     list.refreshLoan();
                 }
+            }); 
+            
+            
+            /*****Interest Cost*********/
+            $("#interestCostlist").datagrid({
+                striped: true,
+                rownumbers: true,
+                fit: true,
+                border: false,
+                method: 'post',
+                url: basePath + 'SumSummaryAction.do?m=listInterestCost',
+               // idField: 'vehicleid',
+                //sortName: 'purchasedate',
+                //sortOrder: 'desc',
+                toolbar: '#interest_bar_list',
+                columns: [[
+                           {     field: 'carType',
+   					    title: '车辆类别',
+   					    width: 80,
+   					    align: 'left',
+   					    sortable: true
+   					},
+                       {
+                           field: 'previousMonthCost',
+                           title: '上月金额合计(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       }
+                       ,
+                       {
+                           field: 'currentMonthCost',
+                           title: '当月金额合计(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       },
+                       {
+                           field: 'accruedTotalCost',
+                           title: '累计(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       }
+                ]],
+                onBeforeLoad : function(param){
+                    xutil.ajaxLoading('body');
+                },
+                onLoadSuccess : function (data) {
+                  xutil.ajaxLoadEnd();
+                },
+                onLoadError: function () {
+                    xutil.ajaxLoadEnd();
+                    xutil.exception();
+                }
+//                onLoadError: function () {
+//                    top.location = basePath;
+//                }
+            });
+            $('#exportInterestCostbtn').linkbutton({
+                text : '导出明细',
+                plain : true,
+                iconCls : 'tbtn_importexcel',
+                onClick: function(){
+                    var url = basePath + 'SumSummaryAction.do?m=downloadInterestCost';
+                    var fileName = "testAjaxDownload.txt";
+                    var form = $("<form></form>").attr("action", url).attr("method", "post");
+                    form.append($("<input></input>").attr("type", "hidden").attr("name", "fileName").attr("value", fileName));
+                    form.appendTo('body').submit().remove();
+                    //list.openfilter();
+                }
+            });
+            $('#btnInterestCostRefresh').linkbutton({
+                text : '刷新',
+                plain : true,
+                iconCls : 'tbtn_refresh',
+                onClick: function(){
+                    list.refreshInterestCost();
+                }
             });
         };
 
