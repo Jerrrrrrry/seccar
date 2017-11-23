@@ -733,8 +733,8 @@ public class LoanDao {
             	vo.setInterestpaid(rs.getString("interestpaid"));//已付利息合计
             	vo.setMidinterest(rs.getString("midinterest"));//中介返点合计
             	vo.setMidinterestrate(rs.getString("midinterestrate"));//已还本金差合计
-            	double b = rs.getDouble("actualreturn") - rs.getDouble("midinterestrate");
-            	vo.setActualreturn(toTwoDigits(b));//已还本金合计
+            	//double b = rs.getDouble("actualreturn") - rs.getDouble("midinterestrate");
+            	//vo.setActualreturn(toTwoDigits(b));//已还本金合计
 //                if ("1".equalsIgnoreCase(rs.getString("issold")))//卖出去的车的数量
 //           		{
 //                	result.setOutStockCarsAmount(rs.getInt("num"));

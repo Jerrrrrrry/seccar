@@ -89,7 +89,7 @@ public class SumSummaryService {
 		List<SummaryLoanDto> newlist = new ArrayList<SummaryLoanDto>();
 		List<LoanDto> list2 = loanDao.getLoanCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
 		SummaryLoanDto chedai = new SummaryLoanDto();newlist.add(chedai);
-		chedai.setCategory("抵押车");
+		chedai.setCategory("抵押车当月");
 		chedai.setTotalOutStock(list2.size());
 		for (LoanDto dto : list2) {
 			chedai.setSumTotalMidinterest(chedai.getSumTotalMidinterest() + dto.getMidinterest());//中介返点合计
@@ -97,6 +97,14 @@ public class SumSummaryService {
 			chedai.setSumTotalPaidInterest(chedai.getSumTotalPaidInterest() + dto.getInterestpaid());//已付利息合计
 		}
 		chedai.setSumTotalReturn(chedai.getSumTotalActualLoan()+chedai.getSumTotalPaidInterest());
+		
+		SummaryLoanDto chedaileiji = new SummaryLoanDto();newlist.add(chedaileiji);
+		SummaryLoanDto carloanSummary = loanDao.listLoanReport();
+		chedaileiji.setCategory("抵押车累计");
+		chedaileiji.setSumTotalMidinterest(Double.valueOf(carloanSummary.getMidinterest()));
+		chedaileiji.setSumTotalActualLoan(Double.valueOf(carloanSummary.getActualloan()));
+		chedaileiji.setSumTotalPaidInterest(Double.valueOf(carloanSummary.getInterestpaid()));
+		chedaileiji.setSumTotalReturn(chedaileiji.getSumTotalActualLoan()+chedaileiji.getSumTotalPaidInterest());
 		return newlist;
 	}
 	public List<TradeDto> getTradeCarsSellInPeriod() throws Exception {

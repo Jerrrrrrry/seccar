@@ -290,6 +290,12 @@ var SumSummaryInit = {
                 },
                 onLoadSuccess : function (data) {
                   xutil.ajaxLoadEnd();
+                  $("#loanlist").datagrid("updateRow",{
+						index:1, 
+						row:{
+							totalOutStock:''
+						}
+					});
                 },
                 onLoadError: function () {
                     xutil.ajaxLoadEnd();
