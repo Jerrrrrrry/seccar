@@ -117,6 +117,15 @@ var TradeInit = {
                         sortable: false
                     },
                     {
+                    	field: 'lixichengben',
+                    	title: '利息成本',
+                    	width: 100,
+                    	align: 'left',
+                    	formatter: function (value) {
+                    		return '<span title="'+value+'"  class="easyui-tooltip">鼠标移动到此处</span>' 
+                    	}
+                    },
+                    {
                         field: 'earnest',
                         title: '定金',
                         width: 40,
@@ -248,13 +257,20 @@ var TradeInit = {
                 onLoadSuccess : function (data) {
                   xutil.ajaxLoadEnd();
                   //添加“合计”列
-                  $('#list').datagrid('appendRow', {
+                  /*$('#list').datagrid('appendRow', {
                 	  licenseno: '<span class="subtotal">合计</span>',
                 	  purchaseprice: '<span class="subtotal">' + list.compute("purchaseprice") + '</span>',
                 	  actualloan: '<span class="subtotal">' + list.compute("actualloan") + '</span>',
                 	  earnest: '<span class="subtotal">' + list.compute("earnest") + '</span>',
                 	  sellprice: '<span class="subtotal">' + list.compute("sellprice") + '</span>',
                 	  tradecost: '<span class="subtotal">' + list.compute("tradecost") + '</span>'
+                  });*/
+                  $(".easyui-tooltip").tooltip({
+                      onShow: function () {
+                          $(this).tooltip('tip').css({
+                              borderColor: '#000'
+                          });
+                      }
                   });
                 },
                 onLoadError: function () {

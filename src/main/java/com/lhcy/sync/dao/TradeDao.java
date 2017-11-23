@@ -87,7 +87,7 @@ public class TradeDao {
             order = form.getOrder();
         }
 
-        String sort = "purchasedate";
+        String sort = "createdts";
         if (form.getSort() != null && form.getSort().length() > 0){
             sort = form.getSort();
         }
@@ -198,6 +198,7 @@ public class TradeDao {
                 vo.setBuyername(rs.getString("buyername"));
                 vo.setBuyerid(rs.getString("buyerid"));
                 vo.setBuyermobile(rs.getString("buyermobile"));
+                vo.calculateLiXiChengBen();
 //                vo.setVehicleid(rs.getString("vehicleid"));
 //                vo.setLicenseno(rs.getString("licenseno"));
 //                vo.setVehicledesc(rs.getString("vehicledesc"));
@@ -337,6 +338,7 @@ public class TradeDao {
                 result.setBuyername(rs.getString("buyername"));
                 result.setBuyerid(rs.getString("buyerid"));
                 result.setBuyermobile(rs.getString("buyermobile"));
+                result.calculateLiXiChengBen();
             }
         } catch (Exception e) {
             throw new Exception(e);
@@ -415,6 +417,7 @@ public class TradeDao {
                 result.setBuyername(rs.getString("buyername"));
                 result.setBuyerid(rs.getString("buyerid"));
                 result.setBuyermobile(rs.getString("buyermobile"));
+                result.calculateLiXiChengBen();
                 list.add(result);
             }
 

@@ -133,13 +133,14 @@ public class SumSummaryAction extends DispatchAction {
     			row.createCell((short) 8).setCellValue(dto.getOwnermobile());
     			row.createCell((short) 9).setCellValue(dto.getInterestrate());
     			row.createCell((short) 10).setCellValue(dto.getActualloan());
-    			row.createCell((short) 11).setCellValue(dto.getEarnest());
-    			row.createCell((short) 12).setCellValue(dto.getSellprice());
-    			row.createCell((short) 13).setCellValue(dto.getSelldate());
-    			row.createCell((short) 14).setCellValue(dto.getBuyername());
-    			row.createCell((short) 15).setCellValue(dto.getBuyerid());
-    			row.createCell((short) 16).setCellValue(dto.getBuyermobile());
-    			row.createCell((short) 17).setCellValue(dto.getTradecost());
+    			row.createCell((short) 11).setCellValue(dto.getLixichengben());
+    			row.createCell((short) 12).setCellValue(dto.getEarnest());
+    			row.createCell((short) 13).setCellValue(dto.getSellprice());
+    			row.createCell((short) 14).setCellValue(dto.getSelldate());
+    			row.createCell((short) 15).setCellValue(dto.getBuyername());
+    			row.createCell((short) 16).setCellValue(dto.getBuyerid());
+    			row.createCell((short) 17).setCellValue(dto.getBuyermobile());
+    			row.createCell((short) 18).setCellValue(dto.getTradecost());
         	}
     		HSSFSheet chedaiSheet = wb.createSheet("车贷");
     		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
@@ -179,7 +180,7 @@ public class SumSummaryAction extends DispatchAction {
     }
     	private void createTradeHeaders(HSSFRow row) {
     		String[] tradeHeaders = new String[]{"经办人","收车日期","车牌号码","车辆描述","车辆类型","收车价","卖车人身份证","卖车人姓名","卖车人电话",
-    				"利率","实际借款金额","定金","销售价格","销售日期","购车人姓名","购车人身份证","购车人电话","交易费用"};
+    				"利率","实际借款金额","利息成本","定金","销售价格","销售日期","购车人姓名","购车人身份证","购车人电话","交易费用"};
     		for (int i = 0; i < tradeHeaders.length; i++)
     		{
     			HSSFCell cell = row.createCell((short) i);
@@ -379,13 +380,14 @@ public class SumSummaryAction extends DispatchAction {
     			row.createCell((short) 8).setCellValue(dto.getOwnermobile());
     			row.createCell((short) 9).setCellValue(dto.getInterestrate());
     			row.createCell((short) 10).setCellValue(dto.getActualloan());
-    			row.createCell((short) 11).setCellValue(dto.getEarnest());
-    			row.createCell((short) 12).setCellValue(dto.getSellprice());
-    			row.createCell((short) 13).setCellValue(dto.getSelldate());
-    			row.createCell((short) 14).setCellValue(dto.getBuyername());
-    			row.createCell((short) 15).setCellValue(dto.getBuyerid());
-    			row.createCell((short) 16).setCellValue(dto.getBuyermobile());
-    			row.createCell((short) 17).setCellValue(dto.getTradecost());
+    			row.createCell((short) 11).setCellValue(dto.getLixichengben());
+    			row.createCell((short) 12).setCellValue(dto.getEarnest());
+    			row.createCell((short) 13).setCellValue(dto.getSellprice());
+    			row.createCell((short) 14).setCellValue(dto.getSelldate());
+    			row.createCell((short) 15).setCellValue(dto.getBuyername());
+    			row.createCell((short) 16).setCellValue(dto.getBuyerid());
+    			row.createCell((short) 17).setCellValue(dto.getBuyermobile());
+    			row.createCell((short) 18).setCellValue(dto.getTradecost());
         	}
     		HSSFSheet chedaiSheet = wb.createSheet("车贷");
     		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
@@ -424,7 +426,7 @@ public class SumSummaryAction extends DispatchAction {
     }
     	private void createSoldTradeHeaders(HSSFRow row) {
     		String[] tradeHeaders = new String[]{"经办人","收车日期","车牌号码","车辆描述","车辆类型","收车价","卖车人身份证","卖车人姓名","卖车人电话",
-    				"利率","实际借款金额","定金","销售价格","销售日期","购车人姓名","购车人身份证","购车人电话","交易费用"};
+    				"利率","实际借款金额","利息成本","定金","销售价格","销售日期","购车人姓名","购车人身份证","购车人电话","交易费用"};
     		for (int i = 0; i < tradeHeaders.length; i++)
     		{
     			HSSFCell cell = row.createCell((short) i);
@@ -632,7 +634,7 @@ public class SumSummaryAction extends DispatchAction {
     private HSSFWorkbook generateInterestXls() throws Exception{
     	SumSummaryService ts = new SumSummaryService();
 		List<LoanDto> loanList  = ts.listInterestCostOnly(null);
-		
+//		
 		Calendar currentMonth = Calendar.getInstance();
 		String month = String.valueOf(currentMonth.get(Calendar.MONTH));
 		int actualCurrentMonth = currentMonth.get(Calendar.MONTH) + 1;
@@ -640,24 +642,24 @@ public class SumSummaryAction extends DispatchAction {
 		int actualPreviousMonth = currentMonth.get(Calendar.MONTH) + 1;
 		String previousMonth = String.valueOf(currentMonth.get(Calendar.MONTH));
 		System.out.print(previousMonth + " " + month);
-		double accruedTotalCost = 0;
-		double previousMonthCost = 0;
-		double currentMonthCost = 0;
-		for (LoanDto dto : loanList) {
-			for (Entry<String, Double> a : dto.getMonthAndCost().entrySet())
-			{
-				accruedTotalCost = accruedTotalCost + a.getValue().doubleValue();
-				if (month.equals(a.getKey()))
-				{
-					currentMonthCost = currentMonthCost + a.getValue().doubleValue();
-				}
-				if (previousMonth.equals(a.getKey()))
-				{
-					previousMonthCost = previousMonthCost + a.getValue().doubleValue();
-				}
-			}
-		}
-		
+//		double accruedTotalCost = 0;
+//		double previousMonthCost = 0;
+//		double currentMonthCost = 0;
+//		for (LoanDto dto : loanList) {
+//			for (Entry<String, Double> a : dto.getMonthAndCost().entrySet())
+//			{
+//				accruedTotalCost = accruedTotalCost + a.getValue().doubleValue();
+//				if (month.equals(a.getKey()))
+//				{
+//					currentMonthCost = currentMonthCost + a.getValue().doubleValue();
+//				}
+//				if (previousMonth.equals(a.getKey()))
+//				{
+//					previousMonthCost = previousMonthCost + a.getValue().doubleValue();
+//				}
+//			}
+//		}
+    	List<CarSummaryDto> listInterestCost = ts.listInterestCost(null);
 		HSSFWorkbook wb = new HSSFWorkbook();
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -670,11 +672,77 @@ public class SumSummaryAction extends DispatchAction {
 		huizongrow.createCell((short) 2).setCellValue("当月金额合计(元) ");
 		huizongrow.createCell((short) 3).setCellValue("累计(元) ");
 
-		HSSFRow huizongrow2 = huizongSheet.createRow(1);
-		huizongrow2.createCell((short) 0).setCellValue("抵押车");
-		huizongrow2.createCell((short) 1).setCellValue(previousMonthCost);
-		huizongrow2.createCell((short) 2).setCellValue(currentMonthCost);
-		huizongrow2.createCell((short) 3).setCellValue(accruedTotalCost);
+		int i = 1;
+		for (CarSummaryDto dto : listInterestCost)
+		{
+			HSSFRow huizongrow2 = huizongSheet.createRow(i);i++;
+			huizongrow2.createCell((short) 0).setCellValue(dto.getCarType());
+			huizongrow2.createCell((short) 1).setCellValue(dto.getPreviousMonthCost());
+			huizongrow2.createCell((short) 2).setCellValue(dto.getCurrentMonthCost());
+			huizongrow2.createCell((short) 3).setCellValue(dto.getAccruedTotalCost());
+		}
+		
+		
+		List<TradeDto> tradeList  = ts.listInterestCostOnlyForTrade(null);
+		
+		HSSFSheet sanfangcheSheet = wb.createSheet("三方车");
+		HSSFRow sanfangrow = sanfangcheSheet.createRow((int) 0);
+		createSoldTradeHeaders(sanfangrow);
+		sanfangrow.createCell(sanfangrow.getLastCellNum()).setCellValue(actualPreviousMonth+"月利息成本");
+		sanfangrow.createCell(sanfangrow.getLastCellNum()).setCellValue(actualCurrentMonth+"月利息成本");
+		
+		HSSFSheet zishouchecheSheet = wb.createSheet("自收车");
+		HSSFRow zishourow = zishouchecheSheet.createRow((int) 0);
+		createSoldTradeHeaders(zishourow);
+		zishourow.createCell(zishourow.getLastCellNum()).setCellValue(actualPreviousMonth+"月利息成本");
+		zishourow.createCell(zishourow.getLastCellNum()).setCellValue(actualCurrentMonth+"月利息成本");;
+		
+		int p = 1;
+		int k = 1;
+		for (TradeDto dto:tradeList)
+    	{
+			HSSFRow row  = null;
+			if ("第三方".equalsIgnoreCase(dto.getVehicletype()))
+			{
+				row = sanfangcheSheet.createRow(p);
+				p++;
+			} else {
+				row = zishouchecheSheet.createRow(k);
+				k++;
+			}
+			row.createCell((short) 0).setCellValue(dto.getTradername());
+			row.createCell((short) 1).setCellValue(dto.getPurchasedate());
+			row.createCell((short) 2).setCellValue(dto.getLicenseno());
+			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
+			row.createCell((short) 4).setCellValue(dto.getVehicletype());
+			row.createCell((short) 5).setCellValue(dto.getPurchaseprice());
+			row.createCell((short) 6).setCellValue(dto.getOwnerid());
+			row.createCell((short) 7).setCellValue(dto.getOwnername());
+			row.createCell((short) 8).setCellValue(dto.getOwnermobile());
+			row.createCell((short) 9).setCellValue(dto.getInterestrate());
+			row.createCell((short) 10).setCellValue(dto.getActualloan());
+			row.createCell((short) 11).setCellValue(dto.getLixichengben());
+			row.createCell((short) 12).setCellValue(dto.getEarnest());
+			row.createCell((short) 13).setCellValue(dto.getSellprice());
+			row.createCell((short) 14).setCellValue(dto.getSelldate());
+			row.createCell((short) 15).setCellValue(dto.getBuyername());
+			row.createCell((short) 16).setCellValue(dto.getBuyerid());
+			row.createCell((short) 17).setCellValue(dto.getBuyermobile());
+			row.createCell((short) 18).setCellValue(dto.getTradecost());
+			if (dto.getMonthAndCost().get(previousMonth) == null)
+			{
+				row.createCell((short) 19).setCellValue(0);
+			} else {
+				row.createCell((short) 19).setCellValue(dto.getMonthAndCost().get(previousMonth).doubleValue());
+			}
+			if (dto.getMonthAndCost().get(month) == null)
+			{
+				row.createCell((short) 20).setCellValue(0);
+			} else {
+				row.createCell((short) 20).setCellValue(dto.getMonthAndCost().get(month).doubleValue());
+			}
+    	}
+		
 		
 		HSSFSheet chedaiSheet = wb.createSheet("车贷");
 		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
@@ -723,6 +791,8 @@ public class SumSummaryAction extends DispatchAction {
 				row.createCell((short) 26).setCellValue(dto.getMonthAndCost().get(month).doubleValue());
 			}
 		}
+		
+		
 		return wb;
 	}
 

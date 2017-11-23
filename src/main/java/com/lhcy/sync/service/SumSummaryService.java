@@ -163,16 +163,74 @@ public class SumSummaryService {
 	public List<LoanDto> listInterestCostOnly(SumSummaryForm form) throws Exception {
 		return loanDao.list(0, Integer.MAX_VALUE, new LoanForm(), "管理员");
 	}
+	public List<TradeDto> listInterestCostOnlyForTrade(SumSummaryForm form) throws Exception {
+		return tradeDao.list(0, Integer.MAX_VALUE, new TradeForm(), "管理员");
+	}
 	public List<CarSummaryDto> listInterestCost(SumSummaryForm form) throws Exception {
 		List<CarSummaryDto> newlist = new ArrayList<CarSummaryDto>();
-		List<LoanDto> list2 = loanDao.list(0, Integer.MAX_VALUE, new LoanForm(), "管理员");
-		CarSummaryDto chedai = new CarSummaryDto();newlist.add(chedai);
-		chedai.setCarType("抵押车");
+		
 		Calendar currentMonth = Calendar.getInstance();
 		String month = String.valueOf(currentMonth.get(Calendar.MONTH));
 		currentMonth.add(Calendar.MONTH, -1);
 		String previousMonth = String.valueOf(currentMonth.get(Calendar.MONTH));
 		System.out.print(previousMonth + " " + month);
+		
+		
+		List<TradeDto> list3 = tradeDao.list(0, Integer.MAX_VALUE, new TradeForm(), "管理员");
+		CarSummaryDto sanfangche = new CarSummaryDto();newlist.add(sanfangche);
+		sanfangche.setCarType("三方车");
+		double accruedTotalCost1 = 0;
+		double previousMonthCost1 = 0;
+		double currentMonthCost1 = 0;
+		
+		CarSummaryDto zishouche = new CarSummaryDto();newlist.add(zishouche);
+		zishouche.setCarType("自收车");
+		double accruedTotalCost2 = 0;
+		double previousMonthCost2 = 0;
+		double currentMonthCost2 = 0;
+		for (TradeDto dto : list3) {
+			if("第三方".equalsIgnoreCase(dto.getVehicletype()))
+			{
+				for (Entry<String, Double> a : dto.getMonthAndCost().entrySet())
+				{
+					accruedTotalCost1 = accruedTotalCost1 + a.getValue().doubleValue();
+					if (month.equals(a.getKey()))
+					{
+						currentMonthCost1 = currentMonthCost1 + a.getValue().doubleValue();
+					}
+					if (previousMonth.equals(a.getKey()))
+					{
+						previousMonthCost1 = previousMonthCost1 + a.getValue().doubleValue();
+					}
+				}
+			} else if ("自收车".equalsIgnoreCase(dto.getVehicletype()))
+			{
+				for (Entry<String, Double> a : dto.getMonthAndCost().entrySet())
+				{
+					accruedTotalCost2 = accruedTotalCost2 + a.getValue().doubleValue();
+					if (month.equals(a.getKey()))
+					{
+						currentMonthCost2 = currentMonthCost2 + a.getValue().doubleValue();
+					}
+					if (previousMonth.equals(a.getKey()))
+					{
+						previousMonthCost2 = previousMonthCost2 + a.getValue().doubleValue();
+					}
+				}
+			}
+		}
+		sanfangche.setPreviousMonthCost(previousMonthCost1);
+		sanfangche.setCurrentMonthCost(currentMonthCost1);
+		sanfangche.setAccruedTotalCost(accruedTotalCost1);
+		
+		zishouche.setPreviousMonthCost(previousMonthCost2);
+		zishouche.setCurrentMonthCost(currentMonthCost2);
+		zishouche.setAccruedTotalCost(accruedTotalCost2);
+		
+		
+		List<LoanDto> list2 = loanDao.list(0, Integer.MAX_VALUE, new LoanForm(), "管理员");
+		CarSummaryDto chedai = new CarSummaryDto();newlist.add(chedai);
+		chedai.setCarType("抵押车");
 		double accruedTotalCost = 0;
 		double previousMonthCost = 0;
 		double currentMonthCost = 0;
