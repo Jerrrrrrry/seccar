@@ -186,7 +186,14 @@ var SumSummaryInit = {
                        },
                        {
                            field: 'totalProfit',
-                           title: '利润(元)',
+                           title: '当月利润(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       },
+                       {
+                           field: 'accruedTotalProfit',
+                           title: '累计利润(元)',
                            width: 100,
                            align: 'right',
                            sortable: false
@@ -198,6 +205,14 @@ var SumSummaryInit = {
                 },
                 onLoadSuccess : function (data) {
                   xutil.ajaxLoadEnd();
+                  $('#soldlist').datagrid('appendRow', {
+                	  carType: '<span class="subtotal">合计</span>',
+                	  outStockCarsAmount: '',
+                	  totalPuchasePrice: '',
+	            	  totalSellPrice: '',
+	            	  totalProfit: '',
+	            	  accruedTotalProfit: '<span class="subtotal">' + list.computeSold("accruedTotalProfit") + '</span>'
+	              });
                 },
                 onLoadError: function () {
                     xutil.ajaxLoadEnd();

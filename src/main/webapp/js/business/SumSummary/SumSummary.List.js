@@ -16,7 +16,17 @@ var SumSummaryList = {
 //         	alert(total);
              return total;
          }
-         
+         list.computeSold = function (colName) {
+             var rows = $('#soldlist').datagrid('getRows');
+//         	alert(rows);
+             var total = 0;
+             for (var i = 0; i < rows.length; i++) {
+                 total += parseFloat(rows[i][colName]);
+             }
+
+//         	alert(total);
+             return total;
+         }
 
                
         /***********************************************/

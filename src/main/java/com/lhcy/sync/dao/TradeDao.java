@@ -443,7 +443,7 @@ public class TradeDao {
     	List<CarSummaryDto> list = new ArrayList<CarSummaryDto>();
         StringBuilder sql = new StringBuilder();
         //删除的车辆不考虑
-        sql.append(" select issold,vehicletype,COUNT(*) as number,sum(purchaseprice) as amount from SecCarTrade where isdeleted<>'1' group by issold, vehicletype ");
+        sql.append(" select issold,vehicletype,COUNT(*) as number,sum(purchaseprice) as amount,sum(sellprice) as sellamount from SecCarTrade where isdeleted<>'1' group by issold, vehicletype ");
         System.out.println("query sql: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
@@ -467,6 +467,7 @@ public class TradeDao {
                 	result.setSold(true);
                 	result.setOutStockCarsAmount(rs.getInt("number"));
                 	result.setOutStockCarsMoney(rs.getDouble("amount"));
+                	result.setTotalSellPrice(rs.getDouble("sellamount"));
                 } else
                 {
                 	//库存车辆数量

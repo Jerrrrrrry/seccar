@@ -420,7 +420,7 @@ public class LoanDao {
     	result.setCarType("抵押车");
         StringBuilder sql = new StringBuilder();
         //删除的车辆不考虑
-        sql.append(" select case when isreturned =1 then 1 when isabandon=1 then 2 else 0  end as isreturned,COUNT(*) as num,SUM(actualloan) as amount from SecCarLoan where isdeleted<>'1' group by isreturned,isabandon ");
+        sql.append(" select case when isreturned =1 then 1 when isabandon=1 then 2 else 0  end as isreturned,COUNT(*) as num,SUM(actualloan) as amount,sum(interestpaid) as totalInterestPaid from SecCarLoan where isdeleted<>'1' group by isreturned,isabandon ");
         System.out.println("query sql: "+sql);
         Connection conn = DbConnectionFactory.createHonchenConnection();
         if (conn == null){
@@ -440,13 +440,18 @@ public class LoanDao {
             int out =0;
             int in = 0;
             while(rs.next()){
-                if ("0".equalsIgnoreCase(rs.getString("isreturned")))//抵押完毕的车辆
+            	String isreturned = rs.getString("isreturned");
+                if ("0".equalsIgnoreCase(isreturned))//抵押完毕的车辆
            		{
                 	in =rs.getInt("num");
                 	result.setInStockCarMoney(rs.getDouble("amount"));
                 } else
                 {
                 	out = out + rs.getInt("num");
+                	if ("1".equalsIgnoreCase(isreturned))
+                	{
+                		result.setTotalProfit(rs.getDouble("totalInterestPaid"));
+                	}
                 }
             }
 

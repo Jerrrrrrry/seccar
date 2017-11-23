@@ -58,6 +58,7 @@ public class SumSummaryService {
 		List<CarSummaryDto> newlist = new ArrayList<CarSummaryDto>();
 		
 		List<TradeDto> list  = tradeDao.getTradeCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
+		 List<CarSummaryDto> accruedSummary = tradeDao.getSummaryForCarTrade();
 		CarSummaryDto sanfang = new CarSummaryDto();sanfang.setCarType("三方车");newlist.add(sanfang);
 		CarSummaryDto zishouche = new CarSummaryDto();zishouche.setCarType("自收车");newlist.add(zishouche);
 		for (TradeDto dto : list) {
@@ -74,6 +75,21 @@ public class SumSummaryService {
 		}
 		sanfang.setTotalProfit(sanfang.getTotalSellPrice() - sanfang.getTotalPuchasePrice());
 		zishouche.setTotalProfit(zishouche.getTotalSellPrice() - zishouche.getTotalPuchasePrice());
+		
+		for (CarSummaryDto dto : accruedSummary)
+		{
+			if (dto.isSold()){
+				if ("第三方".equalsIgnoreCase(dto.getCarType()))
+				{
+					sanfang.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getOutStockCarsMoney());
+					
+				} else if ("自收车".equalsIgnoreCase(dto.getCarType())){
+					zishouche.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getOutStockCarsMoney());
+				}
+			}
+		}
+		
+		
 		List<LoanDto> list2 = loanDao.getLoanCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
 		CarSummaryDto chedai = new CarSummaryDto();newlist.add(chedai);
 		chedai.setCarType("抵押车");
@@ -83,6 +99,8 @@ public class SumSummaryService {
 			chedai.setTotalSellPrice(chedai.getTotalSellPrice() + dto.getActualloan() + dto.getInterestpaid());
 		}
 		chedai.setTotalProfit(chedai.getTotalSellPrice() - chedai.getTotalPuchasePrice());
+		CarSummaryDto dd = loanDao.getSummaryForCarLoan();
+		chedai.setAccruedTotalProfit(dd.getTotalProfit());
 		return newlist;
 	}
 	public List<SummaryLoanDto> listLoans(SumSummaryForm form) throws Exception {

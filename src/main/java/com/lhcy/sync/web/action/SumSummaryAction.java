@@ -333,11 +333,13 @@ public class SumSummaryAction extends DispatchAction {
     		huizongrow.createCell((short) 1).setCellValue("本月出库数量(辆)");
     		huizongrow.createCell((short) 2).setCellValue("收车价格合计(元)");
     		huizongrow.createCell((short) 3).setCellValue("卖车价格合计(元)");
-    		huizongrow.createCell((short) 4).setCellValue("利润(元)");
+    		huizongrow.createCell((short) 4).setCellValue("当月利润(元)");
+    		huizongrow.createCell((short) 5).setCellValue("累计利润(元)");
 
  
     		List<CarSummaryDto> list =  ts.listSold(null);
    		 	int q = 1;
+   		 	double accruedtotalProfit = 0;
     		for (CarSummaryDto dto : list)
     		{
     			HSSFRow row = huizongSheet.createRow(q);q++;
@@ -346,8 +348,13 @@ public class SumSummaryAction extends DispatchAction {
     			row.createCell((short) 2).setCellValue(dto.getTotalPuchasePrice());
     			row.createCell((short) 3).setCellValue(dto.getTotalSellPrice());
     			row.createCell((short) 4).setCellValue(dto.getTotalProfit());
+    			row.createCell((short) 5).setCellValue(dto.getAccruedTotalProfit());
+    			accruedtotalProfit = accruedtotalProfit + dto.getAccruedTotalProfit();
     		}
-    		
+    		HSSFRow row22 = huizongSheet.createRow(q);
+    		row22.createCell((short) 0).setCellValue("合计");
+    		row22.createCell((short) 5).setCellValue(accruedtotalProfit);
+			
     		HSSFSheet sanfangSheet = wb.createSheet("三方车");
     		HSSFRow sanfangrow = sanfangSheet.createRow((int) 0);
     		createSoldTradeHeaders(sanfangrow);
