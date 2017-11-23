@@ -100,11 +100,12 @@ public class SumSummaryService {
 		
 		SummaryLoanDto chedaileiji = new SummaryLoanDto();newlist.add(chedaileiji);
 		SummaryLoanDto carloanSummary = loanDao.listLoanReport();
+		SummaryLoanDto carloanSummary2 = loanDao.listLoanReportReturned();
 		chedaileiji.setCategory("抵押车累计");
 		chedaileiji.setSumTotalMidinterest(Double.valueOf(carloanSummary.getMidinterest()));
 		chedaileiji.setSumTotalActualLoan(Double.valueOf(carloanSummary.getActualloan()));
 		chedaileiji.setSumTotalPaidInterest(Double.valueOf(carloanSummary.getInterestpaid()));
-		chedaileiji.setSumTotalReturn(chedaileiji.getSumTotalActualLoan()+chedaileiji.getSumTotalPaidInterest());
+		chedaileiji.setSumTotalReturn(Double.valueOf(carloanSummary2.getActualloan())+chedaileiji.getSumTotalPaidInterest()-Double.valueOf(carloanSummary2.getMidinterestrate()));
 		return newlist;
 	}
 	public List<TradeDto> getTradeCarsSellInPeriod() throws Exception {
