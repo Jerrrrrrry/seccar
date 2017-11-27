@@ -680,6 +680,9 @@ public class SumSummaryAction extends DispatchAction {
 		huizongrow.createCell((short) 3).setCellValue("累计(元) ");
 
 		int i = 1;
+		double heji_PreviousMonthCost=0.0;
+		double heji_CurrentMonthCost=0.0;
+		double heji_AccruedTotalCost=0.0;
 		for (CarSummaryDto dto : listInterestCost)
 		{
 			HSSFRow huizongrow2 = huizongSheet.createRow(i);i++;
@@ -687,8 +690,16 @@ public class SumSummaryAction extends DispatchAction {
 			huizongrow2.createCell((short) 1).setCellValue(dto.getPreviousMonthCost());
 			huizongrow2.createCell((short) 2).setCellValue(dto.getCurrentMonthCost());
 			huizongrow2.createCell((short) 3).setCellValue(dto.getAccruedTotalCost());
+			heji_PreviousMonthCost = heji_PreviousMonthCost +dto.getPreviousMonthCost();
+			heji_CurrentMonthCost = heji_CurrentMonthCost + dto.getCurrentMonthCost();
+			heji_AccruedTotalCost = heji_AccruedTotalCost + dto.getAccruedTotalCost();
 		}
-		
+		HSSFRow huizongrow2 = huizongSheet.createRow(i);
+		huizongrow2.createCell((short) 0).setCellValue("合计");
+		huizongrow2.createCell((short) 1).setCellValue(heji_PreviousMonthCost);
+		huizongrow2.createCell((short) 2).setCellValue(heji_CurrentMonthCost);
+		huizongrow2.createCell((short) 3).setCellValue(heji_AccruedTotalCost);
+ 
 		
 		List<TradeDto> tradeList  = ts.listInterestCostOnlyForTrade(null);
 		
