@@ -41,25 +41,26 @@
 </head>
 <body class="easyui-layout">
 <div region="center" border="false" title="" class="grid_line">
-  <div class="easyui-layout"  style="overflow:hidden;width:100%;height:25%">
+  <div   style="overflow:hidden;width:100%;height:22%">
     <table id="stocklist">
     </table>
   </div>
   <hr />
-   <div class="easyui-layout"  style="overflow:hidden;width:100%;height:20%">
+   <div   style="overflow:hidden;width:100%;height:18%">
     <table id="loanlist">
     </table>
   </div>
   <hr />
-  <div class="easyui-layout"  style="overflow:hidden;width:100%;height:25%">
+  <div   style="overflow:hidden;width:100%;height:26%">
     <table id="soldlist">
     </table>
   </div>
   <hr />
-  <div class="easyui-layout"  style="overflow:hidden;width:100%;height:30%">
+  <div   style="overflow:hidden;width:100%;height:26%">
     <table id="interestCostlist">
     </table>
   </div>
+  <hr />
 </div>
 <div id="stock_bar_list">
   <table cellspacing="0" cellpadding="0">

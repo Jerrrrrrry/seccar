@@ -439,6 +439,7 @@ public class LoanDao {
             }
             int out =0;
             int in = 0;
+            double totalInterestPaid = 0.0;
             while(rs.next()){
             	String isreturned = rs.getString("isreturned");
                 if ("0".equalsIgnoreCase(isreturned))//抵押完毕的车辆
@@ -448,13 +449,14 @@ public class LoanDao {
                 } else
                 {
                 	out = out + rs.getInt("num");
-                	if ("1".equalsIgnoreCase(isreturned))
-                	{
-                		result.setTotalProfit(rs.getDouble("totalInterestPaid"));
-                	}
+//                	if ("1".equalsIgnoreCase(isreturned))
+//                	{
+//                		result.setTotalProfit(rs.getDouble("totalInterestPaid"));
+//                	}
                 }
+                totalInterestPaid = totalInterestPaid+rs.getDouble("totalInterestPaid");
             }
-
+            result.setTotalProfit(totalInterestPaid);
         	result.setInStockCarsAmount(in);
         	result.setOutStockCarsAmount(out);//库存车辆数量
 

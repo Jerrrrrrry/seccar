@@ -390,6 +390,12 @@ var SumSummaryInit = {
                 },
                 onLoadSuccess : function (data) {
                   xutil.ajaxLoadEnd();
+                  $('#interestCostlist').datagrid('appendRow', {
+                	  carType: '<span class="subtotal">合计</span>',
+                	  previousMonthCost: '<span class="subtotal">' + list.computeCost("previousMonthCost") + '</span>',
+                	  currentMonthCost: '<span class="subtotal">' + list.computeCost("currentMonthCost") + '</span>',
+                	  accruedTotalCost: '<span class="subtotal">' + list.computeCost("accruedTotalCost") + '</span>'
+	              });
                 },
                 onLoadError: function () {
                     xutil.ajaxLoadEnd();
