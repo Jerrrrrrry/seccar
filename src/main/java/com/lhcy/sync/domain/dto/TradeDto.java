@@ -126,7 +126,9 @@ public class TradeDto implements Serializable {
     								String start = toDateStr(borrowDateC);
     								String end= toDateStr(actualreturndateC);
     								sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
-    								monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), Double.valueOf(actualloan * 1.5/100));
+    								Double exist = monthAndCost.get(String.valueOf(actualreturndateC.get(Calendar.MONTH)));
+        	    					if (exist == null) exist= 0.0;
+    								monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), exist+Double.valueOf(actualloan * 1.5/100));
     							} else 
     							{
     								String end= toDateStr(borrowDateC);
@@ -134,7 +136,9 @@ public class TradeDto implements Serializable {
     								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
     								String start = toDateStr(borrowDateC);
     								sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
-    								monthAndCost.put(String.valueOf(endMonth), Double.valueOf(actualloan * 1.5/100));
+    								Double exist = monthAndCost.get(String.valueOf(endMonth));
+        	    					if (exist == null) exist= 0.0;
+    								monthAndCost.put(String.valueOf(endMonth), exist+Double.valueOf(actualloan * 1.5/100));
     							}
     						}
     					} else {
@@ -180,14 +184,18 @@ public class TradeDto implements Serializable {
     								String start = toDateStr(borrowDateC);
     								String end= toDateStr(today);
     								sb.append(start+"到"+end+ "利息 	" + (purchaseprice * 1.5/100)+"元</br>");
-    								monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), Double.valueOf(purchaseprice * 1.5/100));
+    								Double exist = monthAndCost.get(String.valueOf(today.get(Calendar.MONTH)));
+        	    					if (exist == null) exist= 0.0;
+    								monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), exist+Double.valueOf(purchaseprice * 1.5/100));
     							} else 
     							{
     								String end= toDateStr(borrowDateC);
     								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
     								String start = toDateStr(borrowDateC);
     								sb.append(start+"到"+end+ "利息 	" + (purchaseprice * 1.5/100)+"元</br>");
-    								monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), Double.valueOf(purchaseprice * 1.5/100));
+    								Double exist = monthAndCost.get(String.valueOf(today.get(Calendar.MONTH)));
+        	    					if (exist == null) exist= 0.0;
+    								monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), exist+Double.valueOf(purchaseprice * 1.5/100));
     								
     							}
     						}
@@ -251,7 +259,9 @@ public class TradeDto implements Serializable {
     								String start = toDateStr(borrowDateC);
     								String end= toDateStr(actualreturndateC);
     								sb.append(start+"到"+end+ "利息 	" + (purchaseprice * 1.5/100)+"元</br>");
-    								monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), Double.valueOf(purchaseprice * 1.5/100));
+    								Double exist = monthAndCost.get(String.valueOf(actualreturndateC.get(Calendar.MONTH)));
+        	    					if (exist == null) exist= 0.0;
+    								monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), exist+Double.valueOf(purchaseprice * 1.5/100));
     							} else 
     							{
     								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
@@ -262,7 +272,9 @@ public class TradeDto implements Serializable {
     								int between_days=Integer.parseInt(String.valueOf((time2-time1)/(1000*3600*24)));     
     								
     								sb.append(start+"到"+end+ "利息 	" + ((purchaseprice * 1.5 * between_days)/(30*100))+"元</br>");
-    								monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), Double.valueOf((purchaseprice * 1.5 * between_days)/(30*100)));
+    								Double exist = monthAndCost.get(String.valueOf(actualreturndateC.get(Calendar.MONTH)));
+        	    					if (exist == null) exist= 0.0;
+    								monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), exist+Double.valueOf((purchaseprice * 1.5 * between_days)/(30*100)));
     							}
     						}
     					} else {
@@ -303,14 +315,18 @@ public class TradeDto implements Serializable {
     								String start = toDateStr(borrowDateC);
     								String end= toDateStr(today);
     								sb.append(start+"到"+end+ "利息 	" + (purchaseprice * 1.5/100)+"元</br>");
-    								monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), Double.valueOf(purchaseprice * 1.5/100));
+    								Double exist = monthAndCost.get(String.valueOf(today.get(Calendar.MONTH)));
+        	    					if (exist == null) exist= 0.0;
+    								monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), exist+Double.valueOf(purchaseprice * 1.5/100));
     							} else 
     							{
     								String end= toDateStr(borrowDateC);
     								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
     								String start = toDateStr(borrowDateC);
     								sb.append(start+"到"+end+ "利息 0元，下个月"+end+"开始计算利息</br>");
-    								monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), Double.valueOf(0));
+    								Double exist = monthAndCost.get(String.valueOf(today.get(Calendar.MONTH)));
+        	    					if (exist == null) exist= 0.0;
+    								monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), exist+Double.valueOf(0));
     								
     							}
     						}

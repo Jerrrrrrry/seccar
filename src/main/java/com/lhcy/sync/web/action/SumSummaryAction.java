@@ -708,12 +708,14 @@ public class SumSummaryAction extends DispatchAction {
 		createSoldTradeHeaders(sanfangrow);
 		sanfangrow.createCell(sanfangrow.getLastCellNum()).setCellValue(actualPreviousMonth+"月利息成本");
 		sanfangrow.createCell(sanfangrow.getLastCellNum()).setCellValue(actualCurrentMonth+"月利息成本");
+		sanfangrow.createCell(sanfangrow.getLastCellNum()).setCellValue("累计利息成本");;
 		
 		HSSFSheet zishouchecheSheet = wb.createSheet("自收车");
 		HSSFRow zishourow = zishouchecheSheet.createRow((int) 0);
 		createSoldTradeHeaders(zishourow);
 		zishourow.createCell(zishourow.getLastCellNum()).setCellValue(actualPreviousMonth+"月利息成本");
 		zishourow.createCell(zishourow.getLastCellNum()).setCellValue(actualCurrentMonth+"月利息成本");;
+		zishourow.createCell(zishourow.getLastCellNum()).setCellValue("累计利息成本");;
 		
 		int p = 1;
 		int k = 1;
@@ -759,6 +761,12 @@ public class SumSummaryAction extends DispatchAction {
 			} else {
 				row.createCell((short) 20).setCellValue(dto.getMonthAndCost().get(month).doubleValue());
 			}
+			double accruedTotalCost =0;
+			for (Entry<String, Double> a : dto.getMonthAndCost().entrySet())
+			{
+				accruedTotalCost = accruedTotalCost + a.getValue().doubleValue();
+			}
+			row.createCell((short) 21).setCellValue(accruedTotalCost);
     	}
 		
 		
@@ -767,6 +775,7 @@ public class SumSummaryAction extends DispatchAction {
 		createSoldLoanHeaders(loanrow);
 		loanrow.createCell(loanrow.getLastCellNum()).setCellValue(actualPreviousMonth+"月利息成本");
 		loanrow.createCell(loanrow.getLastCellNum()).setCellValue(actualCurrentMonth+"月利息成本");;
+		loanrow.createCell(loanrow.getLastCellNum()).setCellValue("累计利息成本");;
 		int j = 1;
 		for (LoanDto dto : loanList)
 		{
@@ -798,16 +807,22 @@ public class SumSummaryAction extends DispatchAction {
 			row.createCell((short) 23).setCellValue(dto.getActualreturndate());
 			if (dto.getMonthAndCost().get(previousMonth) == null)
 			{
-				row.createCell((short) 25).setCellValue(0);
+				row.createCell((short) 24).setCellValue(0);
 			} else {
-				row.createCell((short) 25).setCellValue(dto.getMonthAndCost().get(previousMonth).doubleValue());
+				row.createCell((short) 24).setCellValue(dto.getMonthAndCost().get(previousMonth).doubleValue());
 			}
 			if (dto.getMonthAndCost().get(month) == null)
 			{
-				row.createCell((short) 26).setCellValue(0);
+				row.createCell((short) 25).setCellValue(0);
 			} else {
-				row.createCell((short) 26).setCellValue(dto.getMonthAndCost().get(month).doubleValue());
+				row.createCell((short) 25).setCellValue(dto.getMonthAndCost().get(month).doubleValue());
 			}
+			double accruedTotalCost =0;
+			for (Entry<String, Double> a : dto.getMonthAndCost().entrySet())
+			{
+				accruedTotalCost = accruedTotalCost + a.getValue().doubleValue();
+			}
+			row.createCell((short) 26).setCellValue(accruedTotalCost);
 		}
 		
 		
