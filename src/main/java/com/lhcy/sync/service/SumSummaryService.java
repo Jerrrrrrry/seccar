@@ -278,6 +278,38 @@ public class SumSummaryService {
 		List<SummaryLoanDto> carloanSummary = loanDao.listLoanReportEachMonth();
 		return carloanSummary;
 	}
+	public List<SummaryDto> listParkings(SumSummaryForm form) throws Exception {
+		/****************************/
+		ParkingSummaryDto parkingSummaryDto= parkingDao.getSummaryForCarParking();
+		List<SummaryDto> args = new ArrayList<SummaryDto>();
+		SummaryDto dto = new SummaryDto();
+		
+		dto = new SummaryDto();
+		dto.setCategory("停车合计");
+		dto.setDetails("");
+		dto.setItemType("");
+		args.add(dto);
+		
+		dto = new SummaryDto();
+		dto.setCategory("");
+		dto.setItemType("正在停车车辆");
+		dto.setDetails(parkingSummaryDto.getInStockCarsAmount()+"辆");
+		args.add(dto);
+		
+		dto = new SummaryDto();
+		dto.setCategory("");
+		dto.setItemType("已出库车辆");
+		dto.setDetails(parkingSummaryDto.getOutStockCarsAmount()+"辆");
+		args.add(dto);
+		
+		dto = new SummaryDto();
+		dto.setCategory("");
+		dto.setItemType("已出库停车总费用");
+		dto.setDetails(toTwoDigits(parkingSummaryDto.getOutStockTotalFee())+"元");
+		args.add(dto);
+		
+		return args;
+	}
 	public List<SummaryDto> list(SumSummaryForm form) throws Exception {
 		CarSummaryDto carTradeSummaryDto = new  CarSummaryDto();//tradeDao.getSummaryForCarTrade();
 		CarSummaryDto carLoanSummaryDto = loanDao.getSummaryForCarLoan();

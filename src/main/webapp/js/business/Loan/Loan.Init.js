@@ -100,13 +100,13 @@ var LoanInit = {
                         align: 'left',
                         sortable: false
                     },
-                    {
+                    /*{
                         field: 'totalinterest',
                         title: '利息总额',
                         width: 60,
                         align: 'left',
                         sortable: false
-                    },
+                    },*/
                     {
                         field: 'borrowamount',
                         title: '借款金额',
@@ -382,10 +382,10 @@ var LoanInit = {
                 validType: ['length[0,100]']
             });
             
-            $('#totalinterest').textbox({
+            /*$('#totalinterest').textbox({
                 width: 200,
                 validType: ['length[0,100]']
-            });
+            });*/
             
             $('#borrowamount').textbox({
                 width: 200,

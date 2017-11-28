@@ -22,7 +22,7 @@ var LoanEdit = {
             $('#borrowdate').textbox({disabled:false});
             $('#returndate').textbox({disabled:false});
             $('#periodmonths').textbox({disabled:false});
-            $('#totalinterest').textbox({disabled:false});
+            //$('#totalinterest').textbox({disabled:false});
             $('#borrowamount').textbox({disabled:false});
             $('#interestrate').textbox({disabled:false});
             $('#earnest').textbox({disabled:false});
@@ -61,7 +61,7 @@ var LoanEdit = {
             $('#borrowdate').textbox('setValue', '');
             $('#returndate').textbox('setValue', '');
             $('#periodmonths').textbox('setValue', '0');
-            $('#totalinterest').textbox('setValue', '0');
+//            $('#totalinterest').textbox('setValue', '0');
             $('#borrowamount').textbox('setValue', '0');
             $('#interestrate').textbox('setValue', '0.0');
             $('#earnest').textbox('setValue', '0');
@@ -94,7 +94,7 @@ var LoanEdit = {
             $('#borrowdate').textbox({disabled:true});
             $('#returndate').textbox({disabled:true});
             $('#periodmonths').textbox({disabled:true});
-            $('#totalinterest').textbox({disabled:true});
+//            $('#totalinterest').textbox({disabled:true});
             $('#borrowamount').textbox({disabled:true});
             $('#interestrate').textbox({disabled:true});
             $('#earnest').textbox({disabled:true});
@@ -134,7 +134,7 @@ var LoanEdit = {
             $('#tradername').textbox({disabled:true});
             $('#returndate').textbox({disabled:true});
             $('#periodmonths').textbox({disabled:true});
-            $('#totalinterest').textbox({disabled:true});
+//            $('#totalinterest').textbox({disabled:true});
             $('#borrowamount').textbox({disabled:true});
             $('#interestrate').textbox({disabled:true});
             $('#earnest').textbox({disabled:true});
@@ -173,7 +173,7 @@ var LoanEdit = {
             $('#borrowdate').textbox({disabled:true});
             $('#returndate').textbox({disabled:true});
             $('#periodmonths').textbox({disabled:true});
-            $('#totalinterest').textbox({disabled:true});
+//            $('#totalinterest').textbox({disabled:true});
             $('#borrowamount').textbox({disabled:true});
             $('#interestrate').textbox({disabled:true});
             $('#earnest').textbox({disabled:true});
@@ -213,7 +213,7 @@ var LoanEdit = {
             $('#borrowdate').textbox({disabled:false});
             $('#returndate').textbox({disabled:false});
             $('#periodmonths').textbox({disabled:false});
-            $('#totalinterest').textbox({disabled:false});
+//            $('#totalinterest').textbox({disabled:false});
             $('#borrowamount').textbox({disabled:false});
             $('#interestrate').textbox({disabled:false});
             $('#earnest').textbox({disabled:false});
@@ -324,7 +324,7 @@ var LoanEdit = {
                         $('#borrowdate').textbox('setValue', vo.dto.borrowdate);
                         $('#returndate').textbox('setValue', vo.dto.returndate);
                         $('#periodmonths').textbox('setValue', vo.dto.periodmonths);
-                        $('#totalinterest').textbox('setValue', vo.dto.totalinterest);
+//                        $('#totalinterest').textbox('setValue', vo.dto.totalinterest);
                         $('#borrowamount').textbox('setValue', vo.dto.borrowamount);
                         $('#interestrate').textbox('setValue', vo.dto.interestrate);
                         $('#earnest').textbox('setValue', vo.dto.earnest);
@@ -437,12 +437,12 @@ var LoanEdit = {
             	alert("请输入有效的约定还款周期(大于0的值)");
             	return;
             }
-            var totalinterest = $('#totalinterest').textbox('getValue');
-            if (totalinterest.replace(/(^\s*)|(\s*$)/g, "")=="" ||totalinterest.replace(/(^\s*)|(\s*$)/g, "")=="0")
+//            var totalinterest = $('#totalinterest').textbox('getValue');
+            /*if (totalinterest.replace(/(^\s*)|(\s*$)/g, "")=="" ||totalinterest.replace(/(^\s*)|(\s*$)/g, "")=="0")
             {
             	alert("请输入有效的利息总额(大于0的值)");
             	return;
-            }
+            }*/
             var interestrate = $('#interestrate').textbox('getValue');
             if (interestrate.replace(/(^\s*)|(\s*$)/g, "")=="" ||isNaN(interestrate))
             {
@@ -502,7 +502,7 @@ var LoanEdit = {
                                 	borrowdate: borrowdate,
                                 	returndate: returndate,
                                 	periodmonths: periodmonths,
-                                	totalinterest: totalinterest,
+//                                	totalinterest: totalinterest,
                                 	borrowamount: borrowamount,
                                 	interestrate: interestrate,
                                 	earnest: earnest,
@@ -578,7 +578,7 @@ var LoanEdit = {
     	                	borrowdate: borrowdate,
     	                	returndate: returndate,
     	                	periodmonths: periodmonths,
-    	                	totalinterest: totalinterest,
+//    	                	totalinterest: totalinterest,
     	                	borrowamount: borrowamount,
     	                	interestrate: interestrate,
     	                	earnest: earnest,

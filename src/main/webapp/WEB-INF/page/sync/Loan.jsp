@@ -196,8 +196,6 @@
       <tr>
         <th>约定还款周期（月数）</th>
         <td><input id="periodmonths"/></td>
-        <th>利息总额</th>
-        <td><input id="totalinterest"/></td>
       </tr>
       <tr>
         <th>利率</th>
