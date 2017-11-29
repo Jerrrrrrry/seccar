@@ -82,7 +82,7 @@ public class ParkingDao {
             order = form.getOrder();
         }
 
-        String sort = "inventoryints";
+        String sort = "createdts";
         if (form.getSort() != null && form.getSort().length() > 0){
             sort = form.getSort();
         }

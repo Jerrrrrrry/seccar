@@ -30,7 +30,7 @@ var ParkingInit = {
                 method: 'post',
                 url: basePath + 'ParkingAction.do?m=list',
                 idField: 'vehicleid',
-                sortName: 'inventoryoutts',
+                sortName: 'createdts',
                 sortOrder: 'desc',
                 toolbar: '#bar_list',
                 columns: [[

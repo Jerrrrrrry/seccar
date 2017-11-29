@@ -357,11 +357,20 @@ public class SumSummaryAction extends DispatchAction {
 			
     		HSSFSheet sanfangSheet = wb.createSheet("三方车");
     		HSSFRow sanfangrow = sanfangSheet.createRow((int) 0);
-    		createSoldTradeHeaders(sanfangrow);
+    		String[] tradeHeaders = new String[]{"收车日期","卖车人姓名","车辆描述","收车价","是否出库","销售价格","销售日期","利润"};
+    		for (int i = 0; i < tradeHeaders.length; i++)
+    		{
+    			HSSFCell cell = sanfangrow.createCell((short) i);
+    			cell.setCellValue(tradeHeaders[i]);
+    		}
     		
     		HSSFSheet zishouSheet = wb.createSheet("自收车");
     		HSSFRow zishourow = zishouSheet.createRow((int) 0);
-    		createSoldTradeHeaders(zishourow);
+    		for (int i = 0; i < tradeHeaders.length; i++)
+    		{
+    			HSSFCell cell = zishourow.createCell((short) i);
+    			cell.setCellValue(tradeHeaders[i]);
+    		}
     		int i = 1;
     		int k = 1;
 //    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
@@ -376,58 +385,68 @@ public class SumSummaryAction extends DispatchAction {
     				row = zishouSheet.createRow(k);
     				k++;
     			}
-    			row.createCell((short) 0).setCellValue(dto.getTradername());
-    			row.createCell((short) 1).setCellValue(dto.getPurchasedate());
-    			row.createCell((short) 2).setCellValue(dto.getLicenseno());
-    			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
-    			row.createCell((short) 4).setCellValue(dto.getVehicletype());
-    			row.createCell((short) 5).setCellValue(dto.getPurchaseprice());
-    			row.createCell((short) 6).setCellValue(dto.getOwnerid());
-    			row.createCell((short) 7).setCellValue(dto.getOwnername());
-    			row.createCell((short) 8).setCellValue(dto.getOwnermobile());
-    			row.createCell((short) 9).setCellValue(dto.getInterestrate());
-    			row.createCell((short) 10).setCellValue(dto.getActualloan());
-    			row.createCell((short) 11).setCellValue(dto.getLixichengben());
-    			row.createCell((short) 12).setCellValue(dto.getEarnest());
-    			row.createCell((short) 13).setCellValue(dto.getSellprice());
-    			row.createCell((short) 14).setCellValue(dto.getSelldate());
-    			row.createCell((short) 15).setCellValue(dto.getBuyername());
-    			row.createCell((short) 16).setCellValue(dto.getBuyerid());
-    			row.createCell((short) 17).setCellValue(dto.getBuyermobile());
-    			row.createCell((short) 18).setCellValue(dto.getTradecost());
+    			int w = 0;
+//    			row.createCell((short) w++).setCellValue(dto.getTradername());
+    			row.createCell((short) w++).setCellValue(removeTime(dto.getPurchasedate()));
+    			row.createCell((short) w++).setCellValue(dto.getOwnername());
+//    			row.createCell((short) w++).setCellValue(dto.getLicenseno());
+    			row.createCell((short) w++).setCellValue(dto.getVehicledesc());
+//    			row.createCell((short) w++).setCellValue(dto.getVehicletype());
+    			row.createCell((short) w++).setCellValue(dto.getPurchaseprice());
+    			row.createCell((short) w++).setCellValue(dto.getIssold());
+//    			row.createCell((short) w++).setCellValue(dto.getOwnerid());
+//    			row.createCell((short) w++).setCellValue(dto.getOwnermobile());
+//    			row.createCell((short) w++).setCellValue(dto.getInterestrate());
+//    			row.createCell((short) w++).setCellValue(dto.getActualloan());
+//    			row.createCell((short) w++).setCellValue(dto.getLixichengben());
+//    			row.createCell((short) w++).setCellValue(dto.getEarnest());
+    			row.createCell((short) w++).setCellValue(dto.getSellprice());
+    			row.createCell((short) w++).setCellValue(removeTime(dto.getSelldate()));
+//    			row.createCell((short) w++).setCellValue(dto.getBuyername());
+//    			row.createCell((short) w++).setCellValue(dto.getBuyerid());
+//    			row.createCell((short) w++).setCellValue(dto.getBuyermobile());
+//    			row.createCell((short) w++).setCellValue(dto.getTradecost());
+    			row.createCell((short) w++).setCellValue(dto.getSellprice() - dto.getPurchaseprice());
         	}
     		HSSFSheet chedaiSheet = wb.createSheet("车贷");
     		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
-    		createSoldLoanHeaders(loanrow);
+    		String[] loanHeaders = new String[]{"借款日期","抵押人姓名","车辆描述","实际打款金额","已付利息","中介返点","是否归还","归还本金日期"};
+    		for (int i1 = 0; i1 < loanHeaders.length; i1++)
+    		{
+    			HSSFCell cell = loanrow.createCell((short) i1);
+    			cell.setCellValue(loanHeaders[i1]);
+    		}
     		int j = 1;
     		for (LoanDto dto : loanList)
     		{
+    			int w =0;
     			HSSFRow row = chedaiSheet.createRow(j);j++;
-    			row.createCell((short) 0).setCellValue(dto.getTradername());
-    			row.createCell((short) 1).setCellValue(dto.getBorrowdate());
-    			row.createCell((short) 2).setCellValue(dto.getLicenseno());
-    			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
-    			row.createCell((short) 4).setCellValue("押车");
-    			row.createCell((short) 5).setCellValue(dto.getOwnername());
-    			row.createCell((short) 6).setCellValue(dto.getOwnerid());
-    			row.createCell((short) 7).setCellValue(dto.getMobileno());
-    			row.createCell((short) 8).setCellValue(dto.getReturndate());
-    			row.createCell((short) 9).setCellValue(dto.getPeriodmonths());
+//    			row.createCell((short) w++).setCellValue(dto.getTradername());
+    			row.createCell((short) w++).setCellValue(removeTime(dto.getBorrowdate()));
+    			row.createCell((short) w++).setCellValue(dto.getOwnername());
+//    			row.createCell((short) w++).setCellValue(dto.getLicenseno());
+    			row.createCell((short) w++).setCellValue(dto.getVehicledesc());
+//    			row.createCell((short) w++).setCellValue("押车");
+//    			row.createCell((short) w++).setCellValue(dto.getOwnerid());
+//    			row.createCell((short) w++).setCellValue(dto.getMobileno());
+//    			row.createCell((short) w++).setCellValue(dto.getReturndate());
+//    			row.createCell((short) w++).setCellValue(dto.getPeriodmonths());
 //    			row.createCell((short) 10).setCellValue(dto.getTotalinterest());
-    			row.createCell((short) 10).setCellValue(dto.getBorrowamount());
-    			row.createCell((short) 11).setCellValue(dto.getInterestrate());
-    			row.createCell((short) 12).setCellValue(dto.getEarnest());
-    			row.createCell((short) 13).setCellValue(dto.getActualloan());
-    			row.createCell((short) 14).setCellValue(dto.getLixichengben());
-    			row.createCell((short) 15).setCellValue(dto.getParkingfee());
-    			row.createCell((short) 16).setCellValue(dto.getOtherfee());
-    			row.createCell((short) 17).setCellValue(dto.getActualmonths());
-    			row.createCell((short) 18).setCellValue(dto.getInterestpaid());
-    			row.createCell((short) 19).setCellValue(dto.getMidinterestrate());
-    			row.createCell((short) 20).setCellValue(dto.getMidinterest());
-    			row.createCell((short) 21).setCellValue(dto.getComments());
-    			row.createCell((short) 22).setCellValue(dto.getActualreturn());
-    			row.createCell((short) 23).setCellValue(dto.getActualreturndate());
+//    			row.createCell((short) w++).setCellValue(dto.getBorrowamount());
+//    			row.createCell((short) w++).setCellValue(dto.getInterestrate());
+//    			row.createCell((short) w++).setCellValue(dto.getEarnest());
+    			row.createCell((short) w++).setCellValue(dto.getActualloan());
+//    			row.createCell((short) w++).setCellValue(dto.getLixichengben());
+//    			row.createCell((short) w++).setCellValue(dto.getParkingfee());
+//    			row.createCell((short) w++).setCellValue(dto.getOtherfee());
+//    			row.createCell((short) w++).setCellValue(dto.getActualmonths());
+    			row.createCell((short) w++).setCellValue(dto.getInterestpaid());
+//    			row.createCell((short) w++).setCellValue(dto.getMidinterestrate());
+    			row.createCell((short) w++).setCellValue(dto.getMidinterest());
+//    			row.createCell((short) w++).setCellValue(dto.getComments());
+//    			row.createCell((short) w++).setCellValue(dto.getActualreturn());
+    			row.createCell((short) w++).setCellValue(dto.getIsreturned());
+    			row.createCell((short) w++).setCellValue(removeTime(dto.getActualreturndate()));
     		}
     		return wb;
     }
@@ -496,7 +515,7 @@ public class SumSummaryAction extends DispatchAction {
     	private HSSFWorkbook generateLoanXls() throws Exception
     	{
     		SumSummaryService ts = new SumSummaryService();
-    		List<LoanDto> loanList  = ts.getLoanCarsSellInPeriod();
+    		List<LoanDto> loanList  = ts.listInterestCostOnly(null);
     		HSSFWorkbook wb = new HSSFWorkbook();
     
     		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -528,36 +547,43 @@ public class SumSummaryAction extends DispatchAction {
     		
     		HSSFSheet chedaiSheet = wb.createSheet("车贷");
     		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
-    		createSoldLoanHeaders(loanrow);
+    		String[] loanHeaders = new String[]{"借款日期","抵押人姓名","车辆描述","实际打款金额","已付利息","中介返点","已还本金差","是否归还","归还本金日期"};
+    		for (int i1 = 0; i1 <loanHeaders.length; i1++)
+    		{
+    			HSSFCell cell = loanrow.createCell((short) i1);
+    			cell.setCellValue(loanHeaders[i1]);
+    		}
     		int j = 1;
     		for (LoanDto dto : loanList)
     		{
     			HSSFRow row = chedaiSheet.createRow(j);j++;
-    			row.createCell((short) 0).setCellValue(dto.getTradername());
-    			row.createCell((short) 1).setCellValue(dto.getBorrowdate());
-    			row.createCell((short) 2).setCellValue(dto.getLicenseno());
-    			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
-    			row.createCell((short) 4).setCellValue("押车");
-    			row.createCell((short) 5).setCellValue(dto.getOwnername());
-    			row.createCell((short) 6).setCellValue(dto.getOwnerid());
-    			row.createCell((short) 7).setCellValue(dto.getMobileno());
-    			row.createCell((short) 8).setCellValue(dto.getReturndate());
-    			row.createCell((short) 9).setCellValue(dto.getPeriodmonths());
+    			int w=0;
+//    			row.createCell((short) w++).setCellValue(dto.getTradername());
+    			row.createCell((short) w++).setCellValue(removeTime(dto.getBorrowdate()));
+    			row.createCell((short) w++).setCellValue(dto.getOwnername());
+//    			row.createCell((short) w++).setCellValue(dto.getLicenseno());
+    			row.createCell((short) w++).setCellValue(dto.getVehicledesc());
+//    			row.createCell((short) w++).setCellValue("押车");
+//    			row.createCell((short) w++).setCellValue(dto.getOwnerid());
+////    			row.createCell((short) w++).setCellValue(dto.getMobileno());
+//    			row.createCell((short) w++).setCellValue(dto.getReturndate());
+//    			row.createCell((short) w++).setCellValue(dto.getPeriodmonths());
 //    			row.createCell((short) 10).setCellValue(dto.getTotalinterest());
-    			row.createCell((short) 10).setCellValue(dto.getBorrowamount());
-    			row.createCell((short) 11).setCellValue(dto.getInterestrate());
-    			row.createCell((short) 12).setCellValue(dto.getEarnest());
-    			row.createCell((short) 13).setCellValue(dto.getActualloan());
-    			row.createCell((short) 14).setCellValue(dto.getLixichengben());
-    			row.createCell((short) 15).setCellValue(dto.getParkingfee());
-    			row.createCell((short) 16).setCellValue(dto.getOtherfee());
-    			row.createCell((short) 17).setCellValue(dto.getActualmonths());
-    			row.createCell((short) 18).setCellValue(dto.getInterestpaid());
-    			row.createCell((short) 19).setCellValue(dto.getMidinterestrate());
-    			row.createCell((short) 20).setCellValue(dto.getMidinterest());
-    			row.createCell((short) 21).setCellValue(dto.getComments());
-    			row.createCell((short) 22).setCellValue(dto.getActualreturn());
-    			row.createCell((short) 23).setCellValue(dto.getActualreturndate());
+//    			row.createCell((short) w++).setCellValue(dto.getBorrowamount());
+//    			row.createCell((short) w++).setCellValue(dto.getInterestrate());
+//    			row.createCell((short) w++).setCellValue(dto.getEarnest());
+    			row.createCell((short) w++).setCellValue(dto.getActualloan());
+//    			row.createCell((short) w++).setCellValue(dto.getLixichengben());
+//    			row.createCell((short) w++).setCellValue(dto.getParkingfee());
+//    			row.createCell((short) w++).setCellValue(dto.getOtherfee());
+//    			row.createCell((short) w++).setCellValue(dto.getActualmonths());
+    			row.createCell((short) w++).setCellValue(dto.getInterestpaid());
+    			row.createCell((short) w++).setCellValue(dto.getMidinterest());
+    			row.createCell((short) w++).setCellValue(dto.getMidinterestrate());
+    			row.createCell((short) w++).setCellValue(dto.getIsreturned());
+//    			row.createCell((short) w++).setCellValue(dto.getComments());
+//    			row.createCell((short) w++).setCellValue(dto.getActualreturn());
+    			row.createCell((short) w++).setCellValue(removeTime(dto.getActualreturndate()));
     		}
     		return wb;
     }
@@ -637,7 +663,14 @@ public class SumSummaryAction extends DispatchAction {
         }
         
         return null;
+}private String removeTime(String date){
+	if (date != null){
+		date = date.replace("00:00:00.0", "");
+	}
+	return date;
 }
+
+
     private HSSFWorkbook generateInterestXls() throws Exception{
     	SumSummaryService ts = new SumSummaryService();
 		List<LoanDto> loanList  = ts.listInterestCostOnly(null);
@@ -699,20 +732,29 @@ public class SumSummaryAction extends DispatchAction {
 		huizongrow2.createCell((short) 1).setCellValue(heji_PreviousMonthCost);
 		huizongrow2.createCell((short) 2).setCellValue(heji_CurrentMonthCost);
 		huizongrow2.createCell((short) 3).setCellValue(heji_AccruedTotalCost);
- 
+		huizongSheet.autoSizeColumn(1); 
 		
 		List<TradeDto> tradeList  = ts.listInterestCostOnlyForTrade(null);
 		
 		HSSFSheet sanfangcheSheet = wb.createSheet("三方车");
 		HSSFRow sanfangrow = sanfangcheSheet.createRow((int) 0);
-		createSoldTradeHeaders(sanfangrow);
+		String[] tradeHeaders = new String[]{"收车日期","车辆描述","收车价","实际借款金额","是否出库","出库日期"};
+		for (int i1 = 0; i1 < tradeHeaders.length; i1++)
+		{
+			HSSFCell cell = sanfangrow.createCell((short) i1);
+			cell.setCellValue(tradeHeaders[i1]);
+		}
 		sanfangrow.createCell(sanfangrow.getLastCellNum()).setCellValue(actualPreviousMonth+"月利息成本");
 		sanfangrow.createCell(sanfangrow.getLastCellNum()).setCellValue(actualCurrentMonth+"月利息成本");
 		sanfangrow.createCell(sanfangrow.getLastCellNum()).setCellValue("累计利息成本");;
 		
 		HSSFSheet zishouchecheSheet = wb.createSheet("自收车");
 		HSSFRow zishourow = zishouchecheSheet.createRow((int) 0);
-		createSoldTradeHeaders(zishourow);
+		for (int i1 = 0; i1 < tradeHeaders.length; i1++)
+		{
+			HSSFCell cell = zishourow.createCell((short) i1);
+			cell.setCellValue(tradeHeaders[i1]);
+		}
 		zishourow.createCell(zishourow.getLastCellNum()).setCellValue(actualPreviousMonth+"月利息成本");
 		zishourow.createCell(zishourow.getLastCellNum()).setCellValue(actualCurrentMonth+"月利息成本");;
 		zishourow.createCell(zishourow.getLastCellNum()).setCellValue("累计利息成本");;
@@ -730,99 +772,116 @@ public class SumSummaryAction extends DispatchAction {
 				row = zishouchecheSheet.createRow(k);
 				k++;
 			}
-			row.createCell((short) 0).setCellValue(dto.getTradername());
-			row.createCell((short) 1).setCellValue(dto.getPurchasedate());
-			row.createCell((short) 2).setCellValue(dto.getLicenseno());
-			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
-			row.createCell((short) 4).setCellValue(dto.getVehicletype());
-			row.createCell((short) 5).setCellValue(dto.getPurchaseprice());
-			row.createCell((short) 6).setCellValue(dto.getOwnerid());
-			row.createCell((short) 7).setCellValue(dto.getOwnername());
-			row.createCell((short) 8).setCellValue(dto.getOwnermobile());
-			row.createCell((short) 9).setCellValue(dto.getInterestrate());
-			row.createCell((short) 10).setCellValue(dto.getActualloan());
-			row.createCell((short) 11).setCellValue(dto.getLixichengben());
-			row.createCell((short) 12).setCellValue(dto.getEarnest());
-			row.createCell((short) 13).setCellValue(dto.getSellprice());
-			row.createCell((short) 14).setCellValue(dto.getSelldate());
-			row.createCell((short) 15).setCellValue(dto.getBuyername());
-			row.createCell((short) 16).setCellValue(dto.getBuyerid());
-			row.createCell((short) 17).setCellValue(dto.getBuyermobile());
-			row.createCell((short) 18).setCellValue(dto.getTradecost());
+			int q = 0;
+			//row.createCell((short) q++).setCellValue(dto.getTradername());
+			row.createCell((short) q++).setCellValue(removeTime(dto.getPurchasedate()));
+//			row.createCell((short) q++).setCellValue(dto.getLicenseno());
+			row.createCell((short) q++).setCellValue(dto.getVehicledesc());
+//			row.createCell((short) q++).setCellValue(dto.getVehicletype());
+			row.createCell((short) q++).setCellValue(dto.getPurchaseprice());
+//			row.createCell((short) q++).setCellValue(dto.getOwnerid());
+//			row.createCell((short) q++).setCellValue(dto.getOwnername());
+//			row.createCell((short) q++).setCellValue(dto.getOwnermobile());
+//			row.createCell((short) q++).setCellValue(dto.getInterestrate());
+			row.createCell((short) q++).setCellValue(dto.getActualloan());
+			row.createCell((short) q++).setCellValue(dto.getIssold());
+			row.createCell((short) q++).setCellValue(removeTime(dto.getSelldate()));
+//			row.createCell((short) q++).setCellValue(removeBRWithBreak(dto.getLixichengben()));
+//			row.createCell((short) q++).setCellValue(dto.getEarnest());
+//			row.createCell((short) q++).setCellValue(dto.getSellprice());
+//			row.createCell((short) q++).setCellValue(dto.getBuyername());
+//			row.createCell((short) q++).setCellValue(dto.getBuyerid());
+//			row.createCell((short) q++).setCellValue(dto.getBuyermobile());
+//			row.createCell((short) q++).setCellValue(dto.getTradecost());
 			if (dto.getMonthAndCost().get(previousMonth) == null)
 			{
-				row.createCell((short) 19).setCellValue(0);
+				row.createCell((short) q++).setCellValue(0);
 			} else {
-				row.createCell((short) 19).setCellValue(dto.getMonthAndCost().get(previousMonth).doubleValue());
+				row.createCell((short) q++).setCellValue(dto.getMonthAndCost().get(previousMonth).doubleValue());
 			}
 			if (dto.getMonthAndCost().get(month) == null)
 			{
-				row.createCell((short) 20).setCellValue(0);
+				row.createCell((short) q++).setCellValue(0);
 			} else {
-				row.createCell((short) 20).setCellValue(dto.getMonthAndCost().get(month).doubleValue());
+				row.createCell((short) q++).setCellValue(dto.getMonthAndCost().get(month).doubleValue());
 			}
 			double accruedTotalCost =0;
 			for (Entry<String, Double> a : dto.getMonthAndCost().entrySet())
 			{
 				accruedTotalCost = accruedTotalCost + a.getValue().doubleValue();
 			}
-			row.createCell((short) 21).setCellValue(accruedTotalCost);
+			row.createCell((short) q++).setCellValue(accruedTotalCost);
     	}
-		
+		for (int i1 = 0; i1 < (tradeHeaders.length+3); i1++)
+		{
+			sanfangcheSheet.setColumnWidth(i1, 3000);
+			zishouchecheSheet.setColumnWidth(i1, 3000);
+		}
 		
 		HSSFSheet chedaiSheet = wb.createSheet("车贷");
 		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
-		createSoldLoanHeaders(loanrow);
+		String[] loanHeaders = new String[]{"借款日期","抵押人姓名","车辆描述","实际打款金额","是否归还","归还本金日期"};
+		for (int i1 = 0; i1 <loanHeaders.length; i1++)
+		{
+			HSSFCell cell = loanrow.createCell((short) i1);
+			cell.setCellValue(loanHeaders[i1]);
+		}
 		loanrow.createCell(loanrow.getLastCellNum()).setCellValue(actualPreviousMonth+"月利息成本");
 		loanrow.createCell(loanrow.getLastCellNum()).setCellValue(actualCurrentMonth+"月利息成本");;
 		loanrow.createCell(loanrow.getLastCellNum()).setCellValue("累计利息成本");;
 		int j = 1;
 		for (LoanDto dto : loanList)
 		{
+			int q=0;
 			HSSFRow row = chedaiSheet.createRow(j);j++;
-			row.createCell((short) 0).setCellValue(dto.getTradername());
-			row.createCell((short) 1).setCellValue(dto.getBorrowdate());
-			row.createCell((short) 2).setCellValue(dto.getLicenseno());
-			row.createCell((short) 3).setCellValue(dto.getVehicledesc());
-			row.createCell((short) 4).setCellValue("押车");
-			row.createCell((short) 5).setCellValue(dto.getOwnername());
-			row.createCell((short) 6).setCellValue(dto.getOwnerid());
-			row.createCell((short) 7).setCellValue(dto.getMobileno());
-			row.createCell((short) 8).setCellValue(dto.getReturndate());
-			row.createCell((short) 9).setCellValue(dto.getPeriodmonths());
-//			row.createCell((short) 10).setCellValue(dto.getTotalinterest());
-			row.createCell((short) 10).setCellValue(dto.getBorrowamount());
-			row.createCell((short) 11).setCellValue(dto.getInterestrate());
-			row.createCell((short) 12).setCellValue(dto.getEarnest());
-			row.createCell((short) 13).setCellValue(dto.getActualloan());
-			row.createCell((short) 14).setCellValue(dto.getLixichengben());
-			row.createCell((short) 15).setCellValue(dto.getParkingfee());
-			row.createCell((short) 16).setCellValue(dto.getOtherfee());
-			row.createCell((short) 17).setCellValue(dto.getActualmonths());
-			row.createCell((short) 18).setCellValue(dto.getInterestpaid());
-			row.createCell((short) 19).setCellValue(dto.getMidinterestrate());
-			row.createCell((short) 20).setCellValue(dto.getMidinterest());
-			row.createCell((short) 21).setCellValue(dto.getComments());
-			row.createCell((short) 22).setCellValue(dto.getActualreturn());
-			row.createCell((short) 23).setCellValue(dto.getActualreturndate());
+//			row.createCell((short) q++).setCellValue(dto.getTradername());
+			row.createCell((short) q++).setCellValue(removeTime(dto.getBorrowdate()));
+//			row.createCell((short) q++).setCellValue(dto.getLicenseno());
+			row.createCell((short) q++).setCellValue(dto.getOwnername());
+			row.createCell((short) q++).setCellValue(dto.getVehicledesc());
+//			row.createCell((short) q++).setCellValue("押车");
+//			row.createCell((short) q++).setCellValue(dto.getOwnerid());
+//			row.createCell((short) q++).setCellValue(dto.getMobileno());
+//			row.createCell((short) q++).setCellValue(dto.getReturndate());
+//			row.createCell((short) q++).setCellValue(dto.getPeriodmonths());
+//			row.createCell((short) q++).setCellValue(dto.getTotalinterest());
+//			row.createCell((short) q++).setCellValue(dto.getBorrowamount());
+//			row.createCell((short) q++).setCellValue(dto.getInterestrate());
+//			row.createCell((short) q++).setCellValue(dto.getEarnest());
+			row.createCell((short) q++).setCellValue(dto.getActualloan());
+//			row.createCell((short) q++).setCellValue(removeBRWithBreak(dto.getLixichengben()));
+			row.createCell((short) q++).setCellValue(dto.getIsreturned());
+//			row.createCell((short) q++).setCellValue(dto.getParkingfee());
+//			row.createCell((short) q++).setCellValue(dto.getOtherfee());
+//			row.createCell((short) q++).setCellValue(dto.getActualmonths());
+//			row.createCell((short) q++).setCellValue(dto.getInterestpaid());
+//			row.createCell((short) q++).setCellValue(dto.getMidinterestrate());
+//			row.createCell((short) q++).setCellValue(dto.getMidinterest());
+//			row.createCell((short) q++).setCellValue(dto.getComments());
+//			row.createCell((short) q++).setCellValue(dto.getActualreturn());
+			row.createCell((short) q++).setCellValue(removeTime(dto.getActualreturndate()));
 			if (dto.getMonthAndCost().get(previousMonth) == null)
 			{
-				row.createCell((short) 24).setCellValue(0);
+				row.createCell((short) q++).setCellValue(0);
 			} else {
-				row.createCell((short) 24).setCellValue(dto.getMonthAndCost().get(previousMonth).doubleValue());
+				row.createCell((short) q++).setCellValue(dto.getMonthAndCost().get(previousMonth).doubleValue());
 			}
 			if (dto.getMonthAndCost().get(month) == null)
 			{
-				row.createCell((short) 25).setCellValue(0);
+				row.createCell((short) q++).setCellValue(0);
 			} else {
-				row.createCell((short) 25).setCellValue(dto.getMonthAndCost().get(month).doubleValue());
+				row.createCell((short) q++).setCellValue(dto.getMonthAndCost().get(month).doubleValue());
 			}
 			double accruedTotalCost =0;
 			for (Entry<String, Double> a : dto.getMonthAndCost().entrySet())
 			{
 				accruedTotalCost = accruedTotalCost + a.getValue().doubleValue();
 			}
-			row.createCell((short) 26).setCellValue(accruedTotalCost);
+			row.createCell((short) q++).setCellValue(accruedTotalCost);
+		}
+		for (int i1 = 0; i1 < (loanHeaders.length+3); i1++)
+		{
+			chedaiSheet.setColumnWidth(i1, 3000);
 		}
 		
 		
