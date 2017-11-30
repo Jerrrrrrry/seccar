@@ -121,7 +121,7 @@ public class LoanDto implements Serializable {
         					long time1 = borrowDateC.getTimeInMillis();                  
         					long time2 = actualreturndateC.getTimeInMillis();          
         					int between_days=Integer.parseInt(String.valueOf((time2-time1)/(1000*3600*24)));     
-
+        					between_days = between_days+1;
         					sb.append(start+"到"+end+ "利息 	" + ((actualloan * 1.5 * between_days)/(30*100))+"元</br>");
         					monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), Double.valueOf((actualloan * 1.5 * between_days)/(30*100)));
     					} else {
