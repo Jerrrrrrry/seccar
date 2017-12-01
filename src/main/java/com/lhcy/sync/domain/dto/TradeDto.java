@@ -100,7 +100,7 @@ public class TradeDto implements Serializable {
     				{
     					if (borrowDateCopy.before(actualreturndateC))
     					{
-    						borrowDateCopy.set(Calendar.MONTH, borrowDateCopy.get(Calendar.MONTH) + 1);
+    						borrowDateCopy.add(Calendar.MONTH, 1);
     						if (!borrowDateCopy.before(actualreturndateC))
     						{
     							String start = toDateStr(borrowDateC);
@@ -111,7 +111,7 @@ public class TradeDto implements Serializable {
     							while (borrowDateC.before(actualreturndateC))
     							{
     								String start = toDateStr(borrowDateC);
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
+    								borrowDateC.add(Calendar.MONTH, 1);
     								if (!borrowDateC.before(actualreturndateC))
     								{
     									break;
@@ -122,7 +122,7 @@ public class TradeDto implements Serializable {
     							}
     							if (borrowDateC.equals(actualreturndateC))
     							{
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    								borrowDateC.add(Calendar.MONTH, -1);
     								String start = toDateStr(borrowDateC);
     								String end= toDateStr(actualreturndateC);
     								sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
@@ -133,7 +133,7 @@ public class TradeDto implements Serializable {
     							{
     								String end= toDateStr(borrowDateC);
     								int endMonth = borrowDateC.get(Calendar.MONTH);
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    								borrowDateC.add(Calendar.MONTH, -1);
     								String start = toDateStr(borrowDateC);
     								sb.append(start+"到"+end+ "利息 	" + (actualloan * 1.5/100)+"元</br>");
     								Double exist = monthAndCost.get(String.valueOf(endMonth));
@@ -149,7 +149,7 @@ public class TradeDto implements Serializable {
     				{
     					if(borrowDateCopy.before(today))
     					{
-    						borrowDateCopy.set(Calendar.MONTH, borrowDateCopy.get(Calendar.MONTH) + 1);
+    						borrowDateCopy.add(Calendar.MONTH, 1);
     						if (!borrowDateCopy.before(today))
     						{
     							String start = toDateStr(borrowDateC);
@@ -162,7 +162,7 @@ public class TradeDto implements Serializable {
     							while (borrowDateC.before(today))
     							{
     								String start = toDateStr(borrowDateC);
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
+    								borrowDateC.add(Calendar.MONTH, 1);
     								if (!borrowDateC.before(today))
     								{
     									break;
@@ -180,7 +180,7 @@ public class TradeDto implements Serializable {
     							}
     							if (borrowDateC.equals(today))
     							{
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    								borrowDateC.add(Calendar.MONTH, -1);
     								String start = toDateStr(borrowDateC);
     								String end= toDateStr(today);
     								sb.append(start+"到"+end+ "利息 	" + (purchaseprice * 1.5/100)+"元</br>");
@@ -190,7 +190,7 @@ public class TradeDto implements Serializable {
     							} else 
     							{
     								String end= toDateStr(borrowDateC);
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    								borrowDateC.add(Calendar.MONTH, -1);
     								String start = toDateStr(borrowDateC);
     								sb.append(start+"到"+end+ "利息 	" + (purchaseprice * 1.5/100)+"元</br>");
     								Double exist = monthAndCost.get(String.valueOf(today.get(Calendar.MONTH)));
@@ -201,7 +201,7 @@ public class TradeDto implements Serializable {
     						}
     					} else 
     					{
-    						today.set(Calendar.MONTH, today.get(Calendar.MONTH) + 1);
+    						today.add(Calendar.MONTH, 1);
     						String end= toDateStr(today);
     						sb.append("目前利息成本为0，到下月"+end+ "才开始计算利息成本</br>");
     						monthAndCost.put(String.valueOf(today.get(Calendar.MONTH)), Double.valueOf(0));
@@ -224,7 +224,7 @@ public class TradeDto implements Serializable {
     				{
     					if (borrowDateCopy.before(actualreturndateC))
     					{
-    						borrowDateCopy.set(Calendar.MONTH, borrowDateCopy.get(Calendar.MONTH) + 1);
+    						borrowDateCopy.add(Calendar.MONTH, 1);
     						if (borrowDateCopy.equals(actualreturndateC))
     						{
     							String start = toDateStr(borrowDateC);
@@ -234,10 +234,36 @@ public class TradeDto implements Serializable {
     						} else if (borrowDateCopy.after(actualreturndateC)){
     							String start = toDateStr(borrowDateC);
     							String end= toDateStr(actualreturndateC);
-    							long time1 = borrowDateC.getTimeInMillis();                  
-    							long time2 = actualreturndateC.getTimeInMillis();          
-    							int between_days=Integer.parseInt(String.valueOf((time2-time1)/(1000*3600*24)));     
-            					between_days = between_days+1;
+    							int between_days = 0;
+    	    					if (borrowDateC.get(Calendar.MONTH) == actualreturndateC.get(Calendar.MONTH))
+            					{
+            						//借和还在一个月
+                					if(actualreturndateC.get(Calendar.DAY_OF_MONTH) >= 30)
+                					{
+                						if (borrowDateC.get(Calendar.DAY_OF_MONTH) >=30) {
+                							between_days = 1;
+                						} else {
+                							between_days = 30-borrowDateC.get(Calendar.DAY_OF_MONTH) + 1;
+                						}
+                					} else {
+                						between_days = actualreturndateC.get(Calendar.DAY_OF_MONTH)-borrowDateC.get(Calendar.DAY_OF_MONTH) + 1;
+                					}
+            					} else {
+            						//借和还跨一个月，2月份特殊处理
+//            						if (borrowDateC.get(Calendar.MONTH) == Calendar.FEBRUARY) {
+//            							
+//            						} else {
+            							int dayOfMonth = borrowDateC.get(Calendar.DAY_OF_MONTH);
+            							int prefix = 0;
+            							if (dayOfMonth < 30){
+            								prefix = 30-dayOfMonth + 1;
+            							} else {
+            								prefix = 1;
+            							}
+            							int tail = actualreturndateC.get(Calendar.DAY_OF_MONTH);
+            							between_days = prefix + tail;
+//            						}
+            					}
 
     							sb.append(start+"到"+end+ "利息 	" + ((purchaseprice * 1.5 * between_days)/(30*100))+"元</br>");
     							monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), Double.valueOf((purchaseprice * 1.5 * between_days)/(30*100)));
@@ -245,7 +271,7 @@ public class TradeDto implements Serializable {
     							while (borrowDateC.before(actualreturndateC))
     							{
     								String start = toDateStr(borrowDateC);
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
+    								borrowDateC.add(Calendar.MONTH, 1);
     								if (!borrowDateC.before(actualreturndateC))
     								{
     									break;
@@ -256,7 +282,7 @@ public class TradeDto implements Serializable {
     							}
     							if (borrowDateC.equals(actualreturndateC))
     							{
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    								borrowDateC.add(Calendar.MONTH,  -1);
     								String start = toDateStr(borrowDateC);
     								String end= toDateStr(actualreturndateC);
     								sb.append(start+"到"+end+ "利息 	" + (purchaseprice * 1.5/100)+"元</br>");
@@ -265,17 +291,45 @@ public class TradeDto implements Serializable {
     								monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), exist+Double.valueOf(purchaseprice * 1.5/100));
     							} else 
     							{
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    								borrowDateC.add(Calendar.MONTH, -1);
     								String start = toDateStr(borrowDateC);
     								String end= toDateStr(actualreturndateC);
-    								long time1 = borrowDateC.getTimeInMillis();                  
-    								long time2 = actualreturndateC.getTimeInMillis();          
-    								int between_days=Integer.parseInt(String.valueOf((time2-time1)/(1000*3600*24)));     
-    								
-    								sb.append(start+"到"+end+ "利息 	" + ((purchaseprice * 1.5 * between_days)/(30*100))+"元</br>");
-    								Double exist = monthAndCost.get(String.valueOf(actualreturndateC.get(Calendar.MONTH)));
-        	    					if (exist == null) exist= 0.0;
-    								monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), exist+Double.valueOf((purchaseprice * 1.5 * between_days)/(30*100)));
+    								int between_days = 0;
+        	    					if (borrowDateC.get(Calendar.MONTH) == actualreturndateC.get(Calendar.MONTH))
+                					{
+                						//借和还在一个月
+                    					if(actualreturndateC.get(Calendar.DAY_OF_MONTH) >= 30)
+                    					{
+                    						if (borrowDateC.get(Calendar.DAY_OF_MONTH) >=30) {
+                    							between_days = 0;
+                    						} else {
+                    							between_days = 30-borrowDateC.get(Calendar.DAY_OF_MONTH) ;
+                    						}
+                    					} else {
+                    						between_days = actualreturndateC.get(Calendar.DAY_OF_MONTH)-borrowDateC.get(Calendar.DAY_OF_MONTH);
+                    					}
+                					} else {
+                						//借和还跨一个月，2月份特殊处理
+//                						if (borrowDateC.get(Calendar.MONTH) == Calendar.FEBRUARY) {
+//                							
+//                						} else {
+                							int dayOfMonth = borrowDateC.get(Calendar.DAY_OF_MONTH);
+                							int prefix = 0;
+                							if (dayOfMonth < 30){
+                								prefix = 30-dayOfMonth;
+                							} else {
+                								prefix = 0;
+                							}
+                							int tail = actualreturndateC.get(Calendar.DAY_OF_MONTH);
+                							between_days = prefix + tail;
+//                						}
+                					} 
+    								if (between_days > 0) {
+    									sb.append(start+"到"+end+ "利息 	" + ((purchaseprice * 1.5 * between_days)/(30*100))+"元</br>");
+    									Double exist = monthAndCost.get(String.valueOf(actualreturndateC.get(Calendar.MONTH)));
+    									if (exist == null) exist= 0.0;
+    									monthAndCost.put(String.valueOf(actualreturndateC.get(Calendar.MONTH)), exist+Double.valueOf((purchaseprice * 1.5 * between_days)/(30*100)));
+    								}
     							}
     						}
     					} else {
@@ -286,7 +340,7 @@ public class TradeDto implements Serializable {
     				{
     					if(borrowDateCopy.before(today))
     					{
-    						borrowDateCopy.set(Calendar.MONTH, borrowDateCopy.get(Calendar.MONTH) + 1);
+    						borrowDateCopy.add(Calendar.MONTH, 1);
     						if (borrowDateCopy.equals(today))
     						{
     							String start = toDateStr(borrowDateC);
@@ -301,7 +355,7 @@ public class TradeDto implements Serializable {
     							while (borrowDateC.before(today))
     							{
     								String start = toDateStr(borrowDateC);
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) + 1);
+    								borrowDateC.add(Calendar.MONTH, 1);
     								if (!borrowDateC.before(today))
     								{
     									break;
@@ -312,7 +366,7 @@ public class TradeDto implements Serializable {
     							}
     							if (borrowDateC.equals(today))
     							{
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    								borrowDateC.add(Calendar.MONTH, -1);
     								String start = toDateStr(borrowDateC);
     								String end= toDateStr(today);
     								sb.append(start+"到"+end+ "利息 	" + (purchaseprice * 1.5/100)+"元</br>");
@@ -322,7 +376,7 @@ public class TradeDto implements Serializable {
     							} else 
     							{
     								String end= toDateStr(borrowDateC);
-    								borrowDateC.set(Calendar.MONTH, borrowDateC.get(Calendar.MONTH) - 1);
+    								borrowDateC.add(Calendar.MONTH, -1);
     								String start = toDateStr(borrowDateC);
     								sb.append(start+"到"+end+ "利息 0元，下个月"+end+"开始计算利息</br>");
     								Double exist = monthAndCost.get(String.valueOf(today.get(Calendar.MONTH)));

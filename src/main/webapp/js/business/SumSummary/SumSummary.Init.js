@@ -365,7 +365,7 @@ var SumSummaryInit = {
                        {
                            field: 'previousMonthCost',
                            title: '上月金额合计(元)',
-                           width: 100,
+                           width: 130,
                            align: 'right',
                            sortable: false
                        }
@@ -373,14 +373,14 @@ var SumSummaryInit = {
                        {
                            field: 'currentMonthCost',
                            title: '当月金额合计(元)',
-                           width: 100,
+                           width: 130,
                            align: 'right',
                            sortable: false
                        },
                        {
                            field: 'accruedTotalCost',
                            title: '累计(元)',
-                           width: 100,
+                           width: 130,
                            align: 'right',
                            sortable: false
                        }

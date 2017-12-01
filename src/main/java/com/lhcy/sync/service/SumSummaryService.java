@@ -266,9 +266,10 @@ public class SumSummaryService {
 				}
 			}
 		}
-		chedai.setPreviousMonthCost(previousMonthCost);
-		chedai.setCurrentMonthCost(currentMonthCost);
-		chedai.setAccruedTotalCost(accruedTotalCost);
+		DecimalFormat df = new DecimalFormat("#.0000");  
+		chedai.setPreviousMonthCost(Double.valueOf(df.format(previousMonthCost)));
+		chedai.setCurrentMonthCost(Double.valueOf(df.format(currentMonthCost)));
+		chedai.setAccruedTotalCost(Double.valueOf(df.format(accruedTotalCost)));
 		return newlist;
 	}
 	
