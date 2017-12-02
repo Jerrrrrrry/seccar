@@ -321,6 +321,25 @@
       <td><a id="btnRefresh"></a></td>
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnClose"></a></td>
+      <td><div class="datagrid-btn-separator"></div></td>
+      <td><div style="width:50px"></div></td>
+      <td><div style="width:20px;height:20px;background-color: #d0d0d0;border-color:#000;border-width:1px;border-style:solid"></div></td>
+      <td>:已归还</td>
+       <td><div style="width:20px"></div></td>
+      <td><div style="width:20px;height:20px;background-color: red;border-color:#000;border-width:1px;border-style:solid"></div></td>
+      <td>:逾期未还</td>
+       <td><div style="width:20px"></div></td>
+      <td><div style="width:20px;height:20px;background-color: orange;border-color:#000;border-width:1px;border-style:solid"></div></td>
+      <td>:3天内需归还</td>
+      <td><div style="width:20px"></div></td>
+      <td><div style="width:20px;height:20px;background-color: pink;border-color:#000;border-width:1px;border-style:solid"></div></td>
+      <td>:逾期下次付息日</td>
+      <td><div style="width:20px"></div></td>
+      <td><div style="width:20px;height:20px;background-color: blue;border-color:#000;border-width:1px;border-style:solid"></div></td>
+      <td>:3天内到下次付息日</td>
+      <td><div style="width:20px"></div></td>
+      <td><div style="width:20px;height:20px;background-color: white;border-color:#000;border-width:1px;border-style:solid"></div></td>
+      <td>:正常期限内未归还车辆</td>
     </tr>
   </table>
 </div>

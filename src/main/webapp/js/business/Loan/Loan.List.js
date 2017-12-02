@@ -51,7 +51,7 @@ var LoanList = {
 	        	var remaininterest = totalinterest-interestpaid;
 	        	var remainreturn = borrowamount - earnest - actualreturn;
 	        	//alert(remainreturn);
-	        	if(remainreturn > 0 && today != '' && today != null && rd != '' && rd != null){
+	        	if(today != '' && today != null && rd != '' && rd != null){
 	        		var nextpaydays = list.getDays(rd.substring(0,10), today.substring(0,10));
 	        		//alert(nextpaydays);
 	        		if(nextpaydays < 3 && nextpaydays >=0){
@@ -63,7 +63,7 @@ var LoanList = {
 	        		}
 	        	}
 	        	if (color == ''){
-	        	if(remaininterest > 0 && today != '' && today != null && npd != '' && npd != null){
+	        	if(today != '' && today != null && npd != '' && npd != null){
 	        		var nextpaydays = list.getDays(npd.substring(0,10), today.substring(0,10));
 	        		if(nextpaydays < 3 && nextpaydays >=0){
 	        			color =  'background-color:blue;color:black;font-weight:bold;';

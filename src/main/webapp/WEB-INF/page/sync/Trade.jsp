@@ -356,6 +356,19 @@
       <td><div class="datagrid-btn-separator"></div></td>
       <td><a id="btnClose"></a></td>
       <td><input type="hidden" id="CurrentLoginUserAccesstype" value="<%= session.getAttribute("CurrentLoginUserAccesstype")%>" /></td>
+      <td><div class="datagrid-btn-separator"></div></td>
+      <td><div style="width:50px"></div></td>
+      <td><div style="width:20px;height:20px;background-color: white;border-color:#000;border-width:1px;border-style:solid"></div></td>
+      <td>:已售出</td>
+       <td><div style="width:20px"></div></td>
+      <td><div style="width:20px;height:20px;background-color:rgb(255,218,185);border-color:#000;border-width:1px;border-style:solid"></div></td>
+      <td>:在库时间15天内</td>
+       <td><div style="width:20px"></div></td>
+      <td><div style="width:20px;height:20px;background-color:rgb(255,106,106);border-color:#000;border-width:1px;border-style:solid"></div></td>
+      <td>:在库时间超过15天但是少于1个月</td>
+      <td><div style="width:20px"></div></td>
+      <td><div style="width:20px;height:20px;background-color:rgb(255,0,0);border-color:#000;border-width:1px;border-style:solid"></div></td>
+      <td>:在库时间超过1个月</td>
     </tr>
   </table>
 </div>
