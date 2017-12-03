@@ -29,7 +29,7 @@
     	var currentYearMonth =myDate.getFullYear()+'年'+currentMonth+'月';
     	document.getElementById('stockLabelId').innerText = currentYearMonth+'库存合计：';
     	document.getElementById('loanLabelId').innerText = currentYearMonth+'车贷合计';
-    	document.getElementById('soldLabelId').innerText = currentYearMonth+'利润合计：';
+    	document.getElementById('soldLabelId').innerText = '利润合计：';
     	document.getElementById('interestLabelId').innerText = '利息成本合计：';
     }
 

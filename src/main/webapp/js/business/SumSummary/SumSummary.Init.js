@@ -169,7 +169,7 @@ var SumSummaryInit = {
    					},
                        {
                            field: 'outStockCarsAmount',
-                           title: '本月出库数量(辆)',
+                           title: '当月出库数量(辆)',
                            width: 100,
                            align: 'right',
                            sortable: false
@@ -177,14 +177,14 @@ var SumSummaryInit = {
                        ,
                        {
                            field: 'totalPuchasePrice',
-                           title: '收车价格合计(元)',
+                           title: '当月收车金额(元)',
                            width: 100,
                            align: 'right',
                            sortable: false
                        },
                        {
                            field: 'totalSellPrice',
-                           title: '卖车价格合计(元)',
+                           title: '当月卖车金额(元)',
                            width: 100,
                            align: 'right',
                            sortable: false
@@ -192,6 +192,20 @@ var SumSummaryInit = {
                        {
                            field: 'totalProfit',
                            title: '当月利润(元)',
+                           width: 100,
+                           align: 'right',
+                           sortable: false
+                       },
+                       {
+                    	   field: 'accruedTotalPurchasePrice',
+                    	   title: '累计收车金额(元)',
+                    	   width: 100,
+                    	   align: 'right',
+                    	   sortable: false
+                       },
+                       {
+                           field: 'accruedTotalSellPrice',
+                           title: '累计卖车金额(元)',
                            width: 100,
                            align: 'right',
                            sortable: false
@@ -216,8 +230,17 @@ var SumSummaryInit = {
                 	  totalPuchasePrice: '',
 	            	  totalSellPrice: '',
 	            	  totalProfit: '',
+	            	  accruedTotalPurchasePrice:'',
+	            	  accruedTotalSellPrice:'',
 	            	  accruedTotalProfit: '<span class="subtotal">' + list.computeSold("accruedTotalProfit") + '</span>'
 	              });
+                  $("#soldlist").datagrid("updateRow",{
+						index:2, 
+						row:{
+							accruedTotalPurchasePrice:'',
+							accruedTotalSellPrice:''
+						}
+					});
                 },
                 onLoadError: function () {
                     xutil.ajaxLoadEnd();

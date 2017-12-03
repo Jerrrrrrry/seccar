@@ -81,9 +81,13 @@ public class SumSummaryService {
 			if (dto.isSold()){
 				if ("第三方".equalsIgnoreCase(dto.getCarType()))
 				{
+					sanfang.setAccruedTotalSellPrice(dto.getTotalSellPrice());
+					sanfang.setAccruedTotalPurchasePrice(dto.getOutStockCarsMoney());
 					sanfang.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getOutStockCarsMoney());
 					
 				} else if ("自收车".equalsIgnoreCase(dto.getCarType())){
+					zishouche.setAccruedTotalSellPrice(dto.getTotalSellPrice());
+					zishouche.setAccruedTotalPurchasePrice(dto.getOutStockCarsMoney());
 					zishouche.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getOutStockCarsMoney());
 				}
 			}
