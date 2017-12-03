@@ -46,6 +46,11 @@ var SumSummaryInit = {
                 },
                 onLoadSuccess : function (data) {
                   xutil.ajaxLoadEnd();
+                  $('#stocklist').datagrid('appendRow', {
+                	  carType: '<span class="subtotal">合计</span>',
+                	  inStockCarsAmount:  '<span class="subtotal">' + list.computeStock("inStockCarsAmount") + '</span>',
+                	  inStockCarMoney: '<span class="subtotal">' + list.computeStock("inStockCarMoney") + '</span>'
+	              });
                 },
                 onLoadError: function () {
                     xutil.ajaxLoadEnd();

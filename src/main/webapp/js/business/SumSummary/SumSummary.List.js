@@ -5,6 +5,19 @@ var SumSummaryList = {
         var xutil = XUtil.getInstance(basePath); 
         
         //指定列求和
+        list.computeStock = function (colName) {
+            var rows = $('#stocklist').datagrid('getRows');
+//        	alert(rows);
+            var total = 0;
+            for (var i = 0; i < rows.length; i++) {
+                total += parseFloat(rows[i][colName]);
+            }
+
+//        	alert(total);
+            return total;
+        }
+        
+        //指定列求和
          list.compute = function (colName) {
              var rows = $('#list').datagrid('getRows');
 //         	alert(rows);

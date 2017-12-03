@@ -40,23 +40,23 @@
   </script>
 </head>
 <body class="easyui-layout">
-<div region="center" border="false" title="" class="grid_line">
-  <div   style="overflow:hidden;width:100%;height:22%">
+<div region="center" border="false" title="" class="grid_line"style="overflow:auto">
+  <div   style="width:100%;height:160px;">
     <table id="stocklist">
     </table>
   </div>
   <hr />
-   <div   style="overflow:hidden;width:100%;height:18%">
+   <div   style="overflow:hidden;width:100%;height:110px;">
     <table id="loanlist">
     </table>
   </div>
   <hr />
-  <div   style="overflow:hidden;width:100%;height:26%">
+  <div   style="overflow:hidden;width:100%;height:160px;">
     <table id="soldlist">
     </table>
   </div>
   <hr />
-  <div   style="overflow:hidden;width:100%;height:26%">
+  <div   style="overflow:hidden;width:100%;height:160px;">
     <table id="interestCostlist">
     </table>
   </div>
