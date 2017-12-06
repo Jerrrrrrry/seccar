@@ -363,8 +363,8 @@ public class SumSummaryAction extends DispatchAction {
         private HSSFWorkbook generateSoldXls() throws Exception
     	{
     		SumSummaryService ts = new SumSummaryService();
-    		List<TradeDto> tradeList  = ts.getTradeCarsSellInPeriod();
-    		List<LoanDto> loanList  = ts.getLoanCarsSellInPeriod();
+    		List<TradeDto> tradeList  = ts.listAllRecordsForTrade();
+    		List<LoanDto> loanList  = ts.listAllRecordsForLoan();
     		HSSFWorkbook wb = new HSSFWorkbook();
     		
     		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");

@@ -58,7 +58,7 @@ public class SumSummaryService {
 		List<CarSummaryDto> newlist = new ArrayList<CarSummaryDto>();
 		
 		List<TradeDto> list  = tradeDao.getTradeCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
-		 List<CarSummaryDto> accruedSummary = tradeDao.getSummaryForCarTrade();
+		 List<CarSummaryDto> accruedSummary = tradeDao.getAccruedSummaryForCarTrade();
 		CarSummaryDto sanfang = new CarSummaryDto();sanfang.setCarType("三方车");newlist.add(sanfang);
 		CarSummaryDto zishouche = new CarSummaryDto();zishouche.setCarType("自收车");newlist.add(zishouche);
 		for (TradeDto dto : list) {
@@ -78,19 +78,19 @@ public class SumSummaryService {
 		
 		for (CarSummaryDto dto : accruedSummary)
 		{
-			if (dto.isSold()){
+//			if (dto.isSold()){
 				if ("第三方".equalsIgnoreCase(dto.getCarType()))
 				{
 					sanfang.setAccruedTotalSellPrice(dto.getTotalSellPrice());
-					sanfang.setAccruedTotalPurchasePrice(dto.getOutStockCarsMoney());
-					sanfang.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getOutStockCarsMoney());
+					sanfang.setAccruedTotalPurchasePrice(dto.getTotalPuchasePrice());
+					sanfang.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getTotalPuchasePrice());
 					
 				} else if ("自收车".equalsIgnoreCase(dto.getCarType())){
 					zishouche.setAccruedTotalSellPrice(dto.getTotalSellPrice());
-					zishouche.setAccruedTotalPurchasePrice(dto.getOutStockCarsMoney());
-					zishouche.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getOutStockCarsMoney());
+					zishouche.setAccruedTotalPurchasePrice(dto.getTotalPuchasePrice());
+					zishouche.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getTotalPuchasePrice());
 				}
-			}
+//			}
 		}
 		
 		
@@ -187,6 +187,12 @@ public class SumSummaryService {
 	}
 	public List<TradeDto> listInterestCostOnlyForTrade(SumSummaryForm form) throws Exception {
 		return tradeDao.list(0, Integer.MAX_VALUE, new TradeForm(), "管理员");
+	}
+	public List<TradeDto> listAllRecordsForTrade() throws Exception {
+		return tradeDao.list(0, Integer.MAX_VALUE, new TradeForm(), "管理员");
+	}
+	public List<LoanDto> listAllRecordsForLoan() throws Exception {
+		return loanDao.list(0, Integer.MAX_VALUE, new LoanForm(), "管理员");
 	}
 	public List<CarSummaryDto> listInterestCost(SumSummaryForm form) throws Exception {
 		List<CarSummaryDto> newlist = new ArrayList<CarSummaryDto>();
