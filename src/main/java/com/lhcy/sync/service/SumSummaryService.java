@@ -58,7 +58,7 @@ public class SumSummaryService {
 		List<CarSummaryDto> newlist = new ArrayList<CarSummaryDto>();
 		
 		List<TradeDto> list  = tradeDao.getTradeCarsSellInPeriod(getFirstDayOfCurrentMonth(0), getLastDayOfCurrentMonth(0));
-		 List<CarSummaryDto> accruedSummary = tradeDao.getAccruedSummaryForCarTrade();
+		 List<CarSummaryDto> accruedSummary = tradeDao.getSummaryForCarTrade();
 		CarSummaryDto sanfang = new CarSummaryDto();sanfang.setCarType("三方车");newlist.add(sanfang);
 		CarSummaryDto zishouche = new CarSummaryDto();zishouche.setCarType("自收车");newlist.add(zishouche);
 		for (TradeDto dto : list) {
@@ -78,19 +78,25 @@ public class SumSummaryService {
 		
 		for (CarSummaryDto dto : accruedSummary)
 		{
-//			if (dto.isSold()){
-				if ("第三方".equalsIgnoreCase(dto.getCarType()))
-				{
+
+			if ("第三方".equalsIgnoreCase(dto.getCarType()))
+			{
+				if (dto.isSold()) {
 					sanfang.setAccruedTotalSellPrice(dto.getTotalSellPrice());
-					sanfang.setAccruedTotalPurchasePrice(dto.getTotalPuchasePrice());
-					sanfang.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getTotalPuchasePrice());
-					
-				} else if ("自收车".equalsIgnoreCase(dto.getCarType())){
-					zishouche.setAccruedTotalSellPrice(dto.getTotalSellPrice());
-					zishouche.setAccruedTotalPurchasePrice(dto.getTotalPuchasePrice());
-					zishouche.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getTotalPuchasePrice());
+					sanfang.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getOutStockCarsMoney());
+					sanfang.setAccruedTotalPurchasePrice(sanfang.getAccruedTotalPurchasePrice() + dto.getOutStockCarsMoney());
+				} else {
+					sanfang.setAccruedTotalPurchasePrice(sanfang.getAccruedTotalPurchasePrice() + dto.getInStockCarMoney());
 				}
-//			}
+			} else if ("自收车".equalsIgnoreCase(dto.getCarType())){
+				if (dto.isSold()) {
+					zishouche.setAccruedTotalSellPrice(dto.getTotalSellPrice());
+					zishouche.setAccruedTotalProfit(dto.getTotalSellPrice()-dto.getOutStockCarsMoney());
+					zishouche.setAccruedTotalPurchasePrice(zishouche.getAccruedTotalPurchasePrice() + dto.getOutStockCarsMoney());
+				} else {
+					zishouche.setAccruedTotalPurchasePrice(zishouche.getAccruedTotalPurchasePrice() + dto.getInStockCarMoney());
+				}
+			}
 		}
 		
 		

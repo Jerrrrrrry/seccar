@@ -474,6 +474,7 @@ public class TradeDao {
                 	result.setSold(false);
                 	result.setInStockCarsAmount(rs.getInt("number"));
                 	result.setInStockCarMoney(rs.getDouble("amount"));
+                	result.setTotalSellPrice(rs.getDouble("sellamount"));//理论上是0
                 }
                 list.add(result);
             }
@@ -493,48 +494,48 @@ public class TradeDao {
 
         return list;
     }
-    public List<CarSummaryDto> getAccruedSummaryForCarTrade() throws Exception{
-    	List<CarSummaryDto> list = new ArrayList<CarSummaryDto>();
-        StringBuilder sql = new StringBuilder();
-        //删除的车辆不考虑
-        sql.append(" select vehicletype,COUNT(*) as number,sum(purchaseprice) as amount,sum(sellprice) as sellamount from SecCarTrade where isdeleted<>'1' group by vehicletype ");
-        System.out.println("query sql: "+sql);
-        Connection conn = DbConnectionFactory.createHonchenConnection();
-        if (conn == null){
-            throw new Exception("无法获取数据库连接！");
-        }
-
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            ps = conn.prepareStatement(sql.toString());
-            rs = DbSqlHelper.executeQuery(ps);
-            if (rs == null){
-                return list;
-            }
-            while(rs.next()){
-            	CarSummaryDto result = new CarSummaryDto();
-            	result.setCarType(rs.getString("vehicletype"));
-            	result.setTotalPuchasePrice(rs.getDouble("amount"));
-            	result.setTotalSellPrice(rs.getDouble("sellamount"));
-                list.add(result);
-            }
-        } catch (Exception e) {
-            throw new Exception(e);
-        }finally{
-            try {
-                rs.close();
-                ps.close();
-                conn.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                logger.error(e.getMessage());
-            }
-        }
-
-        return list;
-    }
+//    public List<CarSummaryDto> getAccruedSummaryForCarTrade() throws Exception{
+//    	List<CarSummaryDto> list = new ArrayList<CarSummaryDto>();
+//        StringBuilder sql = new StringBuilder();
+//        //删除的车辆不考虑
+//        sql.append(" select vehicletype,COUNT(*) as number,sum(purchaseprice) as amount,sum(sellprice) as sellamount from SecCarTrade where isdeleted<>'1' group by vehicletype ");
+//        System.out.println("query sql: "+sql);
+//        Connection conn = DbConnectionFactory.createHonchenConnection();
+//        if (conn == null){
+//            throw new Exception("无法获取数据库连接！");
+//        }
+//
+//        PreparedStatement ps = null;
+//        ResultSet rs = null;
+//
+//        try {
+//            ps = conn.prepareStatement(sql.toString());
+//            rs = DbSqlHelper.executeQuery(ps);
+//            if (rs == null){
+//                return list;
+//            }
+//            while(rs.next()){
+//            	CarSummaryDto result = new CarSummaryDto();
+//            	result.setCarType(rs.getString("vehicletype"));
+//            	result.setTotalPuchasePrice(rs.getDouble("amount"));
+//            	result.setTotalSellPrice(rs.getDouble("sellamount"));
+//                list.add(result);
+//            }
+//        } catch (Exception e) {
+//            throw new Exception(e);
+//        }finally{
+//            try {
+//                rs.close();
+//                ps.close();
+//                conn.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                logger.error(e.getMessage());
+//            }
+//        }
+//
+//        return list;
+//    }
     /***********************************************/
     // 查询卖车总差价
     /***********************************************/

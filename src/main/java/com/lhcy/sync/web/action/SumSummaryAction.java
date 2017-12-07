@@ -456,7 +456,11 @@ public class SumSummaryAction extends DispatchAction {
 //    			row.createCell((short) w++).setCellValue(dto.getBuyerid());
 //    			row.createCell((short) w++).setCellValue(dto.getBuyermobile());
 //    			row.createCell((short) w++).setCellValue(dto.getTradecost());
-    			row.createCell((short) w++).setCellValue(dto.getSellprice() - dto.getPurchaseprice());
+    			if ("1".equalsIgnoreCase(dto.getIssold())) {
+    				row.createCell((short) w++).setCellValue(dto.getSellprice() - dto.getPurchaseprice());
+    			} else {
+    				row.createCell((short) w++).setCellValue(0);
+    			}
         	}
     		HSSFSheet chedaiSheet = wb.createSheet("车贷");
     		HSSFRow loanrow = chedaiSheet.createRow((int) 0);
